@@ -33,23 +33,22 @@ namespace AT_RPG.Manager
 
         private IEnumerator InternalLoadCor(string sceneName)
         {
+            string prevSceneName = CurrentSceneName;
+            string nextSceneName = sceneName;
+
             // 씬을 비동기 로드
             // 바로 씬을 전환X
-            AsyncOperation asyncSceneLoading = UnitySceneManager.LoadSceneAsync(sceneName);
+            AsyncOperation asyncSceneLoading = UnitySceneManager.LoadSceneAsync(nextSceneName);
             asyncSceneLoading.allowSceneActivation = false;
 
-            // 지금 리소스를 비동기로 언로드
-            Task asyncResourceUnloading = ResourceManager.Instance.UnLoadAllAsync(CurrentSceneName);
-
             // 리소스를 비동기로 로드
-            Task asyncResourcesLoading = ResourceManager.Instance.LoadAllAsync(sceneName);
+            Task asyncResourcesLoading = ResourceManager.Instance.LoadAllAsync(nextSceneName);
 
             while (!asyncSceneLoading.isDone)
             {
                 // TODO - 로드전에 해야할 것들은 여기에
                 if (asyncSceneLoading.progress >= 0.9f && 
-                    asyncResourcesLoading.IsCompleted &&
-                    asyncResourceUnloading.IsCompleted)
+                    asyncResourcesLoading.IsCompleted)
                 {
                     asyncSceneLoading.allowSceneActivation = true;
                 }
@@ -57,12 +56,15 @@ namespace AT_RPG.Manager
                 yield return null;
             }
 
+            // 리소스를 비동기로 로드
+            Task asyncResourcesUnloading = ResourceManager.Instance.UnLoadAllAsync(prevSceneName);
+
             // 테스트
-            //ResourceManager.Instance.LoadAll(sceneName);
-            //foreach (var resource in ResourceManager.Instance.GetAll(sceneName))
-            //{
-            //    Instantiate(resource);
-            //}
+            ResourceManager.Instance.LoadAll(nextSceneName);
+            foreach (var resource in ResourceManager.Instance.GetAll(nextSceneName))
+            {
+                Instantiate(resource);
+            }
 
             loadCoroutine = null;
             yield break;

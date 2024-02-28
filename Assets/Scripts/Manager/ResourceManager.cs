@@ -9,10 +9,7 @@ using System.Linq;
 namespace AT_RPG.Manager
 {   
     public class SceneResourceMap : Dictionary<string, ResourceMap> { }
-    public class ResourceMap : Dictionary<string, UnityObject>
-    { 
-        
-    }
+    public class ResourceMap : Dictionary<string, UnityObject> { }
 
     public class ResourceManager : Singleton<ResourceManager>
     {
@@ -27,12 +24,17 @@ namespace AT_RPG.Manager
             base.Awake();
         }
 
+        private void Update()
+        {
+            
+        }
+
         /// <summary>
         /// 씬에 모든 리소스를 동기적으로 로드
         /// </summary>
         public void LoadAll(string sceneName)
         {
-            string[] dirPaths = Directory.GetDirectories(ResourceFolderPath);
+            string[] dirPaths = Directory.GetDirectories(Path.Combine(ResourceFolderPath, sceneName));
             InternalLoadAll(dirPaths, sceneName);
         }
 
@@ -43,7 +45,7 @@ namespace AT_RPG.Manager
         {
             Task task = Task.Run(() =>
             {
-                string[] dirPaths = Directory.GetDirectories(ResourceFolderPath);
+                string[] dirPaths = Directory.GetDirectories(Path.Combine(ResourceFolderPath, sceneName));
                 InternalLoadAll(dirPaths, sceneName);
             });
 
@@ -54,9 +56,10 @@ namespace AT_RPG.Manager
         {
             resources[sceneName] = new ResourceMap();
 
+            // 폴더에 있는 모든 리소스를 로드
             foreach (var dirPath in dirPaths)
             {
-                UnityObject[] items = Resources.LoadAll(String.GetFolderOrFileName(dirPath));
+                UnityObject[] items = Resources.LoadAll(Path.Combine(sceneName, String.GetFolderOrFileName(dirPath)));
                 foreach (var item in items)
                 {
                     resources[sceneName][item.name] = item;
