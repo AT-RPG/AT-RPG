@@ -15,22 +15,22 @@ public class TestManager : Singleton<TestManager>
     {
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            SceneManager.Instance.LoadCor("MainScene_BJW");
+            SceneManager.Instance.Load("MainScene_BJW");
         }
 
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            SceneManager.Instance.LoadCor("MainScene_CSH");
+            SceneManager.Instance.Load("MainScene_CSH");
         }
 
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            SceneManager.Instance.LoadCor("MainScene_IJH");
+            SceneManager.Instance.Load("MainScene_IJH");
         }
 
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            SceneManager.Instance.LoadCor("MainScene_JUJ");
+            SceneManager.Instance.Load("MainScene_JUJ");
         }
 
 

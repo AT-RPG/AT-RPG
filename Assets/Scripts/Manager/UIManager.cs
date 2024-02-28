@@ -1,0 +1,89 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+namespace AT_RPG.Manager
+{
+    // TODO - 
+    // 1. UI Scale Mode
+    // 2. Reference Pixel Size
+    // ...
+    public static class UISetting
+    {
+
+    }
+
+    /// <summary>
+    /// 현재 씬의 UI를 컨트롤
+    /// </summary>
+    /// TODO - 캔버스가 씬에 여러개가 있는 경우 따로 처리 필요
+    public partial class UIManager : Singleton<UIManager>
+    {
+        // 현재 씬의 이벤트 시스템 GameObject
+        [SerializeField] private GameObject eventSystemInstance = null;
+
+        // 현재 씬의 캔버스 GameObject
+        [SerializeField] private GameObject canvasInstance = null;
+
+        // 현재 씬의 캔버스
+        [SerializeField] private Canvas canvas = null;
+
+        // 현재 씬의 캔버스에 올라간 UI 객체들
+        [SerializeField] private Stack<GameObject> uiInstances = 
+            new Stack<GameObject>();
+
+        protected override void Awake()
+        {
+            base.Awake();
+        }
+
+        public void Start()
+        {
+            SceneManager.Instance.SceneChangedEvent += OnSceneChanged;
+        }
+
+        /// <summary>
+        /// Scene이 변경되었을 경우, 현재 씬에서 Canvas를 가져오고,
+        /// 없다면 새로 생성합니다.
+        /// </summary>
+        public void OnSceneChanged()
+        {
+            if (!canvas)
+            {
+                canvas = FindObjectOfType<Canvas>();
+
+                // 씬에 캔버스가 없는 경우
+                if (!canvas)
+                {
+                    // 캔버스 GameObject 생성
+                    canvasInstance = new GameObject("Canvas");
+                    canvas = canvasInstance.AddComponent<Canvas>();
+                    canvasInstance.AddComponent<CanvasScaler>();
+                    canvasInstance.AddComponent<GraphicRaycaster>();
+                    canvasInstance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+
+                    // 이벤트 시스템 GameObject 생성
+                    eventSystemInstance = new GameObject("EventSystem");
+                    eventSystemInstance.AddComponent<EventSystem>();
+                    eventSystemInstance.AddComponent<StandaloneInputModule>();
+                }
+            }
+        }
+    }
+
+    public partial class UIManager
+    {
+        // 현재 씬의 이벤트 시스템 GameObject
+        public GameObject EventSystemInstance => eventSystemInstance;
+
+        // 현재 씬의 캔버스 GameObject
+        public GameObject CanvasInstance => canvasInstance;
+
+        // 현재 씬의 캔버스
+        public Canvas Canvas => canvas;
+
+        // 현재 씬의 캔버스에 올라간 UI 객체들
+        public Stack<GameObject> UIInstances => uiInstances;
+    }
+}

@@ -1,12 +1,11 @@
 using System;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 
 namespace AT_RPG.Manager
 {
     public partial class InputManager : Singleton<InputManager>
     {
+        // 매 프레임마다 호출되는 키보드 이벤트
         private event Action keyEvent;
 
         protected override void Awake()
@@ -22,9 +21,17 @@ namespace AT_RPG.Manager
 
     public partial class InputManager
     {
-        /// <summary>
-        /// 매 프레임마다 키보드 이벤트를 Invoke합니다.
-        /// </summary>
-        public Action KeyEvent => keyEvent;
+        // 매 프레임마다 호출되는 키보드 이벤트
+        public Action KeyEvent
+        {
+            get
+            {
+                return keyEvent;
+            }
+            set
+            {
+                keyEvent = value;
+            }
+        }
     }
 }

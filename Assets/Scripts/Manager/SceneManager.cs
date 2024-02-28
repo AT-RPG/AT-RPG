@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -7,22 +8,22 @@ namespace AT_RPG.Manager
 {
     public partial class SceneManager : Singleton<SceneManager>
     {
-        private Coroutine       loadCoroutine = null;
+        [SerializeField] private Coroutine loadCoroutine = null;
+
+        // TODO - 하드코딩 제거
+        [SerializeField] private float fakeLoadingDuration = 1.5f;
+
+        private event Action sceneChangedEvent;
 
         protected override void Awake()
         {
             base.Awake();
         }
 
-        private void Update()
-        {
-
-        }
-
         /// <summary>
         /// 씬을 전환. SceneManager.IsLoading으로 씬이 전부 로딩이 되었는지 확인해주세요.
         /// </summary>
-        public void LoadCor(string sceneName)
+        public void Load(string sceneName)
         {
             if (loadCoroutine == null)
             {
@@ -35,6 +36,7 @@ namespace AT_RPG.Manager
         {
             string prevSceneName = CurrentSceneName;
             string nextSceneName = sceneName;
+            float fakeLoadingDuration = this.fakeLoadingDuration;
 
             // 씬을 비동기 로드
             // 바로 씬을 전환X
@@ -50,23 +52,48 @@ namespace AT_RPG.Manager
                 if (asyncSceneLoading.progress >= 0.9f && 
                     asyncResourcesLoading.IsCompleted)
                 {
-                    asyncSceneLoading.allowSceneActivation = true;
+                    // 페이크 로딩
+                    fakeLoadingDuration -= Time.deltaTime;
+                    if (fakeLoadingDuration <= 0f)
+                    {
+                        asyncSceneLoading.allowSceneActivation = true;
+                    }
                 }
 
                 yield return null;
             }
 
-            // 리소스를 비동기로 로드
+            // 리소스를 비동기로 언로드
             Task asyncResourcesUnloading = ResourceManager.Instance.UnLoadAllAsync(prevSceneName);
+
+            // 씬 변경 이벤트 실행
+            sceneChangedEvent?.Invoke();
 
             loadCoroutine = null;
             yield break;
         }
+
     }
 
     public partial class SceneManager
     {
+        // 현재 화면에 보이는 씬 이름
         public string CurrentSceneName => UnitySceneManager.GetActiveScene().name;
+
+        // 씬이 현재 로딩중인지?
         public bool IsLoading => loadCoroutine != null ? true : false;
+
+        // 씬이 바뀌고 난 후 트리거되는 이벤트
+        public Action SceneChangedEvent
+        {
+            get
+            {
+                return sceneChangedEvent;
+            }
+            set
+            {
+                sceneChangedEvent = value;
+            }
+        }
     }
 }
