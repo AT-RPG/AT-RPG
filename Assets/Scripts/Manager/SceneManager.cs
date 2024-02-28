@@ -1,12 +1,77 @@
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace AT_RPG.Manager
 {
-    public class SceneManager : Singleton<SceneManager>
+    public partial class SceneManager : Singleton<SceneManager>
     {
+        private Coroutine       loadCoroutine = null;
+
         protected override void Awake()
         {
             base.Awake();
         }
+
+        private void Update()
+        {
+
+        }
+
+        /// <summary>
+        /// 씬을 전환. SceneManager.IsLoading으로 씬이 전부 로딩이 되었는지 확인해주세요.
+        /// </summary>
+        public void LoadCor(string sceneName)
+        {
+            if (loadCoroutine == null)
+            {
+                loadCoroutine =
+                    StartCoroutine(InternalLoadCor(sceneName));
+            }
+        }
+
+        private IEnumerator InternalLoadCor(string sceneName)
+        {
+            // 씬을 비동기 로드
+            // 바로 씬을 전환X
+            AsyncOperation asyncSceneLoading = UnitySceneManager.LoadSceneAsync(sceneName);
+            asyncSceneLoading.allowSceneActivation = false;
+
+            // 지금 리소스를 비동기로 언로드
+            Task asyncResourceUnloading = ResourceManager.Instance.UnLoadAllAsync(CurrentSceneName);
+
+            // 리소스를 비동기로 로드
+            Task asyncResourcesLoading = ResourceManager.Instance.LoadAllAsync(sceneName);
+
+            while (!asyncSceneLoading.isDone)
+            {
+                // TODO - 로드전에 해야할 것들은 여기에
+                if (asyncSceneLoading.progress >= 0.9f && 
+                    asyncResourcesLoading.IsCompleted &&
+                    asyncResourceUnloading.IsCompleted)
+                {
+                    asyncSceneLoading.allowSceneActivation = true;
+                }
+
+                yield return null;
+            }
+
+            // 테스트
+            //ResourceManager.Instance.LoadAll(sceneName);
+            //foreach (var resource in ResourceManager.Instance.GetAll(sceneName))
+            //{
+            //    Instantiate(resource);
+            //}
+
+            loadCoroutine = null;
+            yield break;
+        }
+    }
+
+    public partial class SceneManager
+    {
+        public string CurrentSceneName => UnitySceneManager.GetActiveScene().name;
+        public bool IsLoading => loadCoroutine != null ? true : false;
     }
 }
