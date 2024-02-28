@@ -56,7 +56,7 @@ namespace AT_RPG.Manager
         {
             resources[sceneName] = new ResourceMap();
 
-            // 폴더에 있는 모든 리소스를 로드
+            // Resources의 씬(sceneName) 폴더에 있는 모든 리소스를 로드
             foreach (var dirPath in dirPaths)
             {
                 UnityObject[] items = Resources.LoadAll(Path.Combine(sceneName, String.GetFolderOrFileName(dirPath)));

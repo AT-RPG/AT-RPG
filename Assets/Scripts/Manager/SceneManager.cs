@@ -59,13 +59,6 @@ namespace AT_RPG.Manager
             // 리소스를 비동기로 로드
             Task asyncResourcesUnloading = ResourceManager.Instance.UnLoadAllAsync(prevSceneName);
 
-            // 테스트
-            ResourceManager.Instance.LoadAll(nextSceneName);
-            foreach (var resource in ResourceManager.Instance.GetAll(nextSceneName))
-            {
-                Instantiate(resource);
-            }
-
             loadCoroutine = null;
             yield break;
         }
