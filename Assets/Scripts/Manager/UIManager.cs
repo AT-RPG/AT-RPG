@@ -29,10 +29,6 @@ namespace AT_RPG.Manager
         // 현재 씬의 캔버스
         [SerializeField] private Canvas canvas = null;
 
-        // 현재 씬의 캔버스에 올라간 UI 객체들
-        [SerializeField] private Stack<GameObject> uiInstances = 
-            new Stack<GameObject>();
-
         protected override void Awake()
         {
             base.Awake();
@@ -49,11 +45,10 @@ namespace AT_RPG.Manager
         /// </summary>
         public void OnSceneChanged()
         {
+            // 씬에 캔버스가 없는 경우
             if (!canvas)
             {
                 canvas = FindObjectOfType<Canvas>();
-
-                // 씬에 캔버스가 없는 경우
                 if (!canvas)
                 {
                     // 캔버스 GameObject 생성
@@ -62,11 +57,27 @@ namespace AT_RPG.Manager
                     canvasInstance.AddComponent<CanvasScaler>();
                     canvasInstance.AddComponent<GraphicRaycaster>();
                     canvasInstance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+                }
+                else
+                {
+                    canvasInstance = canvas.gameObject;
+                }
+            }
 
+            // 씬에 이벤트 시스템이 없는 경우
+            if (!eventSystemInstance)
+            {
+                var eventSystemComp = FindObjectOfType<EventSystem>();
+                if (!eventSystemComp)
+                {
                     // 이벤트 시스템 GameObject 생성
                     eventSystemInstance = new GameObject("EventSystem");
                     eventSystemInstance.AddComponent<EventSystem>();
                     eventSystemInstance.AddComponent<StandaloneInputModule>();
+                }
+                else
+                {
+                    eventSystemInstance = eventSystemComp.gameObject;
                 }
             }
         }
@@ -82,8 +93,5 @@ namespace AT_RPG.Manager
 
         // 현재 씬의 캔버스
         public Canvas Canvas => canvas;
-
-        // 현재 씬의 캔버스에 올라간 UI 객체들
-        public Stack<GameObject> UIInstances => uiInstances;
     }
 }
