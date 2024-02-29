@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class MonsterInfo
 {
-    string monsterName;
-    float monsterHealth;
-    float monsterMoveSpeed;
-    int monsterLevel;
+    public string monsterName;
+    public float monsterHealth;
+    public float monsterMoveSpeed;
+    public int monsterLevel;
 
-    float mAtk; //공격력
-    float mRpm; //공격속도
-    float mRange; //사거리
+    public float mAtk; //공격력
+    public float mRpm; //공격속도
+    public float mRange; //사거리
     /*  ---------구조체랑 클래스중에 선택할것----------
      struct m_Info  //몬스터의 정보 구조체로 저장
      {
