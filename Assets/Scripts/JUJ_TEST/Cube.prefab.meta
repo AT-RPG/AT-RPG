@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/JUJ_TEST/Cube.prefab.meta
 guid: 73416e9ba284e3042b740ce6fc847cd7
 PrefabImporter:
+========
+guid: 8afb1d58471d8eb439bcaf6523e18a6a
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> test:Assets/Scripts/Utls.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
