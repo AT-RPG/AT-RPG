@@ -24,15 +24,31 @@ namespace AT_RPG.Manager
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
         private static void OnBeforeSplashScreen()
         {
-
+            Init();
         }
-
 
         /// <summary>
         /// 첫 Scene이 로드되고, Awake()가 호출되기 전에 실행
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoad()
+        {
+        }
+
+        /// <summary>
+        /// 첫 Scene이 로드되고, Awake()가 호출되고 난 후 실행
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void OnAfterSceneLoad()
+        {
+            // 현재 씬의 캔버스를 가져오거나 새로 생성합니다.
+            UIManager.OnBeforeSceneChanged();
+        }
+
+        /// <summary>
+        /// 모든 매니저 초기화
+        /// </summary>
+        private static void Init()
         {
             // 매니저 초기화
             GameManager gameManager = Instance;
@@ -56,16 +72,6 @@ namespace AT_RPG.Manager
             TestManager testManager = TestManager;
             testManager.transform.SetParent(gameManager.transform);
 #endif
-        }
-
-        /// <summary>
-        /// 첫 Scene이 로드되고, Awake()가 호출되고 난 후 실행
-        /// </summary>
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void OnAfterSceneLoad()
-        {
-            // 현재 씬의 캔버스를 가져오거나 새로 생성합니다.
-            UIManager.OnBeforeSceneChanged();
         }
     }
 
