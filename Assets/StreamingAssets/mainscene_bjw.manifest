@@ -1,0 +1,61 @@
+ManifestFileVersion: 0
+CRC: 3429318546
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5ca47ff77a031f577f72a2b98b0c0a88
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 045213c52eecc7aeba131c62b418c535
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 5ca47ff77a031f577f72a2b98b0c0a88
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Resources/MainScene_BJW/Prefabs/Knight_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Fishguard_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Pitboy_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Catcher_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Spike_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Fishguard_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Knight_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Monkeydong_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Imp_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Nosedman_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Imp_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Wedger_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Spike_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Pitboy_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Treestor_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Imp_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Spike_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Wedger_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Pitboy_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Treestor_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Monkeydong_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Nosedman_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Fishguard_Small.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Knight_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Nosedman_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Treestor_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Monkeydong_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Catcher_Medium.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Catcher_Big.prefab
+- Assets/Resources/MainScene_BJW/Prefabs/Wedger_Medium.prefab
+Dependencies: []
