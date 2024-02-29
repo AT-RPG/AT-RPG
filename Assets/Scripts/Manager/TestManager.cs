@@ -32,8 +32,6 @@ public class TestManager : Singleton<TestManager>
         {
             SceneManager.Instance.Load("MainScene_JUJ");
         }
-
-
     }
 }
 

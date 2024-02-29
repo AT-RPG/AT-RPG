@@ -23,9 +23,6 @@ namespace AT_RPG.Manager
         // 현재 씬의 이벤트 시스템 GameObject
         [SerializeField] private GameObject eventSystemInstance = null;
 
-        // 현재 씬의 캔버스 GameObject
-        [SerializeField] private GameObject canvasInstance = null;
-
         // 현재 씬의 캔버스
         [SerializeField] private Canvas canvas = null;
 
@@ -36,14 +33,14 @@ namespace AT_RPG.Manager
 
         public void Start()
         {
-            SceneManager.Instance.SceneChangedEvent += OnSceneChanged;
+            SceneManager.Instance.SceneChangedEvent += OnBeforeSceneChanged;
         }
 
         /// <summary>
         /// Scene이 변경되었을 경우, 현재 씬에서 Canvas를 가져오고,
         /// 없다면 새로 생성합니다.
         /// </summary>
-        public void OnSceneChanged()
+        public void OnBeforeSceneChanged()
         {
             // 씬에 캔버스가 없는 경우
             if (!canvas)
@@ -52,15 +49,11 @@ namespace AT_RPG.Manager
                 if (!canvas)
                 {
                     // 캔버스 GameObject 생성
-                    canvasInstance = new GameObject("Canvas");
+                    GameObject canvasInstance = new GameObject("Canvas");
                     canvas = canvasInstance.AddComponent<Canvas>();
                     canvasInstance.AddComponent<CanvasScaler>();
                     canvasInstance.AddComponent<GraphicRaycaster>();
                     canvasInstance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-                }
-                else
-                {
-                    canvasInstance = canvas.gameObject;
                 }
             }
 
@@ -81,15 +74,17 @@ namespace AT_RPG.Manager
                 }
             }
         }
+
+        public void OnAfterSceneChanged()
+        {
+
+        }
     }
 
     public partial class UIManager
     {
         // 현재 씬의 이벤트 시스템 GameObject
         public GameObject EventSystemInstance => eventSystemInstance;
-
-        // 현재 씬의 캔버스 GameObject
-        public GameObject CanvasInstance => canvasInstance;
 
         // 현재 씬의 캔버스
         public Canvas Canvas => canvas;

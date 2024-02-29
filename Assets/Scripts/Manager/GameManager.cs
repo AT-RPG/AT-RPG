@@ -65,7 +65,7 @@ namespace AT_RPG.Manager
         private static void OnAfterSceneLoad()
         {
             // 현재 씬의 캔버스를 가져오거나 새로 생성합니다.
-            UIManager.OnSceneChanged();
+            UIManager.OnBeforeSceneChanged();
         }
     }
 

@@ -79,12 +79,35 @@ namespace AT_RPG.Manager
         }
 
         /// <summary>
+        /// 현재 씬에 로드된 리소스(resourceRefer.name)를 획득
+        /// </summary>
+        public UnityObject Get(UnityObject resourceRefer)
+        {
+            UnityObject resource =
+                resources[SceneManager.Instance.CurrentSceneName][resourceRefer.name];
+
+            return resource;
+        }
+
+        /// <summary>
         /// 현재 씬에 로드된 리소스(resourceName)를 획득
         /// </summary>
         public T Get<T>(string resourceName) where T : UnityObject
         {
             T resource =
                 resources[SceneManager.Instance.CurrentSceneName][resourceName] as T;
+
+            return resource;
+        }
+
+        /// <summary>
+        /// 현재 씬에 로드된 리소스(resourceRefer.name)를 획득
+        /// </summary>
+        public T Get<T>(UnityObject resourceRefer)
+            where T : UnityObject
+        {
+            T resource =
+                resources[SceneManager.Instance.CurrentSceneName][resourceRefer.name] as T;
 
             return resource;
         }
