@@ -36,4 +36,20 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
+    public void OnTriggerEnter(Collider other)
+    {
+        // 플레이어가 스폰 지점에 들어갔을 때
+        if (other.CompareTag("SpawnPoint"))
+        {
+            // 다른 스폰 지점으로 이동
+            MoveToNewSpawnPoint(other.transform);
+        }
+    }
+
+    public void MoveToNewSpawnPoint(Transform newSpawnPoint)
+    {
+        // 플레이어를 새로운 스폰 지점으로 이동
+        transform.position = newSpawnPoint.position;
+        transform.rotation = newSpawnPoint.rotation;
+    }
 }
