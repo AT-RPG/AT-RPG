@@ -13,26 +13,26 @@ namespace AT_RPG.Manager
         // 현재 씬의 캔버스
         private Canvas canvas = null;
 
-
+        private UIManagerSettings setting = null;
 
         protected override void Awake()
         {
             base.Awake();
-        }
 
-        private void Start()
-        {
-            SceneManager.Instance.BeforeSceneChangedEvent.AddListener(OnBeforeSceneChanged);
-            SceneManager.Instance.AfterSceneChangedEvent.AddListener(OnAfterSceneChanged);
-        }
+            GameManager.Instance.OnAfterFirstSceneLoadEvent.AddListener(
+                    OnBeforeSceneChangedEvent
+                );
 
+            SceneManager.Instance.BeforeSceneChangedEvent.AddListener(OnBeforeSceneChangedEvent);
+            SceneManager.Instance.AfterSceneChangedEvent.AddListener(OnAfterSceneChangedEvent);
+        }
 
 
         /// <summary>
         /// 씬이 변경되었을 경우, 현재 씬에서 캔버스 획득<br/>
         /// 없다면 캔버스 새로 생성
         /// </summary>
-        public void OnBeforeSceneChanged()
+        private void OnBeforeSceneChangedEvent()
         {
             // 씬에 캔버스가 없는 경우
             if (!canvas)
@@ -67,10 +67,12 @@ namespace AT_RPG.Manager
             }
         }
 
-        public void OnAfterSceneChanged()
+        private void OnAfterSceneChangedEvent()
         {
             
         }
+
+
     }
 
     public partial class UIManager

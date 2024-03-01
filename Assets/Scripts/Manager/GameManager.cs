@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AT_RPG.Manager
 {
@@ -8,6 +9,12 @@ namespace AT_RPG.Manager
     /// </summary>
     public partial class GameManager : Singleton<GameManager>
     {
+        private static UnityEvent onBeforeSplashScreenEvent = new UnityEvent();
+
+        private static UnityEvent onBeforeFirstSceneLoadEvent = new UnityEvent();
+
+        private static UnityEvent onAfterFirstSceneLoadEvent = new UnityEvent();
+
         protected override void Awake()
         {
             base.Awake();
@@ -18,7 +25,6 @@ namespace AT_RPG.Manager
             InputManager.OnUpdate();
         }
 
-
         /// <summary>
         /// 첫 Scene이 로드되기 전에 실행
         /// </summary>
@@ -26,26 +32,26 @@ namespace AT_RPG.Manager
         private static void OnBeforeSplashScreen()
         {
             Init();
+
+            onBeforeSplashScreenEvent?.Invoke();
         }
 
         /// <summary>
         /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되기 전에 실행
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void OnBeforeSceneLoad()
+        private static void OnBeforeFirstSceneLoad()
         {
-            ResourceManager.LoadAllAssetsAtScene(AssetBundleSetting.GlobalAssetBundleName);
-            ResourceManager.LoadAllAssetsAtScene(SceneManager.CurrentSceneName);
+            onBeforeFirstSceneLoadEvent?.Invoke();
         }
 
         /// <summary>
         /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되고 난 후 실행
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void OnAfterSceneLoad()
+        private static void OnAfterFirstSceneLoad()
         {
-            // 현재 씬의 캔버스를 가져오거나 새로 생성합니다.
-            UIManager.OnBeforeSceneChanged();
+            onAfterFirstSceneLoadEvent?.Invoke();
         }
 
         /// <summary>
@@ -88,5 +94,40 @@ namespace AT_RPG.Manager
 #if UNITY_EDITOR
         public static TestManager TestManager => TestManager.Instance;
 #endif
+
+        public UnityEvent OnBeforeSplashScreenEvent
+        {
+            get
+            {
+                return onBeforeSplashScreenEvent;
+            }
+            set
+            {
+                onBeforeSplashScreenEvent = value;
+            }
+        }
+        public UnityEvent OnBeforeFirstSceneLoadEvent
+        {
+            get
+            {
+                return onBeforeFirstSceneLoadEvent;
+            }
+            set
+            {
+                onBeforeFirstSceneLoadEvent = value;
+            }
+        }
+        public UnityEvent OnAfterFirstSceneLoadEvent
+        {
+            get
+            {
+                return onAfterFirstSceneLoadEvent;
+            }
+            set
+            {
+                onAfterFirstSceneLoadEvent = value;
+            }
+        }
+
     }
 }

@@ -29,6 +29,10 @@ namespace AT_RPG.Manager
         protected override void Awake()
         {
             base.Awake();
+
+            GameManager.Instance.OnBeforeFirstSceneLoadEvent.AddListener(
+                    OnBeforeFirstSceneLoad
+                );
         }
 
         private void Start()
@@ -317,6 +321,12 @@ namespace AT_RPG.Manager
             isUnloading = false;
 
             yield break;
+        }
+
+        private void OnBeforeFirstSceneLoad()
+        {
+            LoadAllAssetsAtScene(AssetBundleSetting.GlobalAssetBundleName);
+            LoadAllAssetsAtScene(SceneManager.Instance.CurrentSceneName);
         }
     }
 
