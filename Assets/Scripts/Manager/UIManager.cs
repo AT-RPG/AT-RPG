@@ -1,44 +1,36 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace AT_RPG.Manager
 {
-    // TODO - 
-    // 1. UI Scale Mode
-    // 2. Reference Pixel Size
-    // ...
-    public static class UISetting
-    {
-
-    }
-
-    /// <summary>
-    /// 현재 씬의 UI를 컨트롤
-    /// </summary>
     /// TODO - 캔버스가 씬에 여러개가 있는 경우 따로 처리 필요
     public partial class UIManager : Singleton<UIManager>
     {
-        // 현재 씬의 이벤트 시스템 GameObject
-        [SerializeField] private GameObject eventSystemInstance = null;
+        // 현재 씬의 이벤트 시스템
+        private GameObject eventSystemInstance = null;
 
         // 현재 씬의 캔버스
-        [SerializeField] private Canvas canvas = null;
+        private Canvas canvas = null;
+
+
 
         protected override void Awake()
         {
             base.Awake();
         }
 
-        public void Start()
+        private void Start()
         {
-            SceneManager.Instance.SceneChangedEvent += OnBeforeSceneChanged;
+            SceneManager.Instance.BeforeSceneChangedEvent.AddListener(OnBeforeSceneChanged);
+            SceneManager.Instance.AfterSceneChangedEvent.AddListener(OnAfterSceneChanged);
         }
 
+
+
         /// <summary>
-        /// Scene이 변경되었을 경우, 현재 씬에서 Canvas를 가져오고,
-        /// 없다면 새로 생성합니다.
+        /// 씬이 변경되었을 경우, 현재 씬에서 캔버스 획득<br/>
+        /// 없다면 캔버스 새로 생성
         /// </summary>
         public void OnBeforeSceneChanged()
         {
@@ -77,13 +69,13 @@ namespace AT_RPG.Manager
 
         public void OnAfterSceneChanged()
         {
-
+            
         }
     }
 
     public partial class UIManager
     {
-        // 현재 씬의 이벤트 시스템 GameObject
+        // 현재 씬의 이벤트 시스템
         public GameObject EventSystemInstance => eventSystemInstance;
 
         // 현재 씬의 캔버스

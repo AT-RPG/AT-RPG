@@ -1,7 +1,10 @@
 ManifestFileVersion: 0
-CRC: 1362084296
+CRC: 239058264
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
+      Name: global
+      Dependencies: {}
+    Info_1:
       Name: mainscene_bjw
       Dependencies: {}

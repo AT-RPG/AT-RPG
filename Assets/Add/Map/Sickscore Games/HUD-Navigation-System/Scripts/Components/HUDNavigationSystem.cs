@@ -159,7 +159,7 @@ namespace SickscoreGames.HUDNavigationSystem
 				return;
 			}
 
-			// dont destroy on load
+			// dont destroy on isLoading
 			if (KeepAliveOnLoad)
 			    DontDestroyOnLoad (this.gameObject);
 

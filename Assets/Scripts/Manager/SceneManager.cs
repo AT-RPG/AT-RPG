@@ -1,21 +1,37 @@
-using System;
 using System.Collections;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
+
 
 namespace AT_RPG.Manager
 {
+    public delegate IEnumerator SceneChangedCoroutine();
+
     public partial class SceneManager : Singleton<SceneManager>
     {
-        [SerializeField] private AsyncOperation loadOperation = null;
+        // 페이크 로딩 지속 시간
+        private float fakeLoadingDuration = 0.75f;
 
-        // TODO - 하드코딩 제거
-        [SerializeField] private float fakeLoadingDuration = 1.5f;
+        // 씬 변경 전, 호출되는 이벤트
+        // NOTE : 이벤트가 끝나기 전까지 씬 변경X
+        private UnityEvent beforeSceneChangedEvent = new UnityEvent();
 
-        private event Action beforeSceneChangedEvent;
+        // 씬 변경 후, 호출되는 이벤트
+        // NOTE : 이벤트가 끝나기 전까지 씬 변경X
+        private UnityEvent afterSceneChangedEvent = new UnityEvent();
 
-        private event Action afterSceneChangedEvent;
+        // 씬 변경 전, 호출되는 코루틴
+        // NOTE : 코루틴이 끝나기 전까지 씬 변경X
+        private SceneChangedCoroutine beforeSceneChangedCoroutine = null;
+
+        // 씬 변경 후, 호출되는 코루틴
+        // NOTE : 코루틴이 끝나기 전까지 씬 변경X
+        private SceneChangedCoroutine afterSceneChangedCoroutine = null;
+
+        // 씬 로딩중 코루틴
+        private Coroutine loadCoroutine = null;
 
 
         protected override void Awake()
@@ -23,73 +39,140 @@ namespace AT_RPG.Manager
             base.Awake();
         }
 
+
+
         /// <summary>
-        /// 씬을 전환. SceneManager.IsLoading으로 씬이 전부 로딩이 되었는지 확인해주세요.
+        /// 현재 씬에서 다음 씬(sceneName)으로 전환
         /// </summary>
-        public void Load(string sceneName)
+        public void LoadSceneCor(string sceneName)
         {
-            if (loadOperation == null)
+            if (sceneName == CurrentSceneName)
             {
-                StartCoroutine(InternalLoadCor(sceneName));
+                Debug.LogError("동일한 씬으로 로딩할 수 없습니다.");
+                return;
             }
+
+            if (loadCoroutine != null)
+            {
+                Debug.LogError("씬이 로딩중입니다.");
+                return;
+            }
+
+            loadCoroutine = StartCoroutine(InternalLoadScene(sceneName));
         }
 
-        private IEnumerator InternalLoadCor(string sceneName)
+
+
+        private IEnumerator InternalLoadScene(string sceneName)
         {
-            string prevSceneName = CurrentSceneName;
+            string prevSceneName = CurrentSceneName.ToString();
             string nextSceneName = sceneName;
-            float fakeLoadingDuration = this.fakeLoadingDuration;
+            float currFakeLoadingDuration = this.fakeLoadingDuration;
 
-            // 씬 변경 이벤트 실행
-            beforeSceneChangedEvent?.Invoke();
+            // 씬 변경 이벤트, 코루틴을 실행
+            // 이벤트, 코루틴이 완료될때까지 대기
+            yield return StartCoroutine(WaitUnityEventUntilIsDone(beforeSceneChangedEvent));
+            yield return StartCoroutine(WaitCoroutinesUntilIsDone(beforeSceneChangedCoroutine));
 
-            // 씬을 비동기 로드
-            // 바로 씬을 전환X
-            loadOperation = UnitySceneManager.LoadSceneAsync(nextSceneName);
-            loadOperation.allowSceneActivation = false;
-
-            // 리소스를 비동기로 로드
-            Task asyncResourcesLoading = ResourceManager.Instance.LoadAllAsync(nextSceneName);
-
-            while (!loadOperation.isDone)
+            // 현재 씬 리소스 로딩
+            ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
+            while (ResourceManager.Instance.IsLoading)
             {
-                // TODO - 로드전에 해야할 것들은 여기에
-                if (loadOperation.progress >= 0.9f && 
-                    asyncResourcesLoading.IsCompleted)
+                yield return null;
+            }
+
+            // 씬 로드
+            // 바로 씬 변경X
+            AsyncOperation loadSceneRequest = UnitySceneManager.LoadSceneAsync(nextSceneName);
+            loadSceneRequest.allowSceneActivation = false;
+            while (!loadSceneRequest.isDone)
+            {
+                if (loadSceneRequest.progress >= 0.9f)
                 {
-                    // 페이크 로딩
-                    fakeLoadingDuration -= Time.deltaTime;
-                    if (fakeLoadingDuration <= 0f)
+                    // 90프로 이후 페이크 로딩
+                    currFakeLoadingDuration -= Time.deltaTime;
+                    if (currFakeLoadingDuration <= 0f)
                     {
-                        loadOperation.allowSceneActivation = true;
+                        // 씬 변경 이벤트, 코루틴을 실행
+                        // 이벤트, 코루틴이 완료될때까지 대기
+                        yield return StartCoroutine(WaitUnityEventUntilIsDone(afterSceneChangedEvent));
+                        yield return StartCoroutine(WaitCoroutinesUntilIsDone(afterSceneChangedCoroutine));
+
+                        // 씬 변경O
+                        loadSceneRequest.allowSceneActivation = true;
                     }
                 }
 
                 yield return null;
             }
 
-            // 리소스를 비동기로 언로드
-            Task asyncResourcesUnloading = ResourceManager.Instance.UnLoadAllAsync(prevSceneName);
+            // 이전 씬 리소스 언로딩
+            while(ResourceManager.Instance.IsUnloading)
+            {
+                yield return null;
+            }
+            ResourceManager.Instance.UnloadAllAssetsAtSceneCor(prevSceneName);
 
-            // 씬 변경 이벤트 실행
-            afterSceneChangedEvent?.Invoke();
+            loadCoroutine = null;
 
-            loadOperation = null;
             yield break;
         }
 
+        private IEnumerator WaitUnityEventUntilIsDone(UnityEvent unityEvent)
+        {
+            bool isDone = false;
+            UnityAction endAction = () =>
+            {
+                isDone = true;
+            };
+
+            unityEvent.AddListener(endAction);
+            unityEvent?.Invoke();
+            yield return new WaitUntil(() => isDone);
+            unityEvent.RemoveListener(endAction);
+        }
+
+        private IEnumerator WaitCoroutinesUntilIsDone(SceneChangedCoroutine routines)
+        {
+            if (routines == null)
+            {
+                yield break;
+            }
+
+            // 모든 코루틴을 시작하고 리스트에 추가
+            List<Coroutine> runningCoroutines = new List<Coroutine>();
+            foreach (SceneChangedCoroutine routine in routines.GetInvocationList())
+            {
+                IEnumerator coroutine = routine();
+                runningCoroutines.Add(StartCoroutine(coroutine));
+            }
+
+            // 모든 코루틴이 완료될 때까지 기다림
+            foreach (Coroutine coroutine in runningCoroutines)
+            {
+                yield return coroutine;
+            }
+        }
     }
 
     public partial class SceneManager
     {
-        // 현재 화면에 보이는 씬 이름
-        public string CurrentSceneName => UnitySceneManager.GetActiveScene().name;
+        // 페이크 로딩 지속 시간
+        public float FakeLoadingDuration
+        {
+            get
+            {
+                return fakeLoadingDuration;
+            }
+            set
+            {
+                fakeLoadingDuration = value;
+            }
+        }
 
-        // 씬이 현재 로딩중인지?
-        public bool IsLoading => loadOperation != null ? true : false;
-
-        // 씬이 바뀌고 난 후 트리거되는 이벤트
-        public Action SceneChangedEvent
+        // 씬 변경 전, 호출되는 이벤트
+        // NOTE : 이벤트가 끝나기 전까지 씬 변경X
+        public UnityEvent BeforeSceneChangedEvent
         {
             get
             {
@@ -100,5 +183,53 @@ namespace AT_RPG.Manager
                 beforeSceneChangedEvent = value;
             }
         }
+
+        // 씬 변경 후, 호출되는 이벤트
+        // NOTE : 이벤트가 끝나기 전까지 씬 변경X
+        public UnityEvent AfterSceneChangedEvent
+        {
+            get
+            {
+                return afterSceneChangedEvent;
+            }
+            set
+            {
+                afterSceneChangedEvent = value;
+            }
+        }
+
+        // 씬 변경 전, 호출되는 코루틴
+        // NOTE : 코루틴이 끝나기 전까지 씬 변경X
+        public SceneChangedCoroutine BeforeSceneChangedCoroutine
+        {
+            get
+            {
+                return beforeSceneChangedCoroutine;
+            }
+            set
+            {
+                beforeSceneChangedCoroutine = value;
+            }
+        }
+
+        // 씬 변경 후, 호출되는 코루틴
+        // NOTE : 코루틴이 끝나기 전까지 씬 변경X
+        public SceneChangedCoroutine AfterSceneChangedCoroutine
+        {
+            get
+            {
+                return afterSceneChangedCoroutine;
+            }
+            set
+            {
+                afterSceneChangedCoroutine = value;
+            }
+        }
+
+        // 현재 씬 이름
+        public string CurrentSceneName => UnitySceneManager.GetActiveScene().name;
+
+        // 씬 로딩중
+        public bool IsLoading => loadCoroutine != null ? true : false;
     }
 }

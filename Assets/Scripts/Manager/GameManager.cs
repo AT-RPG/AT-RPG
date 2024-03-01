@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace AT_RPG.Manager
@@ -28,15 +29,17 @@ namespace AT_RPG.Manager
         }
 
         /// <summary>
-        /// 첫 Scene이 로드되고, Awake()가 호출되기 전에 실행
+        /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되기 전에 실행
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoad()
         {
+            ResourceManager.LoadAllAssetsAtScene(AssetBundleSetting.GlobalAssetBundleName);
+            ResourceManager.LoadAllAssetsAtScene(SceneManager.CurrentSceneName);
         }
 
         /// <summary>
-        /// 첫 Scene이 로드되고, Awake()가 호출되고 난 후 실행
+        /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되고 난 후 실행
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void OnAfterSceneLoad()

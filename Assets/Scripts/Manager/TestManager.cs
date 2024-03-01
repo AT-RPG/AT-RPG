@@ -1,38 +1,39 @@
-using AT_RPG;
-using AT_RPG.Manager;
 using UnityEngine;
 
+namespace AT_RPG.Manager
+{
 #if UNITY_EDITOR
 
-public class TestManager : Singleton<TestManager>
-{
-    protected override void Awake()
+    public class TestManager : Singleton<TestManager>
     {
-        base.Awake();
+        protected override void Awake()
+        {
+            base.Awake();
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                SceneManager.Instance.LoadSceneCor("MainScene_BJW");
+            }
+
+            if (Input.GetKeyDown(KeyCode.F2))
+            {
+                SceneManager.Instance.LoadSceneCor("MainScene_CSH");
+            }
+
+            if (Input.GetKeyDown(KeyCode.F3))
+            {
+                SceneManager.Instance.LoadSceneCor("MainScene_IJH");
+            }
+
+            if (Input.GetKeyDown(KeyCode.F4))
+            {
+                SceneManager.Instance.LoadSceneCor("MainScene_JUJ");
+            }
+        }
     }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            SceneManager.Instance.Load("MainScene_BJW");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            SceneManager.Instance.Load("MainScene_CSH");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            SceneManager.Instance.Load("MainScene_IJH");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            SceneManager.Instance.Load("MainScene_JUJ");
-        }
-    }
-}
 
 #endif
+}

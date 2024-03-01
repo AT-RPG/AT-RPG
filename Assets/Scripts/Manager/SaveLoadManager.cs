@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace AT_RPG
+namespace AT_RPG.Manager
 {
     public class SaveLoadManager : Singleton<SaveLoadManager>
     {
