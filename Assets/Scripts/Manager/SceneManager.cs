@@ -12,9 +12,6 @@ namespace AT_RPG.Manager
 
     public partial class SceneManager : Singleton<SceneManager>
     {
-        // 페이크 로딩 지속 시간
-        private float fakeLoadingDuration = 0.75f;
-
         // 씬 변경 전, 호출되는 이벤트
         // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
@@ -34,6 +31,9 @@ namespace AT_RPG.Manager
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
         private event SceneChangedCoroutine afterSceneChangedCoroutine = null;
+
+        // 페이크 로딩 지속 시간
+        [SerializeField] private float fakeLoadingDuration = 1.5f;
 
         // 씬 로딩중
         [SerializeField] private bool isLoading = false;
