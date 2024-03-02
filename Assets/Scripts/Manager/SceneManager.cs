@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
+using UnityObject = UnityEngine.Object;
 
 
 namespace AT_RPG.Manager
@@ -34,18 +35,16 @@ namespace AT_RPG.Manager
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
         private event SceneChangedCoroutine afterSceneChangedCoroutine = null;
 
-        private SceneManagerSettings setting;
-
         // 씬 로딩중
-        private bool isLoading = false;
+        [SerializeField] private bool isLoading = false;
 
+        // 로딩 씬
+        [SerializeField] private UnityObject loadingScene = null;
 
 
         protected override void Awake()
         {
             base.Awake();
-
-            GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
         }
 
 
@@ -82,7 +81,7 @@ namespace AT_RPG.Manager
 
         private IEnumerator InternalLoadSceneIncludedLoadingSceneCor(string sceneName)
         {
-            yield return StartCoroutine(InternalLoadSceneCor(setting.LoadingSceneName));
+            yield return StartCoroutine(InternalLoadSceneCor(loadingScene.name));
             yield return StartCoroutine(InternalLoadSceneCor(sceneName));
         }
 
@@ -177,19 +176,6 @@ namespace AT_RPG.Manager
                 yield return coroutine;
             }
         }
-
-        /// <summary>
-        /// 필요한 리소스를 로드
-        /// </summary>
-        private void OnBeforeFirstSceneLoad()
-        {
-            setting = ResourceManager.Instance.Get<SceneManagerSettings>("SceneManagerSettings", true);
-            if (setting == null)
-            {
-                Debug.LogError($"{nameof(SceneManagerSettings)} 스크립터블 오브젝트가 존재X" +
-                               $"bundle에 {nameof(SceneManagerSettings)}이 빠져있거나, 이름이 틀립니다.");
-            }
-        }
     }
 
     public partial class SceneManager
@@ -268,5 +254,8 @@ namespace AT_RPG.Manager
 
         // 씬 로딩중
         public bool IsLoading => isLoading;
+
+        // 로딩 씬
+        public UnityObject LoadingScene => loadingScene;
     }
 }

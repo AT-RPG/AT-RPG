@@ -14,32 +14,21 @@ namespace AT_RPG.Manager
         // 현재 씬의 캔버스
         private Canvas canvas = null;
 
-        private UIManagerSettings setting = null;
+        // 화면을 점점 투명하게 하는 효과
+        [SerializeField] private GameObject screenFadeIn = null;
 
-        private float test;
+        // 화면을 점점 불투명하게 하는 효과
+        [SerializeField] private GameObject screenFadeOut = null;
+
 
         protected override void Awake()
         {
             base.Awake();
 
-            GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
             GameManager.OnAfterFirstSceneLoadEvent += OnAfterSceneChangedEvent;
 
             SceneManager.Instance.BeforeSceneChangedCoroutine += OnBeforeSceneChangedCoroutine;
             SceneManager.Instance.AfterSceneChangedEvent += OnAfterSceneChangedEvent;
-        }
-
-        /// <summary>
-        /// 필요한 리소스를 로드
-        /// </summary>
-        private void OnBeforeFirstSceneLoad()
-        {
-            setting = ResourceManager.Instance.Get<UIManagerSettings>("UIManagerSettings", true);
-            if (setting == null)
-            {
-                Debug.LogError($"{nameof(UIManagerSettings)} 스크립터블 오브젝트가 존재X" +
-                               $"bundle에 {nameof(UIManagerSettings)}이 빠져있거나, 이름이 틀립니다.");
-            }
         }
 
         /// <summary>
@@ -86,7 +75,7 @@ namespace AT_RPG.Manager
         /// </summary>
         private IEnumerator OnBeforeSceneChangedCoroutine()
         {
-            GameObject screenFadeOutInstance = Instantiate(setting.ScreenFadeOut, canvas.transform);
+            GameObject screenFadeOutInstance = Instantiate(screenFadeOut, canvas.transform);
             FadeIn fadeOutComp = screenFadeOutInstance.GetComponent<FadeIn>();
 
             yield return StartCoroutine(fadeOutComp.StartFade());
@@ -99,7 +88,7 @@ namespace AT_RPG.Manager
         /// </summary>
         private IEnumerator OnAfterSceneChangedCoroutine()
         {
-            GameObject screenFadeInInstance = Instantiate(setting.ScreenFadeIn, canvas.transform);
+            GameObject screenFadeInInstance = Instantiate(screenFadeIn, canvas.transform);
             FadeIn fadeInComp = screenFadeInInstance.GetComponent<FadeIn>();
 
             yield return StartCoroutine(fadeInComp.StartFade());
@@ -115,5 +104,11 @@ namespace AT_RPG.Manager
 
         // 현재 씬의 캔버스
         public Canvas Canvas => canvas;
+
+        // 화면을 점점 투명하게 하는 효과
+        public GameObject ScreenFadeIn => screenFadeIn;
+
+        // 화면을 점점 불투명하게 하는 효과
+        public GameObject ScreenFadeOut => ScreenFadeOut;
     }
 }
