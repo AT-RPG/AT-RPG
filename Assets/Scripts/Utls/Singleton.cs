@@ -18,23 +18,22 @@ namespace AT_RPG
                 Destroy(gameObject);
             }
         }
+
+        public static T GetInstance()
+        {
+            if (instance == null)
+            {
+                GameObject singletonInstance = new GameObject();
+                singletonInstance.name = typeof(T).Name;
+                singletonInstance.AddComponent<T>();
+            }
+
+            return instance;
+        }
     }
 
     public partial class Singleton<T>
     {
-        public static T Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    GameObject singletonInstance = new GameObject();
-                    singletonInstance.name = typeof(T).Name;
-                    singletonInstance.AddComponent<T>();
-                }
-
-                return instance;
-            }
-        }
+        public static T Instance => instance;
     }
 }

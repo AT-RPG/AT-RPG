@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,22 +18,22 @@ namespace AT_RPG.Manager
         // 씬 변경 전, 호출되는 이벤트
         // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private UnityEvent beforeSceneChangedEvent = new UnityEvent();
+        private event Action beforeSceneChangedEvent;
 
         // 씬 변경 후, 호출되는 이벤트
         // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private UnityEvent afterSceneChangedEvent = new UnityEvent();
+        private event Action afterSceneChangedEvent;
 
         // 씬 변경 전, 호출되는 코루틴
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private SceneChangedCoroutine beforeSceneChangedCoroutine = null;
+        private event SceneChangedCoroutine beforeSceneChangedCoroutine = null;
 
         // 씬 변경 후, 호출되는 코루틴
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private SceneChangedCoroutine afterSceneChangedCoroutine = null;
+        private event SceneChangedCoroutine afterSceneChangedCoroutine = null;
 
         private SceneManagerSettings setting;
 
@@ -45,9 +46,7 @@ namespace AT_RPG.Manager
         {
             base.Awake();
 
-            GameManager.OnBeforeFirstSceneLoadEvent.AddListener(
-                    OnBeforeFirstSceneLoad
-                );
+            GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
         }
 
 
@@ -96,7 +95,7 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitUnityEventUntilIsDone(beforeSceneChangedEvent));
+            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangedEvent));
             yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangedCoroutine));
 
             // 현재 씬 리소스 로딩
@@ -136,7 +135,7 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitUnityEventUntilIsDone(afterSceneChangedEvent));
+            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangedEvent));
             yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangedCoroutine));
 
             isLoading = false;
@@ -144,18 +143,18 @@ namespace AT_RPG.Manager
             yield break;
         }
 
-        private IEnumerator WaitUnityEventUntilIsDone(UnityEvent unityEvent)
+        private IEnumerator WaitActionUntilIsDone(Action action)
         {
             bool isDone = false;
-            UnityAction endAction = () =>
+            Action endAction = () =>
             {
                 isDone = true;
             };
 
-            unityEvent.AddListener(endAction);
-            unityEvent?.Invoke();
+            action += endAction;
+            action?.Invoke();
             yield return new WaitUntil(() => isDone);
-            unityEvent.RemoveListener(endAction);
+            action -= endAction;
         }
 
         private IEnumerator WaitSceneChangedCoroutineUntilIsDone(SceneChangedCoroutine routines)
@@ -211,7 +210,7 @@ namespace AT_RPG.Manager
 
         // 씬 변경 전, 호출되는 이벤트
         // NOTE : 이벤트가 끝나기 전까지 씬 변경X
-        public UnityEvent AeforeSceneChangedEvent
+        public Action AeforeSceneChangedEvent
         {
             get
             {
@@ -225,7 +224,7 @@ namespace AT_RPG.Manager
 
         // 씬 변경 후, 호출되는 이벤트
         // NOTE : 이벤트가 끝나기 전까지 씬 변경X
-        public UnityEvent AfterSceneChangedEvent
+        public Action AfterSceneChangedEvent
         {
             get
             {

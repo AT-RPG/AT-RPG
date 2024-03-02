@@ -22,16 +22,11 @@ namespace AT_RPG.Manager
         {
             base.Awake();
 
-            GameManager.OnBeforeFirstSceneLoadEvent.AddListener(
-                    OnBeforeFirstSceneLoad
-                );
-            GameManager.OnAfterFirstSceneLoadEvent.AddListener(
-                    OnAfterSceneChangedEvent
-                );
+            GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
+            GameManager.OnAfterFirstSceneLoadEvent += OnAfterSceneChangedEvent;
 
             SceneManager.Instance.BeforeSceneChangedCoroutine += OnBeforeSceneChangedCoroutine;
-            SceneManager.Instance.AfterSceneChangedEvent.AddListener(OnAfterSceneChangedEvent);
-            // SceneManager.Instance.AfterSceneChangedCoroutine += OnAfterSceneChangedCoroutine;
+            SceneManager.Instance.AfterSceneChangedEvent += OnAfterSceneChangedEvent;
         }
 
         /// <summary>

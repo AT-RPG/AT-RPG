@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,13 +10,13 @@ namespace AT_RPG.Manager
     public partial class GameManager : Singleton<GameManager>
     {
         // OnBeforeSplashScreen()에서 실행되는 이벤트
-        private static UnityEvent onBeforeSplashScreenEvent = new UnityEvent();
+        private static event Action onBeforeSplashScreenEvent;
 
         // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
-        private static UnityEvent onBeforeFirstSceneLoadEvent = new UnityEvent();
+        private static event Action onBeforeFirstSceneLoadEvent;
 
         // OnAfterFirstSceneLoadEvent()에서 실행되는 이벤트
-        private static UnityEvent onAfterFirstSceneLoadEvent = new UnityEvent();
+        private static event Action onAfterFirstSceneLoadEvent;
 
         // 매니저
         private static ResourceManager resourceManager = null;
@@ -70,24 +71,24 @@ namespace AT_RPG.Manager
         /// </summary>
         private static void Init()
         {
-            GameManager gameManager = Instance;
+            GameManager gameManager = GetInstance();
 
-            resourceManager = ResourceManager.Instance;
+            resourceManager = ResourceManager.GetInstance();
             resourceManager.transform.SetParent(gameManager.transform);
 
-            sceneManager = SceneManager.Instance;
+            sceneManager = SceneManager.GetInstance();
             sceneManager.transform.SetParent(gameManager.transform);
 
-            uiManager = UIManager.Instance;
+            uiManager = UIManager.GetInstance();
             uiManager.transform.SetParent(gameManager.transform);
 
-            saveLoadManager = SaveLoadManager.Instance;
+            saveLoadManager = SaveLoadManager.GetInstance();
             saveLoadManager.transform.SetParent(gameManager.transform);
 
-            testManager = TestManager.Instance;
+            testManager = TestManager.GetInstance();
             testManager.transform.SetParent(gameManager.transform);
 
-            inputManager = InputManager.Instance;
+            inputManager = InputManager.GetInstance();
             inputManager.transform.SetParent(gameManager.transform);
         }
     }
@@ -95,7 +96,7 @@ namespace AT_RPG.Manager
     public partial class GameManager
     {
         // OnBeforeSplashScreen()에서 실행되는 이벤트
-        public static UnityEvent OnBeforeSplashScreenEvent
+        public static Action OnBeforeSplashScreenEvent
         {
             get
             {
@@ -108,7 +109,7 @@ namespace AT_RPG.Manager
         }
 
         // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
-        public static UnityEvent OnBeforeFirstSceneLoadEvent
+        public static Action OnBeforeFirstSceneLoadEvent
         {
             get
             {
@@ -121,7 +122,7 @@ namespace AT_RPG.Manager
         }
 
         // OnAfterFirstSceneLoadEvent()에서 실행되는 이벤트
-        public static UnityEvent OnAfterFirstSceneLoadEvent
+        public static Action OnAfterFirstSceneLoadEvent
         {
             get
             {

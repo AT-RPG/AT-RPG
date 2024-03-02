@@ -25,14 +25,16 @@ namespace AT_RPG.Manager
         // 씬 리소스 언로딩중 
         private bool isUnloading = false;
 
+
+
         protected override void Awake()
         {
             base.Awake();
 
-            GameManager.OnBeforeFirstSceneLoadEvent.AddListener(
-                    OnBeforeFirstSceneLoad
-                );
+            GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
         }
+
+
 
         private void Start()
         {
@@ -42,6 +44,8 @@ namespace AT_RPG.Manager
         private void Update()
         {
         }
+
+
 
         /// <summary>
         /// 씬에 모든 리소스를 동기적으로 로드

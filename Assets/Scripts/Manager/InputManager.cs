@@ -6,7 +6,7 @@ namespace AT_RPG.Manager
     public partial class InputManager : Singleton<InputManager>
     {
         // 매 프레임마다 호출되는 키보드 이벤트
-        private event Action keyEvent;
+        private event Action keyAction;
 
         protected override void Awake()
         {
@@ -15,22 +15,22 @@ namespace AT_RPG.Manager
 
         public void OnUpdate()
         {
-            keyEvent?.Invoke();
+            keyAction?.Invoke();
         }
     }
 
     public partial class InputManager
     {
         // 매 프레임마다 호출되는 키보드 이벤트
-        public Action KeyEvent
+        public Action KeyAction
         {
             get
             {
-                return keyEvent;
+                return keyAction;
             }
             set
             {
-                keyEvent = value;
+                keyAction = value;
             }
         }
     }
