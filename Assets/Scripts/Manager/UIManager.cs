@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,16 +16,22 @@ namespace AT_RPG.Manager
 
         private UIManagerSettings setting = null;
 
+        private float test;
+
         protected override void Awake()
         {
             base.Awake();
 
-            GameManager.Instance.OnAfterFirstSceneLoadEvent.AddListener(
-                    OnBeforeSceneChangedEvent
+            GameManager.OnBeforeFirstSceneLoadEvent.AddListener(
+                    OnBeforeFirstSceneLoad
+                );
+            GameManager.OnAfterFirstSceneLoadEvent.AddListener(
+                    OnAfterSceneChangedEvent
                 );
 
-            SceneManager.Instance.BeforeSceneChangedEvent.AddListener(OnBeforeSceneChangedEvent);
+            SceneManager.Instance.BeforeSceneChangedCoroutine += OnBeforeSceneChangedCoroutine;
             SceneManager.Instance.AfterSceneChangedEvent.AddListener(OnAfterSceneChangedEvent);
+            // SceneManager.Instance.AfterSceneChangedCoroutine += OnAfterSceneChangedCoroutine;
         }
 
         /// <summary>
@@ -44,7 +51,7 @@ namespace AT_RPG.Manager
         /// 씬이 변경되었을 경우, 현재 씬에서 캔버스 획득<br/>
         /// 없다면 캔버스 새로 생성
         /// </summary>
-        private void OnBeforeSceneChangedEvent()
+        private void OnAfterSceneChangedEvent()
         {
             // 씬에 캔버스가 없는 경우
             if (!canvas)
@@ -79,9 +86,30 @@ namespace AT_RPG.Manager
             }
         }
 
-        private void OnAfterSceneChangedEvent()
+        /// <summary>
+        /// 화면에 페이드 아웃 효과를 대기
+        /// </summary>
+        private IEnumerator OnBeforeSceneChangedCoroutine()
         {
-            
+            GameObject screenFadeOutInstance = Instantiate(setting.ScreenFadeOut, canvas.transform);
+            FadeIn fadeOutComp = screenFadeOutInstance.GetComponent<FadeIn>();
+
+            yield return StartCoroutine(fadeOutComp.StartFade());
+
+            Destroy(screenFadeOutInstance);
+        }
+
+        /// <summary>
+        /// 화면에 페이드 인 효과를 대기
+        /// </summary>
+        private IEnumerator OnAfterSceneChangedCoroutine()
+        {
+            GameObject screenFadeInInstance = Instantiate(setting.ScreenFadeIn, canvas.transform);
+            FadeIn fadeInComp = screenFadeInInstance.GetComponent<FadeIn>();
+
+            yield return StartCoroutine(fadeInComp.StartFade());
+
+            Destroy(screenFadeInInstance);
         }
     }
 

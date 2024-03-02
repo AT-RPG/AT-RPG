@@ -21,7 +21,7 @@ namespace AT_RPG
                 EditorUserBuildSettings.activeBuildTarget);
 
             // 함수 종료 로그
-            Debug.Log("에셋 번들 생성 완료!");
+            Debug.Log($"에셋 번들 생성 완료!, 생성 경로 : {AssetBundleSetting.AssetBundleSavePath}");
         }
     }
 

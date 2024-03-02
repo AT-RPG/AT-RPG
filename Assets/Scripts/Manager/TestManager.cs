@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace AT_RPG.Manager
 {
-#if UNITY_EDITOR
 
     public class TestManager : Singleton<TestManager>
     {
@@ -35,6 +34,4 @@ namespace AT_RPG.Manager
             }
         }
     }
-
-#endif
 }

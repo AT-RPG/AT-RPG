@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2272493972
+CRC: 1044207513
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7e11b5dcd00d17fe65e8e949b87bd994
+    Hash: 92616d101f58b3f0bebeb22b32199da7
   TypeTreeHash:
     serializedVersion: 2
-    Hash: eaa04c5a67a5541ce7085d10dd911170
+    Hash: 3355100ea64053d0ec5075cc8d3b2f92
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 7e11b5dcd00d17fe65e8e949b87bd994
+    Hash: 92616d101f58b3f0bebeb22b32199da7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -29,14 +29,30 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: b33fa52d9ae7776479483b7689a518d9, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 4ea1130033c574a42b27fc7957d12fb8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 35c295f4ab0c6284db1b557ea52a511c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 85ed4e43a601d6e4bb9a2eb803854e33, type: 3}
 - Class: 115
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
 - Assets/Resources/Global/Prefabs/TestCube.prefab
 - Assets/Settings/SceneManagerSettings.asset
+- Assets/Resources/Global/Prefabs/ScreenFadeIn.prefab
+- Assets/Resources/Global/Prefabs/ScreenFadeOut.prefab
 - Assets/Settings/UIManagerSettings.asset
 Dependencies: []

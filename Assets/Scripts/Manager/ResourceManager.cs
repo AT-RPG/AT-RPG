@@ -25,13 +25,11 @@ namespace AT_RPG.Manager
         // 씬 리소스 언로딩중 
         private bool isUnloading = false;
 
-
-
         protected override void Awake()
         {
             base.Awake();
 
-            GameManager.Instance.OnBeforeFirstSceneLoadEvent.AddListener(
+            GameManager.OnBeforeFirstSceneLoadEvent.AddListener(
                     OnBeforeFirstSceneLoad
                 );
         }

@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b33fa52d9ae7776479483b7689a518d9, type: 3}
   m_Name: UIManagerSettings
   m_EditorClassIdentifier: 
-  Fade: {fileID: 0}
+  ScreenFadeIn: {fileID: 8790624695569528947, guid: 9afe4c117ba5a0b4582532a2d6bc277c,
+    type: 3}
+  ScreenFadeOut: {fileID: 3708992337037411719, guid: 446106f6247e1c44e955fae0a7367fc5,
+    type: 3}
