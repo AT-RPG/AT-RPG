@@ -27,6 +27,18 @@ namespace AT_RPG.Manager
             SceneManager.Instance.AfterSceneChangedEvent.AddListener(OnAfterSceneChangedEvent);
         }
 
+        /// <summary>
+        /// 필요한 리소스를 로드
+        /// </summary>
+        private void OnBeforeFirstSceneLoad()
+        {
+            setting = ResourceManager.Instance.Get<UIManagerSettings>("UIManagerSettings", true);
+            if (setting == null)
+            {
+                Debug.LogError($"{nameof(UIManagerSettings)} 스크립터블 오브젝트가 존재X" +
+                               $"bundle에 {nameof(UIManagerSettings)}이 빠져있거나, 이름이 틀립니다.");
+            }
+        }
 
         /// <summary>
         /// 씬이 변경되었을 경우, 현재 씬에서 캔버스 획득<br/>
@@ -71,8 +83,6 @@ namespace AT_RPG.Manager
         {
             
         }
-
-
     }
 
     public partial class UIManager

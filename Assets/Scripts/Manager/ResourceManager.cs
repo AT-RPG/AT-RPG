@@ -6,6 +6,7 @@ using System.Collections;
 using AT_RPG;
 
 using UnityObject = UnityEngine.Object;
+using System.Resources;
 
 
 namespace AT_RPG.Manager
@@ -97,57 +98,93 @@ namespace AT_RPG.Manager
         }
 
         /// <summary>
-        /// 현재 씬에 로드된 리소스(resourceName)를 획득
+        /// 현재 씬에 로드된 리소스를 획득
         /// </summary>
-        public UnityObject Get(string resourceName)
+        /// <param name="resourceName">찾을 리소스 이름</param>
+        /// <param name="isGlobal">리소스가 글로벌 번들인지</param>
+        public UnityObject Get(string resourceName, bool isGlobal)
         {
-            UnityObject resource =
-                resources[SceneManager.Instance.CurrentSceneName][resourceName];
+            UnityObject resource;
+            if (isGlobal)
+            {
+                resource = resources[AssetBundleSetting.GlobalAssetBundleName][resourceName];
+            }
+            else
+            {
+                resource = resources[SceneManager.Instance.CurrentSceneName][resourceName];
+            }
 
             return resource;
         }
 
         /// <summary>
-        /// 현재 씬에 로드된 리소스(resourceRefer.name)를 획득
+        /// 현재 씬에 로드된 리소스를 획득
         /// </summary>
-        public UnityObject Get(UnityObject resourceRefer)
+        /// <param name="resourceRefer">찾을 리소스 래퍼런스</param>
+        /// <param name="isGlobal">리소스가 글로벌 번들인지</param>
+        public UnityObject Get(UnityObject resourceRefer, bool isGlobal)
         {
-            UnityObject resource =
-                resources[SceneManager.Instance.CurrentSceneName][resourceRefer.name];
+            UnityObject resource;
+            if (isGlobal)
+            {
+                resource = resources[AssetBundleSetting.GlobalAssetBundleName][resourceRefer.name];
+            }
+            else
+            {
+                resource = resources[SceneManager.Instance.CurrentSceneName][resourceRefer.name];
+            }
 
             return resource;
         }
 
         /// <summary>
-        /// 현재 씬에 로드된 리소스(resourceName)를 획득
+        /// 현재 씬에 로드된 리소스를 획득
         /// </summary>
-        public T Get<T>(string resourceName) where T : UnityObject
+        /// <param name="resourceName">찾을 리소스 이름</param>
+        /// <param name="isGlobal">리소스가 글로벌 번들인지</param>
+        public T Get<T>(string resourceName, bool isGlobal) where T : UnityObject
         {
-            T resource =
-                resources[SceneManager.Instance.CurrentSceneName][resourceName] as T;
+            T resource;
+            if (isGlobal)
+            {
+                resource = resources[AssetBundleSetting.GlobalAssetBundleName][resourceName] as T;
+            }
+            else
+            {
+                resource = resources[SceneManager.Instance.CurrentSceneName][resourceName] as T;
+            }
 
             return resource;
         }
 
         /// <summary>
-        /// 현재 씬에 로드된 리소스(resourceRefer.name)를 획득
+        /// 현재 씬에 로드된 리소스를 획득
         /// </summary>
-        public T Get<T>(UnityObject resourceRefer)
+        /// <param name="resourceRefer">찾을 리소스 래퍼런스</param>
+        /// <param name="isGlobal">리소스가 글로벌 번들인지</param>
+        public T Get<T>(UnityObject resourceRefer, bool isGlobal)
             where T : UnityObject
         {
-            T resource =
-                resources[SceneManager.Instance.CurrentSceneName][resourceRefer.name] as T;
+            T resource;
+            if (isGlobal)
+            {
+                resource = resources[AssetBundleSetting.GlobalAssetBundleName][resourceRefer.name] as T;
+            }
+            else
+            {
+                resource = resources[SceneManager.Instance.CurrentSceneName][resourceRefer.name] as T;
+            }
 
             return resource;
         }
 
         /// <summary>
-        /// 현재 씬에 로드된 모든 리소스(resourceName)를 획득
+        /// 현재 씬에 로드된 모든 리소스를 획득
         /// </summary>
-        public UnityObject[] GetAll(string sceneName)
+        public UnityObject[] GetAll()
         {
             UnityObject[] sceneResources =
-                resources[sceneName].Values.ToArray();
+                resources[SceneManager.Instance.CurrentSceneName].Values.ToArray();
 
             return sceneResources;
         }

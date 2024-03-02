@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1105093145
+CRC: 2272493972
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 582c8128b8c747aba6e778d0f6db21ec
+    Hash: 7e11b5dcd00d17fe65e8e949b87bd994
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 16c8aa2ea7eeb9c3aebb6cebe2273284
+    Hash: eaa04c5a67a5541ce7085d10dd911170
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 582c8128b8c747aba6e778d0f6db21ec
+    Hash: 7e11b5dcd00d17fe65e8e949b87bd994
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,7 +28,15 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: b33fa52d9ae7776479483b7689a518d9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4ea1130033c574a42b27fc7957d12fb8, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Resources/Global/Prefabs/TestCube.prefab
+- Assets/Settings/SceneManagerSettings.asset
+- Assets/Settings/UIManagerSettings.asset
 Dependencies: []

@@ -9,10 +9,13 @@ namespace AT_RPG.Manager
     /// </summary>
     public partial class GameManager : Singleton<GameManager>
     {
+        // OnBeforeSplashScreen()에서 실행되는 이벤트
         private static UnityEvent onBeforeSplashScreenEvent = new UnityEvent();
 
+        // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
         private static UnityEvent onBeforeFirstSceneLoadEvent = new UnityEvent();
 
+        // OnAfterFirstSceneLoadEvent()에서 실행되는 이벤트
         private static UnityEvent onAfterFirstSceneLoadEvent = new UnityEvent();
 
         protected override void Awake()
@@ -95,6 +98,7 @@ namespace AT_RPG.Manager
         public static TestManager TestManager => TestManager.Instance;
 #endif
 
+        // OnBeforeSplashScreen()에서 실행되는 이벤트
         public UnityEvent OnBeforeSplashScreenEvent
         {
             get
@@ -106,6 +110,8 @@ namespace AT_RPG.Manager
                 onBeforeSplashScreenEvent = value;
             }
         }
+
+        // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
         public UnityEvent OnBeforeFirstSceneLoadEvent
         {
             get
@@ -117,6 +123,8 @@ namespace AT_RPG.Manager
                 onBeforeFirstSceneLoadEvent = value;
             }
         }
+
+        // OnAfterFirstSceneLoadEvent()에서 실행되는 이벤트
         public UnityEvent OnAfterFirstSceneLoadEvent
         {
             get

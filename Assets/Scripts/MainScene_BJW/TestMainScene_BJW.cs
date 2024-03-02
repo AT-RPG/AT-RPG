@@ -6,7 +6,7 @@ public class TestMainScene_BJW : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (var resource in ResourceManager.Instance.GetAll(SceneManager.Instance.CurrentSceneName))
+        foreach (var resource in ResourceManager.Instance.GetAll())
         {
             Instantiate(resource);
         }

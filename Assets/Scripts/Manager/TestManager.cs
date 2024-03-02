@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace AT_RPG.Manager
@@ -15,22 +16,22 @@ namespace AT_RPG.Manager
         {
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                SceneManager.Instance.LoadSceneCor("MainScene_BJW");
+                SceneManager.Instance.LoadSceneCor("MainScene_BJW", true);
             }
 
             if (Input.GetKeyDown(KeyCode.F2))
             {
-                SceneManager.Instance.LoadSceneCor("MainScene_CSH");
+                SceneManager.Instance.LoadSceneCor("MainScene_CSH", true);
             }
 
             if (Input.GetKeyDown(KeyCode.F3))
             {
-                SceneManager.Instance.LoadSceneCor("MainScene_IJH");
+                SceneManager.Instance.LoadSceneCor("MainScene_IJH", true);
             }
 
             if (Input.GetKeyDown(KeyCode.F4))
             {
-                SceneManager.Instance.LoadSceneCor("MainScene_JUJ");
+                SceneManager.Instance.LoadSceneCor("MainScene_JUJ", true);
             }
         }
     }
