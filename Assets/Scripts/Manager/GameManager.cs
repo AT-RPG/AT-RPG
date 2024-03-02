@@ -9,8 +9,6 @@ namespace AT_RPG.Manager
     /// </summary>
     public partial class GameManager : Singleton<GameManager>
     {
-        // OnBeforeSplashScreen()에서 실행되는 이벤트
-        private static event Action onBeforeSplashScreenEvent;
 
         // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
         private static event Action onBeforeFirstSceneLoadEvent;
@@ -37,22 +35,13 @@ namespace AT_RPG.Manager
         }
 
         /// <summary>
-        /// 첫 Scene이 로드되기 전에 실행
-        /// </summary>
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
-        private static void OnBeforeSplashScreen()
-        {
-            Init();
-
-            onBeforeSplashScreenEvent?.Invoke();
-        }
-
-        /// <summary>
         /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되기 전에 실행
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeFirstSceneLoad()
         {
+            Init();
+
             onBeforeFirstSceneLoadEvent?.Invoke();
         }
 
@@ -95,19 +84,6 @@ namespace AT_RPG.Manager
 
     public partial class GameManager
     {
-        // OnBeforeSplashScreen()에서 실행되는 이벤트
-        public static Action OnBeforeSplashScreenEvent
-        {
-            get
-            {
-                return onBeforeSplashScreenEvent;
-            }
-            set
-            {
-                onBeforeSplashScreenEvent = value;
-            }
-        }
-
         // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
         public static Action OnBeforeFirstSceneLoadEvent
         {

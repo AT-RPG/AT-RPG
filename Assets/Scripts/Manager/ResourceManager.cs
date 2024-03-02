@@ -294,6 +294,8 @@ namespace AT_RPG.Manager
             AssetBundleCreateRequest assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
             yield return new WaitUntil(() => assetBundleRequest.isDone);
 
+            
+
             // 현재 씬에 에셋 번들을 매핑
             AssetBundle addedAssetBundle = assetBundleRequest.assetBundle;
             if (addedAssetBundle == null)

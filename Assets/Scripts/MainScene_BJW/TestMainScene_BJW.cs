@@ -11,10 +11,4 @@ public class TestMainScene_BJW : MonoBehaviour
             Instantiate(resource);
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
