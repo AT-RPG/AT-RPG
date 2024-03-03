@@ -1,32 +1,20 @@
 ManifestFileVersion: 0
-CRC: 3046231498
+CRC: 2355623060
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 384d5f72c38f56c9e747ac756cfbaf93
+    Hash: e5d349c78142fad69bd52b87438e9ee7
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 0b1fb29857a159e40b336a11ce128390
+    Hash: e67072dade9ce21a1e74807e6cc092ab
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 384d5f72c38f56c9e747ac756cfbaf93
+    Hash: e5d349c78142fad69bd52b87438e9ee7
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
-  Script: {instanceID: 0}
-- Class: 21
-  Script: {instanceID: 0}
-- Class: 23
-  Script: {instanceID: 0}
-- Class: 33
-  Script: {instanceID: 0}
-- Class: 43
-  Script: {instanceID: 0}
-- Class: 48
-  Script: {instanceID: 0}
-- Class: 65
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -46,7 +34,7 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
-- Assets/Resources/Global/Prefabs/TestCube.prefab
 - Assets/Resources/Global/Prefabs/ScreenFadeIn.prefab
 - Assets/Resources/Global/Prefabs/ScreenFadeOut.prefab
+- Assets/Resources/Global/DummyGlobalSceneResource.prefab
 Dependencies: []

@@ -32,14 +32,16 @@ namespace AT_RPG.Manager
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
         private event SceneChangedCoroutine afterSceneChangedCoroutine = null;
 
-        // 페이크 로딩 지속 시간
-        [SerializeField] private float fakeLoadingDuration = 1.5f;
+        // 씬 페이크 로딩 지속 시간
+        // NOTE : 비동기 로딩에만 적용
+        [SerializeField] private float fakeLoadingDuration = 0.75f;
 
         // 씬 로딩중
         [SerializeField] private bool isLoading = false;
 
         // 로딩 씬
         [SerializeField] private UnityObject loadingScene = null;
+
 
 
         protected override void Awake()
@@ -50,10 +52,11 @@ namespace AT_RPG.Manager
 
 
         /// <summary>
-        /// 현재 씬에서 다음 씬으로 전환        
+        /// 현재 씬에서 다음 씬으로 전환
         /// </summary>
         /// <param name="sceneName">다음 씬 이름</param>
         /// <param name="isLoadingSceneIncluded">다음 씬으로 로딩 전에 로딩 씬을 거칠건지</param>
+        /// <param name="isAllowSceneActivation">다음 씬이 로딩되면 바로 씬 전환을 할건지</param>
         public void LoadSceneCor(string sceneName, bool isLoadingSceneIncluded)
         {
             if (sceneName == CurrentSceneName)
@@ -71,21 +74,80 @@ namespace AT_RPG.Manager
             isLoading = true;
             if (isLoadingSceneIncluded)
             {
-                StartCoroutine(InternalLoadSceneIncludedLoadingSceneCor(sceneName));
+                StartCoroutine(InternalLoadSceneIncludedLoadingScene(sceneName));
             }
             else
             {
-                StartCoroutine(InternalLoadSceneCor(sceneName));
+                StartCoroutine(InternalLoadScene(sceneName));
             }
         }
 
-        private IEnumerator InternalLoadSceneIncludedLoadingSceneCor(string sceneName)
+
+
+
+        private IEnumerator InternalLoadSceneIncludedLoadingScene(string sceneName)
         {
-            yield return StartCoroutine(InternalLoadSceneCor(loadingScene.name));
-            yield return StartCoroutine(InternalLoadSceneCor(sceneName));
+            string prevSceneName = CurrentSceneName.ToString();
+            string nextSceneName = sceneName;
+
+            // 씬 변경 이벤트, 코루틴을 실행
+            // 이벤트, 코루틴이 완료될때까지 대기
+            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangedEvent));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangedCoroutine));
+
+            // 로드 씬으로 이동
+            yield return UnitySceneManager.LoadSceneAsync(loadingScene.name);
+
+            // 다음 씬 리소스 로딩
+            ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
+            while (ResourceManager.Instance.IsLoading)
+            {
+                yield return null;
+            }
+
+            // 다음 씬 로드
+            // 바로 씬 변경X
+            AsyncOperation loadSceneRequest = UnitySceneManager.LoadSceneAsync(nextSceneName);
+            loadSceneRequest.allowSceneActivation = false;
+            while (!loadSceneRequest.isDone)
+            {
+                // 씬 로딩
+                if (loadSceneRequest.progress <= 0.9f)
+                {
+                    yield return null;
+                }
+
+                // 페이크 로딩
+                float fakeLoadingElapsedTime = 0f;
+                float fakeLoadingDuration = this.fakeLoadingDuration;
+                while (fakeLoadingElapsedTime <= fakeLoadingDuration)
+                {
+                    fakeLoadingElapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+
+                // 씬 변경O
+                loadSceneRequest.allowSceneActivation = true;
+                break;
+            }
+
+            // 씬 변경 이벤트, 코루틴을 실행
+            // 이벤트, 코루틴이 완료될때까지 대기
+            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangedEvent));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangedCoroutine));
+
+            // 이전 씬 리소스 언로딩
+            // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
+            while (ResourceManager.Instance.IsUnloading)
+            {
+                yield return null;
+            }
+            ResourceManager.Instance.UnloadAllAssetsAtSceneCor(prevSceneName);
+
+            isLoading = false;
         }
 
-        private IEnumerator InternalLoadSceneCor(string sceneName)
+        private IEnumerator InternalLoadScene(string sceneName)
         {
             string prevSceneName = CurrentSceneName.ToString();
             string nextSceneName = sceneName;
@@ -96,49 +158,53 @@ namespace AT_RPG.Manager
             yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangedEvent));
             yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangedCoroutine));
 
-            // 현재 씬 리소스 로딩
+            // 다음 씬 리소스 로딩
             ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
             while (ResourceManager.Instance.IsLoading)
             {
                 yield return null;
             }
 
-            // 씬 로드
+            // 다음 씬 로드
             // 바로 씬 변경X
             AsyncOperation loadSceneRequest = UnitySceneManager.LoadSceneAsync(nextSceneName);
             loadSceneRequest.allowSceneActivation = false;
             while (!loadSceneRequest.isDone)
             {
-                if (loadSceneRequest.progress >= 0.9f)
+                // 씬 로딩
+                if (loadSceneRequest.progress <= 0.9f)
                 {
-                    // 90프로 이후 페이크 로딩
-                    currFakeLoadingDuration -= Time.deltaTime;
-                    if (currFakeLoadingDuration <= 0f)
-                    {
-                        // 씬 변경O
-                        loadSceneRequest.allowSceneActivation = true;
-                    }
+                    yield return null;
                 }
 
-                yield return null;
-            }
+                // 페이크 로딩
+                float fakeLoadingElapsedTime = 0f;
+                float fakeLoadingDuration = this.fakeLoadingDuration;
+                while (fakeLoadingElapsedTime <= fakeLoadingDuration)
+                {
+                    fakeLoadingElapsedTime += Time.deltaTime;
+                    yield return null;
+                }
 
-            // 이전 씬 리소스 언로딩
-            // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
-            while(ResourceManager.Instance.IsUnloading)
-            {
-                yield return null;
+                // 씬 변경O
+                loadSceneRequest.allowSceneActivation = true;
+                break;
             }
-            ResourceManager.Instance.UnloadAllAssetsAtSceneCor(prevSceneName);
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
             yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangedEvent));
             yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangedCoroutine));
 
-            isLoading = false;
+            // 이전 씬 리소스 언로딩
+            // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
+            while (ResourceManager.Instance.IsUnloading)
+            {
+                yield return null;
+            }
+            ResourceManager.Instance.UnloadAllAssetsAtSceneCor(prevSceneName);
 
-            yield break;
+            isLoading = false;
         }
 
         private IEnumerator WaitActionUntilIsDone(Action action)
@@ -180,7 +246,8 @@ namespace AT_RPG.Manager
 
     public partial class SceneManager
     {
-        // 페이크 로딩 지속 시간
+        // 씬 페이크 로딩 지속 시간
+        // NOTE : 비동기 로딩에만 적용
         public float FakeLoadingDuration
         {
             get

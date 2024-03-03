@@ -124,5 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ed4e43a601d6e4bb9a2eb803854e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 1
+  duration: 2
+  isStartFullyOpaque: 1
+  isDestroyThisAtDone: 0
   targetImage: {fileID: 5541424636212534592}

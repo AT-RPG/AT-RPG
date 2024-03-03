@@ -25,6 +25,10 @@ namespace AT_RPG.Manager
         // 씬 리소스 언로딩중 
         private bool isUnloading = false;
 
+        // 리소스 페이크 로딩 지속 시간
+        // NOTE : 비동기 로딩에만 적용
+        [SerializeField] private float fakeLoadingDuration = 0.75f;
+
 
 
         protected override void Awake()
@@ -33,8 +37,6 @@ namespace AT_RPG.Manager
 
             GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
         }
-
-
 
         private void Start()
         {
@@ -191,6 +193,8 @@ namespace AT_RPG.Manager
             return sceneResources;
         }
 
+
+
         private void InternalLoadSceneAsset(string sceneName)
         {
             // 번들 위치
@@ -289,13 +293,11 @@ namespace AT_RPG.Manager
                 yield break;
             }
 #endif 
-
             // 에셋 번들 로드
             AssetBundleCreateRequest assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
             yield return new WaitUntil(() => assetBundleRequest.isDone);
 
             
-
             // 현재 씬에 에셋 번들을 매핑
             AssetBundle addedAssetBundle = assetBundleRequest.assetBundle;
             if (addedAssetBundle == null)
@@ -324,6 +326,15 @@ namespace AT_RPG.Manager
             foreach (var resource in assetRequest.allAssets)
             {
                 resources[sceneName][resource.name] = resource;
+            }
+
+            // 페이크 로딩
+            float fakeLoadingElapsedTime = 0f;
+            float fakeLoadingDuration = this.fakeLoadingDuration;
+            while (fakeLoadingElapsedTime <= fakeLoadingDuration)
+            {
+                fakeLoadingElapsedTime += Time.deltaTime;
+                yield return null;
             }
 
             isLoading = false;
@@ -373,6 +384,12 @@ namespace AT_RPG.Manager
 
     public partial class ResourceManager
     {
+        public float FakeLoadingDuration
+        {
+            get { return fakeLoadingDuration; }
+            set { fakeLoadingDuration = value; }
+        }
+
         // 리소스 로딩중
         public bool IsLoading => isLoading;
 

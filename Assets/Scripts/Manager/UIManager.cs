@@ -14,12 +14,8 @@ namespace AT_RPG.Manager
         // 현재 씬의 캔버스
         private Canvas canvas = null;
 
-        // 화면을 점점 투명하게 하는 효과
-        [SerializeField] private GameObject screenFadeIn = null;
-
         // 화면을 점점 불투명하게 하는 효과
         [SerializeField] private GameObject screenFadeOut = null;
-
 
         protected override void Awake()
         {
@@ -71,29 +67,14 @@ namespace AT_RPG.Manager
         }
 
         /// <summary>
-        /// 화면에 페이드 아웃 효과를 대기
+        /// 화면이 점점 검게 변하는 효과 씬 로딩 이벤트에 추가
         /// </summary>
         private IEnumerator OnBeforeSceneChangedCoroutine()
         {
             GameObject screenFadeOutInstance = Instantiate(screenFadeOut, canvas.transform);
-            FadeIn fadeOutComp = screenFadeOutInstance.GetComponent<FadeIn>();
+            FadeInImage fadeOutComp = screenFadeOutInstance.GetComponent<FadeInImage>();
 
             yield return StartCoroutine(fadeOutComp.StartFade());
-
-            Destroy(screenFadeOutInstance);
-        }
-
-        /// <summary>
-        /// 화면에 페이드 인 효과를 대기
-        /// </summary>
-        private IEnumerator OnAfterSceneChangedCoroutine()
-        {
-            GameObject screenFadeInInstance = Instantiate(screenFadeIn, canvas.transform);
-            FadeIn fadeInComp = screenFadeInInstance.GetComponent<FadeIn>();
-
-            yield return StartCoroutine(fadeInComp.StartFade());
-
-            Destroy(screenFadeInInstance);
         }
     }
 
@@ -104,9 +85,6 @@ namespace AT_RPG.Manager
 
         // 현재 씬의 캔버스
         public Canvas Canvas => canvas;
-
-        // 화면을 점점 투명하게 하는 효과
-        public GameObject ScreenFadeIn => screenFadeIn;
 
         // 화면을 점점 불투명하게 하는 효과
         public GameObject ScreenFadeOut => ScreenFadeOut;

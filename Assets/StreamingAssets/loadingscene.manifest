@@ -1,0 +1,27 @@
+ManifestFileVersion: 0
+CRC: 2645807069
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 932b2b1465f005faefe7f4a3c96ee833
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: b82c609a4299f941866f259eff9c3f28
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 932b2b1465f005faefe7f4a3c96ee833
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Resources/LoadingScene/DummyLoadingSceneResource.prefab
+- Assets/Resources/LoadingScene/Sprites/Loading.png
+Dependencies: []

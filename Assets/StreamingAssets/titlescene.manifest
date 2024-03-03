@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 1384308208
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ce9daba9d9f809de607ea802ddd52d6e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 767148d2cba1a92a15442f2b767884c0
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: ce9daba9d9f809de607ea802ddd52d6e
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Resources/TitleScene/DummyTitleSceneResource.prefab
+Dependencies: []
