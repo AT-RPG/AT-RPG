@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
+using DG.Tweening;
 
 namespace AT_RPG.Manager
 {
@@ -41,6 +41,7 @@ namespace AT_RPG.Manager
         private static void OnBeforeFirstSceneLoad()
         {
             Init();
+            DOTween.Init();
 
             onBeforeFirstSceneLoadEvent?.Invoke();
         }
