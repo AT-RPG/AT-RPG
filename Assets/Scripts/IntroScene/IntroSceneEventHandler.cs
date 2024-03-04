@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AT_RPG
 {
-    public class IntroTimelineEventHandler : MonoBehaviour
+    public class IntroSceneEventHandler : MonoBehaviour
     {
         public void LoadSceneTo(Object nextScene)
         {
