@@ -8,9 +8,8 @@ using static UnityEngine.GraphicsBuffer;
 public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
 {
     MonsterInfo mon1 = new MonsterInfo("몬1",10.0f,15.0f,1,30.0f,0.5f, 30.0f);
-    MonsterInfo mon2 = new MonsterInfo("몬2", 10.0f, 30.0f, 1, 30.0f, 0.5f, 30.0f);
-    
-
+   
+   
     public int monsterNum = 1;
     Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine rotate = null; //몬스터의 회전을 관리
@@ -39,6 +38,11 @@ public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
          monsterState = s;  //상태변경
         switch (monsterState)
         {
+            case State.Create:  //Start함수와 다른점?
+                monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
+                monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
+                break;
+
             case State.Idle: //몬스터가 대기상태
                 monsterAnim.SetBool("Run", false);
                 monsterAnim.SetBool("Move", false); //몬스터의 이동동작 애니메이션을 취소
@@ -82,7 +86,6 @@ public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
     void monsterMove() //이동상태
     {
 
-        Debug.Log(isTracking);
         Vector3 dir = Vector3.forward;
 
         Vector3 GetRndPos() //몬스터가 움직일 방향 랜덤지정
@@ -99,7 +102,7 @@ public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
         }
 
 
-        if (isTracking)
+        if (isTracking)  //플레이어의 추적여부에따라 몬스터가 움직일방향을 정해준다
         {
             MoveToPos(GetTrackingPos());
         }
@@ -119,10 +122,6 @@ public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
         move = StartCoroutine(monsterMoving(target)); //새로운 이동코룬틴
     }
 
-    ///--------이동관련 추가해야되는 부분----------- <summary>
-    /// --플레이어 발견시 타겟을 플레이어로 변경/플레이어 발견후 일정거리이상 멀어진경우 
-    /// 이동속도를 추가로 증가시킨후에 몬스터의 모션을 달리기로 변경
-    /// 속도를 몬스터마다  차이두기 --몬스터마다 별도의 클래스로 스탯을 생성해서 전달받기
    
     IEnumerator monsterMoving(Vector3 target)
     {
@@ -196,8 +195,7 @@ public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
     {
         SpawnPos= transform.position; //시작과 동시에 생성위치를 기억
         ChangeState(State.Idle); //몬스터를 대기상태로 변경
-        monsterAI.findPlayer.AddListener(StartTracking); //플레이어를 발견했을경우 상태변경
-        monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
+   
     }
 
     // Update is called once per frame

@@ -11,39 +11,29 @@ public class MonsterAI : MonoBehaviour
     public Transform myTarget;
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) //몬스터의 트리거 작동
     {
         Debug.Log("트리거 엔터 진입");
-        if ((mask & 1 << other.gameObject.layer) != 0)
+        if ((mask & 1 << other.gameObject.layer) != 0) //충돌한 레이어가 몬스터가 반응할 레이어인지 판단
         {
             Debug.Log("if문 1번째 진입");
-            if (myTarget == null)
+            if (myTarget == null) //타겟이 없을경우
             {
                 Debug.Log("마이타겟 null 진입");
-                myTarget = other.transform;
-                findPlayer?.Invoke(myTarget);
+                myTarget = other.transform; //타겟을 충돌대상의 위치로 바꾼다
+                findPlayer?.Invoke(myTarget); //후에 findPlayer 함수 실행
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other) //충돌이 종료됨
     {
-        if (myTarget == other.transform)
+        if (myTarget == other.transform) //타겟이 플레이어 였던경우
         {
-            myTarget = null;
-            lostPlayer?.Invoke();
+            myTarget = null; //타겟을 초기화
+            lostPlayer?.Invoke(); //lostPlayer함수 실행
         }
     }
 }
