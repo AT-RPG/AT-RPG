@@ -1,18 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SingleplayButton : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject     startGameMenuPopup;
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// 게임 시작관련 팝업 메뉴를 생성합니다
+    /// </summary>
+    public void InstantiateStartGameMenuPopup(GameObject canvas)
     {
-        
+        Instantiate(startGameMenuPopup, canvas.transform);
     }
 }
