@@ -623,7 +623,7 @@ GameObject:
   - component: {fileID: 1970067337627839868}
   - component: {fileID: 6763834106052360070}
   m_Layer: 6
-  m_Name: StartGamePopup
+  m_Name: OptionPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3940857247
+CRC: 1529911681
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8038ad742bf70e56e9da6807c1833975
+    Hash: 439320b2e1a5775e1af805e2c11a9b9f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 3dbf936b4d1989e8ca92717b6bcffee2
+    Hash: 69742386ee612fb756776454bf4df6c9
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 8038ad742bf70e56e9da6807c1833975
+    Hash: 439320b2e1a5775e1af805e2c11a9b9f
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -44,6 +44,10 @@ ClassTypes:
   Script: {fileID: 11500000, guid: f206f9c4c1ce7a647b2cb1c7f73bfa5b, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 56c68c9f207168545bbc90b6ed1bd900, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b37c3f44d0f21a841a6e5efb0e53c995, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2c1cdb5d1c6edd14db141b3413902e29, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -122,5 +126,8 @@ SerializeReferenceClassIdentifiers:
 Assets:
 - Assets/Resources/TitleScene/Sprites/title.jpeg
 - Assets/Resources/TitleScene/DummyTitleSceneResource.prefab
+- Assets/Resources/TitleScene/Prefabs/MultiplayerGamePopup.prefab
+- Assets/Resources/TitleScene/Prefabs/QuitGamePopup.prefab
 - Assets/Resources/TitleScene/Prefabs/StartGamePopup.prefab
+- Assets/Resources/TitleScene/Prefabs/OptionPopup.prefab
 Dependencies: []
