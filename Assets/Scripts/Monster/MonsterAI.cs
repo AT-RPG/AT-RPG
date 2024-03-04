@@ -25,10 +25,13 @@ public class MonsterAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("트리거 엔터 진입");
         if ((mask & 1 << other.gameObject.layer) != 0)
         {
+            Debug.Log("if문 1번째 진입");
             if (myTarget == null)
             {
+                Debug.Log("마이타겟 null 진입");
                 myTarget = other.transform;
                 findPlayer?.Invoke(myTarget);
             }
@@ -43,6 +46,4 @@ public class MonsterAI : MonoBehaviour
             lostPlayer?.Invoke();
         }
     }
-
-
 }

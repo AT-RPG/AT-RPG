@@ -56,13 +56,6 @@ public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
         }
     }
 
-    
-  
- 
-
-
-
-
     void monsterIdle() //대기 상태
     {
         MoveStartTime = Random.Range(2, 3); //대기시간을 랜덤으로 설정한후 이동하게 하기
@@ -75,18 +68,15 @@ public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
     }
 
     //----------추적관련-------------------------------
-    void StartTracking(Transform target) //플레이어 발견
+    public void StartTracking(Transform target) //플레이어 발견
     {
         isTracking = true;
     }
 
-    void StopTracking() //플레이어 놓침
+    public void StopTracking() //플레이어 놓침
     {
         isTracking = false;
     }
-
-
-
 
     //---------------이동관련---------------------------------------------------
     void monsterMove() //이동상태
@@ -119,8 +109,6 @@ public class MonsterMain :  MonsterPorperty //인포를 상속,스탯을 가져옴
         }
 
     }
-    
- 
 
     void MoveToPos(Vector3 target) //특정위치로 이동
     {
