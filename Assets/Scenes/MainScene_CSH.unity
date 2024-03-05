@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -404,7 +404,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &346365070
 MonoBehaviour:
@@ -587,7 +587,7 @@ PrefabInstance:
     - target: {fileID: -9195664543965222661, guid: aac23fe206ff8df4d9d61b04b46a273f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.41
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -9114067823218812642, guid: aac23fe206ff8df4d9d61b04b46a273f,
         type: 3}
@@ -958,7 +958,7 @@ Transform:
   m_GameObject: {fileID: 738000690}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.1, y: 1.5698469, z: 16.4}
+  m_LocalPosition: {x: 22.04, y: 1.5698469, z: 16.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1011,9 +1011,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c10d4fe14ca31f44877b92135703f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterNum: 2
+  Imp: {fileID: 0}
   monsterAI: {fileID: 1153043378}
-  trackingDistance: 10
   monsterState: 0
 --- !u!136 &864871512
 CapsuleCollider:
@@ -1371,7 +1370,7 @@ Transform:
   m_GameObject: {fileID: 1849906013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.16, y: 0, z: 12.02}
+  m_LocalPosition: {x: 26.88, y: 0, z: 37.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1399,9 +1398,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1
-  m_Height: 3.5
+  m_Height: 3
   m_Direction: 1
-  m_Center: {x: 0, y: 1.72, z: 0}
+  m_Center: {x: 0, y: 1.6, z: 0}
 --- !u!114 &1849906017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1414,9 +1413,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c10d4fe14ca31f44877b92135703f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterNum: 1
+  Imp: {fileID: 1849906013}
   monsterAI: {fileID: 346365070}
-  trackingDistance: 10
   monsterState: 0
 --- !u!54 &1849906018
 Rigidbody:
