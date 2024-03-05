@@ -5,42 +5,42 @@ using AT_RPG.Manager;
 namespace AT_RPG
 {
     /// <summary>
-    /// 에셋 번들용 리소스 레퍼런스
+    /// 에셋 번들의 리소스 레퍼런스
     /// </summary>
     [System.Serializable]
-    public struct ResourceRef<T> where T : Object
+    public struct ResourceReference<T> where T : Object
     {
         [SerializeField] private string resourceName;
         [SerializeField] public T Resource => ResourceManager.Instance.Get<T>(resourceName, false);
 
 #if UNITY_EDITOR
-        [SerializeField] public Object editorResourceViewer;
+        [SerializeField] public Object editorResource;
 #endif
     }
 
     /// <summary>
-    /// 에셋 번들용 글로벌 리소스 레퍼런스
+    /// 에셋 번들의 글로벌 리소스 레퍼런스
     /// </summary>
     [System.Serializable]
-    public struct GlobalResourceRef<T> where T : Object
+    public struct GlobalResourceReference<T> where T : Object
     {
         [SerializeField] private string resourceName;
         [SerializeField] public T Resource => ResourceManager.Instance.Get<T>(resourceName, true);
 
 #if UNITY_EDITOR
-        [SerializeField] public Object editorResourceViewer;
+        [SerializeField] public Object editorResource;
 #endif
     }
 
 #if UNITY_EDITOR
-    [CustomPropertyDrawer(typeof(GlobalResourceRef<>))]
-    public class GlobalResourceRefDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(GlobalResourceReference<>))]
+    public class GlobalResourceReferenceDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            // GlobalResource.resourceName을 리플렉션
+            // GlobalResourceReference 리플렉션
             SerializedProperty resourceName = property.FindPropertyRelative("resourceName");
             SerializedProperty resource = property.FindPropertyRelative("editorResourceViewer");
 
@@ -64,6 +64,7 @@ namespace AT_RPG
                     resource.objectReferenceValue = null;
                 }
 
+                // 변경 사항 저장
                 property.serializedObject.ApplyModifiedProperties();
             }
 
@@ -71,14 +72,14 @@ namespace AT_RPG
         }
     }
 
-    [CustomPropertyDrawer(typeof(ResourceRef<>))]
-    public class ResourceRefDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(ResourceReference<>))]
+    public class ResourceReferenceDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            // ResourceRef.resourceName을 리플렉션
+            // ResourceReference 리플렉션
             SerializedProperty resourceName = property.FindPropertyRelative("resourceName");
             SerializedProperty resource = property.FindPropertyRelative("editorResourceViewer");
 
@@ -102,6 +103,7 @@ namespace AT_RPG
                     resource.objectReferenceValue = null;
                 }
 
+                // 변경 사항 저장
                 property.serializedObject.ApplyModifiedProperties();
             }
 

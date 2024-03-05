@@ -71,8 +71,6 @@ namespace AT_RPG.Manager
         // 로딩 씬
         [SerializeField] private UnityObject loadingScene = null;
 
-
-
         protected override void Awake()
         {
             base.Awake();
