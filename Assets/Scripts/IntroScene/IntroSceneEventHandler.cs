@@ -7,7 +7,7 @@ namespace AT_RPG
     {
         public void LoadSceneTo(Object nextScene)
         {
-            SceneManager.Instance.LoadSceneCor(nextScene.name, true);
+            SceneManager.Instance.LoadSceneCor(nextScene.name, LoadMode.LoadingResources);
         }
     }
 }

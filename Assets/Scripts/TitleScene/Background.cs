@@ -1,9 +1,7 @@
 using AT_RPG;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundController : MonoBehaviour
+public class Background : MonoBehaviour
 {
     [SerializeField] private FadeCanvasAnimation    fadeAnimation;
     [SerializeField] private PopupCanvasAnimation   popupAnimation;
@@ -13,11 +11,5 @@ public class BackgroundController : MonoBehaviour
     {
         fadeAnimation.StartFade();
         popupAnimation.StartPopup();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

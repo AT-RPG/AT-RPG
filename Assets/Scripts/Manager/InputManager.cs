@@ -1,12 +1,19 @@
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace AT_RPG.Manager
 {
+    public class KeyMap : Dictionary<string, KeyValuePair<KeyCode, Action>> { }
+
     public partial class InputManager : Singleton<InputManager>
     {
-        // 매 프레임마다 호출되는 키보드 이벤트
-        private event Action keyAction;
+        private KeyMap keyMap
+            = new KeyMap()
+            {
+
+            };
 
         protected override void Awake()
         {
@@ -15,22 +22,22 @@ namespace AT_RPG.Manager
 
         public void OnUpdate()
         {
-            keyAction?.Invoke();
+            
         }
     }
 
     public partial class InputManager
     {
         // 매 프레임마다 호출되는 키보드 이벤트
-        public Action KeyAction
+        public KeyMap KeyMap
         {
             get
             {
-                return keyAction;
+                return keyMap;
             }
             set
             {
-                keyAction = value;
+                keyMap = value;
             }
         }
     }

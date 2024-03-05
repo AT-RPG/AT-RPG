@@ -10,27 +10,56 @@ namespace AT_RPG.Manager
 {
     public delegate IEnumerator SceneChangedCoroutine();
 
+    [Flags]
+    public enum LoadMode
+    {
+        Instant = 1,
+        LoadingResources = 2,
+        LoadingResourcesAndSaveDatas = 3
+    }
+
     public partial class SceneManager : Singleton<SceneManager>
     {
         // 씬 변경 전, 호출되는 이벤트
         // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event Action beforeSceneChangedEvent;
+        private event Action beforeSceneChangeAction;
+
+        // 씬 변경 전, 호출되는 단발성 이벤트
+        // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
+        // NOTE2 : 사용되면 Clear됨
+        private event Action beforeSceneChangeDisposableAction;
 
         // 씬 변경 후, 호출되는 이벤트
         // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event Action afterSceneChangedEvent;
+        private event Action afterSceneChangeAction;
+
+        // 씬 변경 후, 호출되는 단발성 이벤트
+        // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
+        // NOTE2 : 사용되면 Clear됨
+        private event Action afterSceneChangeDisposableAction;
 
         // 씬 변경 전, 호출되는 코루틴
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event SceneChangedCoroutine beforeSceneChangedCoroutine = null;
+        private event SceneChangedCoroutine beforeSceneChangeCoroutine = null;
+
+        // 씬 변경 전, 호출되는 단발성 코루틴
+        // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
+        // NOTE2 : 사용되면 Clear됨
+        private event SceneChangedCoroutine beforeSceneChangeDisposableCoroutine = null;
 
         // 씬 변경 후, 호출되는 코루틴
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event SceneChangedCoroutine afterSceneChangedCoroutine = null;
+        private event SceneChangedCoroutine afterSceneChangeCoroutine = null;
+
+        // 씬 변경 후, 호출되는 단발성 코루틴
+        // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
+        // NOTE2 : 사용되면 Clear됨
+        private event SceneChangedCoroutine afterSceneChangeDisposableCoroutine = null;
+
 
         // 씬 페이크 로딩 지속 시간
         // NOTE : 비동기 로딩에만 적용
@@ -50,14 +79,12 @@ namespace AT_RPG.Manager
         }
 
 
-
         /// <summary>
         /// 현재 씬에서 다음 씬으로 전환
         /// </summary>
         /// <param name="sceneName">다음 씬 이름</param>
         /// <param name="isLoadingSceneIncluded">다음 씬으로 로딩 전에 로딩 씬을 거칠건지</param>
-        /// <param name="isAllowSceneActivation">다음 씬이 로딩되면 바로 씬 전환을 할건지</param>
-        public void LoadSceneCor(string sceneName, bool isLoadingSceneIncluded)
+        public void LoadSceneCor(string sceneName, LoadMode loadMode)
         {
             if (sceneName == CurrentSceneName)
             {
@@ -72,28 +99,104 @@ namespace AT_RPG.Manager
             }
 
             isLoading = true;
-            if (isLoadingSceneIncluded)
+            switch (loadMode)
             {
-                StartCoroutine(InternalLoadSceneIncludedLoadingScene(sceneName));
-            }
-            else
-            {
-                StartCoroutine(InternalLoadScene(sceneName));
+                case LoadMode.Instant:
+                    StartCoroutine(InternalLoadScene(sceneName));
+                    break;
+
+                case LoadMode.LoadingResources:
+                    StartCoroutine(InternalLoadSceneIncludedResources(sceneName));
+                    break;
+
+                case LoadMode.LoadingResourcesAndSaveDatas:
+                    StartCoroutine(InternalLoadSceneIncludedResourcesAndSaveDatas(sceneName));
+                    break;
+
+                default:
+                    break;
             }
         }
-
-
-
-
-        private IEnumerator InternalLoadSceneIncludedLoadingScene(string sceneName)
+        private IEnumerator InternalLoadScene(string sceneName)
         {
             string prevSceneName = CurrentSceneName.ToString();
             string nextSceneName = sceneName;
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangedEvent));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangedCoroutine));
+            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
+            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
+
+            // 다음 씬 리소스 로딩
+            ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
+            while (ResourceManager.Instance.IsLoading)
+            {
+                yield return null;
+            }
+
+            // 다음 씬 로드
+            // 바로 씬 변경X
+            AsyncOperation loadSceneRequest = UnitySceneManager.LoadSceneAsync(nextSceneName);
+            loadSceneRequest.allowSceneActivation = false;
+            while (!loadSceneRequest.isDone)
+            {
+                // 씬 로딩
+                if (loadSceneRequest.progress <= 0.9f)
+                {
+                    yield return null;
+                }
+
+                // 페이크 로딩
+                float fakeLoadingElapsedTime = 0f;
+                float fakeLoadingDuration = this.fakeLoadingDuration;
+                while (fakeLoadingElapsedTime <= fakeLoadingDuration)
+                {
+                    fakeLoadingElapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+
+                // 씬 변경O
+                loadSceneRequest.allowSceneActivation = true;
+                break;
+            }
+
+            // 씬 변경 이벤트, 코루틴을 실행
+            // 이벤트, 코루틴이 완료될때까지 대기
+            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
+            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
+
+            // Disposable 이벤트 초기화
+            beforeSceneChangeDisposableAction = null;
+            beforeSceneChangeDisposableCoroutine = null;
+            afterSceneChangeCoroutine = null;
+            afterSceneChangeDisposableCoroutine = null;
+
+            // 이전 씬 리소스 언로딩
+            // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
+            while (ResourceManager.Instance.IsUnloading)
+            {
+                yield return null;
+            }
+            ResourceManager.Instance.UnloadAllAssetsAtSceneCor(prevSceneName);
+
+            isLoading = false;
+        }
+
+        private IEnumerator InternalLoadSceneIncludedResources(string sceneName)
+        {
+            string prevSceneName = CurrentSceneName.ToString();
+            string nextSceneName = sceneName;
+
+            // 씬 변경 이벤트, 코루틴을 실행
+            // 이벤트, 코루틴이 완료될때까지 대기
+            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
+            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
 
             // 로드 씬으로 이동
             yield return UnitySceneManager.LoadSceneAsync(loadingScene.name);
@@ -133,8 +236,16 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangedEvent));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangedCoroutine));
+            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
+            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
+
+            // Disposable 이벤트 초기화
+            beforeSceneChangeDisposableAction = null;
+            beforeSceneChangeDisposableCoroutine = null;
+            afterSceneChangeCoroutine = null;
+            afterSceneChangeDisposableCoroutine = null;
 
             // 이전 씬 리소스 언로딩
             // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
@@ -147,16 +258,20 @@ namespace AT_RPG.Manager
             isLoading = false;
         }
 
-        private IEnumerator InternalLoadScene(string sceneName)
+        private IEnumerator InternalLoadSceneIncludedResourcesAndSaveDatas(string sceneName)
         {
             string prevSceneName = CurrentSceneName.ToString();
             string nextSceneName = sceneName;
-            float currFakeLoadingDuration = this.fakeLoadingDuration;
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangedEvent));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangedCoroutine));
+            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
+            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
+
+            // 로드 씬으로 이동
+            yield return UnitySceneManager.LoadSceneAsync(loadingScene.name);
 
             // 다음 씬 리소스 로딩
             ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
@@ -193,8 +308,16 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangedEvent));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangedCoroutine));
+            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
+            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
+            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
+
+            // Disposable 이벤트 초기화
+            beforeSceneChangeDisposableAction = null;
+            beforeSceneChangeDisposableCoroutine = null;
+            afterSceneChangeCoroutine = null;
+            afterSceneChangeDisposableCoroutine = null;
 
             // 이전 씬 리소스 언로딩
             // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
@@ -266,11 +389,11 @@ namespace AT_RPG.Manager
         {
             get
             {
-                return beforeSceneChangedEvent;
+                return beforeSceneChangeAction;
             }
             set
             {
-                beforeSceneChangedEvent = value;
+                beforeSceneChangeAction = value;
             }
         }
 
@@ -280,11 +403,11 @@ namespace AT_RPG.Manager
         {
             get
             {
-                return afterSceneChangedEvent;
+                return afterSceneChangeAction;
             }
             set
             {
-                afterSceneChangedEvent = value;
+                afterSceneChangeAction = value;
             }
         }
 
@@ -294,11 +417,11 @@ namespace AT_RPG.Manager
         {
             get
             {
-                return beforeSceneChangedCoroutine;
+                return beforeSceneChangeCoroutine;
             }
             set
             {
-                beforeSceneChangedCoroutine = value;
+                beforeSceneChangeCoroutine = value;
             }
         }
 
@@ -308,11 +431,11 @@ namespace AT_RPG.Manager
         {
             get
             {
-                return afterSceneChangedCoroutine;
+                return afterSceneChangeCoroutine;
             }
             set
             {
-                afterSceneChangedCoroutine = value;
+                afterSceneChangeCoroutine = value;
             }
         }
 

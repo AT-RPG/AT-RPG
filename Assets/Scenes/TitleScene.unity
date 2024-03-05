@@ -668,12 +668,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 341617541}
-        m_TargetAssemblyTypeName: QuitButtonController, Assembly-CSharp
+        m_TargetAssemblyTypeName: QuitButton, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 682761560}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.RectTransform, UnityEngine
+          m_ObjectArgument: {fileID: 682761559}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -847,12 +847,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 419198669}
-        m_TargetAssemblyTypeName: MultiplayerGameButtonController, Assembly-CSharp
+        m_TargetAssemblyTypeName: MultiplayerGameButton, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 682761560}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.RectTransform, UnityEngine
+          m_ObjectArgument: {fileID: 682761559}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1031,12 +1031,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 452187522}
-        m_TargetAssemblyTypeName: StartGameButtonController, Assembly-CSharp
+        m_TargetAssemblyTypeName: StartGameButton, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 682761560}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.RectTransform, UnityEngine
+          m_ObjectArgument: {fileID: 682761559}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1212,6 +1212,7 @@ GameObject:
   - component: {fileID: 682761563}
   - component: {fileID: 682761562}
   - component: {fileID: 682761561}
+  - component: {fileID: 682761564}
   m_Layer: 6
   m_Name: Popup Canvas
   m_TagString: Untagged
@@ -1301,6 +1302,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &682761564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682761559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3da6bde11c0b6074a8ad660ade2fa5c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &734535572
 GameObject:
   m_ObjectHideFlags: 0
@@ -1600,12 +1613,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1009346791}
-        m_TargetAssemblyTypeName: OptionButtonController, Assembly-CSharp
+        m_TargetAssemblyTypeName: OptionButton, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 682761560}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.RectTransform, UnityEngine
+          m_ObjectArgument: {fileID: 682761559}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
