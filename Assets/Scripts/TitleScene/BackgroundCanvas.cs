@@ -1,7 +1,7 @@
 using AT_RPG;
 using UnityEngine;
 
-public class Background : MonoBehaviour
+public class BackgroundCanvas : MonoBehaviour
 {
     [SerializeField] private FadeCanvasAnimation    fadeAnimation;
     [SerializeField] private PopupCanvasAnimation   popupAnimation;
