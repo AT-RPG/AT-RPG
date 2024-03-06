@@ -3,13 +3,15 @@ using UnityEngine;
 namespace AT_RPG
 {
     /// <summary>
-    /// 설명 : 세이브 로드 시 사용되는 필수 컴포넌트  <br/>
-    /// 이 컴포넌트를 Prefab에 부착 시, SaveLoad의 대상이 됨 <br/>
-    /// Transform정보와 자기 자신에 대한 리소스 정보를 가짐 <br/> <br/>
     /// 
-    /// 사용 시 주의 사항 : <br/>
-    /// 1. Prefab의 최상위 GameObject에만 부착
+    /// 설명 : 세이브 로드 시 사용되는 필수 컴포넌트                              <br/>
+    /// 이 컴포넌트를 Prefab에 부착 해야, GameObject가 SaveLoad의 대상이 됨      <br/>
+    /// Transform정보와 자기 자신에 대한 리소스 정보를 가짐                       <br/> <br/>
+    /// 
+    /// 사용 시 주의 사항 :                                                    <br/>
+    /// 1. Prefab의 최상위 GameObject에만 부착                                  <br/>
     /// 2. Prefab이 에셋 번들의 리소스일 것
+    /// 
     /// </summary>
     public class GameObjectData : MonoBehaviour, ISaveLoadData
     {

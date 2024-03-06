@@ -237,6 +237,7 @@ GameObject:
   - component: {fileID: 198474584}
   - component: {fileID: 198474583}
   - component: {fileID: 198474586}
+  - component: {fileID: 198474587}
   m_Layer: 0
   m_Name: Timeline
   m_TagString: Untagged
@@ -312,6 +313,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &198474587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198474582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaad8cac925364a43b6b9deef0a8373c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testObj:
+    resourceName: DummyGlobalSceneResource
+    editorResource: {fileID: 1744827880115756937, guid: 779859d6810c2a249b36fade407ec925,
+      type: 3}
 --- !u!1 &226903896
 GameObject:
   m_ObjectHideFlags: 0
