@@ -1,6 +1,6 @@
 namespace AT_RPG.Manager
 {
-    public class SaveLoadManager : Singleton<SaveLoadManager>
+    public class DataManager : Singleton<DataManager>
     {
         protected override void Awake()
         {

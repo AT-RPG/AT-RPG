@@ -8,24 +8,29 @@ namespace AT_RPG.Manager
     /// TODO - 캔버스가 씬에 여러개가 있는 경우 따로 처리 필요
     public partial class UIManager : Singleton<UIManager>
     {
+        // 매니저 기본 설정
+        [SerializeField] private UIManagerSetting setting;
+
         // 현재 씬의 이벤트 시스템
         private GameObject eventSystemInstance = null;
 
         // 현재 씬의 캔버스
         private Canvas canvas = null;
 
-        // 화면을 점점 불투명하게 하는 효과
-        [SerializeField] private GameObject screenFadeOut = null;
+
 
         protected override void Awake()
         {
             base.Awake();
 
-            GameManager.OnAfterFirstSceneLoadEvent += OnAfterSceneChangedEvent;
+            setting = Resources.Load<UIManagerSetting>("UIManagerSettings");
 
+            GameManager.OnAfterFirstSceneLoadEvent += OnAfterSceneChangedEvent;
             SceneManager.Instance.BeforeSceneChangedCoroutine += OnBeforeSceneChangedCoroutine;
             SceneManager.Instance.AfterSceneChangedEvent += OnAfterSceneChangedEvent;
         }
+
+
 
         /// <summary>
         /// 씬이 변경되었을 경우, 현재 씬에서 캔버스 획득<br/>
@@ -71,7 +76,7 @@ namespace AT_RPG.Manager
         /// </summary>
         private IEnumerator OnBeforeSceneChangedCoroutine()
         {
-            GameObject screenFadeOutInstance = Instantiate(screenFadeOut, canvas.transform);
+            GameObject screenFadeOutInstance = Instantiate(setting.ScreenFadeOutInstance, canvas.transform);
             FadeInImage fadeOutComp = screenFadeOutInstance.GetComponent<FadeInImage>();
 
             yield return StartCoroutine(fadeOutComp.StartFade());
@@ -88,5 +93,8 @@ namespace AT_RPG.Manager
 
         // 화면을 점점 불투명하게 하는 효과
         public GameObject ScreenFadeOut => ScreenFadeOut;
+
+        // 매니저 기본 설정
+        public UIManagerSetting Setting => setting;
     }
 }

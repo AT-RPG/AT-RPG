@@ -13,6 +13,9 @@ namespace AT_RPG.Manager
 {   
     public partial class ResourceManager : Singleton<ResourceManager>
     {
+        // 매니저 기본 설정
+        [SerializeField] private ResourceManagerSetting setting;
+
         // 로드된 씬 리소스 저장 해쉬맵
         private SceneResourceMap resources = new SceneResourceMap();
 
@@ -25,15 +28,12 @@ namespace AT_RPG.Manager
         // 씬 리소스 언로딩중 
         private bool isUnloading = false;
 
-        // 리소스 페이크 로딩 지속 시간
-        // NOTE : 비동기 로딩에만 적용
-        [SerializeField] private float fakeLoadingDuration = 0.75f;
-
-
 
         protected override void Awake()
         {
             base.Awake();
+
+            setting = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
 
             GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
         }
@@ -111,7 +111,7 @@ namespace AT_RPG.Manager
             UnityObject resource;
             if (isGlobal)
             {
-                resource = resources[AssetBundleSetting.GlobalAssetBundleName][resourceName];
+                resource = resources[setting.GlobalAssetBundleName][resourceName];
             }
             else
             {
@@ -131,7 +131,7 @@ namespace AT_RPG.Manager
             UnityObject resource;
             if (isGlobal)
             {
-                resource = resources[AssetBundleSetting.GlobalAssetBundleName][resourceRefer.name];
+                resource = resources[setting.GlobalAssetBundleName][resourceRefer.name];
             }
             else
             {
@@ -151,7 +151,7 @@ namespace AT_RPG.Manager
             T resource;
             if (isGlobal)
             {
-                resource = resources[AssetBundleSetting.GlobalAssetBundleName][resourceName] as T;
+                resource = resources[setting.GlobalAssetBundleName][resourceName] as T;
             }
             else
             {
@@ -172,7 +172,7 @@ namespace AT_RPG.Manager
             T resource;
             if (isGlobal)
             {
-                resource = resources[AssetBundleSetting.GlobalAssetBundleName][resourceRefer.name] as T;
+                resource = resources[setting.GlobalAssetBundleName][resourceRefer.name] as T;
             }
             else
             {
@@ -198,12 +198,12 @@ namespace AT_RPG.Manager
         private void InternalLoadSceneAsset(string sceneName)
         {
             // 번들 위치
-            string assetBundlePath = Path.Combine(AssetBundleSetting.AssetBundleSavePath, sceneName);
+            string assetBundlePath = Path.Combine(setting.AssetBundleSavePath, sceneName);
 
 #if UNITY_EDITOR
             // 에셋 번들이 존재하지 않는 경우 코루틴 종료
             // NOTE : 게임이 완성되면 사실상 각 씬에 대해 에셋 번들이 존재할 수 밖에 없음
-            string searchPath = AssetBundleSetting.AssetBundleSavePath;
+            string searchPath = setting.AssetBundleSavePath;
             string searchPattern = sceneName.ToLower();
             string[] files = Directory.GetFiles(searchPath, searchPattern, SearchOption.AllDirectories);
             if (files.Length <= 0)
@@ -278,12 +278,12 @@ namespace AT_RPG.Manager
         private IEnumerator InternalLoadSceneAssetsCor(string sceneName)
         {
             // 번들 위치
-            string assetBundlePath = Path.Combine(AssetBundleSetting.AssetBundleSavePath, sceneName);
+            string assetBundlePath = Path.Combine(setting.AssetBundleSavePath, sceneName);
 
 #if UNITY_EDITOR
             // 에셋 번들이 존재하지 않는 경우 코루틴 종료
             // NOTE : 게임이 완성되면 사실상 각 씬에 대해 에셋 번들이 존재할 수 밖에 없음
-            string searchPath = AssetBundleSetting.AssetBundleSavePath;
+            string searchPath = setting.AssetBundleSavePath;
             string searchPattern = sceneName.ToLower();
             string[] files = Directory.GetFiles(searchPath, searchPattern, SearchOption.AllDirectories);
             if (files.Length <= 0)
@@ -330,7 +330,7 @@ namespace AT_RPG.Manager
 
             // 페이크 로딩
             float fakeLoadingElapsedTime = 0f;
-            float fakeLoadingDuration = this.fakeLoadingDuration;
+            float fakeLoadingDuration = setting.FakeLoadingDuration;
             while (fakeLoadingElapsedTime <= fakeLoadingDuration)
             {
                 fakeLoadingElapsedTime += Time.deltaTime;
@@ -377,23 +377,20 @@ namespace AT_RPG.Manager
 
         private void OnBeforeFirstSceneLoad()
         {
-            LoadAllAssetsAtScene(AssetBundleSetting.GlobalAssetBundleName);
+            LoadAllAssetsAtScene(setting.GlobalAssetBundleName);
             LoadAllAssetsAtScene(SceneManager.Instance.CurrentSceneName);
         }
     }
 
     public partial class ResourceManager
     {
-        public float FakeLoadingDuration
-        {
-            get { return fakeLoadingDuration; }
-            set { fakeLoadingDuration = value; }
-        }
-
         // 리소스 로딩중
         public bool IsLoading => isLoading;
 
         // 리소스 언로딩중
         public bool IsUnloading => isUnloading;
+
+        // 매니저 기본 설정
+        public ResourceManagerSetting Setting => setting;
     }
 }

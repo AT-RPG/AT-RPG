@@ -19,6 +19,9 @@ namespace AT_RPG.Manager
 
     public partial class SceneManager : Singleton<SceneManager>
     {
+        // 매니저 기본 설정
+        [SerializeField] private SceneManagerSetting setting;
+
         // 씬 변경 전, 호출되는 이벤트
         // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
@@ -60,16 +63,15 @@ namespace AT_RPG.Manager
         private event SceneChangedCoroutine afterSceneChangeDisposableCoroutine;
 
         // 씬 로딩중
-        [SerializeField] private bool isLoading = false;
-
-        // 매니저 설정값
-        [SerializeField] private SceneManagerSetting setting = Resources.Load<SceneManagerSetting>("SceneManagerSettings");
+        private bool isLoading = false;
 
 
 
         protected override void Awake()
         {
             base.Awake();
+
+            setting = Resources.Load<SceneManagerSetting>("SceneManagerSettings");
         }
 
 
@@ -427,6 +429,7 @@ namespace AT_RPG.Manager
         // 씬 로딩중
         public bool IsLoading => isLoading;
 
+        // 매니저 기본 설정
         public SceneManagerSetting Setting => setting;
     }
 }

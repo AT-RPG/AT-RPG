@@ -1,18 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManagerSetting : MonoBehaviour
+namespace AT_RPG
 {
-    // Start is called before the first frame update
-    void Start()
+    [CreateAssetMenu(fileName = "UIManagerSettings", menuName = "ScriptableObject/UIManager Setting")]
+    public class UIManagerSetting : ScriptableObject
     {
-        
-    }
+        // 화면을 점점 보이게 하는 효과 생성
+        public GameObject ScreenFadeInInstance;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // 화면을 점점 안보이게 하는 효과 생성
+        public GameObject ScreenFadeOutInstance;
     }
 }

@@ -1,9 +1,8 @@
-using AT_RPG;
 using UnityEngine;
 
 namespace AT_RPG
 {
-    [CreateAssetMenu(fileName = "SceneManagerSetting", menuName = "ScriptableObject/SceneManager Setting")]
+    [CreateAssetMenu(fileName = "SceneManagerSettings", menuName = "ScriptableObject/SceneManager Setting")]
     public class SceneManagerSetting : ScriptableObject
     {
         public SceneReference IntroScene;

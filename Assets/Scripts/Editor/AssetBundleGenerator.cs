@@ -10,18 +10,22 @@ namespace AT_RPG
         [MenuItem("BuildAssetBundles/Build AssetBundles")]
         public static void BuildAssetBundles()
         {
+            ResourceManagerSetting setting
+                = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
+
+
             // 스트리밍 폴더 만들기
-            if (!Directory.Exists(AssetBundleSetting.AssetBundleSavePath))
+            if (!Directory.Exists(setting.AssetBundleSavePath))
             {
-                Directory.CreateDirectory(AssetBundleSetting.AssetBundleSavePath);
+                Directory.CreateDirectory(setting.AssetBundleSavePath);
             }
 
             // 에셋 번들 빌드
-            BuildPipeline.BuildAssetBundles(AssetBundleSetting.AssetBundleSavePath, BuildAssetBundleOptions.None,
+            BuildPipeline.BuildAssetBundles(setting.AssetBundleSavePath, BuildAssetBundleOptions.None,
                 EditorUserBuildSettings.activeBuildTarget);
 
             // 함수 종료 로그
-            Debug.Log($"에셋 번들 생성 완료!, 생성 경로 : {AssetBundleSetting.AssetBundleSavePath}");
+            Debug.Log($"에셋 번들 생성 완료!, 생성 경로 : {setting.AssetBundleSavePath}");
         }
     }
 
