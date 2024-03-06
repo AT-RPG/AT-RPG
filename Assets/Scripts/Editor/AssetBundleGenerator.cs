@@ -10,9 +10,9 @@ namespace AT_RPG
         [MenuItem("BuildAssetBundles/Build AssetBundles")]
         public static void BuildAssetBundles()
         {
+            // 에셋 번들 저장 경로 불러오기
             ResourceManagerSetting setting
                 = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
-
 
             // 스트리밍 폴더 만들기
             if (!Directory.Exists(setting.AssetBundleSavePath))

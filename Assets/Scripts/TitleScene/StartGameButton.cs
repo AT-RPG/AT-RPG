@@ -1,14 +1,15 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class StartGameButton : MonoBehaviour
+public class StartGameButton : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private GameObject     startGamePopup;
+    [SerializeField] private GameObject     popupCanvasRoot;
 
     /// <summary>
-    /// 팝업을 생성 및 초기화
+    /// 버튼 클릭 시 팝업을 생성
     /// </summary>
-    /// <param name="popupCanvasInstance">팝업이 생성될 RectTransform 인스턴스</param>
-    public void OnButtonClick(GameObject popupCanvasInstance)
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (!startGamePopup)
         {
@@ -23,13 +24,13 @@ public class StartGameButton : MonoBehaviour
         }
         else
         {
-            popup.PopupCanvas = popupCanvasInstance.GetComponent<PopupCanvas>();
+            popup.PopupCanvas = popupCanvasRoot.GetComponent<PopupCanvas>();
             if (!popup.PopupCanvas)
             {
                 Debug.Log($"팝업 캔버스 인스턴스에 {nameof(popup.PopupCanvas)} Component는 필수");
             }
         }
 
-        Instantiate(startGamePopup, popupCanvasInstance.transform);    
+        Instantiate(startGamePopup, popupCanvasRoot.transform);
     }
 }

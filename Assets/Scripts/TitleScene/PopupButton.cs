@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class QuitButton : MonoBehaviour, IPointerClickHandler
+public class PopupButton : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private GameObject quitGamePopup;
+    [SerializeField] private GameObject popupInstance;
     [SerializeField] private GameObject popupCanvasRoot;
 
     /// <summary>
@@ -11,26 +11,26 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!quitGamePopup)
+        if (!popupInstance)
         {
-            Debug.Log($"{nameof(quitGamePopup)}이 설정X");
+            Debug.Log($"{nameof(popupInstance)}이 설정X");
         }
 
         // 팝업 초기화
-        Popup popup = quitGamePopup.GetComponent<Popup>();
+        Popup popup = popupInstance.GetComponent<Popup>();
         if (!popup)
         {
-            Debug.Log($"팝업 인스턴스에 {nameof(popup)} Component는 필수");
+            Debug.Log($"{nameof(popupInstance)}에 {nameof(popup)} Component는 필수");
         }
         else
         {
             popup.PopupCanvas = popupCanvasRoot.GetComponent<PopupCanvas>();
             if (!popup.PopupCanvas)
             {
-                Debug.Log($"팝업 캔버스 인스턴스에 {nameof(popup.PopupCanvas)} Component는 필수");
+                Debug.Log($"{nameof(popupCanvasRoot)}에 {nameof(popup.PopupCanvas)} Component는 필수");
             }
         }
 
-        Instantiate(quitGamePopup, popupCanvasRoot.transform);
+        Instantiate(popupInstance, popupCanvasRoot.transform);
     }
 }
