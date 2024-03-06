@@ -10,7 +10,6 @@ namespace AT_RPG.Manager
 {
     public delegate IEnumerator SceneChangedCoroutine();
 
-    [Flags]
     public enum LoadMode
     {
         Instant = 1,
@@ -68,13 +67,16 @@ namespace AT_RPG.Manager
         // 씬 로딩중
         [SerializeField] private bool isLoading = false;
 
-        // 로딩 씬
-        [SerializeField] private UnityObject loadingScene = null;
+        // 매니저 설정값
+        [SerializeField] private SceneManagerSetting setting = null;
+
+
 
         protected override void Awake()
         {
             base.Awake();
         }
+
 
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace AT_RPG.Manager
             yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
 
             // 로드 씬으로 이동
-            yield return UnitySceneManager.LoadSceneAsync(loadingScene.name);
+            yield return UnitySceneManager.LoadSceneAsync(setting.LoadingScene.SceneName);
 
             // 다음 씬 리소스 로딩
             ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
@@ -269,7 +271,7 @@ namespace AT_RPG.Manager
             yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
 
             // 로드 씬으로 이동
-            yield return UnitySceneManager.LoadSceneAsync(loadingScene.name);
+            yield return UnitySceneManager.LoadSceneAsync(setting.LoadingScene.SceneName);
 
             // 다음 씬 리소스 로딩
             ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
@@ -443,7 +445,5 @@ namespace AT_RPG.Manager
         // 씬 로딩중
         public bool IsLoading => isLoading;
 
-        // 로딩 씬
-        public UnityObject LoadingScene => loadingScene;
     }
 }

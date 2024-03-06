@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace AT_RPG
@@ -9,10 +10,14 @@ namespace AT_RPG
     [System.Serializable]
     public struct SceneReference
     {
-        [SerializeField] private string sceneName;
+        [SerializeField] public string SceneName;
 
 #if UNITY_EDITOR
-        [SerializeField] public Object editorSceneAsset;
+        [SerializeField] private Object sceneAsset;
+
+        // 리플렉션 데이터
+        public static string NameOfEditorSceneAsset => nameof(sceneAsset);
+        public static string NameOfSceneName => nameof(SceneName);
 #endif
     }
 
@@ -25,20 +30,30 @@ namespace AT_RPG
             EditorGUI.BeginProperty(position, label, property);
 
             // SceneReference을 리플렉션
-            SerializedProperty sceneName = property.FindPropertyRelative("sceneName");
-            SerializedProperty sceneAsset = property.FindPropertyRelative("editorSceneAsset");
+            SerializedProperty sceneName = property.FindPropertyRelative(SceneReference.NameOfSceneName);
+            SerializedProperty sceneAsset = property.FindPropertyRelative(SceneReference.NameOfEditorSceneAsset);
 
             // 인스펙터 변경 감지
             EditorGUI.BeginChangeCheck();
 
             // 인스펙터에서 수정한 리소스 정보를 GET
-            Object newSceneAsset = EditorGUI.ObjectField(position, label, sceneAsset.objectReferenceValue, typeof(Object), allowSceneObjects: false);
+            Object newObject 
+                = EditorGUI.ObjectField(position, label, sceneAsset.objectReferenceValue, typeof(Object), allowSceneObjects: false);
 
             // 인스펙터 변경 감지됨
             if (EditorGUI.EndChangeCheck())
             {
-                if (newSceneAsset)
+                if (newObject)
                 {
+                    // 씬 에셋인가?
+                    SceneAsset newSceneAsset = newObject as SceneAsset;
+                    if (!newSceneAsset)
+                    {
+                        Debug.LogError($"{newObject.name}은 씬 에셋이 아닙니다.");
+                        EditorGUI.EndProperty();
+                        return;
+                    }
+
                     sceneName.stringValue = newSceneAsset.name;
                     sceneAsset.objectReferenceValue = newSceneAsset;
                 }

@@ -5,9 +5,11 @@ namespace AT_RPG
 {
     public class IntroSceneEventHandler : MonoBehaviour
     {
-        public void LoadSceneTo(Object nextScene)
+        [SerializeField] private SceneReference titleScene;
+        
+        public void LoadSceneTo()
         {
-            SceneManager.Instance.LoadSceneCor(nextScene.name, LoadMode.LoadingResources);
+            SceneManager.Instance.LoadSceneCor(titleScene.SceneName, LoadMode.LoadingResources);
         }
     }
 }
