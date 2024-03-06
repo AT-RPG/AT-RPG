@@ -229,7 +229,8 @@ public class MonsterMain :  MonsterPorperty //¾Ö´Ï¸ÞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ÞÀÌÅÍ Á
   
     /// ------»ç¸Á °ü·Ã ½ºÅ©¸³Æ®---------------------------------------------------
     ///¾ÆÀÌÅÛ µå¶ø+°ñµåµå¶ø+ÇÃ·¹ÀÌ¾î¿¡°Ô ÁÖ´Â °æÇèÄ¡ ¿ä¼Ò°¡ Ãß°¡µÇ¾î¾ßÇÔ <summary>
-    /// ¸®½ºÆùº¸´Ù µð½ºÆ®·ÎÀÌ°¡ ºü¸¥°æ¿ì ¸®½ºÆùÀÌ µÇÁö¾Ê´Â Çö»ó»ý±è
+    /// ¸®½ºÆùº¸´Ù µð½ºÆ®·ÎÀÌ°¡ ºü¸¦°æ¿ì ¸®½ºÆùÄÚµå½ÇÇà±îÁö »èÁ¦µÇ¼­ ½ÇÇàµÇÁö¾ÊÀ½
+    /// µð½ºÆ®·ÎÀÌ°¡ ´õ´À¸±°æ¿ì ÆÄ±«µÇ±âÀü¿¡ ½ÃÃ¼°¡ ´ë±â»óÅÂ·Î ÀüÈ¯µÈÈÄ »èÁ¦µÇ¹ö¸²
     /// </summary>
     void monsterDead() //»ç¸Á»óÅÂ
     {
@@ -241,9 +242,11 @@ public class MonsterMain :  MonsterPorperty //¾Ö´Ï¸ÞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ÞÀÌÅÍ Á
         StartCoroutine(DelaySpwanState(State.Create, monsterSpwanTimer)); //ÀÏÁ¤½Ã°£ µô·¹ÀÌÈÄ »ý¼º»óÅÂ·Î ÀüÈ¯½ÃÅ²´Ù
         Destroy(gameObject,200.0f*Time.deltaTime); //¸ó½ºÅÍ°¡ »ç¸ÁÇÑ°æ¿ì Æ¯Á¤ÇÁ·¹ÀÓÀÌÈÄ °´Ã¼ »èÁ¦
     }
+    
     IEnumerator DelaySpwanState(State s, float m_delaytime) //Á¤ÇØÁø°ª¸¸Å­ µô·¹ÀÌÈÄ »óÅÂ¸¦ »ý¼ºÀ¸·Î º¯°æ
     {
         yield return new WaitForSeconds(m_delaytime);
+       // gameObject.SetActive(false);
         ChangeState(s);
     }
 
@@ -251,7 +254,6 @@ public class MonsterMain :  MonsterPorperty //¾Ö´Ï¸ÞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ÞÀÌÅÍ Á
     // Start is called before the first frame update
     void Start()
     {
-        //SpawnPos= transform.position; //½ÃÀÛ°ú µ¿½Ã¿¡ »ý¼ºÀ§Ä¡¸¦ ±â¾ï
         ChangeState(State.Idle); //¸ó½ºÅÍ¸¦ ´ë±â»óÅÂ·Î º¯°æ
     }
 
