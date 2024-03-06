@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2355623060
+CRC: 3953879354
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b6d02322e56c7b8aeb7d24016b47f5fc
+    Hash: 8f6e148918998db50e8b3c5202311015
   TypeTreeHash:
     serializedVersion: 2
     Hash: e67072dade9ce21a1e74807e6cc092ab
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: b6d02322e56c7b8aeb7d24016b47f5fc
+    Hash: 8f6e148918998db50e8b3c5202311015
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -34,7 +34,7 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
+- Assets/AssetBundles/Global/DummyGlobalSceneResource.prefab
 - Assets/Resources/Global/Prefabs/ScreenFadeIn.prefab
 - Assets/Resources/Global/Prefabs/ScreenFadeOut.prefab
-- Assets/Resources/Global/DummyGlobalSceneResource.prefab
 Dependencies: []
