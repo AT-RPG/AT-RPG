@@ -1,27 +1,22 @@
 ManifestFileVersion: 0
-CRC: 4156135065
+CRC: 3444507409
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6e56778e79bce14d82c98a9f80e0d3be
+    Hash: 9bbeacbfaeb8f872087e1fcf747d9c08
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b82c609a4299f941866f259eff9c3f28
+    Hash: 767148d2cba1a92a15442f2b767884c0
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 6e56778e79bce14d82c98a9f80e0d3be
+    Hash: 9bbeacbfaeb8f872087e1fcf747d9c08
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
   Script: {instanceID: 0}
-- Class: 28
-  Script: {instanceID: 0}
-- Class: 213
-  Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Resources/IntroScene/Sprites/JJAPPAL_Logo.png
-- Assets/Resources/IntroScene/DummyIntroSceneResource.prefab
+- Assets/AssetBundles/IntroScene/DummyIntroSceneResource.prefab
 Dependencies: []

@@ -42,7 +42,7 @@ namespace AT_RPG
 
             // GlobalResourceReference 리플렉션
             SerializedProperty resourceName = property.FindPropertyRelative("resourceName");
-            SerializedProperty resource = property.FindPropertyRelative("editorResourceViewer");
+            SerializedProperty resource = property.FindPropertyRelative("editorResource");
 
             // 인스펙터 변경 감지
             EditorGUI.BeginChangeCheck();
@@ -81,7 +81,7 @@ namespace AT_RPG
 
             // ResourceReference 리플렉션
             SerializedProperty resourceName = property.FindPropertyRelative("resourceName");
-            SerializedProperty resource = property.FindPropertyRelative("editorResourceViewer");
+            SerializedProperty resource = property.FindPropertyRelative("editorResource");
 
             // 인스펙터 변경 감지
             EditorGUI.BeginChangeCheck();

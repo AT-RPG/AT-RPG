@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace AT_RPG
 {
-    public partial class FadeInImage : MonoBehaviour
+    public partial class FadeInImageAnimation : MonoBehaviour
     {
         [Header("효과 설정값")]
         [Space(10)]
@@ -75,7 +75,7 @@ namespace AT_RPG
         }
     }
 
-    public partial class FadeInImage
+    public partial class FadeInImageAnimation
     {
         // 효과 지속시간
         public float Duration
