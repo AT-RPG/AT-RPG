@@ -3,8 +3,12 @@ guid: e4ad8b532fd89f5449cecf304729bfb2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
-  executionOrder: 0
+  defaultReferences:
+  - screenFadeIn: {fileID: 8790624695569528947, guid: 9afe4c117ba5a0b4582532a2d6bc277c,
+      type: 3}
+  - screenFadeOut: {fileID: 3708992337037411719, guid: 446106f6247e1c44e955fae0a7367fc5,
+      type: 3}
+  executionOrder: 100
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

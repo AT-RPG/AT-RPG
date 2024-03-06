@@ -25,9 +25,9 @@ namespace SickscoreGames.HUDNavigationSystem
 		public Image OffscreenIcon;
 
 		[Header("Distance Text")]
-		[Tooltip("(optional) Assign an onscreen distance text component.")]
+		[Tooltip("(optional) Assign an onscreen distance loadingStatusText component.")]
 		public Text OnscreenDistanceText;
-		[Tooltip("(optional) Assign an offscreen distance text component.")]
+		[Tooltip("(optional) Assign an offscreen distance loadingStatusText component.")]
 		public Text OffscreenDistanceText;
 		#endregion
 
