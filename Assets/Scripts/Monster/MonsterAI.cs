@@ -15,13 +15,13 @@ public class MonsterAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) //몬스터의 트리거 작동
     {
-        Debug.Log("트리거 엔터 진입");
+     
         if ((mask & 1 << other.gameObject.layer) != 0) //충돌한 레이어가 몬스터가 반응할 레이어인지 판단
         {
-            Debug.Log("if문 1번째 진입");
+            
             if (myTarget == null) //타겟이 없을경우
             {
-                Debug.Log("마이타겟 null 진입");
+               
                 myTarget = other.transform; //타겟을 충돌대상의 위치로 바꾼다
                 findPlayer?.Invoke(myTarget); //후에 findPlayer 함수 실행
             }
