@@ -1,11 +1,10 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace AT_RPG.Manager
 {
-    /// TODO - 캔버스가 씬에 여러개가 있는 경우 따로 처리 필요
+    /// <summary>
+    /// 모든 씬의 캔버스 설정을 동일하게 만들어주는 클래스
+    /// </summary>
     public partial class UIManager : Singleton<UIManager>
     {
         // 매니저 기본 설정

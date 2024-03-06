@@ -114,6 +114,7 @@ namespace AT_RPG.Manager
                     break;
             }
         }
+
         private IEnumerator InternalLoadScene(string sceneName)
         {
             string prevSceneName = CurrentSceneName.ToString();
@@ -121,10 +122,10 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
+            yield return WaitActionUntilIsDone(beforeSceneChangeAction);
+            yield return WaitActionUntilIsDone(beforeSceneChangeDisposableAction);
+            yield return WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine);
+            yield return WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine);
 
             // 다음 씬 리소스 로딩
             ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
@@ -161,10 +162,10 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
+            yield return WaitActionUntilIsDone(afterSceneChangeAction);
+            yield return WaitActionUntilIsDone(afterSceneChangeDisposableAction);
+            yield return WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine);
+            yield return WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine);
 
             // Disposable 이벤트 초기화
             beforeSceneChangeDisposableAction = null;
@@ -190,10 +191,10 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
+            yield return WaitActionUntilIsDone(beforeSceneChangeAction);
+            yield return WaitActionUntilIsDone(beforeSceneChangeDisposableAction);
+            yield return WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine);
+            yield return WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine);
 
             // 로드 씬으로 이동
             yield return UnitySceneManager.LoadSceneAsync(setting.LoadingScene.SceneName);
@@ -233,10 +234,10 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
+            yield return WaitActionUntilIsDone(afterSceneChangeAction);
+            yield return WaitActionUntilIsDone(afterSceneChangeDisposableAction);
+            yield return WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine);
+            yield return WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine);
 
             // Disposable 이벤트 초기화
             beforeSceneChangeDisposableAction = null;
@@ -263,10 +264,10 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
+            yield return WaitActionUntilIsDone(beforeSceneChangeAction);
+            yield return WaitActionUntilIsDone(beforeSceneChangeDisposableAction);
+            yield return WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine);
+            yield return WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine);
 
             // 로드 씬으로 이동
             yield return UnitySceneManager.LoadSceneAsync(setting.LoadingScene.SceneName);
@@ -306,10 +307,10 @@ namespace AT_RPG.Manager
 
             // 씬 변경 이벤트, 코루틴을 실행
             // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
+            yield return WaitActionUntilIsDone(afterSceneChangeAction);
+            yield return WaitActionUntilIsDone(afterSceneChangeDisposableAction);
+            yield return WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine);
+            yield return WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine);
 
             // Disposable 이벤트 초기화
             beforeSceneChangeDisposableAction = null;
