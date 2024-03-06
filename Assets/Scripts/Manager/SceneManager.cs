@@ -42,33 +42,28 @@ namespace AT_RPG.Manager
         // 씬 변경 전, 호출되는 코루틴
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event SceneChangedCoroutine beforeSceneChangeCoroutine = null;
+        private event SceneChangedCoroutine beforeSceneChangeCoroutine;
 
         // 씬 변경 전, 호출되는 단발성 코루틴
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 사용되면 Clear됨
-        private event SceneChangedCoroutine beforeSceneChangeDisposableCoroutine = null;
+        private event SceneChangedCoroutine beforeSceneChangeDisposableCoroutine;
 
         // 씬 변경 후, 호출되는 코루틴
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event SceneChangedCoroutine afterSceneChangeCoroutine = null;
+        private event SceneChangedCoroutine afterSceneChangeCoroutine;
 
         // 씬 변경 후, 호출되는 단발성 코루틴
         // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
         // NOTE2 : 사용되면 Clear됨
-        private event SceneChangedCoroutine afterSceneChangeDisposableCoroutine = null;
-
-
-        // 씬 페이크 로딩 지속 시간
-        // NOTE : 비동기 로딩에만 적용
-        [SerializeField] private float fakeLoadingDuration = 0.75f;
+        private event SceneChangedCoroutine afterSceneChangeDisposableCoroutine;
 
         // 씬 로딩중
         [SerializeField] private bool isLoading = false;
 
         // 매니저 설정값
-        [SerializeField] private SceneManagerSetting setting = null;
+        [SerializeField] private SceneManagerSetting setting = Resources.Load<SceneManagerSetting>("SceneManagerSettings");
 
 
 
@@ -150,7 +145,7 @@ namespace AT_RPG.Manager
 
                 // 페이크 로딩
                 float fakeLoadingElapsedTime = 0f;
-                float fakeLoadingDuration = this.fakeLoadingDuration;
+                float fakeLoadingDuration = setting.FakeLoadingDuration;
                 while (fakeLoadingElapsedTime <= fakeLoadingDuration)
                 {
                     fakeLoadingElapsedTime += Time.deltaTime;
@@ -222,7 +217,7 @@ namespace AT_RPG.Manager
 
                 // 페이크 로딩
                 float fakeLoadingElapsedTime = 0f;
-                float fakeLoadingDuration = this.fakeLoadingDuration;
+                float fakeLoadingDuration = setting.FakeLoadingDuration;
                 while (fakeLoadingElapsedTime <= fakeLoadingDuration)
                 {
                     fakeLoadingElapsedTime += Time.deltaTime;
@@ -258,6 +253,7 @@ namespace AT_RPG.Manager
             isLoading = false;
         }
 
+        // TODO : 세이브 로드 시스템 적용
         private IEnumerator InternalLoadSceneIncludedResourcesAndSaveDatas(string sceneName)
         {
             string prevSceneName = CurrentSceneName.ToString();
@@ -294,7 +290,7 @@ namespace AT_RPG.Manager
 
                 // 페이크 로딩
                 float fakeLoadingElapsedTime = 0f;
-                float fakeLoadingDuration = this.fakeLoadingDuration;
+                float fakeLoadingDuration = setting.FakeLoadingDuration;
                 while (fakeLoadingElapsedTime <= fakeLoadingDuration)
                 {
                     fakeLoadingElapsedTime += Time.deltaTime;
@@ -369,20 +365,6 @@ namespace AT_RPG.Manager
 
     public partial class SceneManager
     {
-        // 씬 페이크 로딩 지속 시간
-        // NOTE : 비동기 로딩에만 적용
-        public float FakeLoadingDuration
-        {
-            get
-            {
-                return fakeLoadingDuration;
-            }
-            set
-            {
-                fakeLoadingDuration = value;
-            }
-        }
-
         // 씬 변경 전, 호출되는 이벤트
         // NOTE : 이벤트가 끝나기 전까지 씬 변경X
         public Action AeforeSceneChangedEvent
@@ -445,5 +427,6 @@ namespace AT_RPG.Manager
         // 씬 로딩중
         public bool IsLoading => isLoading;
 
+        public SceneManagerSetting Setting => setting;
     }
 }

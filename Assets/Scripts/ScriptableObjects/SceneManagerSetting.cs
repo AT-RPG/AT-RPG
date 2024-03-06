@@ -10,5 +10,7 @@ namespace AT_RPG
         public SceneReference LoadingScene;
         public SceneReference TitleScene;
         public SceneReference MainScene;
+
+        public float FakeLoadingDuration = 0f;
     }
 }
