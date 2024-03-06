@@ -6,8 +6,11 @@ namespace AT_RPG
     [CreateAssetMenu(fileName = "DataManagerSettings", menuName = "ScriptableObject/DataManager Setting")]
     public class DataManagerSetting : ScriptableObject
     {
-        [ReadOnly] public static readonly string DefaultSaveFolderPath 
-            = System.IO.Path.Combine(Application.persistentDataPath, "Saves");
+        [ReadOnly] public string DefaultSaveFolderPath;
 
+        public void OnEnable()
+        {
+            DefaultSaveFolderPath = System.IO.Path.Combine(Application.persistentDataPath, "Saves");
+        }
     }
 }
