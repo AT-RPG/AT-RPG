@@ -1,40 +1,40 @@
-using AT_RPG;
-using AT_RPG.Manager;
+using System.Collections;
 using UnityEngine;
 
-#if UNITY_EDITOR
-
-public class TestManager : Singleton<TestManager>
+namespace AT_RPG.Manager
 {
-    protected override void Awake()
+    public class TestManager : Singleton<TestManager>
     {
-        base.Awake();
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
+        protected override void Awake()
         {
-            SceneManager.Instance.Load("MainScene_BJW");
+            base.Awake();
         }
 
-        if (Input.GetKeyDown(KeyCode.F2))
+        void Update()
         {
-            SceneManager.Instance.Load("MainScene_CSH");
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                SceneManager.Instance.LoadSceneCor("MainScene_BJW", LoadMode.LoadingResources);
+                Debug.Log(SceneManager.Instance);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F2))
+            {
+                SceneManager.Instance.LoadSceneCor("MainScene_CSH", LoadMode.LoadingResources);
+                Debug.Log(SceneManager.Instance);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F3))
+            {
+                SceneManager.Instance.LoadSceneCor("MainScene_IJH", LoadMode.LoadingResources);
+                Debug.Log(SceneManager.Instance);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F4))
+            {
+                SceneManager.Instance.LoadSceneCor("MainScene_JUJ", LoadMode.LoadingResources);
+                Debug.Log(SceneManager.Instance);
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            SceneManager.Instance.Load("MainScene_IJH");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            SceneManager.Instance.Load("MainScene_JUJ");
-        }
-
-
     }
 }
-
-#endif

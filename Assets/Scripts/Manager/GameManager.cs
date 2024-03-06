@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using DG.Tweening;
 
 namespace AT_RPG.Manager
 {
@@ -7,6 +9,21 @@ namespace AT_RPG.Manager
     /// </summary>
     public partial class GameManager : Singleton<GameManager>
     {
+
+        // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
+        private static event Action onBeforeFirstSceneLoadEvent;
+
+        // OnAfterFirstSceneLoadEvent()에서 실행되는 이벤트
+        private static event Action onAfterFirstSceneLoadEvent;
+
+        // 매니저
+        private static ResourceManager resourceManager = null;
+        private static SceneManager sceneManager = null;
+        private static UIManager uiManager = null;
+        private static DataManager saveLoadManager = null;
+        private static TestManager testManager = null;
+        private static InputManager inputManager = null;
+
         protected override void Awake()
         {
             base.Awake();
@@ -14,70 +31,84 @@ namespace AT_RPG.Manager
 
         private void Update()
         {
-            InputManager.OnUpdate();
+            inputManager.OnUpdate();
         }
 
-
         /// <summary>
-        /// 첫 Scene이 로드되기 전에 실행
-        /// </summary>
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
-        private static void OnBeforeSplashScreen()
-        {
-
-        }
-
-
-        /// <summary>
-        /// 첫 Scene이 로드되고, Awake()가 호출되기 전에 실행
+        /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되기 전에 실행
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void OnBeforeSceneLoad()
+        private static void OnBeforeFirstSceneLoad()
         {
-            // 매니저 초기화
-            GameManager gameManager = Instance;
+            Init();
+            DOTween.Init();
 
-            InputManager inputManager = InputManager;
-            inputManager.transform.SetParent(gameManager.transform);
-
-            ResourceManager resourceManager = ResourceManager;
-            resourceManager.transform.SetParent(gameManager.transform);
-
-            SceneManager sceneManager = SceneManager;
-            sceneManager.transform.SetParent(gameManager.transform);
-
-            UIManager uiManager = UIManager;
-            uiManager.transform.SetParent(gameManager.transform);
-
-            SaveLoadManager saveloadManager = SaveLoadManager;
-            saveloadManager.transform.SetParent(gameManager.transform);
-
-#if UNITY_EDITOR
-            TestManager testManager = TestManager;
-            testManager.transform.SetParent(gameManager.transform);
-#endif
+            onBeforeFirstSceneLoadEvent?.Invoke();
         }
 
         /// <summary>
-        /// 첫 Scene이 로드되고, Awake()가 호출되고 난 후 실행
+        /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되고 난 후 실행
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void OnAfterSceneLoad()
+        private static void OnAfterFirstSceneLoad()
         {
-            // 현재 씬의 캔버스를 가져오거나 새로 생성합니다.
-            UIManager.OnSceneChanged();
+            onAfterFirstSceneLoadEvent?.Invoke();
+        }
+
+        /// <summary>
+        /// 모든 매니저 초기화 <br/>
+        /// NOTE : 초기화 순서 중요
+        /// </summary>
+        private static void Init()
+        {
+            GameManager gameManager = GetInstance();
+
+            resourceManager = ResourceManager.GetInstance();
+            resourceManager.transform.SetParent(gameManager.transform);
+
+            sceneManager = SceneManager.GetInstance();
+            sceneManager.transform.SetParent(gameManager.transform);
+
+            uiManager = UIManager.GetInstance();
+            uiManager.transform.SetParent(gameManager.transform);
+
+            saveLoadManager = DataManager.GetInstance();
+            saveLoadManager.transform.SetParent(gameManager.transform);
+
+            testManager = TestManager.GetInstance();
+            testManager.transform.SetParent(gameManager.transform);
+
+            inputManager = InputManager.GetInstance();
+            inputManager.transform.SetParent(gameManager.transform);
         }
     }
 
     public partial class GameManager
     {
-        public static InputManager InputManager => InputManager.Instance;
-        public static ResourceManager ResourceManager => ResourceManager.Instance;
-        public static SceneManager SceneManager => SceneManager.Instance;
-        public static UIManager UIManager => UIManager.Instance;
-        public static SaveLoadManager SaveLoadManager => SaveLoadManager.Instance;
-#if UNITY_EDITOR
-        public static TestManager TestManager => TestManager.Instance;
-#endif
+        // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
+        public static Action OnBeforeFirstSceneLoadEvent
+        {
+            get
+            {
+                return onBeforeFirstSceneLoadEvent;
+            }
+            set
+            {
+                onBeforeFirstSceneLoadEvent = value;
+            }
+        }
+
+        // OnAfterFirstSceneLoadEvent()에서 실행되는 이벤트
+        public static Action OnAfterFirstSceneLoadEvent
+        {
+            get
+            {
+                return onAfterFirstSceneLoadEvent;
+            }
+            set
+            {
+                onAfterFirstSceneLoadEvent = value;
+            }
+        }
     }
 }
