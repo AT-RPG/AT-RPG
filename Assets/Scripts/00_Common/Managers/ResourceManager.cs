@@ -3,10 +3,7 @@ using System.IO;
 using UnityEngine;
 using System.Linq;
 using System.Collections;
-using AT_RPG;
-
 using UnityObject = UnityEngine.Object;
-using System.Resources;
 
 
 namespace AT_RPG.Manager
@@ -29,6 +26,7 @@ namespace AT_RPG.Manager
         private bool isUnloading = false;
 
 
+
         protected override void Awake()
         {
             base.Awake();
@@ -36,15 +34,6 @@ namespace AT_RPG.Manager
             setting = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
 
             GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
-        }
-
-        private void Start()
-        {
-            
-        }
-
-        private void Update()
-        {
         }
 
 
@@ -82,11 +71,13 @@ namespace AT_RPG.Manager
         /// </summary>
         public void LoadAllAssetsAtSceneCor(string sceneName)
         {
-            if (!isLoading)
+            if (isLoading)
             {
-                isLoading = true;
-                StartCoroutine(InternalLoadSceneAssetsCor(sceneName));
+                return;
             }
+
+            isLoading = true;
+            StartCoroutine(InternalLoadSceneAssetsCor(sceneName));
         }
 
         /// <summary>
@@ -94,51 +85,13 @@ namespace AT_RPG.Manager
         /// </summary>
         public void UnloadAllAssetsAtSceneCor(string sceneName)
         {
-            if (!isUnloading)
+            if (isUnloading)
             {
-                isUnloading = true;
-                StartCoroutine(InternalUnloadSceneAssetsCor(sceneName));
-            }
-        }
-
-        /// <summary>
-        /// 현재 씬에 로드된 리소스를 획득
-        /// </summary>
-        /// <param name="resourceName">찾을 리소스 이름</param>
-        /// <param name="isGlobal">리소스가 글로벌 번들인지</param>
-        public UnityObject Get(string resourceName, bool isGlobal)
-        {
-            UnityObject resource;
-            if (isGlobal)
-            {
-                resource = resources[setting.GlobalAssetBundleName][resourceName];
-            }
-            else
-            {
-                resource = resources[SceneManager.Instance.CurrentSceneName][resourceName];
+                return;
             }
 
-            return resource;
-        }
-
-        /// <summary>
-        /// 현재 씬에 로드된 리소스를 획득
-        /// </summary>
-        /// <param name="resourceRefer">찾을 리소스 래퍼런스</param>
-        /// <param name="isGlobal">리소스가 글로벌 번들인지</param>
-        public UnityObject Get(UnityObject resourceRefer, bool isGlobal)
-        {
-            UnityObject resource;
-            if (isGlobal)
-            {
-                resource = resources[setting.GlobalAssetBundleName][resourceRefer.name];
-            }
-            else
-            {
-                resource = resources[SceneManager.Instance.CurrentSceneName][resourceRefer.name];
-            }
-
-            return resource;
+            isUnloading = true;
+            StartCoroutine(InternalUnloadSceneAssetsCor(sceneName));
         }
 
         /// <summary>
@@ -151,11 +104,11 @@ namespace AT_RPG.Manager
             T resource;
             if (isGlobal)
             {
-                resource = resources[setting.GlobalAssetBundleName][resourceName] as T;
+                resource = resources[setting.GlobalAssetBundleName][typeof(T).Name][resourceName] as T;
             }
             else
             {
-                resource = resources[SceneManager.Instance.CurrentSceneName][resourceName] as T;
+                resource = resources[SceneManager.Instance.CurrentSceneName][typeof(T).Name][resourceName] as T;
             }
 
             return resource;
@@ -172,11 +125,11 @@ namespace AT_RPG.Manager
             T resource;
             if (isGlobal)
             {
-                resource = resources[setting.GlobalAssetBundleName][resourceRefer.name] as T;
+                resource = resources[setting.GlobalAssetBundleName][typeof(T).Name][resourceRefer.name] as T;
             }
             else
             {
-                resource = resources[SceneManager.Instance.CurrentSceneName][resourceRefer.name] as T;
+                resource = resources[SceneManager.Instance.CurrentSceneName][typeof(T).Name][resourceRefer.name] as T;
             }
 
             return resource;
@@ -187,65 +140,65 @@ namespace AT_RPG.Manager
         /// </summary>
         public UnityObject[] GetAll()
         {
-            UnityObject[] sceneResources =
-                resources[SceneManager.Instance.CurrentSceneName].Values.ToArray();
+            List<UnityObject> sceneResources = new List<UnityObject>();
 
-            return sceneResources;
+            var sceneResourceMap = resources[SceneManager.Instance.CurrentSceneName].Values;
+            foreach (var resourceType in sceneResourceMap)
+            {
+                foreach (var resource in resourceType)
+                {
+                    sceneResources.Add(resource.Value);
+                }
+            }
+
+            return sceneResources.ToArray();
         }
 
-
-
+        /// <summary>
+        /// 씬의 리소스 동기 로딩
+        /// </summary>
         private void InternalLoadSceneAsset(string sceneName)
         {
             // 번들 위치
             string assetBundlePath = Path.Combine(setting.AssetBundleSavePath, sceneName);
 
-#if UNITY_EDITOR
-            // 에셋 번들이 존재하지 않는 경우 코루틴 종료
-            // NOTE : 게임이 완성되면 사실상 각 씬에 대해 에셋 번들이 존재할 수 밖에 없음
-            string searchPath = setting.AssetBundleSavePath;
-            string searchPattern = sceneName.ToLower();
-            string[] files = Directory.GetFiles(searchPath, searchPattern, SearchOption.AllDirectories);
-            if (files.Length <= 0)
-            {
-                Debug.LogWarning($"씬에 사용되는 에셋 번들이 없습니다. 필요 에셋 번들 : {sceneName}");
-                isLoading = false;
-                return;
-            }
-#endif
-
+//#if UNITY_EDITOR
+//            // 에셋 번들이 존재하지 않는 경우 코루틴 종료
+//            // NOTE : 게임이 완성되면 사실상 각 씬에 대해 에셋 번들이 존재할 수 밖에 없음
+//            string searchPath = setting.AssetBundleSavePath;
+//            string searchPattern = sceneName.ToLower();
+//            string[] files = Directory.GetFiles(searchPath, searchPattern, SearchOption.AllDirectories);
+//            if (files.Length <= 0)
+//            {
+//                Debug.LogWarning($"씬에 사용되는 에셋 번들이 없습니다. 필요 에셋 번들 : {sceneName}");
+//                isLoading = false;
+//                return;
+//            }
+//#endif
             // 에셋 번들 로드
-            AssetBundle addedAssetBundle = AssetBundle.LoadFromFile(assetBundlePath);
-            if (addedAssetBundle == null)
+            AssetBundle loadedAssetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+            if (loadedAssetBundle == null)
             {
                 Debug.LogWarning($"씬에 사용되는 에셋 번들이 없습니다. 필요 에셋 번들 : {sceneName}");
                 isLoading = false;
                 return;
             }
 
-            // 현재 씬에 번들 매핑
-            if (!bundles.ContainsKey(sceneName) || bundles[sceneName] == null)
-            {
-                bundles[sceneName] = new List<AssetBundle>();
-            }
-            bundles[sceneName].Add(addedAssetBundle);
+            // 현재 씬에 에셋 번들 매핑
+            MapAssetBundleAtScene(sceneName, loadedAssetBundle);
 
             // 에셋 번들의 리소스 로드
-            Object[] loadedResources = addedAssetBundle.LoadAllAssets<UnityObject>();
+            Object[] loadedResources = loadedAssetBundle.LoadAllAssets<UnityObject>();
 
             // 현재 씬에 리소스 매핑
-            if (!resources.ContainsKey(sceneName) || resources[sceneName] == null)
-            {
-                resources[sceneName] = new ResourceMap();
-            }
-            foreach (var resource in loadedResources)
-            {
-                resources[sceneName][resource.name] = resource;
-            }
+            MapResourcesAtScene(sceneName, loadedResources);
 
             isLoading = false;
         }
 
+        /// <summary>
+        /// 씬의 리소스 동기 언로딩
+        /// </summary>
         private void InternalUnloadSceneAsset(string sceneName)
         {
             // 현재 씬에 로드된 에셋 번들 있음?
@@ -275,60 +228,95 @@ namespace AT_RPG.Manager
             isUnloading = false;
         }
 
+        /// <summary>
+        /// 씬의 리소스 비동기 로딩
+        /// </summary>
         private IEnumerator InternalLoadSceneAssetsCor(string sceneName)
         {
             // 번들 위치
             string assetBundlePath = Path.Combine(setting.AssetBundleSavePath, sceneName);
 
-#if UNITY_EDITOR
-            // 에셋 번들이 존재하지 않는 경우 코루틴 종료
-            // NOTE : 게임이 완성되면 사실상 각 씬에 대해 에셋 번들이 존재할 수 밖에 없음
-            string searchPath = setting.AssetBundleSavePath;
-            string searchPattern = sceneName.ToLower();
-            string[] files = Directory.GetFiles(searchPath, searchPattern, SearchOption.AllDirectories);
-            if (files.Length <= 0)
-            {
-                Debug.LogWarning($"씬에 사용되는 에셋 번들이 없습니다. 필요 에셋 번들 : {sceneName}");
-                isLoading = false;
-                yield break;
-            }
-#endif 
+//#if UNITY_EDITOR
+//            // 에셋 번들이 존재하지 않는 경우 코루틴 종료
+//            // NOTE : 게임이 완성되면 사실상 각 씬에 대해 에셋 번들이 존재할 수 밖에 없음
+//            string searchPath = setting.AssetBundleSavePath;
+//            string searchPattern = sceneName.ToLower();
+//            string[] files = Directory.GetFiles(searchPath, searchPattern, SearchOption.AllDirectories);
+//            if (files.Length <= 0)
+//            {
+//                Debug.LogWarning($"씬에 사용되는 에셋 번들이 없습니다. 필요 에셋 번들 : {sceneName}");
+//                isLoading = false;
+//                yield break;
+//            }
+//#endif 
             // 에셋 번들 로드
             AssetBundleCreateRequest assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
             yield return new WaitUntil(() => assetBundleRequest.isDone);
 
             
             // 현재 씬에 에셋 번들을 매핑
-            AssetBundle addedAssetBundle = assetBundleRequest.assetBundle;
-            if (addedAssetBundle == null)
+            AssetBundle loadedAssetBundle = assetBundleRequest.assetBundle;
+            if (loadedAssetBundle == null)
             {
                 Debug.LogWarning($"씬에 사용되는 에셋 번들이 없습니다. 필요 에셋 번들 : {sceneName}");
                 isLoading = false;
                 yield break;
             }
 
-            // 현재 씬에 번들 매핑
+            // 현재 씬에 에셋 번들 매핑
+            MapAssetBundleAtScene(sceneName, loadedAssetBundle);
+
+            // 에셋 번들의 리소스 로드
+            AssetBundleRequest assetRequest = loadedAssetBundle.LoadAllAssetsAsync<UnityObject>();
+            yield return new WaitUntil(() => assetRequest.isDone);
+
+            // 현재 씬에 리소스 매핑
+            MapResourcesAtScene(sceneName, assetRequest.allAssets);
+
+            // 페이크 로딩
+            yield return LoadFakeDuration();
+
+            isLoading = false;
+        }
+
+        /// <summary>
+        /// 씬에 에셋 번들을 매핑
+        /// </summary>
+        private void MapAssetBundleAtScene(string sceneName, AssetBundle loadedAssetBundle)
+        {
             if (!bundles.ContainsKey(sceneName) || bundles[sceneName] == null)
             {
                 bundles[sceneName] = new List<AssetBundle>();
             }
-            bundles[sceneName].Add(addedAssetBundle);
+            bundles[sceneName].Add(loadedAssetBundle);
+        }
 
-            // 에셋 번들의 리소스 로드
-            AssetBundleRequest assetRequest = addedAssetBundle.LoadAllAssetsAsync<UnityObject>();
-            yield return new WaitUntil(() => assetRequest.isDone);
-
-            // 현재 씬에 리소스 매핑
+        /// <summary>
+        /// 씬에 에셋 번들에서 나온 리소스들을 매핑
+        /// </summary>
+        private void MapResourcesAtScene(string sceneName, UnityObject[] loadedResources)
+        {
             if (!resources.ContainsKey(sceneName) || resources[sceneName] == null)
             {
                 resources[sceneName] = new ResourceMap();
             }
-            foreach (var resource in assetRequest.allAssets)
+            foreach (var resource in loadedResources)
             {
-                resources[sceneName][resource.name] = resource;
-            }
+                string resourceTypeName = resource.GetType().Name;
+                if (!resources[sceneName].ContainsKey(resourceTypeName))
+                {
+                    resources[sceneName][resourceTypeName] = new Dictionary<string, UnityObject>();
+                }
 
-            // 페이크 로딩
+                resources[sceneName][resourceTypeName][resource.name] = resource;
+            }
+        }
+
+        /// <summary>
+        /// 페이크 로딩
+        /// </summary>
+        private IEnumerator LoadFakeDuration()
+        {
             float fakeLoadingElapsedTime = 0f;
             float fakeLoadingDuration = setting.FakeLoadingDuration;
             while (fakeLoadingElapsedTime <= fakeLoadingDuration)
@@ -336,10 +324,11 @@ namespace AT_RPG.Manager
                 fakeLoadingElapsedTime += Time.deltaTime;
                 yield return null;
             }
-
-            isLoading = false;
         }
 
+        /// <summary>
+        /// 씬의 리소스 비동기 언로딩
+        /// </summary>
         private IEnumerator InternalUnloadSceneAssetsCor(string sceneName)
         {
             // 현재 씬에 로드된 에셋 번들 있음?
@@ -375,6 +364,9 @@ namespace AT_RPG.Manager
             yield break;
         }
 
+        /// <summary>
+        /// 게임시작 시 첫 씬의 Awake()전에 호출
+        /// </summary>
         private void OnBeforeFirstSceneLoad()
         {
             LoadAllAssetsAtScene(setting.GlobalAssetBundleName);
