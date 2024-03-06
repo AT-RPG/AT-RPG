@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2968238096
+CRC: 2081648499
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9c53b515e059e9d5e4bda4d54a589b10
+    Hash: 481c59e470b1d527b32a73412cf6ee77
   TypeTreeHash:
     serializedVersion: 2
     Hash: 767148d2cba1a92a15442f2b767884c0
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 9c53b515e059e9d5e4bda4d54a589b10
+    Hash: 481c59e470b1d527b32a73412cf6ee77
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -18,5 +18,5 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/AssetBundles/MainScene_BJW/DummyMainSceneBJWResource.prefab
+- Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWResource.prefab
 Dependencies: []

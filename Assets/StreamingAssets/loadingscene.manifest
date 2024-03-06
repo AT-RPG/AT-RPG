@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2600888562
+CRC: 2839280555
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8dddd84b6455108909965d363b05de22
+    Hash: 15e0fedea969ff61ee03b00bc65a85c1
   TypeTreeHash:
     serializedVersion: 2
     Hash: 767148d2cba1a92a15442f2b767884c0
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 8dddd84b6455108909965d363b05de22
+    Hash: 15e0fedea969ff61ee03b00bc65a85c1
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -18,5 +18,5 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/AssetBundles/LoadingScene/DummyLoadingSceneResource.prefab
+- Assets/AssetBundleResources/LoadingScene/DummyLoadingSceneResource.prefab
 Dependencies: []
