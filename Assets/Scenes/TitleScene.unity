@@ -714,19 +714,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 341617539}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 341617541}
-        m_TargetAssemblyTypeName: QuitButton, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 682761559}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &341617539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,11 +762,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 341617536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d7dea6c6a3a65449ecc6ab527fcad8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c3aadd1c875b424f92a25193553df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quitGamePopup: {fileID: 4696516987986217221, guid: 7b5f4806577864a4eaa75e49d1786039,
+  popupInstance: {fileID: 4696516987986217221, guid: 7b5f4806577864a4eaa75e49d1786039,
     type: 3}
+  popupCanvasRoot: {fileID: 302947033}
 --- !u!1 &352503491
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,19 +882,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 419198667}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 419198669}
-        m_TargetAssemblyTypeName: MultiplayerGameButton, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 682761559}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &419198667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -953,11 +930,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 419198664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d93f03e9eefc1b47a27e9482485e053, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c3aadd1c875b424f92a25193553df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplayerGamePopup: {fileID: 4696516987986217221, guid: 70027aa84e2a9a546a830f1ce8fdcced,
+  popupInstance: {fileID: 4696516987986217221, guid: 70027aa84e2a9a546a830f1ce8fdcced,
     type: 3}
+  popupCanvasRoot: {fileID: 302947033}
 --- !u!1 &444991640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,19 +1055,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 452187520}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 452187522}
-        m_TargetAssemblyTypeName: StartGameButton, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 682761559}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &452187520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1137,11 +1103,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 452187517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f623a38fb3c1b34db8452cbe17ccfb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c3aadd1c875b424f92a25193553df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGamePopup: {fileID: 4696516987986217221, guid: a1d8cc211bd7e9742b96177e51f442e4,
+  popupInstance: {fileID: 4696516987986217221, guid: a1d8cc211bd7e9742b96177e51f442e4,
     type: 3}
+  popupCanvasRoot: {fileID: 302947033}
 --- !u!1 &459209392
 GameObject:
   m_ObjectHideFlags: 0
@@ -1647,19 +1614,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1009346789}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1009346791}
-        m_TargetAssemblyTypeName: OptionButton, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 682761559}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1009346789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1707,11 +1662,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1009346786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 931631727a5c7e448a1113db6a1c11e9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c3aadd1c875b424f92a25193553df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionPopup: {fileID: 4696516987986217221, guid: f6e0880341aa9ec4a82d8387f7c07b9d,
+  popupInstance: {fileID: 4696516987986217221, guid: f6e0880341aa9ec4a82d8387f7c07b9d,
     type: 3}
+  popupCanvasRoot: {fileID: 302947033}
 --- !u!1 &1065629202
 GameObject:
   m_ObjectHideFlags: 0

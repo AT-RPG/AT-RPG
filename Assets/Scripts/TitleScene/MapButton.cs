@@ -7,6 +7,7 @@ public class MapButton : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private FadeCanvasAnimation        fadeAnimation;
     [SerializeField] private PopupCanvasAnimation       popupAnimation;
+    [SerializeField] private SceneReference             mainScene;
 
     // 더블 클릭 인터벌 변수
     private float lastClickTime = 0f;
@@ -28,6 +29,10 @@ public class MapButton : MonoBehaviour, IPointerClickHandler
         popupAnimation.StartPopup();
     }
 
+    /// <summary>
+    /// 더블 클릭 시, 씬으로 이동
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -36,7 +41,7 @@ public class MapButton : MonoBehaviour, IPointerClickHandler
             if (Time.time - lastClickTime < catchTime)
             {
                 SceneManager.Instance.LoadSceneCor(
-                    SceneManager.Instance.Setting.MainScene.SceneName,
+                    mainScene.SceneName,
                     LoadMode.LoadingResourcesAndSaveDatas
                     );
             }
