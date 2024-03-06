@@ -12,6 +12,15 @@ namespace AT_RPG
     {
         [SerializeField] private string resourceName;
         [SerializeField] public T Resource => ResourceManager.Instance.Get<T>(resourceName, false);
+            
+        public ResourceReference(Object resource)
+        {
+            resourceName = resource.name;
+
+#if UNITY_EDITOR
+            editorResource = resource;
+#endif
+        }
 
 #if UNITY_EDITOR
         [SerializeField] public Object editorResource;
@@ -26,6 +35,15 @@ namespace AT_RPG
     {
         [SerializeField] private string resourceName;
         [SerializeField] public T Resource => ResourceManager.Instance.Get<T>(resourceName, true);
+
+        public GlobalResourceReference(Object resource)
+        {
+            resourceName = resource.name;
+
+#if UNITY_EDITOR
+            editorResource = resource;
+#endif
+        }
 
 #if UNITY_EDITOR
         [SerializeField] public Object editorResource;
