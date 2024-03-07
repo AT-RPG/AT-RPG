@@ -217,7 +217,7 @@ namespace AT_RPG.Manager
         private IEnumerator InternalLoadSceneAssetsCor(string sceneName)
         {
             // 에셋 번들 로드
-            string assetBundlePath = Path.Combine(setting.AssetBundleSavePath, sceneName);
+            string assetBundlePath = Path.Combine(setting.AssetBundlesSavePath, sceneName);
             AssetBundleCreateRequest assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
             yield return new WaitUntil(() => assetBundleRequest.isDone);
 
@@ -250,7 +250,7 @@ namespace AT_RPG.Manager
         private void InternalLoadSceneAsset(string sceneName)
         {
             // 에셋 번들 로드
-            string assetBundlePath = Path.Combine(setting.AssetBundleSavePath, sceneName);
+            string assetBundlePath = Path.Combine(setting.AssetBundlesSavePath, sceneName);
             AssetBundle loadedAssetBundle = AssetBundle.LoadFromFile(assetBundlePath);
             if (loadedAssetBundle == null)
             {

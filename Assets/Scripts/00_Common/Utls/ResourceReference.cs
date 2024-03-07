@@ -15,7 +15,16 @@ namespace AT_RPG
             
         public ResourceReference(Object resource)
         {
-            resourceName = resource.name;
+            // 리소스의 래퍼런스로 이름을 사용해서 찾기 때문에
+            // (Clone)을 제거
+            if (resource.name.EndsWith("(Clone)"))
+            {
+                resourceName = resource.name.Replace("(Clone)", "");
+            }
+            else
+            {
+                resourceName = resource.name;
+            }
 
 #if UNITY_EDITOR
             editorResource = resource;
@@ -49,7 +58,7 @@ namespace AT_RPG
             if (EditorGUI.EndChangeCheck())
             {
                 if (newResource)
-                {
+                { 
                     resourceName.stringValue = newResource.name;
                     resource.objectReferenceValue = newResource;
                 }

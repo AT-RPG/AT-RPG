@@ -322,13 +322,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 198474582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaad8cac925364a43b6b9deef0a8373c, type: 3}
+  m_Script: {fileID: 11500000, guid: 16e5e2e0d57426c45b1cc387f1240bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testObj:
-    resourceName: DummyGlobalSceneResource
-    editorResource: {fileID: 1744827880115756937, guid: 779859d6810c2a249b36fade407ec925,
-      type: 3}
 --- !u!1 &226903896
 GameObject:
   m_ObjectHideFlags: 0
