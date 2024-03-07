@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3385161938
+CRC: 2117690839
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a39592f52d1632f488fbe059907625c1
+    Hash: da759f95fd45852e9a97c4da1b50109a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: fa9439fc1f100273228185a0de3fd2b8
+    Hash: 63f1d62015ad929105d2f0b40a8d0106
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: a39592f52d1632f488fbe059907625c1
+    Hash: da759f95fd45852e9a97c4da1b50109a
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -22,8 +22,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 35c295f4ab0c6284db1b557ea52a511c, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 85ed4e43a601d6e4bb9a2eb803854e33, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 66730e2239f2d2644bb4aba36a67d43d, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 222
@@ -31,8 +29,6 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
-- AssemblyName: Assembly-CSharp
-  ClassName: AT_RPG.ResourceReference`1[UnityEngine.GameObject]
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.PersistentCallGroup
 - AssemblyName: UnityEngine.UI

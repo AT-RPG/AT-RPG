@@ -215,7 +215,7 @@ namespace SickscoreGames.HUDNavigationSystem
 					layerImage.preserveAspect = true;
 					layerImage.SetNativeSize ();
 
-					// assign layer instance
+					// assign layer Instance
 					layer.instance = layerGO;
 				}
 			}

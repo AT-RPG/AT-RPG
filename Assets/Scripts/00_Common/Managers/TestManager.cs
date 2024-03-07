@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace AT_RPG.Manager
@@ -15,25 +14,27 @@ namespace AT_RPG.Manager
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 SceneManager.Instance.LoadSceneCor("MainScene_BJW", LoadMode.LoadingResources);
-                Debug.Log(SceneManager.Instance);
             }
 
             if (Input.GetKeyDown(KeyCode.F2))
             {
                 SceneManager.Instance.LoadSceneCor("MainScene_CSH", LoadMode.LoadingResources);
-                Debug.Log(SceneManager.Instance);
             }
 
             if (Input.GetKeyDown(KeyCode.F3))
             {
                 SceneManager.Instance.LoadSceneCor("MainScene_IJH", LoadMode.LoadingResources);
-                Debug.Log(SceneManager.Instance);
             }
 
             if (Input.GetKeyDown(KeyCode.F4))
             {
                 SceneManager.Instance.LoadSceneCor("MainScene_JUJ", LoadMode.LoadingResources);
-                Debug.Log(SceneManager.Instance);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                DataManager.Instance.SaveAsCor(DataManager.Instance.Setting.DefaultSaveFolderPath, "MainScene_BJW");
+                Debug.Log("세이브 성공");
             }
         }
     }

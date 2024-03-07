@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
-using UnityObject = UnityEngine.Object;
 
 
 namespace AT_RPG.Manager

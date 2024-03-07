@@ -11,6 +11,10 @@ namespace AT_RPG
         [ReadOnly] private string defaultSaveFolderPath;
         public string DefaultSaveFolderPath => defaultSaveFolderPath;
 
+        // 세이브 파일 페이크 로딩 지속 시간
+        // NOTE : 비동기 로딩에만 적용
+        public float FakeLoadingDuration = 0.75f;
+
         public void OnEnable()
         {
             defaultSaveFolderPath = Application.persistentDataPath + "/Saves";
@@ -35,6 +39,12 @@ namespace AT_RPG
                 EditorGUILayout.LabelField(nameof(script.DefaultSaveFolderPath), script.DefaultSaveFolderPath);
             }
             EditorGUI.EndDisabledGroup();
+
+            // 수정 가능 필드 정의
+            {
+                script.FakeLoadingDuration
+                    = EditorGUILayout.FloatField(nameof(script.FakeLoadingDuration), script.FakeLoadingDuration);
+            }
 
             // 변경 내용 업데이트
             serializedObject.ApplyModifiedProperties();
