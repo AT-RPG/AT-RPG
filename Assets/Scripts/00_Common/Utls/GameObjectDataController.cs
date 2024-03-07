@@ -9,7 +9,7 @@ using UnityEngine;
 /// 
 /// 사용 시 주의 사항 :                                                    <br/>
 /// 1. Prefab의 최상위 GameObject에만 부착                                  <br/>
-/// 2. Prefab이 에셋 번들의 리소스일 것
+/// 2. Prefab이 에셋 번들의 리소스여야 함
 /// 
 /// </summary>
 public class GameObjectDataController : MonoBehaviour, ISaveLoadData
@@ -17,11 +17,14 @@ public class GameObjectDataController : MonoBehaviour, ISaveLoadData
     // 게임 오브젝트의 기본 정보를 저장
     private GameObjectData gameObjectData;
 
+
+
     private void Awake()
     {
         gameObjectData = new GameObjectData(this);
-        gameObjectData.Instance = new ResourceReference<GameObject>(this.gameObject);
     }
+
+
 
     /// <summary>
     /// DataManager가 직렬화 하기 직전에 현재 상태를 저장하고 전달

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Unity.Serialization.Json;
 using System.Collections.Generic;
+using DG.Tweening;
 
 namespace AT_RPG.Manager
 {
@@ -21,8 +22,16 @@ namespace AT_RPG.Manager
         // 매니저 기본 설정
         [SerializeField] private DataManagerSetting setting;
 
-        // 세이브 파일 저장/불러오기중
+        // 세이브 파일 저장중
+        private bool isSaving = false;
+
+        // 세이브 파일 불러오기중
         private bool isLoading = false;
+
+
+        public delegate void OnLoadComplete(GameObject[] loadedGameObject);
+
+        public delegate void OnSaveComplete();
 
 
 
@@ -38,7 +47,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 현재 씬에 대한 디렉토리 + 세이브 파일 생성
         /// </summary>
-        public void SaveAsCor(string rootPath, string dirNameToSave)
+        public void SaveAsCor(string rootPath, string dirNameToSave, OnSaveComplete completeCallback)
         {
             // 디렉토리 확인
             // TODO : 파일 무결성 검사 추가
@@ -58,45 +67,43 @@ namespace AT_RPG.Manager
             StartCoroutine(InternalSaveAsCor(dirPath, FindGameObjectsToSave()));
         }
 
-        ///// <summary>
-        ///// 데이터를 읽고, GameObject를 현재Scene에 인스턴싱합니다.
-        ///// </summary>
-        //public void Load(string rootPath, string dirNameToLoad)
-        //{
-        //    // 디렉토리 확인
-        //    string dirPath = Path.Combine(rootPath, dirNameToLoad);
-        //    if (!Directory.Exists(dirPath))
-        //    {
-        //        Debug.LogError("디렉토리 찾을 수 없음 : " + dirPath);
-        //        return;
-        //    }
+        /// <summary>
+        /// 
+        /// CAUTION : ResourceManager가 씬의 리소스들을 먼저 로딩해야합니다.
+        /// </summary>
+        public void LoadCor(string rootPath, string dirNameToLoad, OnLoadComplete completeCallback)
+        {
+            // 디렉토리 확인
+            string dirPath = Path.Combine(rootPath, dirNameToLoad);
+            if (!Directory.Exists(dirPath))
+            {
+                Debug.LogError("디렉토리 찾을 수 없음 : " + dirPath);
+                return;
+            }
 
-        //    // Scene에 인스턴싱할 GameObject 배열
-        //    GameObject[] gameObjectInstances = new GameObject[filePaths.Length];
+            // 데이터 읽기 루프
+            for (int i = 0; i < filePaths.Length; i++)
+            {
+                // 파일 열기
+                using (FileStream stream = new FileStream(filePaths[i], FileMode.Open))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    // Json데이터를 통해 GameObject 생성
+                    string gameObjectDataToJson = reader.ReadToEnd();
+                    SceneSerialization.FromJsonOverride(gameObjectDataToJson, ref gameObjectInstances[i]);
+                }
+            }
 
-        //    // 데이터 읽기 루프
-        //    for (int i = 0; i < filePaths.Length; i++)
-        //    {
-        //        // 파일 열기
-        //        using (FileStream stream = new FileStream(filePaths[i], FileMode.Open))
-        //        using (StreamReader reader = new StreamReader(stream))
-        //        {
-        //            // Json데이터를 통해 GameObject 생성
-        //            string gameObjectDataToJson = reader.ReadToEnd();
-        //            SceneSerialization.FromJsonOverride(gameObjectDataToJson, ref gameObjectInstances[i]);
-        //        }
-        //    }
-
-        //    // 모든 IData.LoadData() 실행
-        //    foreach (var gameObjectInstance in gameObjectInstances)
-        //    {
-        //        var componentsToSave = FindComponentsToSave(gameObjectInstance);
-        //        foreach (var component in componentsToSave)
-        //        {
-        //            component.LoadData();
-        //        }
-        //    }
-        //}
+            // 모든 IData.LoadData() 실행
+            foreach (var gameObjectInstance in gameObjectInstances)
+            {
+                var componentsToSave = FindComponentsToSave(gameObjectInstance);
+                foreach (var component in componentsToSave)
+                {
+                    component.LoadData();
+                }
+            }
+        }
 
         /// <summary>
         /// 현재 씬에서 GameObjectData 컴포넌트를 가진 모든 GameObject들을 Json파일로 변환
