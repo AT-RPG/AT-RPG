@@ -115,6 +115,8 @@ namespace AT_RPG.Manager
             }
         }
 
+
+
         private IEnumerator InternalLoadScene(string sceneName)
         {
             string prevSceneName = CurrentSceneName.ToString();

@@ -24,46 +24,44 @@ namespace AT_RPG.Manager
 
 
 
-        ///// <summary>
-        ///// 폴더를 만들고 직렬화 대상인 현재 씬의 모든 GameObject들을 Json파일로 변환
-        ///// </summary>
-        //public void SaveAs(string rootPath, string dirNameToSave)
-        //{
-        //    // 디렉토리 확인
-        //    // TODO : 파일 무결성 검사 추가
-        //    string dirPath = System.IO.Path.Combine(rootPath, dirNameToSave);
-        //    if (!Directory.Exists(dirPath))
-        //    {
-        //        CreateDirectory(rootPath, dirNameToSave);
-        //    }
-        //    else
-        //    {
-        //        // 이전 데이터파일 제거
-        //        DeleteDirectory(rootPath, dirNameToSave);
-        //    }
+        /// <summary>
+        /// 폴더를 만들고 직렬화 대상인 현재 씬의 모든 GameObject들을 Json파일로 변환
+        /// </summary>
+        public void SaveAs(string rootPath, string dirNameToSave)
+        {
+            // 디렉토리 확인
+            // TODO : 파일 무결성 검사 추가
+            string dirPath = System.IO.Path.Combine(rootPath, dirNameToSave);
+            if (!Directory.Exists(dirPath))
+            {
+                CreateDirectory(rootPath, dirNameToSave);
+            }
+            else
+            {
+                DeleteDirectory(rootPath, dirNameToSave);
+            }
 
-        //    // 현재 씬의 모든 GameObject를 직렬화
-        //    var gameObjectsToSave = FindGameObjectsToSave();
-        //    foreach (var gameObjectToSave in gameObjectsToSave)
-        //    {
-        //        // 세이브할 파일 생성
-        //        string fileID = gameObjectToSave.GetInstanceID().ToString();
-        //        string filePath = System.IO.Path.Combine(dirPath, fileID);
-        //        using (FileStream stream = new FileStream(filePath, FileMode.Create))
-        //        using (StreamWriter writer = new StreamWriter(stream))
-        //        {
-        //            // IData.SaveData() 실행
-        //            var iDatas = FindIDatas(gameObjectToSave);
-        //            foreach (var iData in iDatas)
-        //            {
-        //                iData.SaveData();
-        //            }
+            // 현재 씬의 모든 GameObject를 직렬화
+            var gameObjectsToSave = FindGameObjectsToSave();
+            foreach (var gameObjectToSave in gameObjectsToSave)
+            {
+                // 세이브할 파일 생성
+                string fileID = gameObjectToSave.GetInstanceID().ToString();
+                string filePath = System.IO.Path.Combine(dirPath, fileID);
+                using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    // 직렬화 전, GameObject의 상태를 저장
+                    var iDatas = FindIDatas(gameObjectToSave);
+                    foreach (var iData in iDatas)
+                    {
+                        iData.SaveData();
+                    }
 
-        //            // GameObject 저장
-        //            SerializeGameObject(gameObjectToSave, writer);
-        //        }
-        //    }
-        //}
+                    SerializeGameObject(gameObjectToSave, writer);
+                }
+            }
+        }
 
         ///// <summary>
         ///// 데이터를 읽고, GameObject를 현재Scene에 인스턴싱합니다.
