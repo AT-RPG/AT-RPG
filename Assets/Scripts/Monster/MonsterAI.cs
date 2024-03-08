@@ -10,9 +10,6 @@ public class MonsterAI : MonoBehaviour
     public LayerMask mask;
     public Transform myTarget;
 
-
-
-
     private void OnTriggerEnter(Collider other) //몬스터의 트리거 작동
     {
      
