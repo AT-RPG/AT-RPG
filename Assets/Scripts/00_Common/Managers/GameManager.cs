@@ -29,11 +29,6 @@ namespace AT_RPG.Manager
             base.Awake();
         }
 
-        private void Update()
-        {
-            inputManager.OnUpdate();
-        }
-
         /// <summary>
         /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되기 전에 실행
         /// </summary>
