@@ -17,8 +17,6 @@ public class GameObjectDataController : MonoBehaviour, ISaveLoadData
     // 게임 오브젝트의 기본 정보를 저장
     private GameObjectData gameObjectData;
 
-
-
     private void Awake()
     {
         gameObjectData = new GameObjectData(this);

@@ -68,12 +68,13 @@ namespace AT_RPG.Manager
             isSaving = true;
 
             // 세이브 파일 생성
-            StartCoroutine(InternalSaveAsCor(dirPath, FindGameObjectsToSave(), completedCallback));
+            GameObject[] gameObjectsToSave = FindGameObjectsToSave();
+            StartCoroutine(InternalSaveAsCor(dirPath, gameObjectsToSave, completedCallback));
         }
 
 
         /// <summary>
-        /// 세이브 파일을 읽어서 인스턴스를 생성
+        /// 세이브 파일을 읽어서 인스턴스를 생성                                <br/>
         /// CAUTION : ResourceManager가 씬의 리소스들을 먼저 로딩해야합니다.
         /// </summary>
         public void LoadCor(
@@ -152,7 +153,7 @@ namespace AT_RPG.Manager
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     // 세이브 데이터로 인스턴스 복원
-                    var serializableDatas = DeserializeDatas(reader);
+                    List<SerializableData> serializableDatas = DeserializeDatas(reader);
                     GameObjectData gameObjectData = FindGameObjectDataAtSerializableDatas(serializableDatas);
                     GameObject loadedGameObject = LoadGameObjectFromDatas(gameObjectData, serializableDatas);
 
@@ -167,10 +168,12 @@ namespace AT_RPG.Manager
             isLoading = false;
         }
 
+
         /// <summary>
         /// 세이브 데이터로 인스턴스 복원
         /// </summary>
-        private GameObject LoadGameObjectFromDatas(GameObjectData gameObjectData, List<SerializableData> datas)
+        private GameObject LoadGameObjectFromDatas(
+            GameObjectData gameObjectData, List<SerializableData> datas)
         {
             // ResourceReference<GameObject> Instance로 인스턴싱
             // CAUTION : 이부분에서 CurrentScene이 문제가 생길 수 있음
@@ -187,6 +190,7 @@ namespace AT_RPG.Manager
 
             return loadedGameObject;
         }
+
 
         /// <summary>
         /// Json파일에서 SerializableData를 불러옵니다.
