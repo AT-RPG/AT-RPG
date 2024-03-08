@@ -5,13 +5,14 @@ using AT_RPG.Manager;
 namespace AT_RPG
 {
     /// <summary>
-    /// 에셋 번들의 리소스 레퍼런스
+    /// 에셋 번들의 리소스 레퍼런스 <br/>
+    /// 인스펙터에서 리소스를 바인딩하면 해당 리소스의 이름으로 리소스를 얻을 수 있습니다.
     /// </summary>
     [System.Serializable]
     public struct ResourceReference<T> where T : Object
     {
         [SerializeField] private string resourceName;
-        [SerializeField] public T Resource => ResourceManager.Instance.Get<T>(resourceName);
+        public T Resource => ResourceManager.Instance.Get<T>(resourceName);
             
         public ResourceReference(Object resource)
         {
@@ -32,7 +33,7 @@ namespace AT_RPG
         }
 
 #if UNITY_EDITOR
-        [SerializeField] public Object editorResource;
+        [SerializeField] private Object editorResource;
 #endif
     }
 

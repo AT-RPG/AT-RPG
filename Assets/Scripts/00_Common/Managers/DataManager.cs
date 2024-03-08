@@ -25,13 +25,17 @@ namespace AT_RPG.Manager
         // 세이브 파일 저장중
         private bool isSaving = false;
 
-        // 세이브 파일 불러오기중
+        // 세이브 파일 로딩중
         private bool isLoading = false;
 
+        // 세이브 성공 시 콜백
+        public delegate void OnSaveCompleted();
 
-        public delegate void OnLoadComplete(GameObject[] loadedGameObject);
-
-        public delegate void OnSaveComplete();
+        /// <summary>
+        /// 로드 성공 시 콜백
+        /// </summary>
+        /// <param name="loadedGameObject">로드 성공 시 반환되는 인스턴스 배열</param>
+        public delegate void OnLoadCompleted(List<GameObject> loadedGameObject);
 
 
 
@@ -45,12 +49,12 @@ namespace AT_RPG.Manager
 
 
         /// <summary>
-        /// 현재 씬에 대한 디렉토리 + 세이브 파일 생성
+        /// 현재 씬에 대한 디렉토리 + 각 세이브 대상 인스턴스 마다 세이브 파일 생성
         /// </summary>
-        public void SaveAsCor(string rootPath, string dirNameToSave, OnSaveComplete completeCallback)
+        public void SaveAsCor(
+            string rootPath, string dirNameToSave, OnSaveCompleted completedCallback)
         {
-            // 디렉토리 확인
-            // TODO : 파일 무결성 검사 추가
+            // 디렉토리 사용 가능하게 정리
             string dirPath = Path.Combine(rootPath, dirNameToSave);
             if (!Directory.Exists(dirPath))
             {
@@ -61,54 +65,46 @@ namespace AT_RPG.Manager
                 DeleteDirectory(rootPath, dirNameToSave);
             }
 
-            isLoading = true;
+            isSaving = true;
 
             // 세이브 파일 생성
-            StartCoroutine(InternalSaveAsCor(dirPath, FindGameObjectsToSave()));
+            StartCoroutine(InternalSaveAsCor(dirPath, FindGameObjectsToSave(), completedCallback));
         }
 
+
         /// <summary>
-        /// 
+        /// 세이브 파일을 읽어서 인스턴스를 생성
         /// CAUTION : ResourceManager가 씬의 리소스들을 먼저 로딩해야합니다.
         /// </summary>
-        public void LoadCor(string rootPath, string dirNameToLoad, OnLoadComplete completeCallback)
+        public void LoadCor(
+            string rootPath, string dirNameToLoad, OnLoadCompleted completedCallback)
         {
-            // 디렉토리 확인
+            // 인스턴스 세이브 파일들 불러오기
             string dirPath = Path.Combine(rootPath, dirNameToLoad);
+            string[] filePaths;
             if (!Directory.Exists(dirPath))
             {
                 Debug.LogError("디렉토리 찾을 수 없음 : " + dirPath);
                 return;
             }
-
-            // 데이터 읽기 루프
-            for (int i = 0; i < filePaths.Length; i++)
+            else
             {
-                // 파일 열기
-                using (FileStream stream = new FileStream(filePaths[i], FileMode.Open))
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    // Json데이터를 통해 GameObject 생성
-                    string gameObjectDataToJson = reader.ReadToEnd();
-                    SceneSerialization.FromJsonOverride(gameObjectDataToJson, ref gameObjectInstances[i]);
-                }
+                filePaths = Directory.GetFiles(dirPath);
             }
 
-            // 모든 IData.LoadData() 실행
-            foreach (var gameObjectInstance in gameObjectInstances)
-            {
-                var componentsToSave = FindComponentsToSave(gameObjectInstance);
-                foreach (var component in componentsToSave)
-                {
-                    component.LoadData();
-                }
-            }
+            isLoading = true;
+
+            // 세이브된 인스턴스 배열 생성
+            StartCoroutine(InternalLoadCor(filePaths, completedCallback));
         }
+
+
 
         /// <summary>
         /// 현재 씬에서 GameObjectData 컴포넌트를 가진 모든 GameObject들을 Json파일로 변환
         /// </summary>
-        private IEnumerator InternalSaveAsCor(string dirPath, GameObject[] gameObjectsToSave)
+        private IEnumerator InternalSaveAsCor(
+            string dirPath, GameObject[] gameObjectsToSave, OnSaveCompleted completedCallback)
         {
             foreach (var gameObjectToSave in gameObjectsToSave)
             {
@@ -128,23 +124,108 @@ namespace AT_RPG.Manager
                         serializableDatas.Add(iSaveLoadData.SaveData());
                     }
 
-                    SerializeGameObjectData(serializableDatas, writer);
+                    SerializeDatas(serializableDatas, writer);
                 }
 
                 yield return null;
             }
 
+            completedCallback?.Invoke();
+
+            isSaving = false;
+        }
+
+
+        /// <summary>
+        /// 세이브된 파일로 인스턴스를 생성
+        /// </summary>
+        private IEnumerator InternalLoadCor(
+            string[] filePaths, OnLoadCompleted completedCallback)
+        {
+            List<GameObject> loadedGameObjects = new List<GameObject>();
+
+            // 파일 경로는 각각 GameObject 정보를 가짐
+            foreach (var filePath in filePaths)
+            {
+                // 세이브된 파일 읽기
+                using (FileStream stream = new FileStream(filePath, FileMode.Open))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    // 세이브 데이터로 인스턴스 복원
+                    var serializableDatas = DeserializeDatas(reader);
+                    GameObjectData gameObjectData = FindGameObjectDataAtSerializableDatas(serializableDatas);
+                    GameObject loadedGameObject = LoadGameObjectFromDatas(gameObjectData, serializableDatas);
+
+                    loadedGameObjects.Add(loadedGameObject);
+                }
+
+                yield return null;
+            }
+
+            completedCallback?.Invoke(loadedGameObjects);
+
             isLoading = false;
         }
 
         /// <summary>
+        /// 세이브 데이터로 인스턴스 복원
+        /// </summary>
+        private GameObject LoadGameObjectFromDatas(GameObjectData gameObjectData, List<SerializableData> datas)
+        {
+            // ResourceReference<GameObject> Instance로 인스턴싱
+            // CAUTION : 이부분에서 CurrentScene이 문제가 생길 수 있음
+            // TODO : 인스턴싱 문제
+            GameObject loadedGameObject = Instantiate(gameObjectData.Instance.Resource);
+
+            foreach (var data in datas)
+            {
+                ILoadData saveLoad 
+                    = loadedGameObject.GetComponent(data.ComponentTypeName) as ILoadData;
+
+                saveLoad.LoadData(data);
+            }
+
+            return loadedGameObject;
+        }
+
+        /// <summary>
+        /// Json파일에서 SerializableData를 불러옵니다.
+        /// </summary>
+        private List<SerializableData> DeserializeDatas(StreamReader reader)
+        {
+            string datasToJson = reader.ReadToEnd();
+            return JsonSerialization.FromJson<List<SerializableData>>(datasToJson);
+        }   
+
+
+        /// <summary>
         /// GameObject를 Json으로 저장합니다.
         /// </summary>
-        private void SerializeGameObjectData(List<SerializableData> datas, StreamWriter writer)
+        private void SerializeDatas(List<SerializableData> datas, StreamWriter writer)
         {
             string datasToJson = JsonSerialization.ToJson(datas);
             writer.WriteLine(datasToJson);
         }
+
+
+        /// <summary>
+        /// 필수 GameObjectData를 가장 먼저 읽기 위해 사용됩니다.
+        /// </summary>
+        private GameObjectData FindGameObjectDataAtSerializableDatas(
+            List<SerializableData> datas)
+        {
+            foreach (var data in datas)
+            {
+                GameObjectData gameObjectData = data as GameObjectData;
+                if (gameObjectData != null)
+                {
+                    return gameObjectData;
+                }
+            }
+
+            return null;
+        }
+
 
         /// <summary>
         /// 게임 세이브 대상인 스크립트들을 탐색
@@ -155,6 +236,7 @@ namespace AT_RPG.Manager
                 .Where(component => component is ISaveLoadData).ToArray();
         }
 
+
         /// <summary>
         /// 게임 세이브 대상인 게임 오브젝트들을 탐색
         /// </summary>
@@ -163,6 +245,7 @@ namespace AT_RPG.Manager
             return FindObjectsOfType<GameObject>()
                 .Where(go => go.GetComponents<GameObjectDataController>().Length >= 1).ToArray();
         }
+
 
         /// <summary>
         /// 경로에 세이브 폴더를 생성
@@ -175,6 +258,7 @@ namespace AT_RPG.Manager
                 Directory.CreateDirectory(filePath);
             }
         }
+
 
         /// <summary>
         /// 경로에 있는 세이브 폴더 안에 모든 파일을 삭제
@@ -191,7 +275,10 @@ namespace AT_RPG.Manager
 
     public partial class DataManager
     {
-        // 세이브 파일 저장/불러오기중
+        // 세이브 파일 저장중
+        public bool IsSaving => isSaving;
+
+        // 세이브 파일 로딩중
         public bool IsLoading => isLoading;
 
         // 매니저 기본 설정

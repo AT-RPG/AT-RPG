@@ -33,8 +33,14 @@ namespace AT_RPG.Manager
 
             if (Input.GetKeyDown(KeyCode.F5))
             {
-                DataManager.Instance.SaveAsCor(DataManager.Instance.Setting.DefaultSaveFolderPath, "MainScene_BJW");
+                DataManager.Instance.SaveAsCor(DataManager.Instance.Setting.DefaultSaveFolderPath, "MainScene_BJW", null);
                 Debug.Log("세이브 성공");
+            }
+
+            if (Input.GetKeyDown(KeyCode.F6))
+            {
+                DataManager.Instance.LoadCor(DataManager.Instance.Setting.DefaultSaveFolderPath, "MainScene_BJW", null);
+                Debug.Log("로드 성공");
             }
         }
     }

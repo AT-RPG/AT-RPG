@@ -22,7 +22,10 @@ namespace AT_RPG
         [SerializeField] public Quaternion  LocalRotation = Quaternion.identity;
         [SerializeField] public Vector3     LocalScale = Vector3.zero;
 
+        [Obsolete] public GameObjectData()
+        {
 
+        }
 
         public GameObjectData(Component owner)
             : base(owner)
