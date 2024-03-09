@@ -371,7 +371,7 @@ namespace AT_RPG.Manager
     {
         // 씬 변경 전, 호출되는 이벤트
         // NOTE : 이벤트가 끝나기 전까지 씬 변경X
-        public Action AeforeSceneChangedEvent
+        public Action BeforeSceneChangeAction
         {
             get
             {
@@ -383,9 +383,24 @@ namespace AT_RPG.Manager
             }
         }
 
+        // 씬 변경 전, 호출되는 단발성 이벤트
+        // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
+        // NOTE2 : 사용되면 Clear됨
+        public Action BeforeSceneChangeDisposableAction
+        {
+            get
+            {
+                return beforeSceneChangeDisposableAction;
+            }
+            set
+            {
+                beforeSceneChangeDisposableAction = value;
+            }
+        }
+
         // 씬 변경 후, 호출되는 이벤트
         // NOTE : 이벤트가 끝나기 전까지 씬 변경X
-        public Action AfterSceneChangedEvent
+        public Action AfterSceneChangedAction
         {
             get
             {
@@ -394,6 +409,21 @@ namespace AT_RPG.Manager
             set
             {
                 afterSceneChangeAction = value;
+            }
+        }
+
+        // 씬 변경 후, 호출되는 단발성 이벤트
+        // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
+        // NOTE2 : 사용되면 Clear됨
+        public Action AfterSceneChangeDisposableAction
+        {
+            get
+            {
+                return afterSceneChangeDisposableAction;
+            }
+            set
+            {
+                afterSceneChangeDisposableAction = value;
             }
         }
 
@@ -411,6 +441,21 @@ namespace AT_RPG.Manager
             }
         }
 
+        // 씬 변경 전, 호출되는 단발성 코루틴
+        // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
+        // NOTE2 : 사용되면 Clear됨
+        public SceneChangedCoroutine BeforeSceneChangeDisposableCoroutine
+        {
+            get
+            {
+                return beforeSceneChangeDisposableCoroutine;
+            }
+            set
+            {
+                beforeSceneChangeDisposableCoroutine = value;
+            }
+        }
+
         // 씬 변경 후, 호출되는 코루틴
         // NOTE : 코루틴이 끝나기 전까지 씬 변경X
         public SceneChangedCoroutine AfterSceneChangedCoroutine
@@ -422,6 +467,21 @@ namespace AT_RPG.Manager
             set
             {
                 afterSceneChangeCoroutine = value;
+            }
+        }
+
+        // 씬 변경 후, 호출되는 단발성 코루틴
+        // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
+        // NOTE2 : 사용되면 Clear됨
+        public SceneChangedCoroutine AfterSceneChangeDisposableCoroutine
+        {
+            get
+            {
+                return afterSceneChangeDisposableCoroutine;
+            }
+            set
+            {
+                afterSceneChangeDisposableCoroutine = value;
             }
         }
 

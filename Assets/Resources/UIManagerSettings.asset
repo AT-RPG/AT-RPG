@@ -16,3 +16,5 @@ MonoBehaviour:
     type: 3}
   ScreenFadeOutInstance: {fileID: 3708992337037411719, guid: 446106f6247e1c44e955fae0a7367fc5,
     type: 3}
+  CanvasScalerSettingReference: {fileID: 6770727359822687992, guid: d5521c5a9b68f1b4ea98c2431918531a,
+    type: 3}

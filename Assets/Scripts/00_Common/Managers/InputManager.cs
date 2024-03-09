@@ -85,6 +85,21 @@ namespace AT_RPG.Manager
         }
 
         /// <summary>
+        /// 키 설정에서 키를 변경합니다.
+        /// </summary>
+        public void EditKeyMap(string keyName, InputMappingContext inputMappingContext)
+        {
+            if (!IsKeyRegistered(keyName))
+            {
+                return;
+            }
+
+            keyActionsMap[keyName] = inputMappingContext;
+        }
+
+
+
+        /// <summary>
         /// 키 이름에 바인딩 된 액션들을 실행합니다.
         /// </summary>
         private void InvokeKeyActions()
@@ -184,7 +199,7 @@ namespace AT_RPG.Manager
         }
 
         /// <summary>
-        /// 값을 -1, 0, 1로 치환합니다.
+        /// Float값을 -1, 0, 1로 정규화합니다.
         /// </summary>
         private float GetFloatRaw(float value)
         {
@@ -200,19 +215,6 @@ namespace AT_RPG.Manager
             {
                 return 0f;
             }
-        }
-
-        /// <summary>
-        /// 키 설정에서 키를 변경합니다.
-        /// </summary>
-        public void EditKeyMap(string keyName, InputMappingContext inputMappingContext)
-        {
-            if (!IsKeyRegistered(keyName))
-            {
-                return;
-            }
-
-            keyActionsMap[keyName] = inputMappingContext;
         }
 
         /// <summary>

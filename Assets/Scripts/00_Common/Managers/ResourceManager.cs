@@ -38,7 +38,7 @@ namespace AT_RPG.Manager
 
             setting = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
 
-            GameManager.OnBeforeFirstSceneLoadEvent += OnBeforeFirstSceneLoad;
+            GameManager.BeforeFirstSceneLoadAction += OnBeforeFirstSceneLoad;
         }
 
 

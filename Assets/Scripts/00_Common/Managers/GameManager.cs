@@ -11,10 +11,10 @@ namespace AT_RPG.Manager
     {
 
         // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
-        private static event Action onBeforeFirstSceneLoadEvent;
+        private static event Action beforeFirstSceneLoadAction;
 
-        // OnAfterFirstSceneLoadEvent()에서 실행되는 이벤트
-        private static event Action onAfterFirstSceneLoadEvent;
+        // AfterFirstSceneLoadAction()에서 실행되는 이벤트
+        private static event Action afterFirstSceneLoadAction;
 
         // 매니저
         private static ResourceManager resourceManager = null;
@@ -38,7 +38,7 @@ namespace AT_RPG.Manager
             Init();
             DOTween.Init();
 
-            onBeforeFirstSceneLoadEvent?.Invoke();
+            beforeFirstSceneLoadAction?.Invoke();
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace AT_RPG.Manager
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void OnAfterFirstSceneLoad()
         {
-            onAfterFirstSceneLoadEvent?.Invoke();
+            afterFirstSceneLoadAction?.Invoke();
         }
 
         /// <summary>
@@ -81,28 +81,28 @@ namespace AT_RPG.Manager
     public partial class GameManager
     {
         // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
-        public static Action OnBeforeFirstSceneLoadEvent
+        public static Action BeforeFirstSceneLoadAction
         {
             get
             {
-                return onBeforeFirstSceneLoadEvent;
+                return beforeFirstSceneLoadAction;
             }
             set
             {
-                onBeforeFirstSceneLoadEvent = value;
+                beforeFirstSceneLoadAction = value;
             }
         }
 
-        // OnAfterFirstSceneLoadEvent()에서 실행되는 이벤트
-        public static Action OnAfterFirstSceneLoadEvent
+        // AfterFirstSceneLoadAction()에서 실행되는 이벤트
+        public static Action AfterFirstSceneLoadAction
         {
             get
             {
-                return onAfterFirstSceneLoadEvent;
+                return afterFirstSceneLoadAction;
             }
             set
             {
-                onAfterFirstSceneLoadEvent = value;
+                afterFirstSceneLoadAction = value;
             }
         }
     }
