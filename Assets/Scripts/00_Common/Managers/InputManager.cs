@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace AT_RPG.Manager
 {
@@ -15,7 +12,7 @@ namespace AT_RPG.Manager
             {MoveBackward, new InputMappingContext(KeyCode.S, InputOption.GetKey)},
             {MoveLeft, new InputMappingContext(KeyCode.A, InputOption.GetKey)},
             {MoveRight, new InputMappingContext(KeyCode.D, InputOption.GetKey)},
-            {Crouch, new InputMappingContext(KeyCode.LeftControl, InputOption.GetKeyDown)},
+            {Crouch, new InputMappingContext(KeyCode.C, InputOption.GetKeyDown)},
             {Inventory, new InputMappingContext(KeyCode.I, InputOption.GetKeyDown)},
             {AttackFire, new InputMappingContext(KeyCode.Mouse0, InputOption.GetKey)},
             {Aim, new InputMappingContext(MouseKeyCode.MouseX | MouseKeyCode.MouseY, InputOption.GetAxis)},
@@ -120,17 +117,17 @@ namespace AT_RPG.Manager
 
             // 키 매핑에 등록된 키가 눌렸는지?
             bool isActionsTriggered = false;
-            if ((keyInputOption & InputOption.GetKeyDown) != 0 && Input.GetKeyDown(keyboardCode))
+            if ((keyInputOption == InputOption.GetKeyDown)  && Input.GetKeyDown(keyboardCode))
             {
                 isActionsTriggered = true;
             }
             else
-            if ((keyInputOption & InputOption.GetKeyUp) != 0 && Input.GetKeyUp(keyboardCode))
+            if ((keyInputOption == InputOption.GetKeyUp)  && Input.GetKeyUp(keyboardCode))
             {
                 isActionsTriggered = true;
             }
             else
-            if ((keyInputOption & InputOption.GetKey) != 0 && Input.GetKey(keyboardCode))
+            if ((keyInputOption == InputOption.GetKey) && Input.GetKey(keyboardCode))
             {
                 isActionsTriggered = true;
             }
