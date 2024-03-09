@@ -83,7 +83,7 @@ public class Demo_FreeCam : MonoBehaviour
         if (Input.GetKey(rightKey))
             move += Vector3.right * moveSpeed;
 
-        //By far the simplest solution I could come up with for moving only on the Horizontal plane - no rotation, just cache y
+        //By far the simplest solution I could come up with for moving only on the MouseX plane - no rotation, just cache y
         if (Input.GetKey(flatMoveKey))
         {
             float origY = transform.position.y;

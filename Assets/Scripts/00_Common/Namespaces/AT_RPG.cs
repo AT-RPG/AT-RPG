@@ -87,17 +87,17 @@ namespace AT_RPG
     public enum MouseKeyCode
     {
         None = 0,
-        Vertical = 1,
-        Horizontal = 2,
+        MouseY = 1,
+        MouseX = 2,
     }
 
     public enum InputOption
     {
-        GetKeyDown,       // 키를 눌렀을 때 반응
-        GetKeyUp,         // 키를 때면 반응
-        GetKey,           // 키를 누르고 있을 때 반응
-        GetAxisRaw,       // 마우스 입력값이 -1 ~ 1 사이로 반응
-        GetAxis,          // 마우스 입력값이 -1, 0, 1로 반응
+        GetKeyDown,               // 키를 눌렀을 때 반응
+        GetKeyUp,                 // 키를 때면 반응
+        GetKey,                   // 키를 누르고 있을 때 반응
+        GetAxisRaw,        // 마우스 입력값이 -1 ~ 1 사이로 반응
+        GetAxis,           // 마우스 입력값이 -1, 0, 1로 반응
     }
 
     public struct InputKeyCode
@@ -152,7 +152,7 @@ namespace AT_RPG
             ValueType = type;
         }
 
-        public T Get<T>()
+        public T GetValue<T>()
         {
             if (Value is T)
             {

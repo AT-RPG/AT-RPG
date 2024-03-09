@@ -1,6 +1,5 @@
 using AT_RPG;
 using AT_RPG.Manager;
-using System.Collections;
 using UnityEngine;
 
 public class TestInputManager : MonoBehaviour
@@ -8,12 +7,14 @@ public class TestInputManager : MonoBehaviour
     private void Awake()
     {
         InputManager.Instance.AddKeyAction(InputManager.MoveLeft, OnTestAKeyDown);
+        InputManager.Instance.AddKeyAction(InputManager.Aim, OnTestMouseKeyDown);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnDestroy()
     {
-        StartCoroutine(OnEraseTestAKeyDown());
+        InputManager.Instance.RemoveKeyAction(InputManager.MoveLeft, OnTestAKeyDown);
+        InputManager.Instance.RemoveKeyAction(InputManager.Aim, OnTestMouseKeyDown);
+
     }
 
     // Update is called once per frame
@@ -22,18 +23,14 @@ public class TestInputManager : MonoBehaviour
         
     }
 
-    private IEnumerator OnEraseTestAKeyDown()
-    {
-        float time = 4;
-        Debug.Log($"{time}초 뒤에 A키가 블락됩니다.");
-
-        yield return new WaitForSeconds(time);
-
-        InputManager.Instance.EraseKeyAction(InputManager.MoveLeft, OnTestAKeyDown);
-    }
-
     private void OnTestAKeyDown(InputValue value)
     {
-        Debug.Log("InputManager A키 입력 테스트");
+        Debug.Log($"InputManager A키 입력 테스트 : {value.GetValue<bool>()}");
+    }
+
+    private void OnTestMouseKeyDown(InputValue value)
+    {
+        Vector2 inputAxis = value.GetValue<Vector2>();
+        Debug.Log($"InputManager 마우스 입력 테스트 : {inputAxis.x}, {inputAxis.y}");
     }
 }

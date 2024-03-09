@@ -119,8 +119,8 @@ namespace Suntail
                 _velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
             }
             
-            _horizontalMovement = Input.GetAxis("Horizontal");
-            _verticalMovement = Input.GetAxis("Vertical");
+            _horizontalMovement = Input.GetAxis("MouseX");
+            _verticalMovement = Input.GetAxis("MouseY");
 
             _moveDirection = transform.forward * _verticalMovement + transform.right * _horizontalMovement;
             

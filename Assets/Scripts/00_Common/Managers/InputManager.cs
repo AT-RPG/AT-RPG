@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
@@ -17,7 +18,7 @@ namespace AT_RPG.Manager
             {Crouch, new InputMappingContext(KeyCode.LeftControl, InputOption.GetKeyDown)},
             {Inventory, new InputMappingContext(KeyCode.I, InputOption.GetKeyDown)},
             {AttackFire, new InputMappingContext(KeyCode.Mouse0, InputOption.GetKey)},
-            {Aim, new InputMappingContext(MouseKeyCode.Vertical | MouseKeyCode.Horizontal, InputOption.GetKeyDown)},
+            {Aim, new InputMappingContext(MouseKeyCode.MouseX | MouseKeyCode.MouseY, InputOption.GetAxis)},
             {Jump, new InputMappingContext(KeyCode.Space, InputOption.GetKeyDown)},
             {Equipment1, new InputMappingContext(KeyCode.Alpha1, InputOption.GetKeyDown)},
             {Equipment2, new InputMappingContext(KeyCode.Alpha2, InputOption.GetKeyDown)},
@@ -41,39 +42,53 @@ namespace AT_RPG.Manager
 
 
         /// <summary>
-        /// 해당 키에 새로운 액션을 바인딩합니다.
+        /// 해당 키 이름에 새로운 액션을 바인딩합니다.
         /// </summary>
-        public void AddKeyAction(string actionName, Action<InputValue> actionToAdd)
+        public void AddKeyAction(string keyName, Action<InputValue> actionToAdd)
         {
-            if (!IsKeyRegistered(actionName))
+            if (!IsKeyRegistered(keyName))
             {         
                 return;
             }
 
             // 변경사항 적용
-            Action<InputValue> newKeyAction = keyActionsMap[actionName].KeyAction;
+            Action<InputValue> newKeyAction = keyActionsMap[keyName].KeyAction;
             newKeyAction += actionToAdd;
-            keyActionsMap[actionName].KeyAction = newKeyAction;
+            keyActionsMap[keyName].KeyAction = newKeyAction;
         }
 
         /// <summary>
-        /// 해당 시멘틱에 바인딩된 액션을 삭제합니다.
+        /// 해당 키 이름에 바인딩된 액션을 삭제합니다.
         /// </summary>
-        public void EraseKeyAction(string actionName, Action<InputValue> actionToErase)
+        public void RemoveKeyAction(string keyName, Action<InputValue> actionToErase)
         {
-            if (!IsKeyRegistered(actionName))
+            if (!IsKeyRegistered(keyName))
             {
                 return;
             }
 
             // 변경사항 적용
-            Action<InputValue> newKeyAction = keyActionsMap[actionName].KeyAction;
+            Action<InputValue> newKeyAction = keyActionsMap[keyName].KeyAction;
             newKeyAction -= actionToErase;
-            keyActionsMap[actionName].KeyAction = newKeyAction;
+            keyActionsMap[keyName].KeyAction = newKeyAction;
         }
 
         /// <summary>
-        /// 눌린 키에 바인딩 된 액션들을 델리게이트에 저장합니다.
+        /// 해당 키 이름에 바인딩된 액션을 교체합니다.
+        /// </summary>
+        public void ChangeKeyAction(string keyName, Action<InputValue> actionToChange)
+        {
+            if (!IsKeyRegistered(keyName))
+            {
+                return;
+            }
+
+            // 변경사항 적용
+            keyActionsMap[keyName].KeyAction = actionToChange;
+        }
+
+        /// <summary>
+        /// 키 이름에 바인딩 된 액션들을 실행합니다.
         /// </summary>
         private void InvokeKeyActions()
         {
@@ -81,55 +96,57 @@ namespace AT_RPG.Manager
             {
                 InputMappingContext inputMappingContext = keyAction.Value;
 
-                InvokeKeyboardActions(inputMappingContext);
-                InvokeMouseKeyActions(inputMappingContext);
+                // 키보드 키가 매핑되어있는지?
+                if (inputMappingContext.KeyCode.KeyboardCode != KeyCode.None)
+                {
+                    InvokeKeyboardActions(inputMappingContext);
+                }
+                else
+                // 마우스 키가 매핑되어있는지?
+                if (inputMappingContext.KeyCode.MouseKeyCode != MouseKeyCode.None)
+                {
+                    InvokeMouseKeyActions(inputMappingContext);
+                }
             }
         }
 
         /// <summary>
-        /// 키보드 키 액션들을 실행합니다.
+        /// 키보드 키 액션을 실행합니다.
         /// </summary>
         private void InvokeKeyboardActions(InputMappingContext inputMappingContext)
         {
-            // 키보드 키가 매핑되어있는지?
-            if (!inputMappingContext.KeyCode.KeyboardCode.HasValue ||
-                inputMappingContext.KeyCode.KeyboardCode == KeyCode.None)
-            {
-                return;
-            }
-
             KeyCode keyboardCode = inputMappingContext.KeyCode.KeyboardCode.Value;
             InputOption keyInputOption = inputMappingContext.KeyOption;
 
-            // 키보드 키에 바인딩된 액션 실행
+            // 키 매핑에 등록된 키가 눌렸는지?
+            bool isActionsTriggered = false;
             if ((keyInputOption & InputOption.GetKeyDown) != 0 && Input.GetKeyDown(keyboardCode))
             {
-                inputMappingContext.KeyAction?.Invoke(true);
+                isActionsTriggered = true;
             }
             else
             if ((keyInputOption & InputOption.GetKeyUp) != 0 && Input.GetKeyUp(keyboardCode))
             {
-                inputMappingContext.KeyAction?.Invoke(true);
+                isActionsTriggered = true;
             }
             else
             if ((keyInputOption & InputOption.GetKey) != 0 && Input.GetKey(keyboardCode))
+            {
+                isActionsTriggered = true;
+            }
+
+            // 키보드 키에 바인딩된 액션 실행
+            if (isActionsTriggered)
             {
                 inputMappingContext.KeyAction?.Invoke(true);
             }
         }
 
         /// <summary>
-        /// 마우스 키 액션들을 실행합니다.
+        /// 마우스 키 액션을 실행합니다.
         /// </summary>
         private void InvokeMouseKeyActions(InputMappingContext inputMappingContext)
         {
-            // 마우스 키가 매핑되어있는지?
-            if (!inputMappingContext.KeyCode.MouseKeyCode.HasValue ||
-                inputMappingContext.KeyCode.MouseKeyCode == MouseKeyCode.None)
-            {
-                return;
-            }
-
             MouseKeyCode mouseKeyCode = inputMappingContext.KeyCode.MouseKeyCode.Value;
             InputOption keyInputOption = inputMappingContext.KeyOption;
 
@@ -138,38 +155,67 @@ namespace AT_RPG.Manager
             float verticalInputValue = 0f;
             if ((keyInputOption & InputOption.GetAxisRaw) != 0)
             {
-                horizontalInputValue = Input.GetAxisRaw(nameof(MouseKeyCode.Horizontal));
-                verticalInputValue = Input.GetAxisRaw(nameof(MouseKeyCode.Vertical));
+                horizontalInputValue = GetFloatRaw(Input.GetAxisRaw("Mouse X"));
+                verticalInputValue = GetFloatRaw(Input.GetAxisRaw("Mouse Y"));
             }
             else
             if ((keyInputOption & InputOption.GetAxis) != 0)
             {
-                horizontalInputValue = Input.GetAxis(nameof(MouseKeyCode.Horizontal));
-                verticalInputValue = Input.GetAxis(nameof(MouseKeyCode.Vertical));
+                horizontalInputValue = Input.GetAxis("Mouse X");
+                verticalInputValue = Input.GetAxis("Mouse Y");
+            }
+            else
+            {
+                Debug.LogWarning($"마우스 키의 InputOption은 GetMouseUpdateRaw나 GetMouseUpdate로 해주세요");
+                return;
+            }
+
+            // 마우스가 움직였는지?
+            bool isActionsTriggered = false;
+            if (Math.Abs(horizontalInputValue) > 0 || Math.Abs(verticalInputValue) > 0)
+            {
+                isActionsTriggered = true;
             }
 
             // 마우스 키에 바인딩된 액션 실행
-            inputMappingContext.KeyAction?.Invoke(new Vector2(
-                    (mouseKeyCode & MouseKeyCode.Horizontal) != 0 ? horizontalInputValue : 0f,
-                    (mouseKeyCode & MouseKeyCode.Vertical) != 0 ? verticalInputValue : 0f
-                ));
+            if (isActionsTriggered)
+            {
+                inputMappingContext.KeyAction?.Invoke(new Vector2(
+                   (mouseKeyCode & MouseKeyCode.MouseX) != 0 ? horizontalInputValue : 0f,
+                   (mouseKeyCode & MouseKeyCode.MouseY) != 0 ? verticalInputValue : 0f));
+            }
         }
 
+        /// <summary>
+        /// 값을 -1, 0, 1로 치환합니다.
+        /// </summary>
+        private float GetFloatRaw(float value)
+        {
+            if (value < 0)
+            {
+                return -1f;
+            }
+            else if (value > 0)
+            {
+                return 1f;
+            }
+            else
+            {
+                return 0f;
+            }
+        }
 
         /// <summary>
         /// 키 설정에서 키를 변경합니다.
         /// </summary>
-        /// <param name="from">이전 키</param>
-        /// <param name="to">바꿀 키</param>
-        public void EditKeyMap(InputKeyCode from, InputKeyCode to)
+        public void EditKeyMap(string keyName, InputMappingContext inputMappingContext)
         {
-            foreach (var keySetting in keyActionsMap)
+            if (!IsKeyRegistered(keyName))
             {
-                if (keySetting.Value.KeyCode == from)
-                {
-                    keyActionsMap[keySetting.Key].KeyCode = to;
-                }
+                return;
             }
+
+            keyActionsMap[keyName] = inputMappingContext;
         }
 
         /// <summary>

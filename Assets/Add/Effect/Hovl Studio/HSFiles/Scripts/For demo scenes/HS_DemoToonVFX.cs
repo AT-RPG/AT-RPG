@@ -128,7 +128,7 @@ public class HS_DemoToonVFX : MonoBehaviour
             }
         }
 
-        particleSystems = Instance.GetComponentsInChildren<ParticleSystem>(); //Get color from current Instance 
+        particleSystems = Instance.GetComponentsInChildren<ParticleSystem>(); //GetValue color from current Instance 
         svList.Clear();
         foreach (var ps in particleSystems)
         {
