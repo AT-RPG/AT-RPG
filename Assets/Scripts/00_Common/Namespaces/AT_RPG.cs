@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using UnityEngine;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 using UnityObject = UnityEngine.Object;
 
 namespace AT_RPG
@@ -23,8 +26,151 @@ namespace AT_RPG
 
     #region InputManager
 
-    // Key1 = 키,  Key2 = 동작 이름(ex. 앞으로, 뒤로, 발사),  Value1 = 키에 바인딩되는 델리게이트
-    public class KeyMap : Dictionary<KeyCode, KeyValuePair<string, Action>> { }
+    // Key1 = 액션 이름,   Value1 = AT_RPG.InputMappingContext 클래스
+    public class KeyActionMap : Dictionary<string, InputMappingContext> 
+    {
+        /// <summary>
+        /// 맵에 KeyCode가 있는지 확인
+        /// </summary>
+        public bool ContainsKeyCode(InputKeyCode keyCode)
+        {
+            foreach (var keySetting in this)
+            {
+                if (keySetting.Value.KeyCode == keyCode)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    public class InputMappingContext
+    {
+        public InputKeyCode         KeyCode;    
+        public InputOption          KeyOption;
+        public Action<InputValue>   KeyAction;
+
+        /// <summary>
+        /// 키보드 입력 액션 생성
+        /// </summary>
+        public InputMappingContext(KeyCode keyboardCode, InputOption option, Action<InputValue> keyAction = null)
+        {
+            KeyCode = keyboardCode;
+            KeyOption = option;
+            KeyAction = keyAction;
+        }
+
+        /// <summary>
+        /// 마우스 입력 액션 생성
+        /// </summary>
+        public InputMappingContext(MouseKeyCode mouseCode, InputOption option, Action<InputValue> keyAction = null)
+        {
+            KeyCode = mouseCode;
+            KeyOption = option;
+            KeyAction = keyAction;
+        }
+
+        /// <summary>
+        /// 키 복사 + 입력 액션 생성
+        /// </summary>
+        public InputMappingContext(InputKeyCode keyCode, InputOption option, Action<InputValue> keyAction = null)
+        {
+            KeyCode = keyCode;
+            KeyOption = option;
+            KeyAction = keyAction;
+        }
+    }
+
+    [Flags]
+    public enum MouseKeyCode
+    {
+        None = 0,
+        Vertical = 1,
+        Horizontal = 2,
+    }
+
+    public enum InputOption
+    {
+        GetKeyDown,       // 키를 눌렀을 때 반응
+        GetKeyUp,         // 키를 때면 반응
+        GetKey,           // 키를 누르고 있을 때 반응
+        GetAxisRaw,       // 마우스 입력값이 -1 ~ 1 사이로 반응
+        GetAxis,          // 마우스 입력값이 -1, 0, 1로 반응
+    }
+
+    public struct InputKeyCode
+    {
+        public KeyCode? KeyboardCode { get; private set; }
+        public MouseKeyCode? MouseKeyCode { get; private set; }
+
+        private InputKeyCode(KeyCode keyboardCode) : this()
+        {
+            KeyboardCode = keyboardCode;
+            MouseKeyCode = AT_RPG.MouseKeyCode.None;
+        }
+
+        private InputKeyCode(MouseKeyCode mouseCode) : this()
+        {
+            MouseKeyCode = mouseCode;
+            KeyboardCode = KeyCode.None;
+        }
+
+        public static implicit operator InputKeyCode(KeyCode keyboardCode) => new InputKeyCode(keyboardCode);
+        public static implicit operator InputKeyCode(MouseKeyCode mouseCode) => new InputKeyCode(mouseCode);
+        public static bool operator !=(InputKeyCode lhs, InputKeyCode rhs)
+        {
+            return lhs.KeyboardCode != rhs.KeyboardCode ||
+                   lhs.MouseKeyCode != rhs.MouseKeyCode ? true : false;
+        }
+        public static bool operator ==(InputKeyCode lhs, InputKeyCode rhs)
+        {
+            return lhs.KeyboardCode == rhs.KeyboardCode && 
+                   lhs.MouseKeyCode == rhs.MouseKeyCode ? true : false;
+        }
+        public override bool Equals(object obj)
+        {
+            return obj is InputKeyCode other &&
+                   EqualityComparer<KeyCode?>.Default.Equals(KeyboardCode, other.KeyboardCode) &&
+                   EqualityComparer<MouseKeyCode?>.Default.Equals(MouseKeyCode, other.MouseKeyCode);
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(KeyboardCode, MouseKeyCode);
+        }
+    }
+
+    public struct InputValue
+    {
+        public object Value;
+        public Type ValueType;
+
+        private InputValue(object value, Type type) : this()
+        {
+            Value = value;
+            ValueType = type;
+        }
+
+        public T Get<T>()
+        {
+            if (Value is T)
+            {
+                return (T)Value;
+            }
+            else
+            {
+                Debug.LogError($"InputValue : InputValue가 {typeof(T)}로 캐스팅 할 수 없습니다. " +
+                               $"{ValueType}으로 캐스팅 해주세요.");
+                return default(T);
+            }
+        }
+
+        public static implicit operator InputValue(Vector2 value)
+            => new InputValue(value, typeof(Vector2));
+        public static implicit operator InputValue(bool value)
+            => new InputValue(value, typeof(bool));
+    }
 
     #endregion
 

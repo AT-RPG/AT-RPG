@@ -29,8 +29,8 @@ namespace SickscoreGames.ExampleScene
 		void Update ()
 		{
 			// get input
-			float mouseX = Input.GetAxis ("Mouse X");
-			float mouseY = Input.GetAxis ("Mouse Y");
+			float mouseX = Input.GetAxis ("MouseKey X");
+			float mouseY = Input.GetAxis ("MouseKey Y");
 
 			// calculate and apply rotations
 			if (axes == RotationAxes.MouseX) {

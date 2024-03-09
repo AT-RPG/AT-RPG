@@ -30,7 +30,7 @@ namespace Suntail
         [Tooltip("Gravity, pushing down controller when it jumping")]
         [SerializeField] private float gravity = -9.81f;
 
-        [Header("Mouse Look")] 
+        [Header("MouseKey Look")] 
         [SerializeField] private Camera playerCamera;
         [SerializeField] private float mouseSensivity;
         [SerializeField] private float mouseVerticalClamp;
@@ -135,8 +135,8 @@ namespace Suntail
 
         private void MouseLook()
         {   
-            _xAxis = Input.GetAxis("Mouse X"); 
-            _yAxis = Input.GetAxis("Mouse Y");
+            _xAxis = Input.GetAxis("MouseKey X"); 
+            _yAxis = Input.GetAxis("MouseKey Y");
 
             _verticalRotation += -_yAxis * mouseSensivity;
             _verticalRotation = Mathf.Clamp(_verticalRotation, -mouseVerticalClamp, mouseVerticalClamp);

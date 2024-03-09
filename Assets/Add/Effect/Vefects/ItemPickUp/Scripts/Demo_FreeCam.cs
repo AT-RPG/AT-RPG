@@ -24,9 +24,9 @@ public class Demo_FreeCam : MonoBehaviour
     Vector3 prevPos = new Vector3();
 
     [Header("Axes Names")]
-    [SerializeField, Tooltip("Otherwise known as the vertical axis")] private string mouseY = "Mouse Y";
-    [SerializeField, Tooltip("AKA horizontal axis")] private string mouseX = "Mouse X";
-    [SerializeField, Tooltip("The axis you want to use for zoom.")] private string zoomAxis = "Mouse ScrollWheel";
+    [SerializeField, Tooltip("Otherwise known as the vertical axis")] private string mouseY = "MouseKey Y";
+    [SerializeField, Tooltip("AKA horizontal axis")] private string mouseX = "MouseKey X";
+    [SerializeField, Tooltip("The axis you want to use for zoom.")] private string zoomAxis = "MouseKey ScrollWheel";
 
     [Header("Move Keys")]
     [SerializeField] private KeyCode forwardKey = KeyCode.W;

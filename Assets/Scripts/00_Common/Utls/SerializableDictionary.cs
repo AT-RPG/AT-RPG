@@ -11,7 +11,7 @@ namespace AT_RPG
     /// Unity can't serialize Dictionary so here's a custom wrapper that does. Note that you have to
     /// extend it before it can be serialized as Unity won't serialized generic-based types either.
     /// </summary>
-    /// <typeparam name="K">The key type</typeparam>
+    /// <typeparam name="K">The key KeyType;</typeparam>
     /// <typeparam name="V">The value</typeparam>
     /// <example>
     /// public sealed class MyDictionary : SerializedDictionary&lt;KeyType, ValueType&gt; {}
@@ -23,7 +23,7 @@ namespace AT_RPG
         /// Conversion to serialize a key
         /// </summary>
         /// <param name="key">The key to serialize</param>
-        /// <returns>The Key that has been serialized</returns>
+        /// <returns>The KeyboardCode that has been serialized</returns>
         public override K SerializeKey(K key) => key;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace AT_RPG
         /// Conversion to serialize a key
         /// </summary>
         /// <param name="key">The key to serialize</param>
-        /// <returns>The Key that has been serialized</returns>
+        /// <returns>The KeyboardCode that has been serialized</returns>
         public override K DeserializeKey(K key) => key;
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace AT_RPG
     /// <summary>
     /// Dictionary that can serialize keys and values as other types
     /// </summary>
-    /// <typeparam name="K">The key type</typeparam>
-    /// <typeparam name="V">The value type</typeparam>
-    /// <typeparam name="SK">The type which the key will be serialized for</typeparam>
-    /// <typeparam name="SV">The type which the value will be serialized for</typeparam>
+    /// <typeparam name="K">The key KeyType;</typeparam>
+    /// <typeparam name="V">The value KeyType;</typeparam>
+    /// <typeparam name="SK">The KeyType; which the key will be serialized for</typeparam>
+    /// <typeparam name="SV">The KeyType; which the value will be serialized for</typeparam>
     [Serializable]
     public abstract class SerializableDictionary<K, V, SK, SV> : Dictionary<K, V>, ISerializationCallbackReceiver
     {

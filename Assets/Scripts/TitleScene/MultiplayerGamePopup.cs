@@ -33,7 +33,7 @@ public class MultiplayerGamePopup : Popup
     {
         // 종료 버튼이 눌리면
         if (!isEscapePressed &&
-            Input.GetKeyDown(KeyCode.Escape))
+            Input.GetKeyDown(UnityEngine.KeyCode.Escape))
         {
             // 팝업 캔버스에 등록된 경우, Stack(순차적으로 팝업 종료)이용
             if (popupCanvas)

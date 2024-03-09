@@ -157,7 +157,7 @@ public class HS_DemoToonVFX : MonoBehaviour
         {
             currDistance = 2;
         }
-        currDistance -= Input.GetAxis("Mouse ScrollWheel") * 2;
+        currDistance -= Input.GetAxis("MouseKey ScrollWheel") * 2;
         if (Holder && (Input.GetMouseButton(0) || Input.GetMouseButton(1)))
         {
             var pos = Input.mousePosition;
@@ -168,8 +168,8 @@ public class HS_DemoToonVFX : MonoBehaviour
             if (pos.x < 380 * dpiScale && Screen.height - pos.y < 250 * dpiScale) return;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-            x += (float)(Input.GetAxis("Mouse X") * xRotate * 0.02);
-            y -= (float)(Input.GetAxis("Mouse Y") * yRotate * 0.02);
+            x += (float)(Input.GetAxis("MouseKey X") * xRotate * 0.02);
+            y -= (float)(Input.GetAxis("MouseKey Y") * yRotate * 0.02);
             y = ClampAngle(y, yMinLimit, yMaxLimit);
             var rotation = Quaternion.Euler(y, x, 0);
             var position = rotation * new Vector3(0, 0, -currDistance) + Holder.position + cameraPos;
