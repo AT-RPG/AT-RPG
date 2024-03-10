@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace AT_RPG.Manager
@@ -13,10 +12,10 @@ namespace AT_RPG.Manager
     public partial class UIManager : Singleton<UIManager>
     {
         // 매니저 기본 설정
-        [SerializeField] private UIManagerSetting setting;
+        [SerializeField] private static UIManagerSetting setting;
 
         // 현재 씬의 모든 Canvas를 저장
-        private List<Canvas> SceneCanvases = new List<Canvas>();
+        private static List<Canvas> SceneCanvases = new List<Canvas>();
 
 
 
@@ -26,26 +25,25 @@ namespace AT_RPG.Manager
 
             setting = Resources.Load<UIManagerSetting>("UIManagerSettings");
 
-            GameManager.AfterFirstSceneLoadAction += OnLoadCanvas;
-            GameManager.AfterFirstSceneLoadAction += OnSetupCanvasScalarAsSetting;
-
-            SceneManager.Instance.BeforeSceneChangeAction += OnUnLoadCanvas;
-            SceneManager.Instance.AfterSceneChangedAction += OnLoadCanvas;
-            SceneManager.Instance.AfterSceneChangedAction += OnSetupCanvasScalarAsSetting;
+            GameManager.AfterFirstSceneLoadAction += UnLoadAllCanvases;
+            GameManager.AfterFirstSceneLoadAction += LoadAllCanvases;
+            GameManager.AfterFirstSceneLoadAction += SetupAllCanvasScalarsAsSetting;
         }
+
+
 
         /// <summary>
         /// 현재 씬의 모든 Canvas 래퍼런스를 버립니다.
         /// </summary>
-        private void OnUnLoadCanvas()
+        public static void UnLoadAllCanvases()
         {
             SceneCanvases = null;
         }
 
         /// <summary>
-        /// 현재 씬의 모든 Canvas 래퍼런스를 sortingOrder 순으로 져옵니다.
+        /// 현재 씬의 모든 Canvas 래퍼런스를 Canvas.sortingOrder순으로 SceneCanvases에 저장
         /// </summary>
-        private void OnLoadCanvas()
+        public static void LoadAllCanvases()
         {
             SceneCanvases = FindObjectsOfType<Canvas>().ToList();
             if (SceneCanvases.Count >= 1)
@@ -57,7 +55,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// UI매니저 설정에 있는 CanvasScalar 래퍼런스로 현재 씬의 모든 Canvas 래퍼런스 일괄 설정
         /// </summary>
-        private void OnSetupCanvasScalarAsSetting()
+        public static void SetupAllCanvasScalarsAsSetting()
         {
             // canvasScalar에 복사할 setting의 canvasScalarReference 리플렉션 프로퍼티
             PropertyInfo[] canvasScalarSettingProperties

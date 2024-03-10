@@ -3,25 +3,28 @@ using UnityEngine;
 
 namespace AT_RPG.Manager
 {
+    /// <summary>
+    /// 정해진 액션 이름에 입력키와 구현을 바인딩합니다.
+    /// </summary>
     public partial class InputManager : Singleton<InputManager>
     {
         // 인게임 키보드 매핑에 키 값을 설정하기 위해 사용됩니다.
-        [SerializeField] private KeyActionMap keyActionsMap = new KeyActionMap()
+        [SerializeField] private static KeyActionMap keyActionsMap = new KeyActionMap()
         {
-            {MoveForward, new InputMappingContext(KeyCode.W, InputOption.GetKey)},
-            {MoveBackward, new InputMappingContext(KeyCode.S, InputOption.GetKey)},
-            {MoveLeft, new InputMappingContext(KeyCode.A, InputOption.GetKey)},
-            {MoveRight, new InputMappingContext(KeyCode.D, InputOption.GetKey)},
-            {Crouch, new InputMappingContext(KeyCode.C, InputOption.GetKeyDown)},
-            {Inventory, new InputMappingContext(KeyCode.I, InputOption.GetKeyDown)},
-            {AttackFire, new InputMappingContext(KeyCode.Mouse0, InputOption.GetKey)},
-            {Aim, new InputMappingContext(MouseKeyCode.MouseX | MouseKeyCode.MouseY, InputOption.GetAxis)},
-            {Jump, new InputMappingContext(KeyCode.Space, InputOption.GetKeyDown)},
-            {Equipment1, new InputMappingContext(KeyCode.Alpha1, InputOption.GetKeyDown)},
-            {Equipment2, new InputMappingContext(KeyCode.Alpha2, InputOption.GetKeyDown)},
-            {Equipment3, new InputMappingContext(KeyCode.Alpha3, InputOption.GetKeyDown)},
-            {Equipment4, new InputMappingContext(KeyCode.Alpha4, InputOption.GetKeyDown)},
-            {SettingUndo, new InputMappingContext(KeyCode.Escape, InputOption.GetKeyDown)}
+            {"Move Forward", new InputMappingContext(KeyCode.W, InputOption.GetKey)},
+            {"Move Backward", new InputMappingContext(KeyCode.S, InputOption.GetKey)},
+            {"Move Left", new InputMappingContext(KeyCode.A, InputOption.GetKey)},
+            {"Move Right", new InputMappingContext(KeyCode.D, InputOption.GetKey)},
+            {"Crouch", new InputMappingContext(KeyCode.C, InputOption.GetKeyDown)},
+            {"Inventory", new InputMappingContext(KeyCode.I, InputOption.GetKeyDown)},
+            {"Attack/Fire", new InputMappingContext(KeyCode.Mouse0, InputOption.GetKey)},
+            {"Aim", new InputMappingContext(MouseKeyCode.MouseX | MouseKeyCode.MouseY, InputOption.GetAxis)},
+            {"Jump", new InputMappingContext(KeyCode.Space, InputOption.GetKeyDown)},
+            {"Equipment1", new InputMappingContext(KeyCode.Alpha1, InputOption.GetKeyDown)},
+            {"Equipment2", new InputMappingContext(KeyCode.Alpha2, InputOption.GetKeyDown)},
+            {"Equipment3", new InputMappingContext(KeyCode.Alpha3, InputOption.GetKeyDown)},
+            {"Equipment4", new InputMappingContext(KeyCode.Alpha4, InputOption.GetKeyDown)},
+            {"Setting/Undo", new InputMappingContext(KeyCode.Escape, InputOption.GetKeyDown)}
         };
 
 
@@ -41,7 +44,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 해당 키 이름에 새로운 액션을 바인딩합니다.
         /// </summary>
-        public void AddKeyAction(string keyName, Action<InputValue> actionToAdd)
+        public static void AddKeyAction(string keyName, Action<InputValue> actionToAdd)
         {
             if (!IsKeyRegistered(keyName))
             {         
@@ -57,7 +60,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 해당 키 이름에 바인딩된 액션을 삭제합니다.
         /// </summary>
-        public void RemoveKeyAction(string keyName, Action<InputValue> actionToErase)
+        public static void RemoveKeyAction(string keyName, Action<InputValue> actionToErase)
         {
             if (!IsKeyRegistered(keyName))
             {
@@ -73,7 +76,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 해당 키 이름에 바인딩된 액션을 교체합니다.
         /// </summary>
-        public void ChangeKeyAction(string keyName, Action<InputValue> actionToChange)
+        public static void ChangeKeyAction(string keyName, Action<InputValue> actionToChange)
         {
             if (!IsKeyRegistered(keyName))
             {
@@ -87,7 +90,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 키 설정에서 키를 변경합니다.
         /// </summary>
-        public void EditKeyMap(string keyName, InputMappingContext inputMappingContext)
+        public static void EditKeyMap(string keyName, InputMappingContext inputMappingContext)
         {
             if (!IsKeyRegistered(keyName))
             {
@@ -102,7 +105,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 키 이름에 바인딩 된 액션들을 실행합니다.
         /// </summary>
-        private void InvokeKeyActions()
+        private static void InvokeKeyActions()
         {
             foreach (var keyAction in keyActionsMap)
             {
@@ -125,9 +128,9 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 키보드 키 액션을 실행합니다.
         /// </summary>
-        private void InvokeKeyboardActions(InputMappingContext inputMappingContext)
+        private static void InvokeKeyboardActions(InputMappingContext inputMappingContext)
         {
-            KeyCode keyboardCode = inputMappingContext.KeyCode.KeyboardCode.Value;
+            KeyCode keyboardCode = inputMappingContext.KeyCode.KeyboardCode;
             InputOption keyInputOption = inputMappingContext.KeyOption;
 
             // 키 매핑에 등록된 키가 눌렸는지?
@@ -157,9 +160,9 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 마우스 키 액션을 실행합니다.
         /// </summary>
-        private void InvokeMouseKeyActions(InputMappingContext inputMappingContext)
+        private static void InvokeMouseKeyActions(InputMappingContext inputMappingContext)
         {
-            MouseKeyCode mouseKeyCode = inputMappingContext.KeyCode.MouseKeyCode.Value;
+            MouseKeyCode mouseKeyCode = inputMappingContext.KeyCode.MouseKeyCode;
             InputOption keyInputOption = inputMappingContext.KeyOption;
 
             // 마우스 입력 값 구하기 (설정값에 따라서)
@@ -201,7 +204,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// Float값을 -1, 0, 1로 정규화합니다.
         /// </summary>
-        private float GetFloatRaw(float value)
+        private static float GetFloatRaw(float value)
         {
             if (value < 0)
             {
@@ -222,7 +225,7 @@ namespace AT_RPG.Manager
         /// </summary>
         /// <param name="keyCode">중복 확인할 키</param>
         /// <returns>키가 중복되었는지?</returns>
-        private bool IsKeyDuplicated(InputKeyCode keyCode)
+        private static bool IsKeyDuplicated(InputKeyCode keyCode)
         {
             int keyMatchedCount = 0;
             foreach (var keySetting in keyActionsMap)
@@ -241,7 +244,7 @@ namespace AT_RPG.Manager
         /// </summary>
         /// <param name="keyCode">등록 확인할 키</param>
         /// <returns>키가 등록되었는지?</returns>
-        private bool IsKeyRegistered(InputKeyCode keyCode)
+        private static bool IsKeyRegistered(InputKeyCode keyCode)
         {
             if (!keyActionsMap.ContainsKeyCode(keyCode))
             {
@@ -258,7 +261,7 @@ namespace AT_RPG.Manager
         /// </summary>
         /// <param name="keyName">등록 확인할 키</param>
         /// <returns>키가 등록되었는지?</returns>
-        private bool IsKeyRegistered(string keyName)
+        private static bool IsKeyRegistered(string keyName)
         {
             if (!keyActionsMap.ContainsKey(keyName))
             {
@@ -269,27 +272,5 @@ namespace AT_RPG.Manager
 
             return true;
         }
-    }
-
-
-    /// <summary>
-    /// 키에 매핑할 액션의 이름 정보
-    /// </summary>
-    public partial class InputManager
-    {
-        [SerializeField] public static readonly string MoveForward = "Move Forward";
-        [SerializeField] public static readonly string MoveBackward = "Move Backward";
-        [SerializeField] public static readonly string MoveLeft = "Move Left";
-        [SerializeField] public static readonly string MoveRight = "Move Right";
-        [SerializeField] public static readonly string Crouch = "Crouch";
-        [SerializeField] public static readonly string Inventory = "Inventory";
-        [SerializeField] public static readonly string AttackFire = "Attack/Fire";
-        [SerializeField] public static readonly string Aim = "Aim";
-        [SerializeField] public static readonly string Jump = "Jump";
-        [SerializeField] public static readonly string Equipment1 = "Equipment1";
-        [SerializeField] public static readonly string Equipment2 = "Equipment2";
-        [SerializeField] public static readonly string Equipment3 = "Equipment3";
-        [SerializeField] public static readonly string Equipment4 = "Equipment4";
-        [SerializeField] public static readonly string SettingUndo = "Setting/Undo";
     }
 }

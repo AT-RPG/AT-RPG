@@ -6,22 +6,16 @@ public class TestInputManager : MonoBehaviour
 {
     private void Awake()
     {
-        InputManager.Instance.AddKeyAction(InputManager.MoveLeft, OnTestAKeyDown);
-        InputManager.Instance.AddKeyAction(InputManager.Crouch, OnTestControlKeyDown);
-        InputManager.Instance.AddKeyAction(InputManager.Aim, OnTestMouseKeyDown);
+        InputManager.AddKeyAction("Move Left", OnTestAKeyDown);
+        InputManager.AddKeyAction("Crouch", OnTestControlKeyDown);
+        InputManager.AddKeyAction("Aim", OnTestMouseKeyDown);
     }
 
     private void OnDestroy()
     {
-        InputManager.Instance.RemoveKeyAction(InputManager.MoveLeft, OnTestAKeyDown);
-        InputManager.Instance.RemoveKeyAction(InputManager.Crouch, OnTestControlKeyDown);
-        InputManager.Instance.RemoveKeyAction(InputManager.Aim, OnTestMouseKeyDown);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        InputManager.RemoveKeyAction("Move Left", OnTestAKeyDown);
+        InputManager.RemoveKeyAction("Crouch", OnTestControlKeyDown);
+        InputManager.RemoveKeyAction("Aim", OnTestMouseKeyDown);
     }
 
     private void OnTestAKeyDown(InputValue value)

@@ -40,11 +40,19 @@ public class MapButton : MonoBehaviour, IPointerClickHandler
             // 더블 클릭시 씬 로딩
             if (Time.time - lastClickTime < catchTime)
             {
-                SceneManager.Instance.LoadSceneCor(
-                    mainScene.SceneName,
-                    LoadMode.LoadingResourcesAndSaveDatas
-                    );
+                string currSceneName = SceneManager.CurrentSceneName;
+                string nextSceneName = SceneManager.Setting.MainScene;
+                SceneManager.LoadScene(nextSceneName, () =>
+                {
+                    ResourceManager.LoadAllResourcesCoroutine(nextSceneName);
+                    ResourceManager.UnloadAllResourcesCoroutine(currSceneName);
+                    SceneManager.LoadSceneCoroutine(nextSceneName, () =>
+                    {
+                        return !ResourceManager.IsLoading;
+                    });
+                });
             }
+
             lastClickTime = Time.time;
         }
     }

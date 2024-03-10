@@ -11,6 +11,9 @@ namespace AT_RPG
     {
         [SerializeField] public string SceneName;
 
+        public static implicit operator string(SceneReference sceneReference)
+            => sceneReference.SceneName;
+
 #if UNITY_EDITOR
         [SerializeField] private Object sceneAsset;
 

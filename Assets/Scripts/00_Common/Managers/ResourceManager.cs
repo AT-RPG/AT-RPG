@@ -16,19 +16,25 @@ namespace AT_RPG.Manager
     public partial class ResourceManager : Singleton<ResourceManager>
     {
         // 매니저 기본 설정
-        [SerializeField] private ResourceManagerSetting setting;
+        [SerializeField] private static ResourceManagerSetting setting;
 
-        // 씬 리소스 해쉬맵
-        private SceneResourceMap resources = new SceneResourceMap();
+        // 리소스 해쉬맵
+        private static SceneResourceMap resources = new SceneResourceMap();
 
-        // 씬 에셋 번들 해쉬맵
-        private AssetBundleMap bundles = new AssetBundleMap();
+        // 에셋 번들 해쉬맵
+        private static AssetBundleMap bundles = new AssetBundleMap();
 
-        // 씬 리소스 로딩중
-        private bool isLoading = false;
+        // 리소스 언로드 대기열
+        private static Queue<UnloadRequest> unloadQueue = new Queue<UnloadRequest>();
 
-        // 씬 리소스 언로딩중 
-        private bool isUnloading = false;
+        // 리소스 로딩중
+        private static bool isLoading = false;
+
+        // 리소스 성공 시 콜백
+        public delegate void CompletedCallback();
+
+        // 시작 조건 콜백 true->로딩 시작, false->로딩 대기
+        public delegate bool StartConditionCallback();
 
 
 
@@ -41,84 +47,83 @@ namespace AT_RPG.Manager
             GameManager.BeforeFirstSceneLoadAction += OnBeforeFirstSceneLoad;
         }
 
+        private void Update()
+        {
+            ProcessUnloadQueue();
+        }
+
 
 
         /// <summary>
-        /// 씬에 모든 리소스를 비동기적으로 로드
+        /// 씬에서 사용되는 모든 리소스를 비동기적으로 로드
         /// </summary>
-        public void LoadAllAssetsAtSceneCor(string sceneName)
+        /// <param name="sceneName">리소스가 사용되는 씬 이름</param>
+        /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
+        public static void LoadAllResourcesCoroutine(
+            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
         {
             if (isLoading)
             {
+                Debug.LogError("리소스가 로딩중입니다.");
                 return;
             }
 
-            isLoading = true;
-            StartCoroutine(InternalLoadSceneAssetsCor(sceneName));
+            Instance.StartCoroutine(InternalLoadAllResourcesCoroutine(sceneName, started, completed));
         }
 
         /// <summary>
-        /// 씬에 모든 리소스를 동기적으로 로드
+        /// 씬에서 사용되는 모든 리소스를 동기적으로 로드
         /// </summary>
-        public void LoadAllAssetsAtScene(string sceneName)
+        /// <param name="sceneName">리소스가 사용되는 씬 이름</param>
+        /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
+        public static void LoadAllResources(string sceneName, CompletedCallback completed = null)
         {
             if (isLoading)
             {
+                Debug.LogError("리소스가 로딩중입니다.");
                 return;    
             }
 
-            isLoading = true;
-            InternalLoadSceneAsset(sceneName);
+            InternalLoadAllResources(sceneName, completed);
         }
 
         /// <summary>
-        /// 씬에 모든 리소스를 비동기적으로 언로드
+        /// 씬에 모든 리소스를 비동기적으로 언로드하는 요청을 보냅니다.
         /// </summary>
-        public void UnloadAllAssetsAtSceneCor(string sceneName)
+        public static void UnloadAllResourcesCoroutine(
+            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
         {
-            if (isUnloading)
-            {
-                return;
-            }
-
-            isUnloading = true;
-            StartCoroutine(InternalUnloadSceneAssetsCor(sceneName));
+            unloadQueue.Enqueue(new UnloadRequest(sceneName, started, completed));
         }
 
         /// <summary>
-        /// 씬에 모든 리소스를 동기적으로 언로드
+        /// 씬에 모든 리소스를 동기적으로 즉시 언로드합니다.
         /// </summary>
-        public void UnloadAllAssetsAtScene(string sceneName)
+        public static void UnloadAllResources(string sceneName, CompletedCallback completed = null)
         {
-            if (isUnloading)
-            {
-                return;
-            }
-
-            isUnloading = true;
-            InternalUnloadSceneAsset(sceneName);
+            InternalUnloadAllResources(sceneName, completed);
         }
 
         /// <summary>
-        /// 현재 씬에 로드된 리소스를 획득
+        /// 현재 씬에 로드된 리소스를 획득                       <br/>
+        /// NOTE : SceneManager의 CurrentSceneName을 사용      <br/>
         /// </summary>
         /// <param name="resourceName">찾을 리소스 이름</param>
-        /// <param name="isGlobal">리소스가 글로벌 번들인지</param>
-        public T Get<T>(string resourceName) where T : UnityObject
+        public static T Get<T>(string resourceName) where T : UnityObject
         {
             T resource = null;
             string typeName = typeof(T).Name;
-            string sceneName = SceneManager.Instance.CurrentSceneName;
+            string currSceneName = SceneManager.CurrentSceneName;
             string globalBundleName = setting.GlobalAssetBundleName;
 
 
             // 현재 씬에 리소스가 등록되었는지?
-            if (resources.ContainsKey(sceneName) &&
-                resources[sceneName].ContainsKey(typeName) &&
-                resources[sceneName][typeName].ContainsKey(resourceName))
+            if (resources.ContainsKey(currSceneName) &&
+                resources[currSceneName].ContainsKey(typeName) &&
+                resources[currSceneName][typeName].ContainsKey(resourceName))
             {
                 // 타입 형변환이 가능한지?
-                resource = resources[sceneName][typeName][resourceName] as T;
+                resource = resources[currSceneName][typeName][resourceName] as T;
                 if (resource)
                 {
                     return resource;
@@ -145,59 +150,13 @@ namespace AT_RPG.Manager
         }
 
         /// <summary>
-        /// 현재 씬에 로드된 리소스를 획득
+        /// 씬에 로드된 모든 리소스를 획득
         /// </summary>
-        /// <param name="resourceRefer">찾을 리소스 래퍼런스</param>
-        /// <param name="isGlobal">리소스가 글로벌 번들인지</param>
-        public T Get<T>(UnityObject resourceRefer)
-            where T : UnityObject
-        {
-            T resource = null;
-            string typeName = typeof(T).Name;
-            string sceneName = SceneManager.Instance.CurrentSceneName;
-            string globalBundleName = setting.GlobalAssetBundleName;
-
-
-            // 현재 씬에 리소스가 등록되었는지?
-            if (resources.ContainsKey(sceneName) &&
-                resources[sceneName].ContainsKey(typeName) &&
-                resources[sceneName][typeName].ContainsKey(resourceRefer.name))
-            {
-                // 타입 형변환이 가능한지?
-                resource = resources[sceneName][typeName][resourceRefer.name] as T;
-                if (resource)
-                {
-                    return resource;
-                }
-            }
-
-            // 글로벌 리소스에 등록되었는지?
-            if (resources.ContainsKey(globalBundleName) &&
-                resources[globalBundleName].ContainsKey(typeName) &&
-                resources[globalBundleName][typeName].ContainsKey(resourceRefer.name))
-            {
-                // 타입 형변환이 가능한지?
-                resource = resources[globalBundleName][typeName][resourceRefer.name] as T;
-                if (resource)
-                {
-                    return resource;
-                }
-            }
-
-            Debug.LogError($"{resourceRefer.name}를 {typeName}로 형변환 할 수 없거나" +
-                           $", 해당 씬에 리소스가 등록되지 않았습니다. {resourceRefer.name} = null을 반환합니다.");
-
-            return resource;
-        }
-
-        /// <summary>
-        /// 현재 씬에 로드된 모든 리소스를 획득
-        /// </summary>
-        public UnityObject[] GetAll()
+        public static UnityObject[] GetAll(string sceneName)
         {
             List<UnityObject> sceneResources = new List<UnityObject>();
 
-            var sceneResourceMap = resources[SceneManager.Instance.CurrentSceneName].Values;
+            var sceneResourceMap = resources[sceneName].Values;
             foreach (var resourceType in sceneResourceMap)
             {
                 foreach (var resource in resourceType)
@@ -212,10 +171,39 @@ namespace AT_RPG.Manager
 
 
         /// <summary>
+        /// 언로드 요청을 수락합니다.
+        /// </summary>
+        private static void ProcessUnloadQueue()
+        {
+            // 언로드 요청이 있음?
+            if (unloadQueue.Count <= 0)
+            {
+                return;
+            }
+
+            // 언로드 요청 수락
+            var unloadRequest = unloadQueue.Dequeue();
+            Instance.StartCoroutine(InternalUnloadAllResourcesCoroutine(
+                unloadRequest.SceneName, unloadRequest.StartCondition, unloadRequest.Completed));
+        }
+
+        /// <summary>
         /// 씬의 리소스 비동기 로딩
         /// </summary>
-        private IEnumerator InternalLoadSceneAssetsCor(string sceneName)
+        private static IEnumerator InternalLoadAllResourcesCoroutine(
+            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
         {
+            isLoading = true;
+
+            // 시작 조건
+            if (started != null)
+            {
+                while (!started.Invoke())
+                {
+                    yield return null;
+                }
+            }
+
             // 에셋 번들 로드
             string assetBundlePath = Path.Combine(setting.AssetBundlesSavePath, sceneName);
             AssetBundleCreateRequest assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
@@ -235,20 +223,23 @@ namespace AT_RPG.Manager
             yield return new WaitUntil(() => assetRequest.isDone);
 
             // 현재 씬에 리소스, 에셋 번들을 매핑
-            MapAssetBundleAtScene(sceneName, loadedAssetBundle);
+            MapAssetBundlesAtScene(sceneName, loadedAssetBundle);
             MapResourcesAtScene(sceneName, assetRequest.allAssets);
 
             // 페이크 로딩
             yield return LoadFakeDuration();
 
             isLoading = false;
+            completed?.Invoke();
         }
 
         /// <summary>
         /// 씬의 리소스 동기 로딩
         /// </summary>
-        private void InternalLoadSceneAsset(string sceneName)
+        private static void InternalLoadAllResources(string sceneName, CompletedCallback completed)
         {
+            isLoading = true;
+
             // 에셋 번들 로드
             string assetBundlePath = Path.Combine(setting.AssetBundlesSavePath, sceneName);
             AssetBundle loadedAssetBundle = AssetBundle.LoadFromFile(assetBundlePath);
@@ -263,21 +254,31 @@ namespace AT_RPG.Manager
             Object[] loadedResources = loadedAssetBundle.LoadAllAssets<UnityObject>();
 
             // 현재 씬에 리소스, 에셋 번들을 매핑
-            MapAssetBundleAtScene(sceneName, loadedAssetBundle);
+            MapAssetBundlesAtScene(sceneName, loadedAssetBundle);
             MapResourcesAtScene(sceneName, loadedResources);
 
             isLoading = false;
+            completed?.Invoke();
         }
 
         /// <summary>
         /// 씬의 리소스 비동기 언로딩
         /// </summary>
-        private IEnumerator InternalUnloadSceneAssetsCor(string sceneName)
+        private static IEnumerator InternalUnloadAllResourcesCoroutine(
+            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
         {
+            // 시작 조건
+            if (started != null)
+            {
+                while (!started.Invoke())
+                {
+                    yield return null;
+                }
+            }
+
             // 현재 씬에 에셋 번들이 있음?
             if (!bundles.ContainsKey(sceneName) || bundles[sceneName] == null)
             {
-                isUnloading = false;
                 yield break;
             }
 
@@ -300,18 +301,17 @@ namespace AT_RPG.Manager
             bundles[sceneName] = null;
             resources[sceneName] = null;
 
-            isUnloading = false;
+            completed?.Invoke();
         }
 
         /// <summary>
         /// 씬의 리소스 동기 언로딩
         /// </summary>
-        private void InternalUnloadSceneAsset(string sceneName)
+        private static void InternalUnloadAllResources(string sceneName, CompletedCallback completed = null)
         {
             // 현재 씬에 매핑된 에셋 번들이 있음?
             if (!bundles.ContainsKey(sceneName) || bundles[sceneName] == null)
             {
-                isUnloading = false;
                 return;
             }
 
@@ -330,13 +330,13 @@ namespace AT_RPG.Manager
             bundles[sceneName] = null;
             resources[sceneName] = null;
 
-            isUnloading = false;
+            completed?.Invoke();
         }
 
         /// <summary>
         /// 씬에 에셋 번들을 매핑
         /// </summary>
-        private void MapAssetBundleAtScene(string sceneName, AssetBundle loadedAssetBundle)
+        private static void MapAssetBundlesAtScene(string sceneName, AssetBundle loadedAssetBundle)
         {
             // 씬에 에셋 번들 매핑이 처음?
             if (!bundles.ContainsKey(sceneName) || bundles[sceneName] == null)
@@ -351,7 +351,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 씬에 에셋 번들에서 나온 리소스들을 매핑
         /// </summary>
-        private void MapResourcesAtScene(string sceneName, UnityObject[] loadedResources)
+        private static void MapResourcesAtScene(string sceneName, UnityObject[] loadedResources)
         {
             // 씬에 리소스 매핑이 처음?
             if (!resources.ContainsKey(sceneName) || resources[sceneName] == null)
@@ -376,7 +376,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 페이크 로딩
         /// </summary>
-        private IEnumerator LoadFakeDuration()
+        private static IEnumerator LoadFakeDuration()
         {
             float fakeLoadingElapsedTime = 0f;
             float fakeLoadingDuration = setting.FakeLoadingDuration;
@@ -390,22 +390,19 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 게임시작 시, 글로벌 에셋 번들 + 첫 씬의 에셋 번들 로드
         /// </summary>
-        private void OnBeforeFirstSceneLoad()
+        private static void OnBeforeFirstSceneLoad()
         {
-            LoadAllAssetsAtScene(setting.GlobalAssetBundleName);
-            LoadAllAssetsAtScene(SceneManager.Instance.CurrentSceneName);
+            LoadAllResources(setting.GlobalAssetBundleName);
+            LoadAllResources(SceneManager.CurrentSceneName);
         }
     }
 
     public partial class ResourceManager
     {
-        // 씬 리소스 로딩중
-        public bool IsLoading => isLoading;
-
-        // 씬 리소스 언로딩중
-        public bool IsUnloading => isUnloading;
-
         // 매니저 기본 설정
-        public ResourceManagerSetting Setting => setting;
+        public static ResourceManagerSetting Setting => setting;
+
+        // 리소스 로딩중
+        public static bool IsLoading => isLoading;
     }
 }

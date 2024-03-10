@@ -5,29 +5,32 @@ using DG.Tweening;
 namespace AT_RPG.Manager
 {
     /// <summary>
-    /// Manager 최상위 클래스
+    /// 매니저들을 게임 시작전에 초기화합니다.
     /// </summary>
     public partial class GameManager : Singleton<GameManager>
     {
-
-        // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
+        // OnBeforeFirstSceneLoad()에서 실행
         private static event Action beforeFirstSceneLoadAction;
 
-        // AfterFirstSceneLoadAction()에서 실행되는 이벤트
+        // OnAfterFirstSceneLoad()에서 실행
         private static event Action afterFirstSceneLoadAction;
 
         // 매니저
-        private static ResourceManager resourceManager = null;
-        private static SceneManager sceneManager = null;
-        private static UIManager uiManager = null;
-        private static DataManager saveLoadManager = null;
-        private static TestManager testManager = null;
-        private static InputManager inputManager = null;
+        private static ResourceManager resourceManager  = null;
+        private static SceneManager sceneManager        = null;
+        private static UIManager uiManager              = null;
+        private static DataManager dataManager      = null;
+        private static TestManager testManager          = null;
+        private static InputManager inputManager        = null;
+
+
 
         protected override void Awake()
         {
             base.Awake();
         }
+
+
 
         /// <summary>
         /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되기 전에 실행
@@ -67,8 +70,8 @@ namespace AT_RPG.Manager
             uiManager = UIManager.GetInstance();
             uiManager.transform.SetParent(gameManager.transform);
 
-            saveLoadManager = DataManager.GetInstance();
-            saveLoadManager.transform.SetParent(gameManager.transform);
+            dataManager = DataManager.GetInstance();
+            dataManager.transform.SetParent(gameManager.transform);
 
             testManager = TestManager.GetInstance();
             testManager.transform.SetParent(gameManager.transform);
@@ -80,7 +83,7 @@ namespace AT_RPG.Manager
 
     public partial class GameManager
     {
-        // OnBeforeFirstSceneLoad()에서 실행되는 이벤트
+        // OnBeforeFirstSceneLoad()에서 실행
         public static Action BeforeFirstSceneLoadAction
         {
             get
@@ -93,7 +96,7 @@ namespace AT_RPG.Manager
             }
         }
 
-        // AfterFirstSceneLoadAction()에서 실행되는 이벤트
+        // AfterFirstSceneLoadAction()에서 실행
         public static Action AfterFirstSceneLoadAction
         {
             get

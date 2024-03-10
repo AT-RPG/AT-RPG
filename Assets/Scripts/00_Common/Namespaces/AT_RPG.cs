@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using UnityEngine;
+using static AT_RPG.Manager.ResourceManager;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 using UnityObject = UnityEngine.Object;
 
@@ -16,11 +17,24 @@ namespace AT_RPG
     // Key1 = 리소스의 타입,  Key2 = 리소스의 이름,  Value1 = 리소스
     public class ResourceMap : Dictionary<string, Dictionary<string, UnityObject>> { }
 
-    // Key1 = 리소스 이름, Key2 = 리소스 타입, Value1 = GUID
-    public class ResourceGUIDMap : SerializableDictionary<string, KeyValuePair<string, SerializableGuid>> { }
-
     // Key1 = 씬 이름,  Value1 = 씬에 적용되는 리소스 번들s
     public class AssetBundleMap : Dictionary<string, List<AssetBundle>> { }
+
+    // ResourceManager의 언로드를 호출 시, 관련 정보를 큐에 전달
+    public class UnloadRequest
+    {
+        public string SceneName { get; set; }
+        public StartConditionCallback StartCondition { get; set; }
+        public CompletedCallback Completed { get; set; }
+
+        public UnloadRequest(
+            string sceneName, StartConditionCallback startCondition, CompletedCallback completed = null)
+        {
+            SceneName = sceneName;
+            StartCondition = startCondition;
+            Completed = completed;
+        }
+    }
 
     #endregion
 
@@ -46,6 +60,9 @@ namespace AT_RPG
         }
     }
 
+    /// <summary>
+    /// 입력 키에 키 입력 옵션, 키에 바인딩할 구현등을 모아둔 클래스
+    /// </summary>
     public class InputMappingContext
     {
         public InputKeyCode         KeyCode;    
@@ -96,19 +113,19 @@ namespace AT_RPG
         GetKeyDown,               // 키를 눌렀을 때 반응
         GetKeyUp,                 // 키를 때면 반응
         GetKey,                   // 키를 누르고 있을 때 반응
-        GetAxisRaw,        // 마우스 입력값이 -1 ~ 1 사이로 반응
-        GetAxis,           // 마우스 입력값이 -1, 0, 1로 반응
+        GetAxisRaw,               // 마우스 입력값이 -1 ~ 1 사이로 반응
+        GetAxis,                  // 마우스 입력값이 -1, 0, 1로 반응
     }
 
     public struct InputKeyCode
     {
-        public KeyCode? KeyboardCode { get; private set; }
-        public MouseKeyCode? MouseKeyCode { get; private set; }
+        public KeyCode      KeyboardCode { get; private set; }
+        public MouseKeyCode MouseKeyCode { get; private set; }
 
         private InputKeyCode(KeyCode keyboardCode) : this()
         {
             KeyboardCode = keyboardCode;
-            MouseKeyCode = AT_RPG.MouseKeyCode.None;
+            MouseKeyCode = MouseKeyCode.None;
         }
 
         private InputKeyCode(MouseKeyCode mouseCode) : this()
@@ -174,4 +191,11 @@ namespace AT_RPG
 
     #endregion
 
+    #region DataManager
+
+    /// <summary>
+    /// 직렬화 데이터를 포함하는 게임 오브젝트 리스트
+    /// </summary>
+    public class SerializedGameObjectsList : List<List<SerializableData>> { }
+    #endregion
 }

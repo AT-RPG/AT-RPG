@@ -12,7 +12,7 @@ namespace AT_RPG
     public struct ResourceReference<T> where T : Object
     {
         [SerializeField] private string resourceName;
-        public T Resource => ResourceManager.Instance.Get<T>(resourceName);
+        public T Resource => ResourceManager.Get<T>(resourceName);
             
         public ResourceReference(Object resource)
         {
