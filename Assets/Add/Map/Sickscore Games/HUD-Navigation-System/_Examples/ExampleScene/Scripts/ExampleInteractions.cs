@@ -99,7 +99,7 @@ public class ExampleInteractions : MonoBehaviour
 			// get HUD navigation element component
 			HUDNavigationElement element = hit.collider.gameObject.GetComponent<HUDNavigationElement> ();
 			if (element != null) {
-				// show pickup text
+				// show pickup loadingStatusText
 				if (element.Indicator != null) {
 					pickupText = element.Indicator.GetCustomTransform ("pickupText");
 					if (pickupText != null)
@@ -111,7 +111,7 @@ public class ExampleInteractions : MonoBehaviour
 					Destroy (element.gameObject);
 			}
 		} else {
-			// reset pickup text
+			// reset pickup loadingStatusText
 			if (pickupText != null) {
 				pickupText.gameObject.SetActive (false);
 				pickupText = null;
@@ -130,7 +130,7 @@ public class ExampleInteractions : MonoBehaviour
 			// get HUD navigation element component
 			HUDNavigationElement element = hit.collider.gameObject.GetComponentInChildren<HUDNavigationElement> ();
 			if (element != null) {
-				// show interaction text
+				// show interaction loadingStatusText
 				if (element.Indicator != null) {
 					interactionText = element.Indicator.GetCustomTransform ("interactionText");
 					if (interactionText != null)
@@ -147,7 +147,7 @@ public class ExampleInteractions : MonoBehaviour
 				}
 			}
 		} else {
-			// reset interaction text
+			// reset interaction loadingStatusText
 			if (interactionText != null) {
 				interactionText.gameObject.SetActive (false);
 				interactionText = null;

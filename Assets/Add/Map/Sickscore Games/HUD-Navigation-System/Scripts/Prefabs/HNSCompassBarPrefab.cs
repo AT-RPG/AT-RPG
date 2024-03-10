@@ -15,7 +15,7 @@ namespace SickscoreGames.HUDNavigationSystem
 		public Image Icon;
 
 		[Header("Distance Text")]
-		[Tooltip("Assign the distance text component.")]
+		[Tooltip("Assign the distance loadingStatusText component.")]
 		public Text DistanceText;
 		#endregion
 

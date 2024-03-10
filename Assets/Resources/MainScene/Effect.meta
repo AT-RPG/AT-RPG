@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/New Terrain.asset.meta
+guid: d830463e58d7fc046a117e16a13166a0
+NativeFormatImporter:
+========
 guid: 446bb88dab2f8f74da64075a967e81ce
 folderAsset: yes
 DefaultImporter:
+>>>>>>>> test:Assets/Resources/MainScene/Effect.meta
   externalObjects: {}
+  mainObjectFileID: 15600000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

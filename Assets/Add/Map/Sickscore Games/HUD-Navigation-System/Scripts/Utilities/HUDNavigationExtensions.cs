@@ -171,7 +171,7 @@ namespace SickscoreGames.HUDNavigationSystem
 			if (useDistanceText != element.CompassBar.DistanceText.gameObject.activeSelf)
 				element.CompassBar.DistanceText.gameObject.SetActive (useDistanceText);
 
-			// update distance text if active
+			// update distance loadingStatusText if active
 			if (useDistanceText) // TODO add TextMeshPro support?
 				element.CompassBar.DistanceText.text = string.Format (element.compassBarDistanceTextFormat, distance);
 		}
@@ -197,7 +197,7 @@ namespace SickscoreGames.HUDNavigationSystem
 
 		public static void ShowIndicatorDistance (this HUDNavigationElement element, bool onScreen, int distance = 0)
 		{
-			// show/hide distance text
+			// show/hide distance loadingStatusText
 			Text distanceText = (onScreen) ? element.Indicator.OnscreenDistanceText : element.Indicator.OffscreenDistanceText;
 			if (distanceText != null) {
 				bool showDistance = (onScreen) ? element.useIndicatorDistanceText : element.useIndicatorDistanceText && element.showOffscreenIndicatorDistance;
@@ -206,7 +206,7 @@ namespace SickscoreGames.HUDNavigationSystem
 				if (showDistance != distanceText.gameObject.activeSelf)
 					distanceText.gameObject.SetActive (showDistance);
 
-				// update distance text if active
+				// update distance loadingStatusText if active
 				if (showDistance) // TODO add TextMeshPro support?
 					distanceText.text = string.Format ((onScreen) ? element.indicatorOnscreenDistanceTextFormat : element.indicatorOffscreenDistanceTextFormat, distance);
 			}
