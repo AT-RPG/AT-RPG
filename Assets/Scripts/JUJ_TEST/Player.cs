@@ -13,23 +13,23 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // È¸ÀüÀ» Rigidbody¿¡°Ô ¸Ã±âÁö ¾ÊÀ½
+        rb.freezeRotation = true; // È¸ï¿½ï¿½ï¿½ï¿½ Rigidbodyï¿½ï¿½ï¿½ï¿½ ï¿½Ã±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     void Update()
     {
-        // ÀÌµ¿ ·ÎÁ÷
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        // ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
+        float horizontal = Input.GetAxis("MouseX");
+        float vertical = Input.GetAxis("MouseY");
         Vector3 movement = new Vector3(horizontal, 0, vertical) * moveSpeed * Time.deltaTime;
         rb.MovePosition(transform.position + movement);
 
-        // È¸Àü ·ÎÁ÷
-        float rotate = Input.GetAxis("Horizontal") * rotateSpeed;
+        // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        float rotate = Input.GetAxis("MouseX") * rotateSpeed;
         rb.angularVelocity = new Vector3(0, rotate, 0);
 
 
-        // Á¡ÇÁ ·ÎÁ÷
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("1");
@@ -38,17 +38,17 @@ public class Player : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-        // ÇÃ·¹ÀÌ¾î°¡ ½ºÆù ÁöÁ¡¿¡ µé¾î°¬À» ¶§
+        // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î°¬ï¿½ï¿½ ï¿½ï¿½
         if (other.CompareTag("SpawnPoint"))
         {
-            // ´Ù¸¥ ½ºÆù ÁöÁ¡À¸·Î ÀÌµ¿
+            // ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
             MoveToNewSpawnPoint(other.transform);
         }
     }
 
     public void MoveToNewSpawnPoint(Transform newSpawnPoint)
     {
-        // ÇÃ·¹ÀÌ¾î¸¦ »õ·Î¿î ½ºÆù ÁöÁ¡À¸·Î ÀÌµ¿
+        // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         transform.position = newSpawnPoint.position;
         transform.rotation = newSpawnPoint.rotation;
     }

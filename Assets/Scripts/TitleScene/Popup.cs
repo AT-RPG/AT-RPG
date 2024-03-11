@@ -1,21 +1,25 @@
 using UnityEngine;
 
-public class Popup : MonoBehaviour
+namespace AT_RPG
 {
-    protected bool isEscapePressed = false;
-
-    // 팝업이 생성될 RectTransform 인스턴스
-    protected PopupCanvas popupCanvas = null;
-
-    public PopupCanvas PopupCanvas
+    public class Popup : MonoBehaviour
     {
-        get
+        protected bool isEscapePressed = false;
+
+        // 팝업이 생성될 RectTransform 인스턴스
+        protected PopupCanvas popupCanvas = null;
+
+        public PopupCanvas PopupCanvas
         {
-            return popupCanvas;
-        }
-        set
-        {
-            popupCanvas = value;
+            get
+            {
+                return popupCanvas;
+            }
+            set
+            {
+                popupCanvas = value;
+            }
         }
     }
+
 }

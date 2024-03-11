@@ -1,36 +1,35 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PopupButton : MonoBehaviour, IPointerClickHandler
+namespace AT_RPG
 {
-    [SerializeField] private GameObject popupInstance;
-    [SerializeField] private GameObject popupCanvasRoot;
-
-    /// <summary>
-    /// 버튼 클릭 시 팝업을 생성
-    /// </summary>
-    public void OnPointerClick(PointerEventData eventData)
+    public class PopupButton : MonoBehaviour, IPointerClickHandler
     {
-        if (!popupInstance)
-        {
-            Debug.Log($"{nameof(popupInstance)}이 설정X");
-        }
+        [SerializeField] private GameObject popupInstance;
+        [SerializeField] private GameObject popupCanvasInstance;
 
-        // 팝업 초기화
-        Popup popup = popupInstance.GetComponent<Popup>();
-        if (!popup)
+        /// <summary>
+        /// 버튼 클릭 시 팝업을 생성
+        /// </summary>
+        public void OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log($"{nameof(popupInstance)}에 {nameof(popup)} Component는 필수");
-        }
-        else
-        {
-            popup.PopupCanvas = popupCanvasRoot.GetComponent<PopupCanvas>();
-            if (!popup.PopupCanvas)
+            if (!popupInstance)
             {
-                Debug.Log($"{nameof(popupCanvasRoot)}에 {nameof(popup.PopupCanvas)} Component는 필수");
+                Debug.LogError($"{nameof(popupInstance)}이 설정X");
+                return;
             }
-        }
 
-        Instantiate(popupInstance, popupCanvasRoot.transform);
+            if (!popupCanvasInstance)
+            {
+                Debug.LogError($"{popupInstance}를 생성할 {popupCanvasInstance}가 정해지지 않았습니다.");
+            }
+
+            // 팝업 초기화
+            Popup popup = popupInstance.GetComponent<Popup>();
+            PopupCanvas popupCanvas = popupCanvasInstance.GetComponent<PopupCanvas>();
+            popup.PopupCanvas = popupCanvas;
+
+            Instantiate(popupInstance, popupCanvas.Root.transform);
+        }
     }
 }

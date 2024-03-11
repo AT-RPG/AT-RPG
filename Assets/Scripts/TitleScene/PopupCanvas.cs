@@ -1,21 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopupCanvas : MonoBehaviour
+namespace AT_RPG
 {
-    private Stack<Popup> popups
-        = new Stack<Popup>();
-
-    public Stack<Popup> Popups
+    public class PopupCanvas : MonoBehaviour
     {
-        get
+        [SerializeField] private GameObject root;
+
+        private Stack<Popup> popups
+            = new Stack<Popup>();
+
+        public Stack<Popup> Popups
         {
-            return popups;
+            get
+            {
+                return popups;
+            }
+            set
+            {
+                popups = value;
+            }
         }
-        set
-        {
-            popups = value;
-        }
+
+        public GameObject Root => root;
     }
+
 }
