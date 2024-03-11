@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements.Experimental;
-using static UnityEngine.GraphicsBuffer;
 
 /// <summary>
 /// 클래스단위로 리펙토링->배틀구현->스폰
@@ -12,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애니메이터 제어 스크립트상속
 {
     [SerializeField] Transform monResPos;
-    MonsterInfo mon1 = new MonsterInfo("몬1", 10.0f, 3.0f, 1, 30.0f, 0.5f, 30.0f); //몬스터 인포 참조 --방식 수정해야함
+    MonsterInfo mon1 = new MonsterInfo("몬1", 10.0f, 3.0f, 1, 30.0f, 0.5f, 10.0f); //몬스터 인포 참조 --방식 수정해야함
                                                                                   //인포방식 가독성 매우안좋으므로 몬스터마다 개별 인포를 만들후 스탯을 사용하게끔 변경
 
     public GameObject Imp; //몬스터 리스폰을 위한 게임오브젝트 지정
@@ -47,7 +43,6 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애니메이터 제
             case State.Create:
                 monsterCreate();
                 break;
-
             case State.Idle: //몬스터가 대기상태
                 monsterIdle();
                 break;
@@ -55,7 +50,7 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애니메이터 제
                 monsterMove();
                 break;
             case State.Battle: //몬스터가 전투상태
-                monsterBattle(monsterTarget.position);
+                StartCoroutine(monsterBattle(monsterTarget.position));
                 break;
             case State.Dead: //몬스터가 사망
                 monsterDead();
@@ -149,7 +144,7 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애니메이터 제
         rotate = StartCoroutine(Rotating(dir));
 
 
-        while (!Mathf.Approximately(dist, 0.0f))
+        while (dist > 0.1f)
         {
             float delta = mon1.monsterMoveSpeed * Time.deltaTime;
             if (delta > dist) delta = dist;
@@ -211,31 +206,22 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애니메이터 제
     /// </summary>
 
 
-    void monsterBattle(Vector3 battletarget)  //전투상태
+    IEnumerator monsterBattle(Vector3 battletarget)  //전투상태
     {
-        monsterAnim.SetBool("Run", true);
+      
         Vector3 dir = battletarget - transform.position;
         float dist = dir.magnitude;
         dir.Normalize();
 
-        chasing = StartCoroutine(Chasing(battletarget,dist));
-
-    }
-    IEnumerator Chasing(Vector3 dir,float range)
-    {
-        while (mon1.mRange<range)
+        while (mon1.mRange < dist)
         {
-            Vector3 GetTrackingPos()
-            {
-                dir = monsterAI.myTarget.position - transform.position;
-                return transform.position + dir;
-            }
-            MoveToPos(GetTrackingPos());
+            MoveToPos(battletarget);
+            //dir = battletarget - transform.position;
+            //dist = dir.magnitude;
             yield return null;
         }
-
-    } 
-
+    }
+    
 
     /// ------사망 관련 스크립트---------------------------------------------------
     ///리스폰 관리자로 별도의 스크립트로 분리할것
@@ -270,6 +256,6 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애니메이터 제
     // Update is called once per frame
     void Update()
     {
-
+     
     }
 }
