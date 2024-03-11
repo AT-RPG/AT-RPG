@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2117690839
+CRC: 1342859541
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 87d26b155855ed94d4f02dd09bb689a4
+    Hash: bea1c68672c2c05ce6323fdac855c366
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 63f1d62015ad929105d2f0b40a8d0106
+    Hash: 6e29200174a5698da9c19ce034c1e2d6
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 87d26b155855ed94d4f02dd09bb689a4
+    Hash: bea1c68672c2c05ce6323fdac855c366
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,14 +17,20 @@ ClassTypes:
 - Class: 4
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 35c295f4ab0c6284db1b557ea52a511c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 85ed4e43a601d6e4bb9a2eb803854e33, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 222
+  Script: {instanceID: 0}
+- Class: 223
   Script: {instanceID: 0}
 - Class: 224
   Script: {instanceID: 0}
@@ -35,6 +41,7 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 Assets:
 - Assets/AssetBundleResources/Global/DummyGlobalSceneResource.prefab
+- Assets/Resources/Global/Prefabs/CanvasScalerSettingReference.prefab
 - Assets/Resources/Global/Prefabs/ScreenFadeIn.prefab
 - Assets/Resources/Global/Prefabs/ScreenFadeOut.prefab
 Dependencies: []

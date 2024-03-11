@@ -5,12 +5,19 @@ namespace AT_RPG
 {
     public class IntroSceneEventHandler : MonoBehaviour
     {        
-        public void LoadSceneTo()
+        public void LoadTitileScene()
         {
-            SceneManager.Instance.LoadSceneCor(
-                SceneManager.Instance.Setting.TitleScene.SceneName,
-                LoadMode.LoadingResources
-                );
+            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
+            {
+                ResourceManager.LoadAllResourcesCoroutine(SceneManager.Setting.TitleScene);
+
+                ResourceManager.UnloadAllResourcesCoroutine(SceneManager.CurrentSceneName);
+
+                SceneManager.LoadSceneCoroutine(SceneManager.Setting.TitleScene, () =>
+                {
+                    return !ResourceManager.IsLoading;
+                });
+            });
         }
     }
 }
