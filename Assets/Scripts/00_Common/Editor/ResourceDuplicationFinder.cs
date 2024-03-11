@@ -55,30 +55,12 @@ namespace AT_RPG
                 List<string> duplicatedNameAssetGUIDs = AssetDatabase.FindAssets(importedAssetName).ToList();
 
                 // 중복 조건 적용
-                ApplyDuplicationSearchFilter(importedAsset, duplicatedNameAssetGUIDs);
+                ApplyDuplicationSearchFilter(importedAsset, ref duplicatedNameAssetGUIDs);
 
                 // 중복된 에셋이 있음?
                 if (duplicatedNameAssetGUIDs.Count >= 1)
                 {
                     LogDuplicationMsg(importedAssetName, duplicatedNameAssetGUIDs);
-                    isDuplicated = true;
-                }
-            }
-
-            // 변경된 에셋 중, 변경 타입이 Deleted인 에셋
-            foreach (var deletedAsset in deletedAssets)
-            {
-                // 중복된 이름을 가진 GUID들을 획득 (자기 자신은 제거)
-                string deletedAssetName = String.GetFileName(deletedAsset);
-                List<string> duplicatedNameAssetGUIDs = AssetDatabase.FindAssets(deletedAssetName).ToList();
-
-                // 중복 조건 적용
-                ApplyDuplicationSearchFilter(deletedAsset, duplicatedNameAssetGUIDs);
-
-                // 중복된 에셋이 있음?
-                if (duplicatedNameAssetGUIDs.Count >= 2)
-                {
-                    LogDuplicationMsg(deletedAssetName, duplicatedNameAssetGUIDs);
                     isDuplicated = true;
                 }
             }
@@ -91,7 +73,7 @@ namespace AT_RPG
                 List<string> duplicatedNameAssetGUIDs = AssetDatabase.FindAssets(movedAssetName).ToList();
 
                 // 중복 조건 적용
-                ApplyDuplicationSearchFilter(movedAsset, duplicatedNameAssetGUIDs);
+                ApplyDuplicationSearchFilter(movedAsset, ref duplicatedNameAssetGUIDs);
 
                 // 중복된 에셋이 있음?
                 if (duplicatedNameAssetGUIDs.Count >= 1)
@@ -110,7 +92,7 @@ namespace AT_RPG
         /// + 에셋의 타입이 다른 경우도 제외              <br/>
         /// </summary>
         private static void ApplyDuplicationSearchFilter(
-            string assetPath, List<string> duplicatedNameAssetGUIDs)
+            string assetPath, ref List<string> duplicatedNameAssetGUIDs)
         {
             // 자기 자신 제거
             duplicatedNameAssetGUIDs.Remove(AssetDatabase.AssetPathToGUID(assetPath));
@@ -126,9 +108,9 @@ namespace AT_RPG
             {
                 string duplicatedNameAssetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-                return (String.GetFileType(duplicatedNameAssetPath) == assetType) ||
-                       (!String.ContainsString(assetPath, "Resources") &&
-                        !String.ContainsString(assetPath, setting.AssetBundlesSavePath));
+                return (String.GetFileType(duplicatedNameAssetPath) == assetType) &&
+                       (String.ContainsString(assetPath, "Resources") ||
+                        String.ContainsString(assetPath, setting.AssetBundlesSavePath));
 
             }).ToList();
         }
