@@ -3,25 +3,25 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// Å¬·¡½º´ÜÀ§·Î ¸®ÆåÅä¸µ->¹èÆ²±¸Çö->½ºÆù
+/// í´ë˜ìŠ¤ë‹¨ìœ„ë¡œ ë¦¬í™í† ë§->ë°°í‹€êµ¬í˜„->ìŠ¤í°
 /// </summary>
-public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦¾î ½ºÅ©¸³Æ®»ó¼Ó
+public class MonsterMain : MonsterPorperty //ì• ë‹ˆë©”ì´í„°ë¥¼ ì“°ê¸°ìœ„í•´ ì• ë‹ˆë©”ì´í„° ì œì–´ ìŠ¤í¬ë¦½íŠ¸ìƒì†
 {
     [SerializeField] Transform monResPos;
-    MonsterInfo mon1 = new MonsterInfo("¸ó1", 10.0f, 3.0f, 1, 30.0f, 0.5f, 10.0f); //¸ó½ºÅÍ ÀÎÆ÷ ÂüÁ¶ --¹æ½Ä ¼öÁ¤ÇØ¾ßÇÔ
-                                                                                  //ÀÎÆ÷¹æ½Ä °¡µ¶¼º ¸Å¿ì¾ÈÁÁÀ¸¹Ç·Î ¸ó½ºÅÍ¸¶´Ù °³º° ÀÎÆ÷¸¦ ¸¸µéÈÄ ½ºÅÈÀ» »ç¿ëÇÏ°Ô²û º¯°æ
+    MonsterInfo mon1 = new MonsterInfo("ëª¬1", 10.0f, 3.0f, 1, 30.0f, 0.5f, 10.0f); //ëª¬ìŠ¤í„° ì¸í¬ ì°¸ì¡° --ë°©ì‹ ìˆ˜ì •í•´ì•¼í•¨
+                                                                                  //ì¸í¬ë°©ì‹ ê°€ë…ì„± ë§¤ìš°ì•ˆì¢‹ìœ¼ë¯€ë¡œ ëª¬ìŠ¤í„°ë§ˆë‹¤ ê°œë³„ ì¸í¬ë¥¼ ë§Œë“¤í›„ ìŠ¤íƒ¯ì„ ì‚¬ìš©í•˜ê²Œë” ë³€ê²½
 
-    public GameObject Imp; //¸ó½ºÅÍ ¸®½ºÆùÀ» À§ÇÑ °ÔÀÓ¿ÀºêÁ§Æ® ÁöÁ¤
+    public GameObject Imp; //ëª¬ìŠ¤í„° ë¦¬ìŠ¤í°ì„ ìœ„í•œ ê²Œì„ì˜¤ë¸Œì íŠ¸ ì§€ì •
 
-    Coroutine move = null; //¸ó½ºÅÍÀÇ ¿òÁ÷ÀÓÀ» °ü¸®
-    Coroutine rotate = null; //¸ó½ºÅÍÀÇ È¸ÀüÀ» °ü¸®
-    Coroutine chasing = null; //¸ó½ºÅÍÀÇ ÃßÀûÀ» °ü¸®
+    Coroutine move = null; //ëª¬ìŠ¤í„°ì˜ ì›€ì§ì„ì„ ê´€ë¦¬
+    Coroutine rotate = null; //ëª¬ìŠ¤í„°ì˜ íšŒì „ì„ ê´€ë¦¬
+    Coroutine chasing = null; //ëª¬ìŠ¤í„°ì˜ ì¶”ì ì„ ê´€ë¦¬
 
 
-    public MonsterAI monsterAI; //¸ó½ºÅÍ ai±â´ÉÀ» ÂüÁ¶
+    public MonsterAI monsterAI; //ëª¬ìŠ¤í„° aiê¸°ëŠ¥ì„ ì°¸ì¡°
     private bool isTracking = false;
 
-    public enum State //À¯ÇÑ»óÅÂ¸Ó½Å :: ½ºÆù -´ë±â -ÀÌµ¿ -ÀüÅõ -»ç¸Á
+    public enum State //ìœ í•œìƒíƒœë¨¸ì‹  :: ìŠ¤í° -ëŒ€ê¸° -ì´ë™ -ì „íˆ¬ -ì‚¬ë§
     {
         Create,
         Idle,
@@ -29,44 +29,44 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
         Battle,
         Dead
     }
-    public State monsterState = State.Create;//¸ó½ºÅÍ ÃÊ±â »óÅÂ¸¦ ½ºÆùÀ¸·Î ¼³Á¤
+    public State monsterState = State.Create;//ëª¬ìŠ¤í„° ì´ˆê¸° ìƒíƒœë¥¼ ìŠ¤í°ìœ¼ë¡œ ì„¤ì •
 
-    float moveStartTime = 0.0f; //¸ó½ºÅÍÀÇ ´ë±â½Ã°£ 
-    float monsterSpwanTimer = 2.0f;//¸ó½ºÅÍ ¸®½ºÆù´ë±â½Ã°£
-    Transform monsterTarget; //ÀüÅõ»óÅÂÀÏ¶§ ÇÃ·¹ÀÌ¾î¸¦ ÃßÀû
-    void ChangeState(State s) //»óÅÂ°¡ º¯ÇÒ°æ¿ì º¯ÇÑ»óÅÂ¸¦ Àü´Ş¹ŞÀ½
+    float moveStartTime = 0.0f; //ëª¬ìŠ¤í„°ì˜ ëŒ€ê¸°ì‹œê°„ 
+    float monsterSpwanTimer = 2.0f;//ëª¬ìŠ¤í„° ë¦¬ìŠ¤í°ëŒ€ê¸°ì‹œê°„
+    Transform monsterTarget; //ì „íˆ¬ìƒíƒœì¼ë•Œ í”Œë ˆì´ì–´ë¥¼ ì¶”ì 
+    void ChangeState(State s) //ìƒíƒœê°€ ë³€í• ê²½ìš° ë³€í•œìƒíƒœë¥¼ ì „ë‹¬ë°›ìŒ
     {
-        if (monsterState == s) return; //»óÅÂ°¡ º¯ÇÏÁö ¾Ê´Â°æ¿ì ¿¹¿ÜÃ³¸®
-        monsterState = s;  //»óÅÂº¯°æ
+        if (monsterState == s) return; //ìƒíƒœê°€ ë³€í•˜ì§€ ì•ŠëŠ”ê²½ìš° ì˜ˆì™¸ì²˜ë¦¬
+        monsterState = s;  //ìƒíƒœë³€ê²½
         switch (monsterState)
         {
             case State.Create:
                 monsterCreate();
                 break;
-            case State.Idle: //¸ó½ºÅÍ°¡ ´ë±â»óÅÂ
+            case State.Idle: //ëª¬ìŠ¤í„°ê°€ ëŒ€ê¸°ìƒíƒœ
                 monsterIdle();
                 break;
-            case State.Move: //¸ó½ºÅÍ°¡ ¿òÁ÷ÀÌ´Â »óÅÂ
+            case State.Move: //ëª¬ìŠ¤í„°ê°€ ì›€ì§ì´ëŠ” ìƒíƒœ
                 monsterMove();
                 break;
-            case State.Battle: //¸ó½ºÅÍ°¡ ÀüÅõ»óÅÂ
+            case State.Battle: //ëª¬ìŠ¤í„°ê°€ ì „íˆ¬ìƒíƒœ
                 StartCoroutine(monsterBattle(monsterTarget.position));
                 break;
-            case State.Dead: //¸ó½ºÅÍ°¡ »ç¸Á
+            case State.Dead: //ëª¬ìŠ¤í„°ê°€ ì‚¬ë§
                 monsterDead();
                 break;
         }
     }
-    void monsterCreate()//¸ó½ºÅÍ »ı¼º-¸ó½ºÅÍ°¡ »ç¸ÁÇÑÈÄ ÀÏÁ¤½Ã°£ÀÌÈÄ ´Ù½Ã Àç½ºÆù½ÃÅ´
+    void monsterCreate()//ëª¬ìŠ¤í„° ìƒì„±-ëª¬ìŠ¤í„°ê°€ ì‚¬ë§í•œí›„ ì¼ì •ì‹œê°„ì´í›„ ë‹¤ì‹œ ì¬ìŠ¤í°ì‹œí‚´
     {
-        Instantiate(Imp); //ÀÓÇÁÀÇ »çº»À» »ı¼ºÇÑ´Ù
-        transform.position = monResPos.position; //¸ó½ºÅÍ¸¦ ½ºÆùÀ§Ä¡·Î ÀÌµ¿½ÃÅ²´Ù
-        ChangeState(State.Idle);//¸ó½ºÅÍÀÇ »óÅÂ¸¦ ´ë±â·Î º¯°æ
+        Instantiate(Imp); //ì„í”„ì˜ ì‚¬ë³¸ì„ ìƒì„±í•œë‹¤
+        transform.position = monResPos.position; //ëª¬ìŠ¤í„°ë¥¼ ìŠ¤í°ìœ„ì¹˜ë¡œ ì´ë™ì‹œí‚¨ë‹¤
+        ChangeState(State.Idle);//ëª¬ìŠ¤í„°ì˜ ìƒíƒœë¥¼ ëŒ€ê¸°ë¡œ ë³€ê²½
     }
 
     /// <summary>
-    /// ¸ó½ºÅÍÀÇ ´ë±â»óÅÂ
-    /// ÇÃ·¹ÀÌ¾î¸¦ ÃßÀûÁßÀÏ°æ¿ì ´ë±â¾øÀÌ Áï½Ã ÀÌµ¿»óÅÂ·ÎÀüÈ¯/¾Æ´Ò°æ¿ì ÀÏÁ¤½Ã°£ µô·¹ÀÌÈÄ¿¡ ÀÌµ¿»óÅÂ·Î ÀüÈ¯
+    /// ëª¬ìŠ¤í„°ì˜ ëŒ€ê¸°ìƒíƒœ
+    /// í”Œë ˆì´ì–´ë¥¼ ì¶”ì ì¤‘ì¼ê²½ìš° ëŒ€ê¸°ì—†ì´ ì¦‰ì‹œ ì´ë™ìƒíƒœë¡œì „í™˜/ì•„ë‹ê²½ìš° ì¼ì •ì‹œê°„ ë”œë ˆì´í›„ì— ì´ë™ìƒíƒœë¡œ ì „í™˜
     /// </summary>
     void monsterIdle()
     {
@@ -74,7 +74,7 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
         monsterAnim.SetBool("Move", false);
 
         moveStartTime = Random.Range(2, 4);
-        Debug.Log($"{moveStartTime}ÀÌµ¿¸ñÇ¥ ¼³Á¤");
+        Debug.Log($"{moveStartTime}ì´ë™ëª©í‘œ ì„¤ì •");
         StartCoroutine(DelayChangeState(State.Move, moveStartTime));
     }
     IEnumerator DelayChangeState(State s, float m_delaytime)
@@ -85,7 +85,7 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
 
 
     /// <summary>
-    /// ÀÌµ¿°ü·Ã Á¦¾î ÇÔ¼ö
+    /// ì´ë™ê´€ë ¨ ì œì–´ í•¨ìˆ˜
     /// </summary>
     void monsterMove()
     {
@@ -93,7 +93,7 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
         monsterDirection(dir);
     }
 
-    void monsterDirection(Vector3 dir)//¸ó½ºÅÍÀÇ ·Î¹Ö ¸ñÇ¥ ¼³Á¤
+    void monsterDirection(Vector3 dir)//ëª¬ìŠ¤í„°ì˜ ë¡œë° ëª©í‘œ ì„¤ì •
     {
         Vector3 GetRndPos()
         {
@@ -103,16 +103,16 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
         }
         MoveToPos(GetRndPos());
     }
-    void MoveToPos(Vector3 target) //¸ñÇ¥·Î ÀÌµ¿½ÃÀÛ
+    void MoveToPos(Vector3 target) //ëª©í‘œë¡œ ì´ë™ì‹œì‘
     {
-        if (move != null) //ÀÌ¹Ì ÀÌµ¿ÁßÀÎ°æ¿ì ÀÌÀüÀÇ ÄÚ·éÆ¾À» Á¤Áö½ÃÅ´
+        if (move != null) //ì´ë¯¸ ì´ë™ì¤‘ì¸ê²½ìš° ì´ì „ì˜ ì½”ë£¬í‹´ì„ ì •ì§€ì‹œí‚´
         {
             StopCoroutine(move);
         }
-        move = StartCoroutine(monsterMoving(target)); //»õ·Î¿î ÀÌµ¿ÄÚ·éÆ¾
+        move = StartCoroutine(monsterMoving(target)); //ìƒˆë¡œìš´ ì´ë™ì½”ë£¬í‹´
     }
 
-    void IsRunning(float dist)//´Ş¸®±â
+    void IsRunning(float dist)//ë‹¬ë¦¬ê¸°
     {
         float runOk = 40.0f;
         if (dist >= runOk)
@@ -129,17 +129,17 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
         }
 
     }
-    IEnumerator monsterMoving(Vector3 target)//¸ó½ºÅÍÀÇ ÀÌµ¿
+    IEnumerator monsterMoving(Vector3 target)//ëª¬ìŠ¤í„°ì˜ ì´ë™
     {
-        //¸ñÇ¥ À§Ä¡±îÁöÀÇ ¹æÇâ°ú °Å¸®°è»êÈÄ Á¤±ÔÈ­
+        //ëª©í‘œ ìœ„ì¹˜ê¹Œì§€ì˜ ë°©í–¥ê³¼ ê±°ë¦¬ê³„ì‚°í›„ ì •ê·œí™”
         Vector3 dir = target - transform.position;
         float dist = dir.magnitude;
         dir.Normalize();
 
-        //°Å¸®¿¡ µû¸¥ ´Ş¸®±â/ÀüÅõ ÆÇ´Ü
+        //ê±°ë¦¬ì— ë”°ë¥¸ ë‹¬ë¦¬ê¸°/ì „íˆ¬ íŒë‹¨
         //if (dist <= mon1.mRange)
 
-        //È¸ÀüÄÚ·çÆ¾ÀÇ Á¤Áö/Àç½ÃÀÛ
+        //íšŒì „ì½”ë£¨í‹´ì˜ ì •ì§€/ì¬ì‹œì‘
         if (rotate != null) StopCoroutine(rotate);
         rotate = StartCoroutine(Rotating(dir));
 
@@ -158,16 +158,16 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
             ChangeState(State.Idle);
         }
     }
-    IEnumerator Rotating(Vector3 dir) //¸ó½ºÅÍ¸¦ È¸Àü
+    IEnumerator Rotating(Vector3 dir) //ëª¬ìŠ¤í„°ë¥¼ íšŒì „
     {
-        float angle = Vector3.Angle(transform.forward, dir); //ÇöÀç¹æÇâ°ú ¸ñÇ¥¹æÇâºñ±³
+        float angle = Vector3.Angle(transform.forward, dir); //í˜„ì¬ë°©í–¥ê³¼ ëª©í‘œë°©í–¥ë¹„êµ
         float rotDir = 1.0f;
-        //È¸Àü ¹æÇâ °áÁ¤
+        //íšŒì „ ë°©í–¥ ê²°ì •
         if (Vector3.Dot(transform.right, dir) < 0.0f)
         {
             rotDir = -1.0f;
         }
-        //È¸Àü ½ÃÀÛ
+        //íšŒì „ ì‹œì‘
         while (!Mathf.Approximately(angle, 0.0f))
         {
             float delta = 360.0f * Time.deltaTime;
@@ -182,62 +182,76 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
     }
 
     /// <summary>
-    /// ¸ó½ºÅÍÀÇ ÃßÀûÁ¦¾î ÇÔ¼ö
+    /// ëª¬ìŠ¤í„°ì˜ ì¶”ì ì œì–´ í•¨ìˆ˜
     /// </summary>
     public void StartTracking(Transform target)
     {
         monsterTarget = target;
-        StopAllCoroutines();
         ChangeState(State.Battle);
     }
     public void StopTracking()
     {
         monsterTarget = null;
-        StopAllCoroutines();
         ChangeState(State.Idle);
     }
 
 
     /// <summary>
-    /// -------ÀüÅõ °ü·Ã ½ºÅ©¸³Æ® ----------------------------------------------
-    /// Å¸°ÙÀÌ °¨Áö°¡µÇ¸é Å¸°ÙÀÇ ÁÂÇ¥¸¦ ¾òÀºÈÄ¿¡ ¹èÆ²ÇÔ¼ö È£Ãâ
-    /// ÀÌÈÄ Å¸°Ù°ú °Å¸®¸¦ Àç¸é¼­ »ç°Å¸®º¸´Ù ¸Ö¸®¶³¾îÁ®ÀÖÀ¸¸é ÀÌµ¿ÇÔ¼ö È£Ãâ
-    /// ÀÌÈÄ Å¸°ÙÀÌ »ç°Å¸®¾È¿¡ µé¾î¿À¸é °ø°İ
+    /// -------ì „íˆ¬ ê´€ë ¨ ìŠ¤í¬ë¦½íŠ¸ ----------------------------------------------
+    /// íƒ€ê²Ÿì´ ê°ì§€ê°€ë˜ë©´ íƒ€ê²Ÿì˜ ì¢Œí‘œë¥¼ ì–»ì€í›„ì— ë°°í‹€í•¨ìˆ˜ í˜¸ì¶œ
+    /// ì´í›„ íƒ€ê²Ÿê³¼ ê±°ë¦¬ë¥¼ ì¬ë©´ì„œ ì‚¬ê±°ë¦¬ë³´ë‹¤ ë©€ë¦¬ë–¨ì–´ì ¸ìˆìœ¼ë©´ ì´ë™í•¨ìˆ˜ í˜¸ì¶œ
+    /// ì´í›„ íƒ€ê²Ÿì´ ì‚¬ê±°ë¦¬ì•ˆì— ë“¤ì–´ì˜¤ë©´ ê³µê²©
     /// </summary>
 
 
-    IEnumerator monsterBattle(Vector3 battletarget)  //ÀüÅõ»óÅÂ
+    IEnumerator monsterBattle(Vector3 battletarget)  //ì „íˆ¬ìƒíƒœ
     {
-      
-        Vector3 dir = battletarget - transform.position;
-        float dist = dir.magnitude;
-        dir.Normalize();
-
-        while (mon1.mRange < dist)
+        while (true)
         {
-            MoveToPos(battletarget);
-            //dir = battletarget - transform.position;
-            //dist = dir.magnitude;
+            if (monsterTarget != null)
+            {
+                Vector3 dir = battletarget - transform.position;
+                float dist = dir.magnitude;
+
+                if (mon1.mRange < dist) //ì‚¬ê±°ë¦¬ë³´ë‹¤ ê¸¸ë©´ í”Œë ˆì´ì–´ì—ê²Œ ì´ë™
+                {
+                    MoveToPos(battletarget);
+                }
+                else
+                {
+                    attackPlayer(); //ë°°í‹€ìƒíƒœ ì¶”ê°€
+                }
+            }
+            else
+            {
+                ChangeState(State.Idle);
+            }
             yield return null;
         }
     }
-    
 
-    /// ------»ç¸Á °ü·Ã ½ºÅ©¸³Æ®---------------------------------------------------
-    ///¸®½ºÆù °ü¸®ÀÚ·Î º°µµÀÇ ½ºÅ©¸³Æ®·Î ºĞ¸®ÇÒ°Í
-    /// </summary>
-    void monsterDead() //»ç¸Á»óÅÂ
+    void attackPlayer()
     {
-        StopAllCoroutines();//¸ğµç ÄÚ·éÆ¾ Á¤Áö;
+
+    }
+
+
+
+    /// ------ì‚¬ë§ ê´€ë ¨ ìŠ¤í¬ë¦½íŠ¸---------------------------------------------------
+    ///ë¦¬ìŠ¤í° ê´€ë¦¬ìë¡œ ë³„ë„ì˜ ìŠ¤í¬ë¦½íŠ¸ë¡œ ë¶„ë¦¬í• ê²ƒ
+    /// </summary>
+    void monsterDead() //ì‚¬ë§ìƒíƒœ
+    {
+        StopAllCoroutines();//ëª¨ë“  ì½”ë£¬í‹´ ì •ì§€;
         monsterAnim.SetBool("Move", false);
         monsterAnim.SetBool("Run", false);
         monsterAnim.SetBool("Battle", false);
-        monsterAnim.SetTrigger("Dead"); //»ç¸Á ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
-        StartCoroutine(DelaySpwanState(State.Create, monsterSpwanTimer)); //ÀÏÁ¤½Ã°£ µô·¹ÀÌÈÄ »ı¼º»óÅÂ·Î ÀüÈ¯½ÃÅ²´Ù
-        Destroy(gameObject, 200.0f * Time.deltaTime); //¸ó½ºÅÍ°¡ »ç¸ÁÇÑ°æ¿ì Æ¯Á¤ÇÁ·¹ÀÓÀÌÈÄ °´Ã¼ »èÁ¦
+        monsterAnim.SetTrigger("Dead"); //ì‚¬ë§ ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰
+        StartCoroutine(DelaySpwanState(State.Create, monsterSpwanTimer)); //ì¼ì •ì‹œê°„ ë”œë ˆì´í›„ ìƒì„±ìƒíƒœë¡œ ì „í™˜ì‹œí‚¨ë‹¤
+        Destroy(gameObject, 200.0f * Time.deltaTime); //ëª¬ìŠ¤í„°ê°€ ì‚¬ë§í•œê²½ìš° íŠ¹ì •í”„ë ˆì„ì´í›„ ê°ì²´ ì‚­ì œ
     }
 
-    IEnumerator DelaySpwanState(State s, float m_delaytime) //Á¤ÇØÁø°ª¸¸Å­ µô·¹ÀÌÈÄ »óÅÂ¸¦ »ı¼ºÀ¸·Î º¯°æ
+    IEnumerator DelaySpwanState(State s, float m_delaytime) //ì •í•´ì§„ê°’ë§Œí¼ ë”œë ˆì´í›„ ìƒíƒœë¥¼ ìƒì„±ìœ¼ë¡œ ë³€ê²½
     {
         yield return new WaitForSeconds(m_delaytime);
         // gameObject.SetActive(false);
@@ -248,14 +262,14 @@ public class MonsterMain : MonsterPorperty //¾Ö´Ï¸ŞÀÌÅÍ¸¦ ¾²±âÀ§ÇØ ¾Ö´Ï¸ŞÀÌÅÍ Á¦
     // Start is called before the first frame update
     void Start()
     {
-        monsterAI.findPlayer.AddListener(StartTracking); //¸ó½ºÅÍAI ½ºÅ©¸³Æ®ÀÇ findPlayer°¡ ¹ß»ıÇÒ°æ¿ì StartTracking ¸Ş¼­µå¸¦ È£Ãâ
-        monsterAI.lostPlayer.AddListener(StopTracking);  //ÇÃ·¹ÀÌ¾î¸¦ ³õ«‰À»°æ¿ì »óÅÂº¯°æ
-        ChangeState(State.Idle); //¸ó½ºÅÍ¸¦ ´ë±â»óÅÂ·Î º¯°æ
+        monsterAI.findPlayer.AddListener(StartTracking); //ëª¬ìŠ¤í„°AI ìŠ¤í¬ë¦½íŠ¸ì˜ findPlayerê°€ ë°œìƒí• ê²½ìš° StartTracking ë©”ì„œë“œë¥¼ í˜¸ì¶œ
+        monsterAI.lostPlayer.AddListener(StopTracking);  //í”Œë ˆì´ì–´ë¥¼ ë†“ì³£ì„ê²½ìš° ìƒíƒœë³€ê²½
+        ChangeState(State.Idle); //ëª¬ìŠ¤í„°ë¥¼ ëŒ€ê¸°ìƒíƒœë¡œ ë³€ê²½
     }
 
     // Update is called once per frame
     void Update()
     {
-     
+
     }
 }
