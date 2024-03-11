@@ -6,10 +6,16 @@ public class PlayerController : CharacterProperty
 {
     [SerializeField] private Transform characterBody;
     [SerializeField] private Transform cameraArm;
+    [SerializeField] Transform myCam;
+    // public LayerMask crashMask;
+
+    // float targetDist;
+    // float camDist;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        // camDist = targetDist = Mathf.Abs(myCam.localPosition.z);
     }
 
     // Update is called once per frame
@@ -17,6 +23,11 @@ public class PlayerController : CharacterProperty
     {
         LookAround();
         Move();
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            myAnim.SetTrigger("isDodge");
+            // Dodge();
+        }
     }
 
     private void Move()
@@ -54,5 +65,20 @@ public class PlayerController : CharacterProperty
         }
 
         cameraArm.rotation = Quaternion.Euler(x, camAngle.y + mouseDelta.x, camAngle.z);
+
+        // float offSet = 0.5f;
+        // camDist = Mathf.Lerp(camDist, targetDist, Time.deltaTime);
+        // if(Physics.Raycast(new Ray(transform.position, -transform.forward),
+        //     out RaycastHit hit, camDist + offSet, crashMask))
+        // {
+        //     camDist = hit.distance - offSet;
+        // }
+
+        // myCam.localPosition = new Vector3(0, 0, -camDist);
+    }
+
+    private void Dodge()
+    {
+        myAnim.SetTrigger("isDodge");
     }
 }
