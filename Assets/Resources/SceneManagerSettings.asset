@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IntroScene:
     SceneName: IntroScene
-    sceneAsset: {fileID: 102900000, guid: 7fd1ba271e2748545b6429034761df22, type: 3}
+    sceneAsset: {fileID: 102900000, guid: 3a7eac6d3fab9d847a41c160d6356e38, type: 3}
   LoadingScene:
     SceneName: LoadingScene
-    sceneAsset: {fileID: 102900000, guid: 7b6402475de36c14f9fa1a2628647951, type: 3}
+    sceneAsset: {fileID: 102900000, guid: 5bcf9e72a42436043a287b1e41cc62ee, type: 3}
   TitleScene:
     SceneName: TitleScene
-    sceneAsset: {fileID: 102900000, guid: 3ea0cc37b946c5e448b2e4953fe855cc, type: 3}
+    sceneAsset: {fileID: 102900000, guid: 61ed4e478a6346740bba2218e248ebcd, type: 3}
   MainScene:
     SceneName: MainScene_BJW
     sceneAsset: {fileID: 102900000, guid: 16c8bcf627640964f8ca2c2e1fd70a6f, type: 3}
