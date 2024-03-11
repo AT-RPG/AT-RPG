@@ -534,7 +534,7 @@ GameObject:
   - component: {fileID: 341617538}
   - component: {fileID: 341617541}
   m_Layer: 7
-  m_Name: Quit
+  m_Name: Quit Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -654,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3aadd1c875b424f92a25193553df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupInstance: {fileID: 4696516987986217221, guid: 7b5f4806577864a4eaa75e49d1786039,
+  popupInstance: {fileID: 4696516987986217221, guid: 45221a7409eff0f4e8071404ec4886ec,
     type: 3}
   popupCanvasInstance: {fileID: 682761559}
 --- !u!1 &352503491
@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 419198666}
   - component: {fileID: 419198669}
   m_Layer: 7
-  m_Name: Multiplay
+  m_Name: Join Multiplayer Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -822,7 +822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3aadd1c875b424f92a25193553df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupInstance: {fileID: 4696516987986217221, guid: 70027aa84e2a9a546a830f1ce8fdcced,
+  popupInstance: {fileID: 4696516987986217221, guid: 390bfcd211fc6304c870476032ea4f32,
     type: 3}
   popupCanvasInstance: {fileID: 682761559}
 --- !u!1 &444991640
@@ -875,7 +875,7 @@ GameObject:
   - component: {fileID: 452187519}
   - component: {fileID: 452187522}
   m_Layer: 7
-  m_Name: Singleplay
+  m_Name: Start Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -995,7 +995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3aadd1c875b424f92a25193553df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupInstance: {fileID: 4696516987986217221, guid: a1d8cc211bd7e9742b96177e51f442e4,
+  popupInstance: {fileID: 4696516987986217221, guid: 2f6cc14bf8b3e634299f92cff87f5a57,
     type: 3}
   popupCanvasInstance: {fileID: 682761559}
 --- !u!1 &459209392
@@ -1568,7 +1568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3aadd1c875b424f92a25193553df1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupInstance: {fileID: 4696516987986217221, guid: f6e0880341aa9ec4a82d8387f7c07b9d,
+  popupInstance: {fileID: 4696516987986217221, guid: b1eb8d0fd1390bd4685900047752bfe2,
     type: 3}
   popupCanvasInstance: {fileID: 682761559}
 --- !u!1 &1065629202
