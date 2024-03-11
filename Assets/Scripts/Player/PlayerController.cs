@@ -33,8 +33,6 @@ public class PlayerController : CharacterProperty
     private void Move()
     {
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        Debug.Log("moveInput.y" + moveInput.y);
-        Debug.Log("moveInput.x" + moveInput.x);
         bool isMove = moveInput.magnitude != 0;
         myAnim.SetBool("isMove", isMove);
         if(isMove)
