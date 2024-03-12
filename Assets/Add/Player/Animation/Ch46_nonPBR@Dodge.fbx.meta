@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 940c94d7602eea14fb87377694ce152d
+guid: 85042cc7195456f4d8280e9146bf99cf
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,7 +33,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Standing Dive Forward
+      name: Dodge
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0

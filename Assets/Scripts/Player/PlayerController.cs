@@ -1,6 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using AT_RPG;
+using AT_RPG.Manager;
+
 
 public class PlayerController : CharacterProperty
 {
@@ -12,6 +13,13 @@ public class PlayerController : CharacterProperty
     // float targetDist;
     // float camDist;
 
+    void Awake()
+    {
+        InputManager.AddKeyAction("Dodge", Dodge);
+        InputManager.AddKeyAction("Move Forward/Move Backward", Move);
+        InputManager.AddKeyAction("Move Left/Move Right", Move);
+        InputManager.AddKeyAction("Aim", LookAround);
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -21,16 +29,10 @@ public class PlayerController : CharacterProperty
     // Update is called once per frame
     void Update()
     {
-        LookAround();
-        Move();
-        if(Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            myAnim.SetTrigger("isDodge");
-            // Dodge();
-        }
+        
     }
 
-    private void Move()
+    private void Move(InputValue value)
     {
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         bool isMove = moveInput.magnitude != 0;
@@ -47,7 +49,7 @@ public class PlayerController : CharacterProperty
         Debug.DrawRay(cameraArm.position, new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized, Color.red);
     }
 
-    private void LookAround()
+    private void LookAround(InputValue value)
     {
         Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         Vector3 camAngle = cameraArm.rotation.eulerAngles;
@@ -75,8 +77,16 @@ public class PlayerController : CharacterProperty
         // myCam.localPosition = new Vector3(0, 0, -camDist);
     }
 
-    private void Dodge()
+    private void Dodge(InputValue value)
     {
         myAnim.SetTrigger("isDodge");
+    }
+
+    private void OnDestroy() 
+    {
+        InputManager.RemoveKeyAction("Dodge", Dodge);
+        InputManager.RemoveKeyAction("Move Forward/Move Backward", Move);
+        InputManager.RemoveKeyAction("Move Left/Move Right", Move);
+        InputManager.RemoveKeyAction("Aim", LookAround);
     }
 }
