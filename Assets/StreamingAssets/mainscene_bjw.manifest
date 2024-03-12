@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1543520452
+CRC: 829299477
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c000e5f662e38b8aea2b6909e51d9575
+    Hash: 04ea54ecd80ea0cb5ca47ebf1a608365
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e90758b3a642cfa1a8ecc9ba81e7fefd
+    Hash: 96ab1611922c07a9c38886ee3c0c2813
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: c000e5f662e38b8aea2b6909e51d9575
+    Hash: 04ea54ecd80ea0cb5ca47ebf1a608365
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -27,6 +27,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: f24513d5a516c8c49b07e85d195473eb, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: e800877649c5db9448c35155f3d48766, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 7c15392d9f056ad4fa88671e170aeb66, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 91735022c7b4be84094c6257c5741bb1, type: 3}
@@ -40,5 +42,6 @@ SerializeReferenceClassIdentifiers:
 Assets:
 - Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWAssetBundleResources.prefab
 - Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestDataManager.prefab
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestInputManager.prefab
 - Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestResourceRerference.prefab
 Dependencies: []
