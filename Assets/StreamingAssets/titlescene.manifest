@@ -1,22 +1,192 @@
 ManifestFileVersion: 0
-CRC: 1082281925
+CRC: 1987033398
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 13fe5f61c65ff8d61601522ce7d5cc67
+    Hash: d6679b05f7709bff63e0cccd53c6d21a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 767148d2cba1a92a15442f2b767884c0
+    Hash: 530dfea3fe35bd7baf3135d12633b15a
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 13fe5f61c65ff8d61601522ce7d5cc67
+    Hash: d6679b05f7709bff63e0cccd53c6d21a
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b37c3f44d0f21a841a6e5efb0e53c995, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 56c68c9f207168545bbc90b6ed1bd900, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2c1cdb5d1c6edd14db141b3413902e29, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: aa0a4d525002f394282ad6b51bbb4ffd, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 53277f5c4a6de23479f84fa84917c22c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f206f9c4c1ce7a647b2cb1c7f73bfa5b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3928c50dfda7dec459c856e4deb0545c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc9fd2b7564e346428183cad26d968ba, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: efae4b6fa355aec49847d709d6a49b1b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+- Class: 225
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: AT_RPG.SceneReference
+- AssemblyName: Unity.RenderPipelines.Core.Runtime
+  ClassName: UnityEngine.Rendering.BoolParameter
+- AssemblyName: Unity.RenderPipelines.Core.Runtime
+  ClassName: UnityEngine.Rendering.ClampedFloatParameter
+- AssemblyName: Unity.RenderPipelines.Core.Runtime
+  ClassName: UnityEngine.Rendering.ClampedIntParameter
+- AssemblyName: Unity.RenderPipelines.Core.Runtime
+  ClassName: UnityEngine.Rendering.ColorParameter
+- AssemblyName: Unity.RenderPipelines.Core.Runtime
+  ClassName: UnityEngine.Rendering.FloatParameter
+- AssemblyName: Unity.RenderPipelines.Core.Runtime
+  ClassName: UnityEngine.Rendering.MinFloatParameter
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.DepthOfFieldModeParameter
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.HDRACESPresetParameter
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.NeutralRangeReductionModeParameter
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.TonemappingModeParameter
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FaceInfo_Legacy
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FontAssetCreationSettings
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.KerningTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_Character
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontFeatureTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontWeightPair
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphAdjustmentRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphPairAdjustmentRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphValueRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/OnChangeEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/SelectionEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/SubmitEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/TextSelectionEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/TouchScreenKeyboardEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.VertexGradient
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.ArgumentCache
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentListenerMode
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.RectOffset
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.FaceInfo
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.Glyph
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphMetrics
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphRect
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.AnimationTriggers
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Button/ButtonClickedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.ColorBlock
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Navigation
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.ScrollRect/ScrollRectEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Scrollbar/ScrollEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.SpriteState
 Assets:
+- Assets/AssetBundleResources/TitleScene/Prefabs/OptionPopup.prefab
+- Assets/AssetBundleResources/TitleScene/Prefabs/CreateMapButton.prefab
+- Assets/AssetBundleResources/TitleScene/Sprites/Panel 1920x1080px.png
+- Assets/AssetBundleResources/TitleScene/Sprites/Handle Solid 128px.png
+- Assets/AssetBundleResources/TitleScene/Prefabs/SettingContainer.prefab
 - Assets/AssetBundleResources/TitleScene/DummyTitleSceneResource.prefab
+- Assets/AssetBundleResources/TitleScene/Sprites/Button Frame Hover 256px.png
+- Assets/AssetBundleResources/TitleScene/Prefabs/QuitGamePopup.prefab
+- Assets/AssetBundleResources/TitleScene/Sprites/Button Highlighted 256px.png
+- Assets/AssetBundleResources/TitleScene/Prefabs/StartGamePopup.prefab
+- Assets/AssetBundleResources/TitleScene/Sprites/Button Fram 256px.png
+- Assets/AssetBundleResources/TitleScene/Prefabs/MapSettingPopup.prefab
+- Assets/AssetBundleResources/TitleScene/Sprites/Button Frame Press 256px.png
+- Assets/AssetBundleResources/TitleScene/Prefabs/MultiplayerGamePopup.prefab
+- Assets/AssetBundleResources/TitleScene/Sprites/Handle Outline 256px.png
+- Assets/AssetBundleResources/TitleScene/Prefabs/PlayMapButton.prefab
+- Assets/AssetBundleResources/TitleScene/Sprites/Panel Frame 512px.png
 Dependencies: []

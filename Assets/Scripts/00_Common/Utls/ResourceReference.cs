@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using AT_RPG.Manager;
+using Unity.Serialization;
 
 namespace AT_RPG
 {
@@ -12,6 +13,7 @@ namespace AT_RPG
     public struct ResourceReference<T> where T : Object
     {
         [SerializeField] private string resourceName;
+
         public T Resource => ResourceManager.Get<T>(resourceName);
             
         public ResourceReference(Object resource)

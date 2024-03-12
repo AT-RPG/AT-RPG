@@ -21,6 +21,9 @@ namespace AT_RPG.Manager
         // 리소스 해쉬맵
         private static SceneResourceMap resources = new SceneResourceMap();
 
+        // 리소스 해쉬맵
+        private static ResourceMap_Update resources_update = new ResourceMap_Update();
+
         // 에셋 번들 해쉬맵
         private static AssetBundleMap bundles = new AssetBundleMap();
 
