@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3735725153
+CRC: 3076138044
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e738d249b1afa0c78ee29b3396b2f7ea
+    Hash: 24d233661a6c64b07dd0c030ef5fcb84
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e4fab07eb299020e165cb5b38ce3bde8
+    Hash: e6cc6de3c00da095c7f80f760a13eba8
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: e738d249b1afa0c78ee29b3396b2f7ea
+    Hash: 24d233661a6c64b07dd0c030ef5fcb84
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -25,12 +25,21 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: f24513d5a516c8c49b07e85d195473eb, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7c15392d9f056ad4fa88671e170aeb66, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 91735022c7b4be84094c6257c5741bb1, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 137
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: AT_RPG.ResourceReference`1[UnityEngine.GameObject]
 Assets:
 - Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWResource.prefab
-Dependencies: []
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestDataManager.prefab
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestResourceRerference.prefab
+Dependencies:
+- D:/Devs/Github/AT-RPG/Assets/StreamingAssets/global

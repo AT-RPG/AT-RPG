@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 912921364
+CRC: 1586626237
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -7,7 +7,8 @@ AssetBundleManifest:
       Dependencies: {}
     Info_1:
       Name: mainscene_bjw
-      Dependencies: {}
+      Dependencies:
+        Dependency_0: global
     Info_2:
       Name: introscene
       Dependencies: {}

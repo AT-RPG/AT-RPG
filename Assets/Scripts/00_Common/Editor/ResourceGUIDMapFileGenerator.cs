@@ -13,7 +13,8 @@ using Unity.Plastic.Newtonsoft.Json;
 namespace AT_RPG
 {
     /// <summary>
-    /// 리소스 폴더와 에셋 번들 리소스 폴더의 모든 리소스들에 대한 1:1 GUID를 생성하는 클래스 <br/>
+    /// 리소스 폴더와 에셋 번들 리소스 폴더의 모든 리소스들에 대한 1:1 GUID를 생성하는 클래스    <br/>
+    /// + 타입과 리소스의 이름을 통해 GUID를 매핑합니다.                                      <br/>
     /// </summary>
     public static class ResourceGUIDMapFileGenerator 
     {
@@ -26,41 +27,34 @@ namespace AT_RPG
         {
             Stopwatch stopwatch = new Stopwatch();
 
+            // 리소스 GUID 경로 불러오기
             ResourceManagerSetting setting =
                 Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
 
             stopwatch.Start();
             {
-                List<UnityObject> resources = new List<UnityObject>();
-                List<UnityObject> resourcesFromResourcesFolder = new List<UnityObject>();
-                List<UnityObject> resourcesFromAssetBundles = new List<UnityObject>();
-                try
-                {
-                    // 매핑할 모든 리소스 로드
-                    // 로드된 리소스들을 하나로 통합
-                    resourcesFromResourcesFolder = LoadAllResourcesFromResourcesFolder();
-                    resourcesFromAssetBundles = LoadAllResourcesFromAssetBundles();
-                    resources.AddRange(resourcesFromResourcesFolder);
-                    resources.AddRange(resourcesFromAssetBundles);
+                // 리소스 매핑 컨테이너 생성
+                ResourceGUIDMap resourceGUIDMap = new ResourceGUIDMap();
 
-                    // 리소스 매핑 컨테이너 생성
-                    // 리소스 GUID 매핑파일 생성
-                    ResourceGUIDMap resourceGUIDMap = CreateResourceGUIMap(resources);
-                    SerializeResourceGUIDMap(resourceGUIDMap);
-                }
-                catch
-                {
-                    UnityDebug.Log($"리소스 로딩 실패");
-                }
-
-                // 리소스 메모리 해제
+                // 매핑할 리소스 폴더의 모든 리소스를 로드 + 매핑
+                List<UnityObject> resourcesFromResourcesFolder = LoadAllResourcesFromResourcesFolder();
+                MapResourcesToGUIDMap(resourcesFromResourcesFolder, ref resourceGUIDMap);
                 Resources.UnloadUnusedAssets();
+
+                // 매핑할 에셋 번들의 모든 리소스를 로드 + 매핑
+                List<UnityObject> resourcesFromAssetBundles = LoadAllResourcesFromAssetBundles();
+                MapResourcesToGUIDMap(resourcesFromAssetBundles, ref resourceGUIDMap);
+                AssetBundle.UnloadAllAssetBundles(true);
+
+                // 리소스 GUID 매핑파일 생성
+                SerializeResourceGUIDMap(resourceGUIDMap);
             }
             stopwatch.Stop();
 
+            // 함수 종료 로그
             UnityDebug.Log($"{nameof(ResourceGUIDMapFileGenerator)}.cs에서 리소스 GUID 매핑 파일 업데이트. \n" +
                            $"리소스 GUID 매핑 파일 위치 : " +
-                           $"{Path.Combine(setting.ResourceGUIDsSavePath, setting.ResourceGUIDsFileName)} \n" +
+                           $"{Path.Combine(setting.ResourceGUIDMapSavePath, setting.ResourceGUIDMapFileName)} \n" +
                            $"소요시간 : " +
                            $"{stopwatch.ElapsedMilliseconds}ms \n");
         }
@@ -97,18 +91,16 @@ namespace AT_RPG
         /// <summary>
         /// 리소스들에 대한 1:1 GUID 매핑 컨테이너를 생성합니다.
         /// </summary>
-        /// <param name="resources"></param>
-        private static ResourceGUIDMap CreateResourceGUIMap(List<UnityObject> resources)
+        /// <param name="resources">매핑할 리소스 리스트</param>
+        /// <param name="resourceGUIDMap">매핑을 적용할 컨테이너</param>
+        private static void MapResourcesToGUIDMap(
+            List<UnityObject> resources, ref ResourceGUIDMap resourceGUIDMap)
         {
             // 이전에 만든 GUID파일을 가져옴
             ResourceManagerSetting setting 
                 = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
             ResourceGUIDMap loadedResourceGUIDMap
-                = ResourceGUID.LoadResourceGUIDMap(Path.Combine(setting.ResourceGUIDsSavePath, setting.ResourceGUIDsFileName));
-
-            
-            // 새로 작성할 GUID 컨테이너 선언
-            ResourceGUIDMap resourceGUIMap = new ResourceGUIDMap();
+                = ResourceGUID.LoadResourceGUIDMap(Path.Combine(setting.ResourceGUIDMapSavePath, setting.ResourceGUIDMapFileName));
 
             // 에셋 타입 + 리소스이름에 GUID 매핑 시작
             foreach (var resource in resources)
@@ -117,27 +109,26 @@ namespace AT_RPG
                 string resourceName = resource.name;
 
                 // 처음등록되는 에셋 타입임?
-                if (!resourceGUIMap.ContainsResourceType(resourceTypeName))
+                if (!resourceGUIDMap.ContainsResourceType(resourceTypeName))
                 {
-                    resourceGUIMap[resourceTypeName] = new Dictionary<string, Guid>();
+                    resourceGUIDMap[resourceTypeName] = new Dictionary<string, Guid>();
                 }
 
                 // 이전 GUID에 등록된적 있음?
                 // true  -> 이전 GUID 그대로
                 // false -> 새로 GUID 생성
                 if (loadedResourceGUIDMap != null &&
-                    loadedResourceGUIDMap[resourceTypeName].ContainsKey(resourceName))
+                    loadedResourceGUIDMap.ContainsResourceType(resourceTypeName) &&
+                    loadedResourceGUIDMap.ContainsResourceName(resourceTypeName, resourceName))
                 {
-                    resourceGUIMap[resourceTypeName][resourceName] 
+                    resourceGUIDMap[resourceTypeName][resourceName] 
                         = loadedResourceGUIDMap[resourceTypeName][resourceName];
                 }
                 else
                 {
-                    resourceGUIMap[resourceTypeName][resourceName] = Guid.NewGuid();
+                    resourceGUIDMap[resourceTypeName][resourceName] = Guid.NewGuid();
                 }
             }
-
-            return resourceGUIMap;
         }
 
         /// <summary>
@@ -155,7 +146,7 @@ namespace AT_RPG
 
             // 파일 경로 설정
             string filePath 
-                = Path.Combine(setting.ResourceGUIDsSavePath, setting.ResourceGUIDsFileName);
+                = Path.Combine(setting.ResourceGUIDMapSavePath, setting.ResourceGUIDMapFileName);
 
             // 파일에 Json 쓰기
             using (FileStream stream = new FileStream(filePath, FileMode.Create))

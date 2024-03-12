@@ -34,7 +34,7 @@ namespace AT_RPG
                 {
                     ResourceGUIDMapFileGenerator.BuildResourceGUIDMapFile();
                     ResourceGUID.LoadResourceGUIDMap
-                        (Path.Combine(setting.ResourceGUIDsSavePath, setting.ResourceGUIDsFileName));
+                        (Path.Combine(setting.ResourceGUIDMapSavePath, setting.ResourceGUIDMapFileName));
                 }
             }
             stopwatch.Stop();
