@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,13 +9,14 @@ using UnityEngine.Events;
 public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애니메이터 제어 스크립트상속
 {
     [SerializeField] Transform monResPos;
-    MonsterInfo mon1 = new MonsterInfo("몬1", 10.0f, 3.0f, 1, 30.0f, 0.5f, 1.0f); //몬스터 인포 참조 --방식 수정해야함
+    MonsterInfo mon1 = new MonsterInfo("몬1", 10.0f, 3.0f, 1, 30.0f, 20.0f, 3.5f); //몬스터 인포 참조 --방식 수정해야함
                                                                                   //인포방식 가독성 매우안좋으므로 몬스터마다 개별 인포를 만들후 스탯을 사용하게끔 변경
 
     public GameObject Imp; //몬스터 리스폰을 위한 게임오브젝트 지정
 
     Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine rotate = null; //몬스터의 회전을 관리
+    Coroutine battle = null; //몬스터의 배틀을 관리
 
     public MonsterAI monsterAI; //몬스터 ai기능을 참조
     private bool isTracking = false;
@@ -48,7 +50,7 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
                 monsterMove();
                 break;
             case State.Battle: //몬스터가 전투상태
-                StartCoroutine(monsterBattle());
+                battle = StartCoroutine(monsterBattle());
                 break;
             case State.Dead: //몬스터가 사망
                 monsterDead();
@@ -198,19 +200,16 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
         {
             StopCoroutine(move);
         }
+            StopCoroutine(battle);
         ChangeState(State.Idle);
     }
 
 
     /// <summary>
     /// -------전투 관련 스크립트 ----------------------------------------------
-    /// 타겟이 감지가되면 타겟의 좌표를 얻은후에 배틀함수 호출
-    /// 이후 타겟과 거리를 재면서 사거리보다 멀리떨어져있으면 이동함수 호출
-    /// 이후 타겟이 사거리안에 들어오면 공격
     /// </summary>
     
     
-
 
     IEnumerator monsterBattle()  //전투상태
     {
@@ -228,7 +227,7 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
                 }
                 else
                 {
-                    attackPlayer(); //배틀상태 추가
+                    attackPlayer();
                 }
             }
             else
@@ -242,12 +241,20 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
 
     void attackPlayer()
     {
-        if (move != null)
-        {
-            StopCoroutine(move);
-        }
-        Debug.Log("전투");
+        StopCoroutine(battle);
+        StopCoroutine(move);
+        
+        monsterAnim.SetBool("IsAttack",true);
+
+        StartCoroutine(DelayAttack());
     }
+
+    IEnumerator DelayAttack()
+    {
+        yield return new WaitForSeconds(mon1.mRpm);
+        StartCoroutine(monsterBattle());
+    }
+
 
 
 
