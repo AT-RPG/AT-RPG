@@ -195,12 +195,13 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
     }
     public void StopTracking()
     {
+        monsterAnim.SetBool("IsAttack", false);
         monsterTarget = null;
         if (move != null)
         {
             StopCoroutine(move);
         }
-            StopCoroutine(battle);
+        StopCoroutine(battle);
         ChangeState(State.Idle);
     }
 
@@ -228,6 +229,7 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
                 else
                 {
                     attackPlayer();
+                    
                 }
             }
             else
@@ -241,19 +243,34 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
 
     void attackPlayer()
     {
-        StopCoroutine(battle);
-        StopCoroutine(move);
-        
-        monsterAnim.SetBool("IsAttack",true);
+        Debug.Log(" 진입");
+        monsterAnim.SetBool("Run", false);
+        monsterAnim.SetBool("Move", false);
+        monsterAnim.SetBool("IsAttack", true);
+
+        if (move != null)
+        {
+            StopCoroutine(move);
+        }
+        if (battle != null)
+        {
+            StopCoroutine(battle);
+        }
 
         StartCoroutine(DelayAttack());
     }
 
     IEnumerator DelayAttack()
     {
-        yield return new WaitForSeconds(mon1.mRpm);
-        StartCoroutine(monsterBattle());
+        monsterAnim.SetBool("IsAttack", false); // 공격 애니메이션 종료 
+        Debug.Log("딜레이 진입");
+        yield return new WaitForSeconds(10.0f); // 공격 후에 일정 시간을 대기
+        
+        Debug.Log("딜레이 끝");
+        yield return null;
     }
+
+
 
 
 
