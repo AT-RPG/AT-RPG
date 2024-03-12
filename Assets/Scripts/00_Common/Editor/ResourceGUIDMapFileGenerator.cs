@@ -15,16 +15,19 @@ namespace AT_RPG
     /// <summary>
     /// 리소스 폴더와 에셋 번들 리소스 폴더의 모든 리소스들에 대한 1:1 GUID를 생성하는 클래스 <br/>
     /// </summary>
-    public static class ResourceGUIDsGenerator 
+    public static class ResourceGUIDMapFileGenerator 
     {
         /// <summary>
         /// 리소스 GUID 매핑 파일을 생성합니다.
         /// </summary>
         [MenuItem("Generators/Build Resource GUIDs")]
 
-        public static void BuildResourceGUIDs()
+        public static void BuildResourceGUIDMapFile()
         {
             Stopwatch stopwatch = new Stopwatch();
+
+            ResourceManagerSetting setting =
+                Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
 
             stopwatch.Start();
             {
@@ -55,8 +58,11 @@ namespace AT_RPG
             }
             stopwatch.Stop();
 
-            UnityDebug.Log($"{nameof(ResourceGUIDsGenerator)}.cs에서 리소스 GUID 생성완료." +
-                      $" 소요시간 : {stopwatch.ElapsedMilliseconds}ms");
+            UnityDebug.Log($"{nameof(ResourceGUIDMapFileGenerator)}.cs에서 리소스 GUID 매핑 파일 업데이트. \n" +
+                           $"리소스 GUID 매핑 파일 위치 : " +
+                           $"{Path.Combine(setting.ResourceGUIDsSavePath, setting.ResourceGUIDsFileName)} \n" +
+                           $"소요시간 : " +
+                           $"{stopwatch.ElapsedMilliseconds}ms \n");
         }
 
         /// <summary>
@@ -159,5 +165,4 @@ namespace AT_RPG
             }
         }
     }
-
 }

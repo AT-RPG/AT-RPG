@@ -35,9 +35,11 @@ namespace AT_RPG
 
             if (isDuplicated)
             {
-                UnityDebug.Log($"{nameof(ResourceDuplicationFinder)}.cs에서 리소스 중복성 확인완료." +
-                          $" 소요시간 : {stopwatch.ElapsedMilliseconds}ms");
+                UnityDebug.Log($"{nameof(ResourceDuplicationFinder)}.cs에서 리소스 중복성 감지." +
+                               $" 소요시간 : {stopwatch.ElapsedMilliseconds}ms");
             }
+
+            Resources.UnloadUnusedAssets();
         }
 
         /// <summary>
@@ -113,8 +115,8 @@ namespace AT_RPG
                 string duplicatedNameAssetPath = AssetDatabase.GUIDToAssetPath(guid);
 
                 return (String.GetFileType(duplicatedNameAssetPath) == assetType) &&
-                       (String.ContainsString(assetPath, "Resources") ||
-                        String.ContainsString(assetPath, setting.AssetBundlesSavePath));
+                       (String.ContainsString(duplicatedNameAssetPath, "Resources") ||
+                        String.ContainsString(duplicatedNameAssetPath, setting.AssetBundlesSavePath));
 
             }).ToList();
         }

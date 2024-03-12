@@ -1,8 +1,19 @@
-using AT_RPG;
-using AT_RPG.Manager;
 using UnityEngine;
 
-public class TestMainScene_BJW : MonoBehaviour
+namespace AT_RPG
 {
-    [SerializeField] ResourceReference<GameObject> testGameObject;
+    /// <summary>
+    /// ResourceReference의 사용 예시를 보여주는 클래스입니다.  <br/>
+    /// + CAUTION : ResourceReference에 바인딩하는 리소스는 꼭 Resources폴더에 있거나, AssetBundle에 등록되어야합니다.
+    /// </summary>
+    public class TestMainScene_BJW : MonoBehaviour
+    {
+        [SerializeField] ResourceReference<GameObject> testGameObject;
+
+        private void Start()
+        {
+            Instantiate(testGameObject.Resource);
+        }
+    }
+
 }
