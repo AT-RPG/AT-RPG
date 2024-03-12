@@ -174,7 +174,8 @@ namespace AT_RPG
             {
                 string duplicatedNameAssetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-                return (String.GetFileType(duplicatedNameAssetPath) == assetType) &&
+                return (String.GetFileType(duplicatedNameAssetPath) == assetType &&
+                        String.GetFileType(duplicatedNameAssetPath) != "")&&
                        (String.ContainsString(duplicatedNameAssetPath, "Resources") ||
                         String.ContainsString(duplicatedNameAssetPath, setting.AssetBundlesSavePath));
 
