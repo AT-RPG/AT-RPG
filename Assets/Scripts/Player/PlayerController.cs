@@ -7,7 +7,9 @@ public class PlayerController : CharacterProperty
 {
     [SerializeField] private Transform characterBody;
     [SerializeField] private Transform cameraArm;
-    [SerializeField] Transform myCam;
+    [SerializeField] private Rigidbody playerRigid;
+    // [SerializeField] Transform myCam;
+
     // public LayerMask crashMask;
 
     // float targetDist;
@@ -16,6 +18,7 @@ public class PlayerController : CharacterProperty
     void Awake()
     {
         InputManager.AddKeyAction("Dodge", Dodge);
+        InputManager.AddKeyAction("Jump", Jump);
         InputManager.AddKeyAction("Move Forward/Move Backward", Move);
         InputManager.AddKeyAction("Move Left/Move Right", Move);
         InputManager.AddKeyAction("Aim", LookAround);
@@ -29,13 +32,12 @@ public class PlayerController : CharacterProperty
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     private void Move(InputValue value)
     {
         if(myAnim.GetBool("isRolling")) return;
-        
+
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         bool isMove = moveInput.magnitude != 0;
         myAnim.SetBool("isMove", isMove);
@@ -81,15 +83,32 @@ public class PlayerController : CharacterProperty
 
     private void Dodge(InputValue value)
     {
-        myAnim.SetTrigger("isDodge");
+        if(myAnim.GetBool("isJumping")) return;
+
+        myAnim.SetTrigger("Dodge");
         myAnim.SetBool("isRolling", true);
+    }
+
+    private void Jump(InputValue value)
+    {
+        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping")) return;
+
+        myAnim.SetTrigger("Jump");
+        myAnim.SetBool("isJumping", true);
+        playerRigid.AddForce(Vector3.up * 200.0f);
     }
 
     private void OnDestroy() 
     {
         InputManager.RemoveKeyAction("Dodge", Dodge);
+        InputManager.RemoveKeyAction("Jump", Jump);
         InputManager.RemoveKeyAction("Move Forward/Move Backward", Move);
         InputManager.RemoveKeyAction("Move Left/Move Right", Move);
         InputManager.RemoveKeyAction("Aim", LookAround);
+    }
+
+    public void SetFallState(bool isGround)
+    {
+        myAnim.SetBool("isGround", isGround);
     }
 }
