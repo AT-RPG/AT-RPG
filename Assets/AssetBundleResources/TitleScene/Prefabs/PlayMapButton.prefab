@@ -421,8 +421,8 @@ MonoBehaviour:
   fadeAnimation: {fileID: 1398023289772320872}
   popupAnimation: {fileID: 172495221748571733}
   mainScene:
-    SceneName: MainScene
-    sceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+    SceneName: MainScene_BJW
+    sceneAsset: {fileID: 102900000, guid: 16c8bcf627640964f8ca2c2e1fd70a6f, type: 3}
 --- !u!114 &172495221748571733
 MonoBehaviour:
   m_ObjectHideFlags: 0

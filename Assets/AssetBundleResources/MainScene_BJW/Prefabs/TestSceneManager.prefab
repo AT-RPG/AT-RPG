@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a61b2aa3f45aa5544b60b3dbeaf81a58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testSceneReference:
+    SceneName: IntroScene
+    sceneAsset: {fileID: 102900000, guid: 3a7eac6d3fab9d847a41c160d6356e38, type: 3}

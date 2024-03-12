@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -659,17 +659,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5978197110208414329, guid: d24ad83cf14ae8441be52e5069138441,
-        type: 3}
-      propertyPath: testSceneReference.SceneName
-      value: IntroScene
-      objectReference: {fileID: 0}
-    - target: {fileID: 5978197110208414329, guid: d24ad83cf14ae8441be52e5069138441,
-        type: 3}
-      propertyPath: testSceneReference.sceneAsset
-      value: 
-      objectReference: {fileID: 102900000, guid: 3a7eac6d3fab9d847a41c160d6356e38,
-        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
