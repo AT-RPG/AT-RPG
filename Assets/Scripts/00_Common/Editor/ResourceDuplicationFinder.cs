@@ -9,7 +9,7 @@ namespace AT_RPG
 {
     /// <summary>
     /// 리소스 폴더와 에셋 번들 리소스에 이름과 타입이 모두 겹치는 파일이 있는지 확인하는 클래스  <br/>
-    /// + CAUTION : 현재 변경사항에 대해서만 에러를 로그합니다. <br/>
+    /// + CAUTION : 현재 변경사항에 대해서만 에러를 로그합니다. 에러를 무시하면 추후에 이 리소스가 중복되었는지 확인할 방법이 없습니다!!! <br/>
     /// + TODO : 에러가 발생하면 RevertAction
     /// </summary>
     public class ResourceDuplicationFinder : AssetPostprocessor
@@ -25,15 +25,19 @@ namespace AT_RPG
         string[] movedFromAssetPaths)
         {
             Stopwatch stopwatch = new Stopwatch();
+            bool isDuplicated = false;
 
             stopwatch.Start();
             {
-                FindDuplicationResources(importedAssets, deletedAssets, movedAssets, null);
+                isDuplicated = FindDuplicationResources(importedAssets, deletedAssets, movedAssets, null);
             }
             stopwatch.Stop();
 
-            UnityDebug.Log($"{nameof(ResourceDuplicationFinder)}.cs에서 리소스 중복성 확인완료." +
-                      $" 소요시간 : {stopwatch.ElapsedMilliseconds}ms");
+            if (isDuplicated)
+            {
+                UnityDebug.Log($"{nameof(ResourceDuplicationFinder)}.cs에서 리소스 중복성 확인완료." +
+                          $" 소요시간 : {stopwatch.ElapsedMilliseconds}ms");
+            }
         }
 
         /// <summary>
@@ -120,12 +124,19 @@ namespace AT_RPG
         /// </summary>
         private static void LogDuplicationMsg(string assetName, List<string> duplicatedNameAssetGUIDs)
         {
+            string logMsg = $"{assetName}와 중복되는 리소스가 있습니다.";
+
             // 중복 에셋의 경로 출력
+            int logIndex = 1;
             foreach (var duplicatedNameAssetGUID in duplicatedNameAssetGUIDs)
             {
                 string duplicatedNameAssetPath = AssetDatabase.GUIDToAssetPath(duplicatedNameAssetGUID);
-                UnityDebug.LogError($"{assetName}와 중복되는 리소스가 있습니다." +
-                               $"중복 리소스 경로 : {duplicatedNameAssetPath}");
+                logMsg += $"\n 중복 리소스 경로 {logIndex++} : {duplicatedNameAssetPath}";
+            }
+
+            if (duplicatedNameAssetGUIDs.Count >= 1)
+            {
+                UnityDebug.LogError(logMsg);
             }
         }
     }
