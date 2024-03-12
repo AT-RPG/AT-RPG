@@ -199,6 +199,7 @@ namespace AT_RPG
             if (duplicatedNameAssetGUIDs.Count >= 1)
             {
                 UnityDebug.LogError(logMsg);
+                UnityDebug.Log($"{nameof(ResourceGUIDUpdater)}.cs에서 리소스 중복을 확인.");
             }
         }
     }

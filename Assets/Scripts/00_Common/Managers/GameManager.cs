@@ -19,8 +19,7 @@ namespace AT_RPG.Manager
         private static ResourceManager resourceManager  = null;
         private static SceneManager sceneManager        = null;
         private static UIManager uiManager              = null;
-        private static DataManager dataManager      = null;
-        private static TestManager testManager          = null;
+        private static DataManager dataManager          = null;
         private static InputManager inputManager        = null;
 
 
@@ -72,9 +71,6 @@ namespace AT_RPG.Manager
 
             dataManager = DataManager.GetInstance();
             dataManager.transform.SetParent(gameManager.transform);
-
-            testManager = TestManager.GetInstance();
-            testManager.transform.SetParent(gameManager.transform);
 
             inputManager = InputManager.GetInstance();
             inputManager.transform.SetParent(gameManager.transform);
