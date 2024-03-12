@@ -21,9 +21,6 @@ namespace AT_RPG.Manager
         // 리소스 해쉬맵
         private static SceneResourceMap resources = new SceneResourceMap();
 
-        // 리소스 해쉬맵
-        private static ResourceMap_Update resources_update = new ResourceMap_Update();
-
         // 에셋 번들 해쉬맵
         private static AssetBundleMap bundles = new AssetBundleMap();
 
@@ -47,7 +44,9 @@ namespace AT_RPG.Manager
 
             setting = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
 
-            GameManager.BeforeFirstSceneLoadAction += OnBeforeFirstSceneLoad;
+            GameManager.BeforeFirstSceneLoadAction += LoadAllResourcesFromResourcesFolder;
+            GameManager.BeforeFirstSceneLoadAction += LoadAllResourcesFromAssetBundleGlobal;
+            GameManager.BeforeFirstSceneLoadAction += LoadAllResourcesFromAssetBundleFirstScene;
         }
 
         private void Update()
@@ -146,8 +145,22 @@ namespace AT_RPG.Manager
                 }
             }
 
-            Debug.LogError($"{resourceName}를 {typeName}로 형변환 할 수 없거나" +
-                           $", 해당 씬에 리소스가 등록되지 않았습니다. {resourceName} = null을 반환합니다.");
+            // 리소스 폴더에 등록되었는지?
+            if (resources.ContainsKey("Resources") &&
+                resources["Resources"].ContainsKey(typeName) &&
+                resources["Resources"][typeName].ContainsKey(resourceName))
+            {
+                // 타입 형변환이 가능한지?
+                resource = resources["Resources"][typeName][resourceName] as T;
+                if (resource)
+                {
+                    return resource;
+                }
+            }
+
+            Debug.LogError($"{nameof(ResourceManager)}.cs에서 {resourceName}을 로드할 수 없습니다. 하단의 로그를 확인해주세요. \n" +
+                           $"1. {resourceName}를 {typeName}로 형변환 할 수 없습니다. \n" +
+                           $"2. {resourceName}가 리소스 폴더나 에셋번들의 리소스가 아닙니다. 에셋 번들 재빌드나 리소스 GUID 재빌드를 하셨나요? \n");
             
             return resource;
         }
@@ -390,13 +403,26 @@ namespace AT_RPG.Manager
             }
         }
 
+        private static void LoadAllResourcesFromAssetBundleFirstScene()
+        {
+            LoadAllResources(SceneManager.CurrentSceneName);
+        }
+
         /// <summary>
-        /// 게임시작 시, 글로벌 에셋 번들 + 첫 씬의 에셋 번들 로드
+        /// 게임시작 시, 리소스 폴더의 리소스 로드
         /// </summary>
-        private static void OnBeforeFirstSceneLoad()
+        private static void LoadAllResourcesFromResourcesFolder()
+        {
+            UnityObject[] loadedResources = Resources.LoadAll("");
+            MapResourcesAtScene("Resources", loadedResources);
+        }
+
+        /// <summary>
+        /// 게임시작 시, 글로벌 에셋 번들의 리소스 로드
+        /// </summary>
+        private static void LoadAllResourcesFromAssetBundleGlobal()
         {
             LoadAllResources(setting.GlobalAssetBundleName);
-            LoadAllResources(SceneManager.CurrentSceneName);
         }
     }
 

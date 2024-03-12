@@ -9,7 +9,7 @@ namespace AT_RPG.Manager
     /// </summary>
     public partial class GameManager : Singleton<GameManager>
     {
-        // OnBeforeFirstSceneLoad()에서 실행
+        // LoadAllResourcesFromResourcesFolder()에서 실행
         private static event Action beforeFirstSceneLoadAction;
 
         // OnAfterFirstSceneLoad()에서 실행
@@ -83,7 +83,7 @@ namespace AT_RPG.Manager
 
     public partial class GameManager
     {
-        // OnBeforeFirstSceneLoad()에서 실행
+        // LoadAllResourcesFromResourcesFolder()에서 실행
         public static Action BeforeFirstSceneLoadAction
         {
             get

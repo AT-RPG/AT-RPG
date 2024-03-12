@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEditor;
 using AT_RPG.Manager;
-using Unity.Serialization;
+using System;
+using UnityObject = UnityEngine.Object;
 
 namespace AT_RPG
 {
@@ -10,13 +11,13 @@ namespace AT_RPG
     /// 인스펙터에서 리소스를 바인딩하면 해당 리소스의 이름으로 리소스를 얻을 수 있습니다.
     /// </summary>
     [System.Serializable]
-    public struct ResourceReference<T> where T : Object
+    public struct ResourceReference<T> where T : UnityObject
     {
         [SerializeField] private string resourceName;
 
         public T Resource => ResourceManager.Get<T>(resourceName);
             
-        public ResourceReference(Object resource)
+        public ResourceReference(UnityObject resource)
         {
             // 리소스의 래퍼런스로 이름을 사용해서 찾기 때문에
             // (Clone)을 제거
@@ -35,7 +36,7 @@ namespace AT_RPG
         }
 
 #if UNITY_EDITOR
-        [SerializeField] private Object editorResource;
+        [SerializeField] private UnityObject editorResource;
 #endif
     }
 
@@ -55,7 +56,7 @@ namespace AT_RPG
             EditorGUI.BeginChangeCheck();
 
             // 인스펙터에서 수정한 리소스 정보를 GET
-            Object newResource = EditorGUI.ObjectField(position, label, resource.objectReferenceValue, typeof(Object), allowSceneObjects: false);
+            UnityObject newResource = EditorGUI.ObjectField(position, label, resource.objectReferenceValue, typeof(UnityObject), allowSceneObjects: false);
             
             // 인스펙터 변경 감지됨
             if (EditorGUI.EndChangeCheck())

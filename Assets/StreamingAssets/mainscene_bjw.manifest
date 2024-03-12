@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3076138044
+CRC: 1543520452
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 24d233661a6c64b07dd0c030ef5fcb84
+    Hash: c000e5f662e38b8aea2b6909e51d9575
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e6cc6de3c00da095c7f80f760a13eba8
+    Hash: e90758b3a642cfa1a8ecc9ba81e7fefd
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 24d233661a6c64b07dd0c030ef5fcb84
+    Hash: c000e5f662e38b8aea2b6909e51d9575
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -38,8 +38,7 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: AT_RPG.ResourceReference`1[UnityEngine.GameObject]
 Assets:
-- Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWResource.prefab
+- Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWAssetBundleResources.prefab
 - Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestDataManager.prefab
 - Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestResourceRerference.prefab
-Dependencies:
-- D:/Devs/Github/AT-RPG/Assets/StreamingAssets/global
+Dependencies: []

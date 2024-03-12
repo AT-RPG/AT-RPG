@@ -1,6 +1,4 @@
-using AT_RPG;
 using AT_RPG.Manager;
-using System.Collections;
 using UnityEngine;
 
 namespace AT_RPG

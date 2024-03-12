@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6572127768010760687}
   - component: {fileID: 7193062862480256812}
   m_Layer: 0
-  m_Name: DummyMainSceneBJWResource
+  m_Name: DummyMainSceneBJWAssetBundleResources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

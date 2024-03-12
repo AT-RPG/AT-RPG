@@ -44,7 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c15392d9f056ad4fa88671e170aeb66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testGameObject:
-    resourceName: DummyGlobalSceneResource
-    editorResource: {fileID: 1744827880115756937, guid: 779859d6810c2a249b36fade407ec925,
+  testAssetBundleResource:
+    resourceName: DummyMainSceneBJWAssetBundleResources
+    editorResource: {fileID: 1744827880115756937, guid: b86c0dcb79b078248b5d95a87bfb6f2c,
+      type: 3}
+  testResourcesFolderResource:
+    resourceName: DummyMainSceneBJWResources
+    editorResource: {fileID: 1744827880115756937, guid: ce7274ec658515c4e86c09ef7e387239,
       type: 3}

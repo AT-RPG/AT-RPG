@@ -25,9 +25,6 @@ namespace AT_RPG
         }
     }
 
-    // Key1 = 리소스에 1:1 매핑되는 GUID,  Value1 = 리소스
-    public class ResourceMap_Update : Dictionary<Guid, UnityObject> { }
-
     // Key1 = 리소스의 타입,  Key2 = 리소스의 이름,  Value1 = 리소스
     public class ResourceMap : Dictionary<string, Dictionary<string, UnityObject>> { }
 

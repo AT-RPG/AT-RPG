@@ -97,10 +97,7 @@ namespace AT_RPG
             List<UnityObject> resources, ref ResourceGUIDMap resourceGUIDMap)
         {
             // 이전에 만든 GUID파일을 가져옴
-            ResourceManagerSetting setting 
-                = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
-            ResourceGUIDMap loadedResourceGUIDMap
-                = ResourceGUID.LoadResourceGUIDMap(Path.Combine(setting.ResourceGUIDMapSavePath, setting.ResourceGUIDMapFileName));
+            ResourceGUIDMap loadedResourceGUIDMap = ResourceGUID.LoadResourceGUIDMap();
 
             // 에셋 타입 + 리소스이름에 GUID 매핑 시작
             foreach (var resource in resources)
