@@ -19,6 +19,6 @@ public class RootMotion : MonoBehaviour
     private void OnAnimatorMove()
     {
         transform.parent.position += myAnim.deltaPosition;
-        transform.parent.rotation *= myAnim.deltaRotation;
+        // transform.parent.rotation *= myAnim.deltaRotation;
     }
 }

@@ -34,6 +34,8 @@ public class PlayerController : CharacterProperty
 
     private void Move(InputValue value)
     {
+        if(myAnim.GetBool("isRolling")) return;
+        
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         bool isMove = moveInput.magnitude != 0;
         myAnim.SetBool("isMove", isMove);
@@ -80,6 +82,7 @@ public class PlayerController : CharacterProperty
     private void Dodge(InputValue value)
     {
         myAnim.SetTrigger("isDodge");
+        myAnim.SetBool("isRolling", true);
     }
 
     private void OnDestroy() 
