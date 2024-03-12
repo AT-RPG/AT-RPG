@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 829299477
+CRC: 1451570715
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 04ea54ecd80ea0cb5ca47ebf1a608365
+    Hash: eee58855305537e622e0595612f3cb0e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 96ab1611922c07a9c38886ee3c0c2813
+    Hash: 9131965956cabffd1397815d453c77cb
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 04ea54ecd80ea0cb5ca47ebf1a608365
+    Hash: eee58855305537e622e0595612f3cb0e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -32,6 +32,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 7c15392d9f056ad4fa88671e170aeb66, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 91735022c7b4be84094c6257c5741bb1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a61b2aa3f45aa5544b60b3dbeaf81a58, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 137
@@ -39,9 +41,12 @@ ClassTypes:
 SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
   ClassName: AT_RPG.ResourceReference`1[UnityEngine.GameObject]
+- AssemblyName: Assembly-CSharp
+  ClassName: AT_RPG.SceneReference
 Assets:
 - Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWAssetBundleResources.prefab
 - Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestDataManager.prefab
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestSceneManager.prefab
 - Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestInputManager.prefab
-- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestResourceRerference.prefab
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestResourceManager.prefab
 Dependencies: []
