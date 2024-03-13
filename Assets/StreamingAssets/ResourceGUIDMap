@@ -65,7 +65,6 @@
     "TangentContinuousPro": "468f08ba-51b4-4340-adba-6ca0b38da1de",
     "TangentLinear": "96711635-2a53-4c3f-abcd-a3bf171f37c4",
     "TangentLinearPro": "36ec246c-c535-48c7-ad75-723873f21c55",
-    "title": "78815e39-a39f-4b0e-9d20-28118c513393",
     "Button Fram 256px": "e6b20cb2-3444-41b4-8bb7-f2e59cec95a3",
     "Button Frame Hover 256px": "25ce4949-a660-46b5-884b-bd68352be719",
     "Button Frame Press 256px": "76b62fe0-f4a1-4d76-9ec6-5e737722b203",
@@ -73,7 +72,8 @@
     "Handle Outline 256px": "7febaa2e-06fb-4d30-baab-d1c058ec370c",
     "Handle Solid 128px": "7f2ba8d9-0bd8-4c84-bb82-a85eebf7c53d",
     "Panel 1920x1080px": "f148508a-9fe5-4fa2-98ce-6e346d19f40d",
-    "Panel Frame 512px": "4f03d730-eafb-44c3-b05f-58c18fb69552"
+    "Panel Frame 512px": "4f03d730-eafb-44c3-b05f-58c18fb69552",
+    "title": "78815e39-a39f-4b0e-9d20-28118c513393"
   },
   "DataManagerSetting": {
     "DataManagerSettings": "876ca4d3-f8a9-4530-875d-74c038149e75"
@@ -86,6 +86,8 @@
     "ScreenFadeIn": "bf0dd8cd-17eb-480c-8261-c8603379252c",
     "ScreenFadeOut": "bd3ecad9-d600-479b-81b4-fb995e46433f",
     "DummyMainSceneBJWResources": "8bf2e93b-f969-48eb-bec8-769fa77578e1",
+    "MapButton": "dc6c9c30-a082-4cf1-81f6-aa02d11fd95b",
+    "MapSettingPopup": "053baa35-2b7e-4a79-bad3-cb7272e4339e",
     "MultiplayerGamePopup": "b1e7ed71-3126-4f80-b7a3-8ae5b844559b",
     "OptionPopup": "d29ea75f-de4b-4273-ba79-10917ed19873",
     "QuitGamePopup": "a803eb67-e262-48be-b895-b45a124642e1",
@@ -102,11 +104,7 @@
     "DummyMainSceneCSHResource": "da8cd06e-74fd-40d7-aa46-52ca5efe09b5",
     "DummyMainSceneIJHResource": "5a1d957f-0539-4bba-b526-31efd5bb3dbe",
     "DummyMainSceneJUJResource": "89f5d2ee-bf38-4dc3-8923-29a7b720df7c",
-    "DummyTitleSceneResource": "382eb98a-f2a0-4fc8-abe8-a40877db72b6",
-    "CreateMapButton": "fd954803-9abb-4027-ba7a-f8db28113815",
-    "MapSettingPopup": "053baa35-2b7e-4a79-bad3-cb7272e4339e",
-    "PlayMapButton": "9d7ee3cc-7a34-407a-90ea-4050aae6b971",
-    "SettingContainer": "bdb80e88-0ab5-4de3-86a9-3e747fc10a30"
+    "DummyTitleSceneResource": "382eb98a-f2a0-4fc8-abe8-a40877db72b6"
   },
   "Mesh": {
     "Icosphere": "c2773d0f-35de-4d54-b999-39eda1303d37"
@@ -142,7 +140,6 @@
     "JJAPPAL_Logo": "1905ca25-02ea-4fcc-8417-31aa13c4d79f",
     "Loading": "20775335-53ee-4f32-b8ca-c7507001ffa3",
     "Sparkle": "413ac5d7-c5b3-4078-a173-c62b62b0d72a",
-    "title": "8bb206c4-d922-46e6-ad4e-572add805ca1",
     "Button Fram 256px": "a9c71dc9-b128-41b2-8863-f62a33fb07c1",
     "Button Frame Hover 256px": "8c79558c-9bc7-4926-b4e0-87b0242ce7a5",
     "Button Frame Press 256px": "8d463367-f536-4b7e-a14f-e67c5fcefb8f",
@@ -150,7 +147,8 @@
     "Handle Outline 256px": "c32323e6-4b34-4b2a-bbf6-5993e70e6e54",
     "Handle Solid 128px": "c0539242-73a1-4ea1-9b3b-2fdf06f1af75",
     "Panel 1920x1080px": "612e7fab-8b75-4034-90de-a41497169b42",
-    "Panel Frame 512px": "0577e225-6df7-4549-ae2a-613d5f1802c5"
+    "Panel Frame 512px": "0577e225-6df7-4549-ae2a-613d5f1802c5",
+    "title": "8bb206c4-d922-46e6-ad4e-572add805ca1"
   },
   "TextAsset": {
     "LineBreaking Following Characters": "0f9f8a03-0cb3-4761-a349-f60f5231ec5f",

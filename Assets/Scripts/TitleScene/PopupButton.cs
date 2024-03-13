@@ -1,33 +1,26 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace AT_RPG
 {
-    public class PopupButton : MonoBehaviour, IPointerClickHandler
+    /// <summary>
+    /// 설명 :                                 <br/>
+    /// + 팝업을 생성하는 버튼에서 사용되는 클래스 <br/>
+    /// </summary>
+    public class PopupButton : MonoBehaviour
     {
-        // 인스턴싱할 팝업
-        [SerializeField] private GameObject popupInstance;
-        [SerializeField] private GameObject popupCanvasInstance;
+        [Tooltip("인스턴싱할 팝업 프리팹")]
+        [SerializeField] protected ResourceReference<GameObject> popupPrefab;
 
         /// <summary>
-        /// 버튼 클릭 시 팝업을 생성
+        /// 팝업을 생성 및 초기화합니다.
         /// </summary>
-        public void OnPointerClick(PointerEventData eventData)
+        /// <param name="popupCanvas">팝업UI 관리 캔버스</param>
+        public void OnInstantiatePopupAt(PopupCanvas popupCanvas)
         {
-            // 팝업 초기화
+            GameObject popupInstance 
+                = Instantiate(popupPrefab.Resource, popupCanvas.Root.transform);
             Popup popup = popupInstance.GetComponent<Popup>();
-            PopupCanvas popupCanvas = popupCanvasInstance.GetComponent<PopupCanvas>();
             popup.PopupCanvas = popupCanvas;
-
-            Instantiate(popupInstance, popupCanvas.Root.transform);
-        }
-
-        /// <summary>
-        /// 팝업을 생성하고 초기화
-        /// </summary>
-        public void OnInstantiatePopup()
-        {
-
         }
     }
 }

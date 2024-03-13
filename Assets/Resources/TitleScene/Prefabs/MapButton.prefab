@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 172495221748571733}
   - component: {fileID: 1398023289772320872}
   m_Layer: 6
-  m_Name: PlayMapButton
+  m_Name: MapButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
