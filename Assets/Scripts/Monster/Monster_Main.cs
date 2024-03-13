@@ -15,8 +15,8 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
     public GameObject Imp; //몬스터 리스폰을 위한 게임오브젝트 지정
 
     Coroutine move = null; //몬스터의 움직임을 관리
+    Coroutine deleyMove = null; //몬스터의 움직임을 관리
     Coroutine rotate = null; //몬스터의 회전을 관리
-    Coroutine battle = null; //몬스터의 배틀을 관리
 
     public MonsterAI monsterAI; //몬스터 ai기능을 참조
     private bool isTracking = false;
@@ -50,7 +50,7 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
                 monsterMove();
                 break;
             case State.Battle: //몬스터가 전투상태
-                battle = StartCoroutine(monsterBattle());
+                StartCoroutine(monsterBattle());
                 break;
             case State.Dead: //몬스터가 사망
                 monsterDead();
@@ -75,7 +75,7 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
 
         moveStartTime = Random.Range(2, 4);
         Debug.Log($"{moveStartTime}이동목표 설정");
-        StartCoroutine(DelayChangeState(State.Move, moveStartTime));
+        deleyMove = StartCoroutine(DelayChangeState(State.Move, moveStartTime));
     }
     IEnumerator DelayChangeState(State s, float m_delaytime)
     {
@@ -190,6 +190,7 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
     /// </summary>
     public void StartTracking(Transform target)
     {
+        StopCoroutine(deleyMove);
         monsterTarget = target;
         ChangeState(State.Battle);
     }
@@ -197,11 +198,6 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
     {
         monsterAnim.SetBool("IsAttack", false);
         monsterTarget = null;
-        if (move != null)
-        {
-            StopCoroutine(move);
-        }
-        StopCoroutine(battle);
         ChangeState(State.Idle);
     }
 
@@ -214,61 +210,37 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
 
     IEnumerator monsterBattle()  //전투상태
     {
-        while (true) 
+        while (monsterTarget != null)
         {
-            if (monsterTarget != null)
-            {
-                Vector3 battletarget= monsterTarget.transform.position;
-                Vector3 dir = battletarget - transform.position;
-                float dist = dir.magnitude;
+            Vector3 battletarget = monsterTarget.transform.position;
+            Vector3 dir = battletarget - transform.position;
+            float dist = dir.magnitude;
 
-                if (mon1.mRange < dist) //사거리보다 길면 플레이어에게 이동
-                {
-                    MoveToPos(battletarget);
-                }
-                else
-                {
-                    attackPlayer();
-                    
-                }
+            if (mon1.mRange < dist) //사거리보다 길면 플레이어에게 이동
+            {
+                MoveToPos(battletarget);
+                yield return null;
             }
             else
             {
-                ChangeState(State.Idle);
-                break;
+                attackPlayer();
+                yield return new WaitForSeconds(3.0f);
             }
-            yield return null;
         }
     }
 
     void attackPlayer()
     {
         Debug.Log(" 진입");
-        monsterAnim.SetBool("Run", false);
         monsterAnim.SetBool("Move", false);
-        monsterAnim.SetBool("IsAttack", true);
+        monsterAnim.SetTrigger("NormalAttack");
 
         if (move != null)
         {
             StopCoroutine(move);
         }
-        if (battle != null)
-        {
-            StopCoroutine(battle);
-        }
-
-        StartCoroutine(DelayAttack());
     }
 
-    IEnumerator DelayAttack()
-    {
-        monsterAnim.SetBool("IsAttack", false); // 공격 애니메이션 종료 
-        Debug.Log("딜레이 진입");
-        yield return new WaitForSeconds(10.0f); // 공격 후에 일정 시간을 대기
-        
-        Debug.Log("딜레이 끝");
-        yield return null;
-    }
 
 
 
@@ -283,7 +255,6 @@ public class MonsterMain : MonsterPorperty //애니메이터를 쓰기위해 애
         StopAllCoroutines();//모든 코룬틴 정지;
         monsterAnim.SetBool("Move", false);
         monsterAnim.SetBool("Run", false);
-        monsterAnim.SetBool("Battle", false);
         monsterAnim.SetTrigger("Dead"); //사망 애니메이션 실행
         StartCoroutine(DelaySpwanState(State.Create, monsterSpwanTimer)); //일정시간 딜레이후 생성상태로 전환시킨다
         Destroy(gameObject, 200.0f * Time.deltaTime); //몬스터가 사망한경우 특정프레임이후 객체 삭제
