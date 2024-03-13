@@ -1,34 +1,22 @@
 ManifestFileVersion: 0
-CRC: 3656550393
+CRC: 1082281925
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 08655018a49e26457791e8183dbe47b9
+    Hash: 13fe5f61c65ff8d61601522ce7d5cc67
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b82c609a4299f941866f259eff9c3f28
+    Hash: 767148d2cba1a92a15442f2b767884c0
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 08655018a49e26457791e8183dbe47b9
+    Hash: 13fe5f61c65ff8d61601522ce7d5cc67
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
   Script: {instanceID: 0}
-- Class: 28
-  Script: {instanceID: 0}
-- Class: 213
-  Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/AssetBundleResources/TitleScene/Sprites/Panel 1920x1080px.png
-- Assets/AssetBundleResources/TitleScene/Sprites/Handle Solid 128px.png
 - Assets/AssetBundleResources/TitleScene/DummyTitleSceneResource.prefab
-- Assets/AssetBundleResources/TitleScene/Sprites/Button Frame Hover 256px.png
-- Assets/AssetBundleResources/TitleScene/Sprites/Button Highlighted 256px.png
-- Assets/AssetBundleResources/TitleScene/Sprites/Button Fram 256px.png
-- Assets/AssetBundleResources/TitleScene/Sprites/Button Frame Press 256px.png
-- Assets/AssetBundleResources/TitleScene/Sprites/Handle Outline 256px.png
-- Assets/AssetBundleResources/TitleScene/Sprites/Panel Frame 512px.png
 Dependencies: []

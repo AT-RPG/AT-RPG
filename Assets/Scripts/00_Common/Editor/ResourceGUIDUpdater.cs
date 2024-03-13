@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -170,18 +171,19 @@ namespace AT_RPG
             ResourceManagerSetting setting
                 = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
 
-            // 1. 타입이 같지 않은 경우 제거
-            // 2. 리소스 폴더나 에셋 번들의 리소스가 아니면 제거
+            // 1. 이름이 똑같은지?
+            // 2. 타입이 똑같은지?
+            // 3. 리소스 폴더나 에셋 번들의 리소스인지?
             string assetType = String.GetFileType(assetPath);
             duplicatedNameAssetGUIDs = duplicatedNameAssetGUIDs.Where(guid =>
             {
                 string duplicatedNameAssetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-                return (String.GetFileType(duplicatedNameAssetPath) == assetType &&
-                        String.GetFileType(duplicatedNameAssetPath) != "")&&
+                return (String.GetFileName(duplicatedNameAssetPath) == String.GetFileName(assetPath)) &&
+                       (String.GetFileType(duplicatedNameAssetPath) == assetType &&
+                        String.GetFileType(duplicatedNameAssetPath) != "") &&
                        (String.ContainsString(duplicatedNameAssetPath, "Resources") ||
                         String.ContainsString(duplicatedNameAssetPath, setting.AssetBundlesSavePath));
-
             }).ToList();
         }
 
