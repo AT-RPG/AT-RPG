@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 419198666}
   - component: {fileID: 419198669}
   m_Layer: 7
-  m_Name: Join Multiplayer Game
+  m_Name: Multiplayer Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

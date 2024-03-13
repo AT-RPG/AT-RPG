@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3313128863
+CRC: 2253371081
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1ece2f529424b5754aa4384412ffe1ae
+    Hash: 3124988deb61fb8a26a1b91c26723b4d
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1c2dfab3c76d796b779d238e0213ac92
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 1ece2f529424b5754aa4384412ffe1ae
+    Hash: 3124988deb61fb8a26a1b91c26723b4d
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -190,4 +190,4 @@ Assets:
 - Assets/AssetBundleResources/TitleScene/Prefabs/PlayMapButton.prefab
 - Assets/AssetBundleResources/TitleScene/Sprites/Panel Frame 512px.png
 Dependencies:
-- C:/Users/Atents/Desktop/jiwon/AT-RPG/Assets/StreamingAssets/mainscene_bjw
+- D:/Devs/Github/AT-RPG/Assets/StreamingAssets/mainscene_bjw

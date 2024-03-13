@@ -64,10 +64,11 @@ namespace AT_RPG
 
             // 변경사항이 Imported인 에셋에 리소스나 에셋번들 리소스 변경이 있음?
             {
-                var filteredAssets = importedAssets.Where(asset =>
+                var filteredAssets = importedAssets.Where(assetPath =>
                 {
-                    return String.ContainsString(asset, "Resources") ||
-                           String.ContainsString(asset, setting.AssetBundlesSavePath);
+                    return  String.GetFileType(assetPath) != "" &&
+                           (String.ContainsString(assetPath, "Resources") ||
+                            String.ContainsString(assetPath, setting.AssetBundlesSavePath));
                 }).ToList();
                 if (filteredAssets.Count >= 1)
                 {
@@ -77,10 +78,11 @@ namespace AT_RPG
 
             // 변경사항이 deleted인 에셋에 리소스나 에셋번들 리소스 변경이 있음?
             {
-                var filteredAssets = deletedAssets.Where(asset =>
+                var filteredAssets = deletedAssets.Where(assetPath =>
                 {
-                    return String.ContainsString(asset, "Resources") ||
-                           String.ContainsString(asset, setting.AssetBundlesSavePath);
+                    return  String.GetFileType(assetPath) != "" &&
+                           (String.ContainsString(assetPath, "Resources") ||
+                            String.ContainsString(assetPath, setting.AssetBundlesSavePath));
                 }).ToList();
                 if (filteredAssets.Count >= 1)
                 {
@@ -90,10 +92,11 @@ namespace AT_RPG
 
             // 변경사항이 moved인 에셋에 리소스나 에셋번들 리소스 변경이 있음?
             {
-                var filteredAssets = movedAssets.Where(asset =>
+                var filteredAssets = movedAssets.Where(assetPath =>
                 {
-                    return String.ContainsString(asset, "Resources") ||
-                           String.ContainsString(asset, setting.AssetBundlesSavePath);
+                    return  String.GetFileType(assetPath) != "" &&
+                           (String.ContainsString(assetPath, "Resources") ||
+                            String.ContainsString(assetPath, setting.AssetBundlesSavePath));
                 }).ToList();
                 if (filteredAssets.Count >= 1)
                 {

@@ -5,6 +5,7 @@ namespace AT_RPG
 {
     public class PopupButton : MonoBehaviour, IPointerClickHandler
     {
+        // 인스턴싱할 팝업
         [SerializeField] private GameObject popupInstance;
         [SerializeField] private GameObject popupCanvasInstance;
 
@@ -13,23 +14,20 @@ namespace AT_RPG
         /// </summary>
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (!popupInstance)
-            {
-                Debug.LogError($"{nameof(popupInstance)}이 설정X");
-                return;
-            }
-
-            if (!popupCanvasInstance)
-            {
-                Debug.LogError($"{popupInstance}를 생성할 {popupCanvasInstance}가 정해지지 않았습니다.");
-            }
-
             // 팝업 초기화
             Popup popup = popupInstance.GetComponent<Popup>();
             PopupCanvas popupCanvas = popupCanvasInstance.GetComponent<PopupCanvas>();
             popup.PopupCanvas = popupCanvas;
 
             Instantiate(popupInstance, popupCanvas.Root.transform);
+        }
+
+        /// <summary>
+        /// 팝업을 생성하고 초기화
+        /// </summary>
+        public void OnInstantiatePopup()
+        {
+
         }
     }
 }
