@@ -15,7 +15,20 @@ namespace AT_RPG
     {
         [SerializeField] private string resourceName;
 
-        public T Resource => ResourceManager.Get<T>(resourceName);
+        // 바인딩된 리소스를 반환합니다.
+        // + 환경이 에디터이면 바인딩된 리소스를 그대로 반환합니다.
+        // + 환경이 런타임이면 ResourceManager에서 GUID에 매핑된 정보를 통해 리소스를 반환합니다. 
+        public T Resource
+        {
+            get
+            {
+#if UNITY_EDITOR
+                return editorResource as T;
+#else
+                return ResourceManager.Get<T>(resourceName);
+#endif
+            }
+        }
             
         public ResourceReference(UnityObject resource)
         {

@@ -13,7 +13,7 @@ namespace AT_RPG
         /// 모든 에셋 번들 파일 생성
         /// </summary>
         [MenuItem("Generators/Build AssetBundles")]
-        public static void BuildAssetBundles()
+        public static void BuildAssetBundleFiles()
         {
             Stopwatch stopwatch = new Stopwatch();
 
