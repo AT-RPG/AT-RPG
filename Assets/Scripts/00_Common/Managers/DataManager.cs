@@ -48,7 +48,7 @@ namespace AT_RPG.Manager
             setting = Resources.Load<DataManagerSetting>("DataManagerSettings");
         }
 
-
+        
 
         /// <summary>
         /// 현재 씬에 대한 디렉토리 + 각 세이브 대상 인스턴스 마다 세이브 파일 생성
@@ -263,7 +263,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 경로에 세이브 폴더를 생성
         /// </summary>
-        private static void CreateDirectory(string rootPath, string dirNameToCreate)
+        public static void CreateDirectory(string rootPath, string dirNameToCreate)
         {
             string filePath = System.IO.Path.Combine(rootPath, dirNameToCreate);
             if (!Directory.Exists(filePath))
@@ -275,7 +275,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 경로에 있는 세이브 폴더 안에 모든 파일을 삭제
         /// </summary>
-        private static void DeleteDirectory(string rootPath, string dirNameToDelete)
+        public static void DeleteDirectory(string rootPath, string dirNameToDelete)
         {
             string[] files = Directory.GetFiles(System.IO.Path.Combine(rootPath, dirNameToDelete));
             foreach (string file in files)
