@@ -9,7 +9,7 @@ public class MonsterPorperty : MonoBehaviour
     public Animator monsterAnim
     {
         get
-        {//ㅌㅌㅌㅌㅌㄸ
+        {
             if (_anim == null) //애니메이터가 널값인 경우
             {
                 _anim = GetComponent<Animator>(); //현재게임오브젝트의 애니메이터 컴포먼트 탐색
