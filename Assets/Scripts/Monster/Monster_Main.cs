@@ -231,7 +231,11 @@ public class MonsterMain :MonsterBattle, MDamage
 
     public void TakeDamage(float dmg)
     {
-     monsterTarget.GetComponent<MDamage>().TakeDamage(mStat.monsterDmage);
+        // MDamage 인터페이스의 TakeDamage 메서드를 호출하여 데미지를 전달합니다.
+        if (monsterTarget != null && monsterTarget.GetComponent<MDamage>() != null)
+        {
+            monsterTarget.GetComponent<MDamage>().TakeDamage(dmg);
+        }
     }
 
 
