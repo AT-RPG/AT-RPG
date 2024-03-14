@@ -11,10 +11,10 @@ namespace AT_RPG
         [ReadOnly] public readonly string AssetBundlesSavePath = Application.streamingAssetsPath;
 
         // 리소스 GUID 파일 저장 경로
-        [ReadOnly] public readonly string ResourceGUIDsSavePath = Application.streamingAssetsPath;
+        [ReadOnly] public readonly string ResourceGUIDMapSavePath = Application.streamingAssetsPath;
 
         // 리소스 GUID 파일 이름
-        [ReadOnly] public readonly string ResourceGUIDsFileName = "ResourceGUIDs";
+        [ReadOnly] public readonly string ResourceGUIDMapFileName = "ResourceGUIDMap";
 
         // 전역 에셋 번들 네이밍
         [ReadOnly] public readonly string GlobalAssetBundleName = "Global";
@@ -40,8 +40,8 @@ namespace AT_RPG
             EditorGUI.BeginDisabledGroup(true);
             {
                 EditorGUILayout.LabelField(nameof(script.AssetBundlesSavePath), script.AssetBundlesSavePath);
-                EditorGUILayout.LabelField(nameof(script.ResourceGUIDsSavePath), script.ResourceGUIDsSavePath);
-                EditorGUILayout.LabelField(nameof(script.ResourceGUIDsFileName), script.ResourceGUIDsFileName);
+                EditorGUILayout.LabelField(nameof(script.ResourceGUIDMapSavePath), script.ResourceGUIDMapSavePath);
+                EditorGUILayout.LabelField(nameof(script.ResourceGUIDMapFileName), script.ResourceGUIDMapFileName);
                 EditorGUILayout.LabelField(nameof(script.GlobalAssetBundleName), script.GlobalAssetBundleName);
             }
             EditorGUI.EndDisabledGroup();

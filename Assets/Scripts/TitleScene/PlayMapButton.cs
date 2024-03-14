@@ -42,8 +42,8 @@ namespace AT_RPG
                 if (Time.time - lastClickTime < catchTime)
                 {
                     string currSceneName = SceneManager.CurrentSceneName;
-                    string nextSceneName = SceneManager.Setting.MainScene;
-                    SceneManager.LoadScene(nextSceneName, () =>
+                    string nextSceneName = mainScene;
+                    SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
                     {
                         ResourceManager.LoadAllResourcesCoroutine(nextSceneName);
                         ResourceManager.UnloadAllResourcesCoroutine(currSceneName);

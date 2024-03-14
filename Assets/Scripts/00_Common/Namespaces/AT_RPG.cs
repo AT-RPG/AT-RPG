@@ -11,6 +11,20 @@ namespace AT_RPG
     // Key1 = 씬 이름,  Value1 = 씬에서 사용될 리소스 매핑s
     public class SceneResourceMap : Dictionary<string, ResourceMap> { }
 
+    // Key1 = 리소스 타입,  Key2 = 리소스 이름,  Key3 = 리소스에 1:1 매핑되는 GUID
+    [Serializable]
+    public class ResourceGUIDMap : Dictionary<string, Dictionary<string, Guid>>
+    {
+        public bool ContainsResourceType(string resourceTypeName)
+        {
+            return ContainsKey(resourceTypeName);
+        }
+        public bool ContainsResourceName(string resourceTypeName, string resourceName)
+        {
+            return this[resourceTypeName].ContainsKey(resourceName);
+        }
+    }
+
     // Key1 = 리소스의 타입,  Key2 = 리소스의 이름,  Value1 = 리소스
     public class ResourceMap : Dictionary<string, Dictionary<string, UnityObject>> { }
 
