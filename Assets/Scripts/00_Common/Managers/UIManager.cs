@@ -15,7 +15,7 @@ namespace AT_RPG.Manager
         [SerializeField] private static UIManagerSetting setting;
 
         // 현재 씬의 모든 Canvas를 저장
-        private static List<Canvas> SceneCanvases = new List<Canvas>();
+        private static List<Canvas> sceneCanvases = new List<Canvas>();
 
 
 
@@ -25,46 +25,61 @@ namespace AT_RPG.Manager
 
             setting = Resources.Load<UIManagerSetting>("UIManagerSettings");
 
-            GameManager.AfterFirstSceneLoadAction += UnLoadAllCanvases;
-            GameManager.AfterFirstSceneLoadAction += LoadAllCanvases;
-            GameManager.AfterFirstSceneLoadAction += SetupAllCanvasScalarsAsSetting;
+            GameManager.AfterFirstSceneLoadAction += OnUnLoadAllCanvases;
+            GameManager.AfterFirstSceneLoadAction += OnLoadAllCanvases;
+            GameManager.AfterFirstSceneLoadAction += OnSortCanvases;
+            GameManager.AfterFirstSceneLoadAction += OnSetupAllCanvasScalarsAsSetting;
+
+            SceneManager.AfterSceneLoadAction += OnUnLoadAllCanvases;
+            SceneManager.AfterSceneLoadAction += OnLoadAllCanvases;
+            SceneManager.AfterSceneLoadAction += OnSortCanvases;
+            SceneManager.AfterSceneLoadAction += OnSetupAllCanvasScalarsAsSetting;
         }
 
 
 
         /// <summary>
-        /// 현재 씬의 모든 Canvas 래퍼런스를 버립니다.
+        /// 모든 캔버스 래퍼런스를 버립니다.
         /// </summary>
-        public static void UnLoadAllCanvases()
+        private static void OnUnLoadAllCanvases()
         {
-            SceneCanvases = null;
+            sceneCanvases = null;
         }
 
         /// <summary>
-        /// 현재 씬의 모든 Canvas 래퍼런스를 Canvas.sortingOrder순으로 SceneCanvases에 저장
+        /// 현재 씬의 모든 캔버스 래퍼런스를 불러옵니다.
         /// </summary>
-        public static void LoadAllCanvases()
+        private static void OnLoadAllCanvases()
         {
-            SceneCanvases = FindObjectsOfType<Canvas>().ToList();
-            if (SceneCanvases.Count >= 1)
+            sceneCanvases = FindObjectsOfType<Canvas>().ToList();
+            if (sceneCanvases.Count >= 1)
             {
-                SceneCanvases = SceneCanvases.OrderBy(canvas => canvas.sortingOrder).ToList();
+                sceneCanvases = sceneCanvases.OrderBy(canvas => canvas.sortingOrder).ToList();
             }
+        }
+
+        /// <summary>
+        /// 불러온 캔버스 컨테이너를 sortingOrder순으로 정렬합니다.    <br/>
+        /// + 팝업 캔버스를 sortingOrder 가장 마지막으로 설정합니다.   <br/>
+        /// </summary>
+        private static void OnSortCanvases()
+        {
+            sceneCanvases = sceneCanvases.OrderBy(canvas => canvas.sortingOrder).ToList();
         }
 
         /// <summary>
         /// UI매니저 설정에 있는 CanvasScalar 래퍼런스로 현재 씬의 모든 Canvas 래퍼런스 일괄 설정
         /// </summary>
-        public static void SetupAllCanvasScalarsAsSetting()
+        private static void OnSetupAllCanvasScalarsAsSetting()
         {
             // canvasScalar에 복사할 setting의 canvasScalarReference 리플렉션 프로퍼티
             PropertyInfo[] canvasScalarSettingProperties
-                = setting.CanvasScalerSettingReference.GetType().GetProperties(
+                = setting.canvasScalerSettings.GetType().GetProperties(
                     BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 
             // 리플렉션으로 모든 프로퍼티를 복사
-            foreach (var canvas in SceneCanvases)
+            foreach (var canvas in sceneCanvases)
             {
                 var canvasScalar = canvas.gameObject.GetComponent<CanvasScaler>();
                 if (!canvasScalar)
@@ -75,10 +90,10 @@ namespace AT_RPG.Manager
                 // canvasScalar의 프로퍼티를 setting의 canvasScalarReference의 프로퍼티로 교체
                 PropertyInfo[] canvasScalarProperties = canvasScalar.GetType().GetProperties(
                     BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-                for (int i =0; i < canvasScalarSettingProperties.Length; i++)
+                for (int i = 0; i < canvasScalarSettingProperties.Length; i++)
                 {
                     canvasScalarProperties[i].SetValue(
-                        canvasScalar, canvasScalarSettingProperties[i].GetValue(setting.CanvasScalerSettingReference));
+                        canvasScalar, canvasScalarSettingProperties[i].GetValue(setting.canvasScalerSettings));
                 }
             }
         }

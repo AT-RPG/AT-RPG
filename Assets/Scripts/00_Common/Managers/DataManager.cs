@@ -11,8 +11,8 @@ namespace AT_RPG.Manager
     /// 설명 : 현재 씬에서 GameObjectData 컴포넌트가 부착된 모든 GameObject의 데이터를 저장 <br/> <br/>
     /// 
     /// 주의 사항 :  <br/>
-    /// 1. 세이브 대상이 에셋 번들에 등록 필요  <br/>
-    /// 2. 세이브에 GameObjectData 컴포넌트가 필요 <br/>
+    /// 1. 세이브 대상이 에셋 번들이나 리소스 폴더에 등록 필요  <br/>
+    /// 2. 세이브 대상에 GameObjectData 컴포넌트가 필요 <br/>
     /// 3. GameObjectData 이외에 추가적으로 데이터를 저장하려는 경우, <br/>
     /// 클래스 생성 -> 클래스에 [Serializable]와 ISaveLoadData 구현 -> 저장할려는 변수는 [SerializeField]를 사용
     /// </summary>

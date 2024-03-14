@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
@@ -12,6 +13,9 @@ namespace AT_RPG.Manager
     { 
         // 매니저 기본 설정
         [SerializeField] private static SceneManagerSetting setting;
+
+        // 씬 로드 후 호출되는 이벤트
+        private static event Action afterSceneLoadAction;
 
         // 씬 로딩중
         private static bool isLoading = false;
@@ -112,10 +116,13 @@ namespace AT_RPG.Manager
 
                 // 로딩된 씬으로 변경 가능 Flag 설정.
                 loadSceneRequest.allowSceneActivation = true;
+                yield return null;
             }
 
             isLoading = false;
+
             completed?.Invoke();
+            afterSceneLoadAction?.Invoke();
         }
 
         /// <summary>
@@ -142,7 +149,9 @@ namespace AT_RPG.Manager
             isLoading = true;
             UnitySceneManager.LoadScene(sceneName);
             isLoading = false;
+
             completed?.Invoke();
+            afterSceneLoadAction?.Invoke();
         }
     }
 
@@ -150,6 +159,19 @@ namespace AT_RPG.Manager
     {
         // 매니저 기본 설정
         public static SceneManagerSetting Setting => setting;
+
+        // 씬 로드 후 호출되는 이벤트
+        public static Action AfterSceneLoadAction
+        {
+            get
+            {
+                return afterSceneLoadAction;
+            }
+            set
+            {
+                afterSceneLoadAction = value;
+            }
+        }
 
         // 현재 씬 이름
         public static string CurrentSceneName => UnitySceneManager.GetActiveScene().name;

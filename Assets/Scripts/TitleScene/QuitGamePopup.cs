@@ -2,65 +2,47 @@ using UnityEngine;
 
 namespace AT_RPG
 {
+    /// <summary>
+    /// 설명 :                                             <br/>
+    /// + 게임 종료 여부를 묻는 팝업에서 사용되는 클래스       <br/>
+    /// </summary>
     public class QuitGamePopup : Popup
     {
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
+        [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private BlurCanvasAnimation blurAnimation;
-
-        private void Awake()
-        {
-            if (!popupCanvas)
-            {
-                return;
-            }
-
-            popupCanvas.Popups.Push(this);
-        }
 
         private void Start()
         {
-            fadeAnimation.StartFade();
-            blurAnimation.StartFade();
-        }
-
-        private void Update()
-        {
-            OnEscapeKeyPressed();
-        }
-
-        private void OnEscapeKeyPressed()
-        {
-            // 종료 버튼이 눌리면
-            if (!isEscapePressed &&
-                Input.GetKeyDown(KeyCode.Escape))
-            {
-                // 팝업 캔버스에 등록된 경우, Stack(순차적으로 팝업 종료)이용
-                if (popupCanvas)
-                {
-                    if (popupCanvas.Popups.Pop().GetInstanceID() == GetInstanceID())
-                    {
-                        EndAnimate();
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                // 팝업 단일로 이용하는 경우
-                else
-                {
-                    EndAnimate();
-                }
-            }
+            AnimateStartSequence();
         }
 
         /// <summary>
-        /// 종료 애니메이션과 함께, 이 팝업을 삭제
+        /// 팝업 종료를 요청합니다.
         /// </summary>
-        private void EndAnimate()
+        public override void InvokeDestroy()
         {
-            isEscapePressed = true;
+            base.InvokeDestroy();
 
+            AnimateEscapeSequence();
+        }
+
+        /// <summary>
+        /// 시작 애니메이션을 실행합니다.
+        /// </summary>
+        private void AnimateStartSequence()
+        {
+            fadeAnimation.StartFade();
+            popupAnimation.StartPopup();
+            blurAnimation.StartFade();
+        }
+
+        /// <summary>
+        /// 종료 애니메이션과 함께, 현재 팝업을 삭제합니다.
+        /// </summary>
+        private void AnimateEscapeSequence()
+        {
+            popupAnimation.EndPopup();
             fadeAnimation.EndFade(() =>
             {
                 Destroy(gameObject);
@@ -69,19 +51,21 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// '종료' 버튼이 눌리면 호출
+        /// 계속하기 버튼에서 사용됩니다.    <br/>
+        /// 팝업을 종료합니다.               <br/>
         /// </summary>
-        public void OnQuitButtonPressed()
+        public void OnContinueGame()
         {
-            Application.Quit();
+            InvokeDestroy();
         }
 
         /// <summary>
-        /// '계속' 버튼이 눌리면 호출
+        /// 종료 버튼에서 사용됩니다.  <br/>
+        /// 게임을 종료합니다. <br/>
         /// </summary>
-        public void OnContinueButtonPressed()
+        public void OnQuitGame()
         {
-            EndAnimate();
+            Application.Quit();
         }
     }
 }
