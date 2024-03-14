@@ -18,11 +18,11 @@ TagManager:
   - UI
   - PopupUI
   - BackgroundUI
-  - 
-  - 
+  - Player
+  - Monster
   - Ground
   - Wall
-  - 
+  - NPC
   - 
   - 
   - 

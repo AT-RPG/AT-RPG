@@ -30,7 +30,7 @@ public class NPCinter : MonoBehaviour
         }
 
         // 상호작용 중일 때 상호작용 중지
-        if (canInter == true && Input.GetKeyDown(interKey) || Input.GetKey(KeyCode.Escape))
+        else if (canInter == true && Input.GetKeyDown(interKey) || Input.GetKey(KeyCode.Escape))
         {
             EndInteraction();
             ResumeMove();
