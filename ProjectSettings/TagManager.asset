@@ -6,6 +6,9 @@ TagManager:
   tags:
   - SpwanPoint
   - SpawnPoint
+  - Item
+  - Door
+  - NPC
   layers:
   - Default
   - TransparentFX

@@ -13,43 +13,27 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // È¸ÀüÀ» Rigidbody¿¡°Ô ¸Ã±âÁö ¾ÊÀ½
+        rb.freezeRotation = true; //
     }
 
     void Update()
     {
-        // ÀÌµ¿ ·ÎÁ÷
+        // ì´ë™
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(horizontal, 0, vertical) * moveSpeed * Time.deltaTime;
         rb.MovePosition(transform.position + movement);
 
-        // È¸Àü ·ÎÁ÷
+        // ?
         float rotate = Input.GetAxis("Horizontal") * rotateSpeed;
         rb.angularVelocity = new Vector3(0, rotate, 0);
 
 
-        // Á¡ÇÁ ·ÎÁ÷
+        // ì í”„
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("1");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
-    }
-    public void OnTriggerEnter(Collider other)
-    {
-        // ÇÃ·¹ÀÌ¾î°¡ ½ºÆù ÁöÁ¡¿¡ µé¾î°¬À» ¶§
-        if (other.CompareTag("SpawnPoint"))
-        {
-            // ´Ù¸¥ ½ºÆù ÁöÁ¡À¸·Î ÀÌµ¿
-            MoveToNewSpawnPoint(other.transform);
-        }
-    }
-
-    public void MoveToNewSpawnPoint(Transform newSpawnPoint)
-    {
-        // ÇÃ·¹ÀÌ¾î¸¦ »õ·Î¿î ½ºÆù ÁöÁ¡À¸·Î ÀÌµ¿
-        transform.position = newSpawnPoint.position;
-        transform.rotation = newSpawnPoint.rotation;
     }
 }
