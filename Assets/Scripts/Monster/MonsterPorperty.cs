@@ -1,24 +1,24 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterPorperty : MonoBehaviour
 {
-    Animator _anim = null; //¾Ö´Ï¸ŞÀÌÅÍ º¯¼ö¼±¾ğ
+    Animator _anim = null; //ì• ë‹ˆë©”ì´í„° ë³€ìˆ˜ì„ ì–¸
 
     public Animator monsterAnim
     {
         get
-        {
-            if (_anim == null) //¾Ö´Ï¸ŞÀÌÅÍ°¡ ³Î°ªÀÎ °æ¿ì
+        {//ã…Œã…Œã…Œã…Œã…Œã„¸
+            if (_anim == null) //ì• ë‹ˆë©”ì´í„°ê°€ ë„ê°’ì¸ ê²½ìš°
             {
-                _anim = GetComponent<Animator>(); //ÇöÀç°ÔÀÓ¿ÀºêÁ§Æ®ÀÇ ¾Ö´Ï¸ŞÀÌÅÍ ÄÄÆ÷¸ÕÆ® Å½»ö
-                if (_anim == null) //ÇöÀç°ÔÀÓ¿ÀºêÁ§Æ®¿¡ ¾øÀ»°æ¿ì
+                _anim = GetComponent<Animator>(); //í˜„ì¬ê²Œì„ì˜¤ë¸Œì íŠ¸ì˜ ì• ë‹ˆë©”ì´í„° ì»´í¬ë¨¼íŠ¸ íƒìƒ‰
+                if (_anim == null) //í˜„ì¬ê²Œì„ì˜¤ë¸Œì íŠ¸ì— ì—†ì„ê²½ìš°
                 {
-                    _anim = GetComponentInChildren<Animator>(); //ÀÚ½Ä¿ÀºêÁ§Æ®¿¡¼­ ¾Ö´Ï¸ŞÀÌÅÍ ÄÄÆ÷³ÍÆ® Å½»ö
+                    _anim = GetComponentInChildren<Animator>(); //ìì‹ì˜¤ë¸Œì íŠ¸ì—ì„œ ì• ë‹ˆë©”ì´í„° ì»´í¬ë„ŒíŠ¸ íƒìƒ‰
                 }
             }
-            return _anim; //Ã£Àº ¾Ö´Ï¸ŞÀÌÅÍ ÄÄÆ÷³ÍÆ®¸¦ _anim¿¡ ´ãÀºÈÄ¿¡ ¹İÈ¯ÇÑ´Ù.
+            return _anim; //ì°¾ì€ ì• ë‹ˆë©”ì´í„° ì»´í¬ë„ŒíŠ¸ë¥¼ _animì— ë‹´ì€í›„ì— ë°˜í™˜í•œë‹¤.
         }
     }
 }

@@ -1,22 +1,52 @@
 ManifestFileVersion: 0
-CRC: 2081648499
+CRC: 1210257005
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 481c59e470b1d527b32a73412cf6ee77
+    Hash: 394cce93f22ad8a7190450d7dd54fc3f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 767148d2cba1a92a15442f2b767884c0
+    Hash: 6957b0d7d8fd65782b2cacbce38fa601
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 481c59e470b1d527b32a73412cf6ee77
+    Hash: 394cce93f22ad8a7190450d7dd54fc3f
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: f24513d5a516c8c49b07e85d195473eb, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e800877649c5db9448c35155f3d48766, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a61b2aa3f45aa5544b60b3dbeaf81a58, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7c15392d9f056ad4fa88671e170aeb66, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 91735022c7b4be84094c6257c5741bb1, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: AT_RPG.ResourceReference`1[UnityEngine.GameObject]
+- AssemblyName: Assembly-CSharp
+  ClassName: AT_RPG.SceneReference
 Assets:
-- Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWResource.prefab
+- Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWAssetBundleResources.prefab
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestDataManager.prefab
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestSceneManager.prefab
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestInputManager.prefab
+- Assets/AssetBundleResources/MainScene_BJW/Prefabs/TestResourceManager.prefab
 Dependencies: []

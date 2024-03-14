@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f67308b8ebbdb49add69fe87ae6e37, type: 3}
   m_Name: UIManagerSettings
   m_EditorClassIdentifier: 
-  ScreenFadeInInstance: {fileID: 8790624695569528947, guid: 9afe4c117ba5a0b4582532a2d6bc277c,
+  popupCanvasPrefab: {fileID: 4833577936680841758, guid: 538fa17008fed1d4ab60f3f3b9dcc2fa,
     type: 3}
-  ScreenFadeOutInstance: {fileID: 3708992337037411719, guid: 446106f6247e1c44e955fae0a7367fc5,
+  canvasScalerSettings: {fileID: 6770727359822687992, guid: d5521c5a9b68f1b4ea98c2431918531a,
     type: 3}

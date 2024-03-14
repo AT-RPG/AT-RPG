@@ -5,22 +5,22 @@ using UnityEngine;
 public class MainCamera : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Transform player;  // Ä³¸¯ÅÍÀÇ Transform ÂüÁ¶
-    public float distance = 2.0f;  // Ä«¸Þ¶ó¿Í Ä³¸¯ÅÍ »çÀÌÀÇ °Å¸®
-    public float height = 1.5f;  // Ä«¸Þ¶óÀÇ ³ôÀÌ
-    public float rotationSpeed = 3.0f; // Ä«¸Þ¶ó È¸Àü ¼Óµµ
+    public Transform player;  // Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Transform ï¿½ï¿½ï¿½ï¿½
+    public float distance = 2.0f;  // Ä«ï¿½Þ¶ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
+    public float height = 1.5f;  // Ä«ï¿½Þ¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float rotationSpeed = 3.0f; // Ä«ï¿½Þ¶ï¿½ È¸ï¿½ï¿½ ï¿½Óµï¿½
 
     void Update()
     {
-        // ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¸¦ ±âÁØÀ¸·Î Ä«¸Þ¶óÀÇ À§Ä¡ Á¶Á¤
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
         Vector3 newPosition = player.position - player.forward * distance;
-        newPosition.y = player.position.y + height;  // ³ôÀÌ Á¶Àý
+        newPosition.y = player.position.y + height;  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         transform.position = newPosition;
-        float mouseX = Input.GetAxis("Mouse X");
-        // ¼öÆò È¸Àü
+        float mouseX = Input.GetAxis("MouseKey X");
+        // ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½
         transform.Rotate(Vector3.up, mouseX * rotationSpeed);
 
-        // ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸µµ·Ï Ä«¸Þ¶ó È¸Àü
+        // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ È¸ï¿½ï¿½
         transform.LookAt(player);
     }
 }

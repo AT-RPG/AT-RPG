@@ -1,21 +1,37 @@
+using System;
 using UnityEngine;
 
-public class Popup : MonoBehaviour
+namespace AT_RPG
 {
-    protected bool isEscapePressed = false;
-
-    // 팝업이 생성될 RectTransform 인스턴스
-    protected PopupCanvas popupCanvas = null;
-
-    public PopupCanvas PopupCanvas
+    /// <summary>
+    /// 설명 :                                            <br/>
+    /// + 팝업 UI가 가질 최상위 클래스                     <br/>
+    /// </summary>
+    public partial class Popup : MonoBehaviour
     {
-        get
+        // 팝업UI관리 캔버스
+        protected PopupCanvas popupCanvas;
+
+        /// <summary>
+        /// 팝업 종료를 요청합니다.
+        /// </summary>
+        public virtual void InvokeDestroy() { }
+    }
+
+    public partial class Popup
+    {
+        // 팝업UI관리 캔버스
+        public PopupCanvas PopupCanvas
         {
-            return popupCanvas;
-        }
-        set
-        {
-            popupCanvas = value;
+            get
+            {
+                return popupCanvas;
+            }
+            set
+            {
+                popupCanvas = value;
+                popupCanvas.Popups.Push(this);
+            }
         }
     }
 }

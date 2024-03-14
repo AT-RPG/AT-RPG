@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace AT_RPG
@@ -12,6 +11,9 @@ namespace AT_RPG
     {
         [SerializeField] public string SceneName;
 
+        public static implicit operator string(SceneReference sceneReference)
+            => sceneReference.SceneName;
+
 #if UNITY_EDITOR
         [SerializeField] private Object sceneAsset;
 
@@ -22,6 +24,9 @@ namespace AT_RPG
     }
 
 #if UNITY_EDITOR
+    /// <summary>
+    /// 씬 에셋을 인스펙터에서 바인딩하면, 씬 에셋 대신에 씬 이름을 저장하게 해주는 런타임 클래스 <br/>
+    /// </summary>
     [CustomPropertyDrawer(typeof(SceneReference))]
     public class SceneReferenceDrawer : PropertyDrawer
     {

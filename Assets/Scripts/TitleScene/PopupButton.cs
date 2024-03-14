@@ -1,36 +1,26 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class PopupButton : MonoBehaviour, IPointerClickHandler
+namespace AT_RPG
 {
-    [SerializeField] private GameObject popupInstance;
-    [SerializeField] private GameObject popupCanvasRoot;
-
     /// <summary>
-    /// 버튼 클릭 시 팝업을 생성
+    /// 설명 :                                 <br/>
+    /// + 팝업을 생성하는 버튼에서 사용되는 클래스 <br/>
     /// </summary>
-    public void OnPointerClick(PointerEventData eventData)
+    public class PopupButton : MonoBehaviour
     {
-        if (!popupInstance)
-        {
-            Debug.Log($"{nameof(popupInstance)}이 설정X");
-        }
+        [Tooltip("인스턴싱할 팝업 프리팹")]
+        [SerializeField] protected ResourceReference<GameObject> popupPrefab;
 
-        // 팝업 초기화
-        Popup popup = popupInstance.GetComponent<Popup>();
-        if (!popup)
+        /// <summary>
+        /// 팝업을 생성 및 초기화합니다.
+        /// </summary>
+        /// <param name="popupCanvas">팝업UI 관리 캔버스</param>
+        public void OnInstantiatePopupAt(PopupCanvas popupCanvas)
         {
-            Debug.Log($"{nameof(popupInstance)}에 {nameof(popup)} Component는 필수");
+            GameObject popupInstance 
+                = Instantiate(popupPrefab.Resource, popupCanvas.Root.transform);
+            Popup popup = popupInstance.GetComponent<Popup>();
+            popup.PopupCanvas = popupCanvas;
         }
-        else
-        {
-            popup.PopupCanvas = popupCanvasRoot.GetComponent<PopupCanvas>();
-            if (!popup.PopupCanvas)
-            {
-                Debug.Log($"{nameof(popupCanvasRoot)}에 {nameof(popup.PopupCanvas)} Component는 필수");
-            }
-        }
-
-        Instantiate(popupInstance, popupCanvasRoot.transform);
     }
 }

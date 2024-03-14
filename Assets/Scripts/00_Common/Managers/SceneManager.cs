@@ -1,87 +1,47 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
-using UnityObject = UnityEngine.Object;
 
 
 namespace AT_RPG.Manager
 {
-    public delegate IEnumerator SceneChangedCoroutine();
-
-    public enum LoadMode
-    {
-        Instant = 1,
-        LoadingResources = 2,
-        LoadingResourcesAndSaveDatas = 3
-    }
-
+    /// <summary>
+    /// 씬에서 씬으로 이동하는데 사용되는 클래스입니다.
+    /// </summary>
     public partial class SceneManager : Singleton<SceneManager>
-    {
+    { 
         // 매니저 기본 설정
-        [SerializeField] private SceneManagerSetting setting;
+        [SerializeField] private static SceneManagerSetting setting;
 
-        // 씬 변경 전, 호출되는 이벤트
-        // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
-        // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event Action beforeSceneChangeAction;
-
-        // 씬 변경 전, 호출되는 단발성 이벤트
-        // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
-        // NOTE2 : 사용되면 Clear됨
-        private event Action beforeSceneChangeDisposableAction;
-
-        // 씬 변경 후, 호출되는 이벤트
-        // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
-        // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event Action afterSceneChangeAction;
-
-        // 씬 변경 후, 호출되는 단발성 이벤트
-        // NOTE1 : 이벤트가 끝나기 전까지 씬 변경X
-        // NOTE2 : 사용되면 Clear됨
-        private event Action afterSceneChangeDisposableAction;
-
-        // 씬 변경 전, 호출되는 코루틴
-        // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
-        // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event SceneChangedCoroutine beforeSceneChangeCoroutine;
-
-        // 씬 변경 전, 호출되는 단발성 코루틴
-        // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
-        // NOTE2 : 사용되면 Clear됨
-        private event SceneChangedCoroutine beforeSceneChangeDisposableCoroutine;
-
-        // 씬 변경 후, 호출되는 코루틴
-        // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
-        // NOTE2 : 한번 등록되면 계속 등록되어 있음
-        private event SceneChangedCoroutine afterSceneChangeCoroutine;
-
-        // 씬 변경 후, 호출되는 단발성 코루틴
-        // NOTE1 : 코루틴이 끝나기 전까지 씬 변경X
-        // NOTE2 : 사용되면 Clear됨
-        private event SceneChangedCoroutine afterSceneChangeDisposableCoroutine;
+        // 씬 로드 후 호출되는 이벤트
+        private static event Action afterSceneLoadAction;
 
         // 씬 로딩중
-        private bool isLoading = false;
+        private static bool isLoading = false;
 
+        // 씬 로딩 성공 시 콜백
+        public delegate void CompletedCallback();
+
+        // 시작 조건 콜백 true->로딩 시작, false->로딩 대기
+        public delegate bool StartConditionCallback();
 
 
         protected override void Awake()
         {
             base.Awake();
-
             setting = Resources.Load<SceneManagerSetting>("SceneManagerSettings");
         }
 
 
 
         /// <summary>
-        /// 현재 씬에서 다음 씬으로 전환
+        /// 현재 씬에서 다음 씬으로 비동기적 전환합니다.
         /// </summary>
         /// <param name="sceneName">다음 씬 이름</param>
-        /// <param name="isLoadingSceneIncluded">다음 씬으로 로딩 전에 로딩 씬을 거칠건지</param>
-        public void LoadSceneCor(string sceneName, LoadMode loadMode)
+        /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
+        public static void LoadSceneCoroutine(
+            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
         {
             if (sceneName == CurrentSceneName)
             {
@@ -95,341 +55,128 @@ namespace AT_RPG.Manager
                 return;
             }
 
+            Instance.StartCoroutine(InternalLoadSceneCoroutine(sceneName, started, completed));
+        }
+
+        /// <summary>
+        /// 현재 씬에서 다음 씬으로 동기적 전환합니다.
+        /// </summary>
+        /// <param name="sceneName">다음 씬 이름</param>
+        /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
+        public static void LoadScene(string sceneName, CompletedCallback completed = null)
+        {
+            if (sceneName == CurrentSceneName)
+            {
+                Debug.LogError("동일한 씬으로 로딩할 수 없습니다.");
+                return;
+            }
+
+            if (isLoading)
+            {
+                Debug.LogError("씬이 로딩중입니다.");
+                return;
+            }
+
+            InternalLoadScene(sceneName, completed);
+        }
+
+
+
+        /// <summary>
+        /// 다음 씬을 비동기 로딩과 동시에 페이크 로딩합니다.
+        /// </summary>
+        /// <param name="sceneName">다음 씬 이름</param>
+        /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
+        private static IEnumerator InternalLoadSceneCoroutine(
+            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
+        {
             isLoading = true;
-            switch (loadMode)
+
+            // 시작 조건
+            if (started != null)
             {
-                case LoadMode.Instant:
-                    StartCoroutine(InternalLoadScene(sceneName));
-                    break;
-
-                case LoadMode.LoadingResources:
-                    StartCoroutine(InternalLoadSceneIncludedResources(sceneName));
-                    break;
-
-                case LoadMode.LoadingResourcesAndSaveDatas:
-                    StartCoroutine(InternalLoadSceneIncludedResourcesAndSaveDatas(sceneName));
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        private IEnumerator InternalLoadScene(string sceneName)
-        {
-            string prevSceneName = CurrentSceneName.ToString();
-            string nextSceneName = sceneName;
-
-            // 씬 변경 이벤트, 코루틴을 실행
-            // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
-
-            // 다음 씬 리소스 로딩
-            ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
-            while (ResourceManager.Instance.IsLoading)
-            {
-                yield return null;
+                while (!started.Invoke())
+                {
+                    yield return null;
+                }
             }
 
-            // 다음 씬 로드
-            // 바로 씬 변경X
-            AsyncOperation loadSceneRequest = UnitySceneManager.LoadSceneAsync(nextSceneName);
+            // 씬 로딩.
+            AsyncOperation loadSceneRequest = UnitySceneManager.LoadSceneAsync(sceneName);
             loadSceneRequest.allowSceneActivation = false;
             while (!loadSceneRequest.isDone)
             {
-                // 씬 로딩
+                // loadSceneRequest.allowSceneActivation = false; 로 인해 0.9f캡에 걸림.
                 if (loadSceneRequest.progress <= 0.9f)
                 {
                     yield return null;
                 }
 
-                // 페이크 로딩
-                float fakeLoadingElapsedTime = 0f;
-                float fakeLoadingDuration = setting.FakeLoadingDuration;
-                while (fakeLoadingElapsedTime <= fakeLoadingDuration)
-                {
-                    fakeLoadingElapsedTime += Time.deltaTime;
-                    yield return null;
-                }
+                yield return LoadFakeDuration();
 
-                // 씬 변경O
+                // 로딩된 씬으로 변경 가능 Flag 설정.
                 loadSceneRequest.allowSceneActivation = true;
-                break;
-            }
-
-            // 씬 변경 이벤트, 코루틴을 실행
-            // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
-
-            // Disposable 이벤트 초기화
-            beforeSceneChangeDisposableAction = null;
-            beforeSceneChangeDisposableCoroutine = null;
-            afterSceneChangeCoroutine = null;
-            afterSceneChangeDisposableCoroutine = null;
-
-            // 이전 씬 리소스 언로딩
-            // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
-            while (ResourceManager.Instance.IsUnloading)
-            {
                 yield return null;
             }
-            ResourceManager.Instance.UnloadAllAssetsAtSceneCor(prevSceneName);
 
             isLoading = false;
+
+            completed?.Invoke();
+            afterSceneLoadAction?.Invoke();
         }
 
-        private IEnumerator InternalLoadSceneIncludedResources(string sceneName)
+        /// <summary>
+        /// 페이크 로딩
+        /// </summary>
+        private static IEnumerator LoadFakeDuration()
         {
-            string prevSceneName = CurrentSceneName.ToString();
-            string nextSceneName = sceneName;
-
-            // 씬 변경 이벤트, 코루틴을 실행
-            // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
-
-            // 로드 씬으로 이동
-            yield return UnitySceneManager.LoadSceneAsync(setting.LoadingScene.SceneName);
-
-            // 다음 씬 리소스 로딩
-            ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
-            while (ResourceManager.Instance.IsLoading)
+            float fakeLoadingElapsedTime = 0f;
+            float fakeLoadingDuration = setting.FakeLoadingDuration;
+            while (fakeLoadingElapsedTime <= fakeLoadingDuration)
             {
+                fakeLoadingElapsedTime += Time.deltaTime;
                 yield return null;
             }
+        }
 
-            // 다음 씬 로드
-            // 바로 씬 변경X
-            AsyncOperation loadSceneRequest = UnitySceneManager.LoadSceneAsync(nextSceneName);
-            loadSceneRequest.allowSceneActivation = false;
-            while (!loadSceneRequest.isDone)
-            {
-                // 씬 로딩
-                if (loadSceneRequest.progress <= 0.9f)
-                {
-                    yield return null;
-                }
-
-                // 페이크 로딩
-                float fakeLoadingElapsedTime = 0f;
-                float fakeLoadingDuration = setting.FakeLoadingDuration;
-                while (fakeLoadingElapsedTime <= fakeLoadingDuration)
-                {
-                    fakeLoadingElapsedTime += Time.deltaTime;
-                    yield return null;
-                }
-
-                // 씬 변경O
-                loadSceneRequest.allowSceneActivation = true;
-                break;
-            }
-
-            // 씬 변경 이벤트, 코루틴을 실행
-            // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
-
-            // Disposable 이벤트 초기화
-            beforeSceneChangeDisposableAction = null;
-            beforeSceneChangeDisposableCoroutine = null;
-            afterSceneChangeCoroutine = null;
-            afterSceneChangeDisposableCoroutine = null;
-
-            // 이전 씬 리소스 언로딩
-            // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
-            while (ResourceManager.Instance.IsUnloading)
-            {
-                yield return null;
-            }
-            ResourceManager.Instance.UnloadAllAssetsAtSceneCor(prevSceneName);
-
+        /// <summary>
+        /// 다음 씬을 동기적으로 로딩합니다.
+        /// </summary>
+        /// <param name="sceneName">다음 씬 이름</param>
+        /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
+        private static void InternalLoadScene(string sceneName, CompletedCallback completed)
+        {
+            isLoading = true;
+            UnitySceneManager.LoadScene(sceneName);
             isLoading = false;
-        }
 
-        // TODO : 세이브 로드 시스템 적용
-        private IEnumerator InternalLoadSceneIncludedResourcesAndSaveDatas(string sceneName)
-        {
-            string prevSceneName = CurrentSceneName.ToString();
-            string nextSceneName = sceneName;
-
-            // 씬 변경 이벤트, 코루틴을 실행
-            // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(beforeSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(beforeSceneChangeDisposableCoroutine));
-
-            // 로드 씬으로 이동
-            yield return UnitySceneManager.LoadSceneAsync(setting.LoadingScene.SceneName);
-
-            // 다음 씬 리소스 로딩
-            ResourceManager.Instance.LoadAllAssetsAtSceneCor(nextSceneName);
-            while (ResourceManager.Instance.IsLoading)
-            {
-                yield return null;
-            }
-
-            // 다음 씬 로드
-            // 바로 씬 변경X
-            AsyncOperation loadSceneRequest = UnitySceneManager.LoadSceneAsync(nextSceneName);
-            loadSceneRequest.allowSceneActivation = false;
-            while (!loadSceneRequest.isDone)
-            {
-                // 씬 로딩
-                if (loadSceneRequest.progress <= 0.9f)
-                {
-                    yield return null;
-                }
-
-                // 페이크 로딩
-                float fakeLoadingElapsedTime = 0f;
-                float fakeLoadingDuration = setting.FakeLoadingDuration;
-                while (fakeLoadingElapsedTime <= fakeLoadingDuration)
-                {
-                    fakeLoadingElapsedTime += Time.deltaTime;
-                    yield return null;
-                }
-
-                // 씬 변경O
-                loadSceneRequest.allowSceneActivation = true;
-                break;
-            }
-
-            // 씬 변경 이벤트, 코루틴을 실행
-            // 이벤트, 코루틴이 완료될때까지 대기
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeAction));
-            yield return StartCoroutine(WaitActionUntilIsDone(afterSceneChangeDisposableAction));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeCoroutine));
-            yield return StartCoroutine(WaitSceneChangedCoroutineUntilIsDone(afterSceneChangeDisposableCoroutine));
-
-            // Disposable 이벤트 초기화
-            beforeSceneChangeDisposableAction = null;
-            beforeSceneChangeDisposableCoroutine = null;
-            afterSceneChangeCoroutine = null;
-            afterSceneChangeDisposableCoroutine = null;
-
-            // 이전 씬 리소스 언로딩
-            // TODO : 이렇게 순서를 말고 ResourceManager에서 Queue로 처리하도록 변경
-            while (ResourceManager.Instance.IsUnloading)
-            {
-                yield return null;
-            }
-            ResourceManager.Instance.UnloadAllAssetsAtSceneCor(prevSceneName);
-
-            isLoading = false;
-        }
-
-        private IEnumerator WaitActionUntilIsDone(Action action)
-        {
-            bool isDone = false;
-            Action endAction = () =>
-            {
-                isDone = true;
-            };
-
-            action += endAction;
-            action?.Invoke();
-            yield return new WaitUntil(() => isDone);
-            action -= endAction;
-        }
-
-        private IEnumerator WaitSceneChangedCoroutineUntilIsDone(SceneChangedCoroutine routines)
-        {
-            if (routines == null)
-            {
-                yield break;
-            }
-
-            // 모든 코루틴을 시작하고 리스트에 추가
-            List<Coroutine> runningCoroutines = new List<Coroutine>();
-            foreach (SceneChangedCoroutine routine in routines.GetInvocationList())
-            {
-                IEnumerator coroutine = routine();
-                runningCoroutines.Add(StartCoroutine(coroutine));
-            }
-
-            // 모든 코루틴이 완료될 때까지 기다림
-            foreach (Coroutine coroutine in runningCoroutines)
-            {
-                yield return coroutine;
-            }
+            completed?.Invoke();
+            afterSceneLoadAction?.Invoke();
         }
     }
 
     public partial class SceneManager
     {
-        // 씬 변경 전, 호출되는 이벤트
-        // NOTE : 이벤트가 끝나기 전까지 씬 변경X
-        public Action AeforeSceneChangedEvent
-        {
-            get
-            {
-                return beforeSceneChangeAction;
-            }
-            set
-            {
-                beforeSceneChangeAction = value;
-            }
-        }
+        // 매니저 기본 설정
+        public static SceneManagerSetting Setting => setting;
 
-        // 씬 변경 후, 호출되는 이벤트
-        // NOTE : 이벤트가 끝나기 전까지 씬 변경X
-        public Action AfterSceneChangedEvent
+        // 씬 로드 후 호출되는 이벤트
+        public static Action AfterSceneLoadAction
         {
             get
             {
-                return afterSceneChangeAction;
+                return afterSceneLoadAction;
             }
             set
             {
-                afterSceneChangeAction = value;
-            }
-        }
-
-        // 씬 변경 전, 호출되는 코루틴
-        // NOTE : 코루틴이 끝나기 전까지 씬 변경X
-        public SceneChangedCoroutine BeforeSceneChangedCoroutine
-        {
-            get
-            {
-                return beforeSceneChangeCoroutine;
-            }
-            set
-            {
-                beforeSceneChangeCoroutine = value;
-            }
-        }
-
-        // 씬 변경 후, 호출되는 코루틴
-        // NOTE : 코루틴이 끝나기 전까지 씬 변경X
-        public SceneChangedCoroutine AfterSceneChangedCoroutine
-        {
-            get
-            {
-                return afterSceneChangeCoroutine;
-            }
-            set
-            {
-                afterSceneChangeCoroutine = value;
+                afterSceneLoadAction = value;
             }
         }
 
         // 현재 씬 이름
-        public string CurrentSceneName => UnitySceneManager.GetActiveScene().name;
+        public static string CurrentSceneName => UnitySceneManager.GetActiveScene().name;
 
         // 씬 로딩중
-        public bool IsLoading => isLoading;
-
-        // 매니저 기본 설정
-        public SceneManagerSetting Setting => setting;
+        public static bool IsLoading => isLoading;
     }
 }

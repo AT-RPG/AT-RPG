@@ -1,69 +1,53 @@
-using AT_RPG;
 using UnityEngine;
 
-public class OptionPopup : Popup
+namespace AT_RPG
 {
-    [SerializeField] private FadeCanvasAnimation fadeAnimation;
-    [SerializeField] private PopupCanvasAnimation popupAnimation;
-    [SerializeField] private BlurCanvasAnimation blurAnimation;
-
-    private void Awake()
+    /// <summary>
+    /// 설명 :                                <br/>
+    /// + 게임 설정 팝업에서 사용되는 클래스     <br/>
+    /// </summary>
+    public class OptionPopup : Popup
     {
-        if (!popupCanvas)
+        [SerializeField] private FadeCanvasAnimation fadeAnimation;
+        [SerializeField] private PopupCanvasAnimation popupAnimation;
+        [SerializeField] private BlurCanvasAnimation blurAnimation;
+
+        private void Start()
         {
-            return;
+            AnimateStartSequence();
         }
 
-        popupCanvas.Popups.Push(this);
-    }
-
-    private void Start()
-    {
-        fadeAnimation.StartFade();
-        popupAnimation.StartPopup();
-        blurAnimation.StartFade();
-    }
-
-    private void Update()
-    {
-        OnEscapeKeyPressed();
-    }
-
-    private void OnEscapeKeyPressed()
-    {
-        // 종료 버튼이 눌리면
-        if (!isEscapePressed &&
-            Input.GetKeyDown(KeyCode.Escape))
+        /// <summary>
+        /// 팝업 종료를 요청합니다.
+        /// </summary>
+        public override void InvokeDestroy()
         {
-            // 팝업 캔버스에 등록된 경우, Stack(순차적으로 팝업 종료)이용
-            if (popupCanvas)
-            {
-                if (popupCanvas.Popups.Pop().GetInstanceID() == GetInstanceID())
-                {
-                    Animate();
-                }
-                else
-                {
-                    return;
-                }
-            }
-            // 팝업 단일로 이용하는 경우
-            else
-            {
-                Animate();
-            }
+            base.InvokeDestroy();
+
+            AnimateEscapeSequence();
         }
-    }
 
-    private void Animate()
-    {
-        isEscapePressed = true;
-
-        popupAnimation.EndPopup();
-        fadeAnimation.EndFade(() =>
+        /// <summary>
+        /// 시작 애니메이션을 실행합니다.
+        /// </summary>
+        private void AnimateStartSequence()
         {
-            Destroy(gameObject);
-        });
-        blurAnimation.EndFade();
+            fadeAnimation.StartFade();
+            popupAnimation.StartPopup();
+            blurAnimation.StartFade();
+        }
+
+        /// <summary>
+        /// 종료 애니메이션과 함께, 현재 팝업을 삭제합니다.
+        /// </summary>
+        private void AnimateEscapeSequence()
+        {
+            popupAnimation.EndPopup();
+            fadeAnimation.EndFade(() =>
+            {
+                Destroy(gameObject);
+            });
+            blurAnimation.EndFade();
+        }
     }
 }

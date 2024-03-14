@@ -10,30 +10,27 @@ public class MonsterAI : MonoBehaviour
     public LayerMask mask;
     public Transform myTarget;
 
-
-
-
-    private void OnTriggerEnter(Collider other) //¸ó½ºÅÍÀÇ Æ®¸®°Å ÀÛµ¿
+    private void OnTriggerEnter(Collider other) //ì½œë¼ì´ë” ì¶©ëŒê°ì§€
     {
      
-        if ((mask & 1 << other.gameObject.layer) != 0) //Ãæµ¹ÇÑ ·¹ÀÌ¾î°¡ ¸ó½ºÅÍ°¡ ¹İÀÀÇÒ ·¹ÀÌ¾îÀÎÁö ÆÇ´Ü
+        if ((mask & 1 << other.gameObject.layer) != 0) 
         {
             
-            if (myTarget == null) //Å¸°ÙÀÌ ¾øÀ»°æ¿ì
+            if (myTarget == null) 
             {
                
-                myTarget = other.transform; //Å¸°ÙÀ» Ãæµ¹´ë»óÀÇ À§Ä¡·Î ¹Ù²Û´Ù
-                findPlayer?.Invoke(myTarget); //ÈÄ¿¡ findPlayer ÇÔ¼ö ½ÇÇà
+                myTarget = other.transform; 
+                findPlayer?.Invoke(myTarget); 
             }
         }
     }
 
-    private void OnTriggerExit(Collider other) //Ãæµ¹ÀÌ Á¾·áµÊ
+    private void OnTriggerExit(Collider other) //ì½œë¼ì´ë” ì¶©ëŒí•´ì œ
     {
-        if (myTarget == other.transform) //Å¸°ÙÀÌ ÇÃ·¹ÀÌ¾î ¿´´ø°æ¿ì
+        if (myTarget == other.transform) 
         {
-            myTarget = null; //Å¸°ÙÀ» ÃÊ±âÈ­
-            lostPlayer?.Invoke(); //lostPlayerÇÔ¼ö ½ÇÇà
+            myTarget = null; 
+            lostPlayer?.Invoke(); 
         }
     }
 }
