@@ -1,3 +1,8 @@
+using AT_RPG.Manager;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace AT_RPG
@@ -9,7 +14,13 @@ namespace AT_RPG
     public class StartGamePopup : Popup
     {
         [Tooltip("맵 설정 팝업 프리팹")]
-        [SerializeField] protected ResourceReference<GameObject> mapSettingPopupPrefab;
+        [SerializeField] private ResourceReference<GameObject> mapSettingPopupPrefab;
+
+        [Tooltip("맵 버튼 프리팹")]
+        [SerializeField] private ResourceReference<GameObject> mapButtonPrefab;
+
+        [Tooltip("맵 버튼이 생성될 콘텐츠 드로어 인스턴스")]
+        [SerializeField] private GameObject mapButtonContents;
 
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
@@ -17,6 +28,7 @@ namespace AT_RPG
 
         private void Start()
         {
+            StartCoroutine(LoadAllSavedMapDatas());
             AnimateStartSequence();
         }
 
@@ -28,6 +40,47 @@ namespace AT_RPG
             base.InvokeDestroy();
 
             AnimateEscapeSequence();
+        }
+
+        /// <summary>
+        /// 저장된 모든 월드 정보를 불러옵니다.
+        /// </summary>
+        private IEnumerator LoadAllSavedMapDatas()
+        {
+            // 모든 맵 세이브 폴더 가져오기
+            string defaultSaveFolderPath = DataManager.Setting.defaultSaveFolderPath;
+            string[] filePaths = Directory.GetDirectories(defaultSaveFolderPath);
+            List<string> savedMapDataNames = filePaths.Select(path => Path.GetFileName(path)).ToList();
+
+            // 맵 설정 데이터 얻기
+            List<MapSettingData> mapSettingDatas = new List<MapSettingData>();
+            foreach (var name in savedMapDataNames)
+            {
+                DataManager.LoadMapSettingDataCoroutine(defaultSaveFolderPath, name, 
+                () =>
+                {
+                    return !DataManager.IsLoading;
+                }    
+                , mapSettingData =>
+                {
+                    mapSettingDatas.Add(mapSettingData);
+                });
+            }
+
+            // 맵 설정 데이터를 모두 불러올 때까지 대기 
+            while (mapSettingDatas.Count != savedMapDataNames.Count)
+            {
+                yield return null;
+            }
+
+            // 맵 버튼 생성 및 초기화
+            foreach (var mapSettingData in mapSettingDatas)
+            {
+                GameObject mapButtonInstance
+                    = Instantiate(mapButtonPrefab.Resource, mapButtonContents.transform);
+                MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
+                mapButton.MapSettingData = mapSettingData;
+            }
         }
 
         /// <summary>

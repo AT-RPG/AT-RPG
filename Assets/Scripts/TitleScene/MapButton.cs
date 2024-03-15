@@ -1,11 +1,19 @@
 using AT_RPG.Manager;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace AT_RPG
 {
-    public class PlayMapButton : MonoBehaviour, IPointerClickHandler
+    public partial class MapButton : MonoBehaviour, IPointerClickHandler
     {
+        // 버튼 뷰포트
+        [SerializeField] private TMP_Text mapName;
+        [SerializeField] private TMP_Text lastModifiedTime;
+
+        // 맵 설정 정보
+        [SerializeField] private MapSettingData mapSettingData;
+
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private SceneReference mainScene;
@@ -59,4 +67,27 @@ namespace AT_RPG
         }
     }
 
+    public partial class MapButton
+    {
+        public string MapName
+        {
+            get => mapName.text;
+            set => mapName.text = value;
+        }
+        public string LastModifiedTime
+        {
+            get => lastModifiedTime.text;
+            set => lastModifiedTime.text = value;
+        }
+        public MapSettingData MapSettingData
+        {
+            get => mapSettingData;
+            set
+            {
+                mapSettingData = value;
+                mapName.text = mapSettingData.mapName;
+                lastModifiedTime.text = mapSettingData.lastModifiedTime;
+            }
+        }
+    }
 }

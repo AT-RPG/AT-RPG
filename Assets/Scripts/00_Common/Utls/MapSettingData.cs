@@ -11,6 +11,9 @@ namespace AT_RPG
         // 생성되는 맵의 이름
         public string mapName;
 
+        // 마지막으로 플레이한 시간
+        public string lastModifiedTime;
+
         public MapSettingData() { }
     }
 

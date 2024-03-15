@@ -63,16 +63,22 @@ namespace AT_RPG.Manager
         public static void SaveAllGameObjectsCoroutine(
             string rootPath, string mapName, StartCondition started = null, SaveCompleted completed = null)
         {
+            if (isSaving)
+            {
+                Debug.LogError("데이터를 세이브 중입니다.");
+                return;
+            }
+
             // 폴더(= 맵 이름)를 생성
             // 폴더에 게임 오브젝트 데이터 파일 정리
             string mapSaveDataPath = Path.Combine(rootPath, mapName);
             if (!Directory.Exists(mapSaveDataPath))
             {
-                CreateDirectory(rootPath, mapName);
+                CreateSaveDataDirectroy(rootPath, mapName);
             }
             else
             {
-                DeleteDatas(rootPath, mapName, setting.gameObjectDataFileExtension);
+                DeleteSaveDatas(rootPath, mapName, setting.gameObjectDataFileExtension);
             }
 
             // 게임 오브젝트 세이브 파일 생성
@@ -96,7 +102,7 @@ namespace AT_RPG.Manager
             foreach (var gameObjectToSave in FindGameObjectsToSave())
             {
                 // 게임 오브젝트 세이브 데이터 컨테이너
-                List<SerializableData> serializableDatas = new List<SerializableData>();
+                List<GameObjectData> serializableDatas = new List<GameObjectData>();
 
                 // 인터페이스로 각 스크립트가 구현한 세이브 데이터 생성
                 var componentsToSave = FindScriptsToSave(gameObjectToSave);
@@ -113,7 +119,7 @@ namespace AT_RPG.Manager
                     setting.gameObjectDataFileExtension);
 
                 // 세이브 파일 생성
-                SerializeGameObject(serializableDatas, gameObjectDataFilePath);
+                SerializeGameObjectDatas(serializableDatas, gameObjectDataFilePath);
 
                 yield return null;
             }
@@ -144,7 +150,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// Json으로 게임 오브젝트 세이브 파일을 생성합니다.
         /// </summary>
-        private static void SerializeGameObject(List<SerializableData> datas, string gameObjectDataFilePath)
+        private static void SerializeGameObjectDatas(List<GameObjectData> datas, string gameObjectDataFilePath)
         {
             using (FileStream stream = new FileStream(gameObjectDataFilePath, FileMode.Create))
             using (StreamWriter writer = new StreamWriter(stream))
@@ -164,7 +170,13 @@ namespace AT_RPG.Manager
         public static void LoadAllGameObjectsCoroutine(
             string rootPath, string dirNameToLoad, StartCondition started = null, LoadGameObjectDatasCompleted completed = null)
         {
-            // 인스턴스 세이브 파일들 불러오기
+            if (isLoading)
+            {
+                Debug.LogError("데이터를 로드 중입니다.");
+                return;
+            }
+
+            // 게임 오브젝트 세이브 파일들 불러오기
             string mapSaveDataPath = Path.Combine(rootPath, dirNameToLoad);
             string[] mapGameObjectDataFilePaths;
             if (!Directory.Exists(mapSaveDataPath))
@@ -183,9 +195,6 @@ namespace AT_RPG.Manager
                 InternalLoadGameObjectDatasCoroutine(mapGameObjectDataFilePaths, started, completed));
         }
 
-        /// <summary>
-        /// 세이브된 파일로 인스턴스를 생성
-        /// </summary>
         private static IEnumerator InternalLoadGameObjectDatasCoroutine(
             string[] filePaths, StartCondition started = null, LoadGameObjectDatasCompleted completed = null)
         {
@@ -201,7 +210,7 @@ namespace AT_RPG.Manager
             foreach (var filePath in filePaths)
             {
                 // 세이브 데이터로 인스턴스 복원
-                List<SerializableData> serializableDatas = DeserializeDatas(filePath);
+                List<GameObjectData> serializableDatas = DeserializeGameObjectDatas(filePath);
                 serializedGameObjects.Add(serializableDatas);
 
                 yield return null;
@@ -212,14 +221,11 @@ namespace AT_RPG.Manager
             completed?.Invoke(serializedGameObjects);
         }
 
-        /// <summary>
-        /// 필수 GameObjectData를 가장 먼저 읽기 위해 사용됩니다.
-        /// </summary>
-        private static GameObjectData FindGameObjectData(List<SerializableData> datas)
+        private static GameObjectRootData FindGameObjectRootData(List<GameObjectData> datas)
         {
             foreach (var data in datas)
             {
-                GameObjectData gameObjectData = data as GameObjectData;
+                GameObjectRootData gameObjectData = data as GameObjectRootData;
                 if (gameObjectData != null)
                 {
                     return gameObjectData;
@@ -229,19 +235,16 @@ namespace AT_RPG.Manager
             return null;
         }
 
-        /// <summary>
-        /// Json파일에서 SerializableData를 불러옵니다.
-        /// </summary>
-        private static List<SerializableData> DeserializeDatas(string dataFilePath)
+        private static List<GameObjectData> DeserializeGameObjectDatas(string gameObjectDataFilePath)
         {
             string datasToJson;
-            using (FileStream stream = new FileStream(dataFilePath, FileMode.Open))
+            using (FileStream stream = new FileStream(gameObjectDataFilePath, FileMode.Open))
             using (StreamReader reader = new StreamReader(stream))
             {
                 datasToJson = reader.ReadToEnd();
             }
 
-            return JsonSerialization.FromJson<List<SerializableData>>(datasToJson);
+            return JsonSerialization.FromJson<List<GameObjectData>>(datasToJson);
         }
 
 
@@ -256,8 +259,8 @@ namespace AT_RPG.Manager
             foreach (var serializableDatas in serializedGameObjectsList)
             {
                 // 에셋번들에서 인스턴스 원본을 찾기 위해 GameObjectData를 먼저 찾기
-                GameObjectData gameObjectData =
-                    FindGameObjectData(serializableDatas);
+                GameObjectRootData gameObjectData =
+                    FindGameObjectRootData(serializableDatas);
 
                 // ILoadData 인터페이스로 인스턴스를 복원
                 GameObject instanceFromSaveData = Instantiate(gameObjectData.Instance.Resource);
@@ -280,16 +283,22 @@ namespace AT_RPG.Manager
         public static void SaveMapSettingDataCoroutine(
             string rootPath, MapSettingData mapSettingData, StartCondition started = null, SaveCompleted completed = null)
         {
+            if (isSaving)
+            {
+                Debug.LogError("데이터를 세이브 중입니다.");
+                return;
+            }
+
             // 폴더(= 맵 이름)를 생성
             // 폴더에 맵 설정 세이브 파일 정리
             string mapSaveDataPath = Path.Combine(rootPath, mapSettingData.mapName);
             if (!Directory.Exists(mapSaveDataPath))
             {
-                CreateDirectory(rootPath, mapSettingData.mapName);
+                CreateSaveDataDirectroy(rootPath, mapSettingData.mapName);
             }
             else
             {
-                DeleteDatas(rootPath, mapSettingData.mapName, setting.mapSettingDataFileExtension);
+                DeleteSaveDatas(rootPath, mapSettingData.mapName, setting.mapSettingDataFileExtension);
             }
 
             Instance.StartCoroutine(
@@ -314,12 +323,14 @@ namespace AT_RPG.Manager
             completed?.Invoke();
         }
 
-        /// <summary>
-        /// 맵 세이브 폴더에 맵 설정 파일을 생성합니다.
-        /// </summary>
         private static void SerializeMapSetting(string mapSaveDataPath, MapSettingData mapSettingData)
         {
-            using (FileStream stream = new FileStream(mapSaveDataPath, FileMode.OpenOrCreate))
+            string mapSettingDataFilePath = String.CreateFilePath(
+                mapSaveDataPath,
+                mapSettingData.mapName,
+                setting.mapSettingDataFileExtension);   
+
+            using (FileStream stream = new FileStream(mapSettingDataFilePath, FileMode.Create))
             using (StreamWriter writer = new StreamWriter(stream))
             {
                 string datasToJson = JsonSerialization.ToJson(mapSettingData);
@@ -329,36 +340,102 @@ namespace AT_RPG.Manager
 
 
 
-
+        /// <summary>
+        /// 폴더(= 맵 이름)에 맵 설정 파일을 읽어서 MapSettingData 클래스를 생성합니다.      <br/>
+        /// </summary>
         public static void LoadMapSettingDataCoroutine(
             string rootPath, string mapName, StartCondition started = null, LoadMapSettingDataCompleted completed = null)
         {
+            if (isLoading)
+            {
+                Debug.LogError("데이터를 로드 중입니다.");
+                return;
+            }
+
+            // 맵 설정 세이브 파일 불러오기
+            string mapSaveDataPath = Path.Combine(rootPath, mapName);
+            string mapSettingDataFilePath;
+            if (!Directory.Exists(mapSaveDataPath))
+            {
+                Debug.LogError("디렉토리 찾을 수 없음 : " + mapSaveDataPath);
+                return;
+            }
+            else
+            {
+                mapSettingDataFilePath
+                    = Directory.GetFiles(mapSaveDataPath, "*." + setting.mapSettingDataFileExtension)[0];
+            }
+
+            // 맵 설정 세이브 파일 생성
+            Instance.StartCoroutine(
+                InternalLoadMapSettingDataCoroutine(mapSettingDataFilePath, started, completed));
+        }
+
+        private static IEnumerator InternalLoadMapSettingDataCoroutine(
+            string mapSettingDataFilePath, StartCondition started = null, LoadMapSettingDataCompleted completed = null)
+        {
+            // 시작 조건
+            while (started != null && !started.Invoke())
+            {
+                yield return null;
+            }
+            isLoading = true;
+
+            // 맵 설정 클래스 생성
+            MapSettingData mapSettingData = DeserializeMapSetting(mapSettingDataFilePath);
+
+            isLoading = false;
+            yield return null;
+            completed?.Invoke(mapSettingData);
+        }
+
+        private static MapSettingData DeserializeMapSetting(string mapSettingDataPath)
+        {
+            string dataFromJson;
+            using (FileStream stream = new FileStream(mapSettingDataPath, FileMode.Open))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                dataFromJson = reader.ReadToEnd();
+            }
+
+            return JsonSerialization.FromJson<MapSettingData>(dataFromJson);
         }
 
 
 
 
         /// <summary>
-        /// 경로에 세이브 폴더를 생성
+        /// 경로에 세이브 폴더를 만듭니다.
         /// </summary>
-        public static void CreateDirectory(string rootPath, string dirNameToCreate)
+        public static string CreateSaveDataDirectroy(string rootPath, string mapName)
         {
-            string filePath = Path.Combine(rootPath, dirNameToCreate);
-            if (!Directory.Exists(filePath))
+            string saveDataPath = Path.Combine(rootPath, mapName);
+            if (!Directory.Exists(saveDataPath))
             {
-                Directory.CreateDirectory(filePath);
+                Directory.CreateDirectory(saveDataPath);
             }
+
+            return saveDataPath;
+        }
+
+        /// <summary>
+        /// 경로에 세이브 폴더가 있는지?
+        /// </summary>
+        public static bool IsSaveDataDirectroyExist(string rootPath, string mapName)
+        {
+            string saveDataPath = Path.Combine(rootPath, mapName);
+            return Directory.Exists(saveDataPath);
         }
 
         /// <summary>
         /// 맵 데이터 모든 게임 오브젝트 데이터를 삭제합니다.
         /// </summary>
-        public static void DeleteDatas(string rootPath, string mapName, string dataExtension)
+        public static void DeleteSaveDatas(string rootPath, string mapName, string dataExtension)
         {
-            string mapSaveDataPath = Path.Combine(rootPath, mapName);
+            string saveDataPath = Path.Combine(rootPath, mapName);
             string searchPattern = "*." + dataExtension;
-            List<string> files = Directory.GetFiles(mapSaveDataPath, searchPattern).ToList();
-            files.ForEach(file => File.Delete(file));
+            List<string> dataFiles = Directory.GetFiles(saveDataPath, searchPattern).ToList();
+            dataFiles.ForEach(dataFile => File.Delete(dataFile));
         }
     }
 

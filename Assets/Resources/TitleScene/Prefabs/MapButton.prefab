@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6576697748793204607}
   - component: {fileID: 5616737532801860262}
   m_Layer: 6
-  m_Name: Text (TMP) (1)
+  m_Name: LastModifiedTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 8686970468213681096}
   - component: {fileID: 1317573262428770523}
   m_Layer: 6
-  m_Name: Text (TMP)
+  m_Name: MapName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -418,6 +418,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc9fd2b7564e346428183cad26d968ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapName: {fileID: 1317573262428770523}
+  lastModifiedTime: {fileID: 5616737532801860262}
+  mapSettingData:
+    mapName: 
+    lastModifiedTime: 
   fadeAnimation: {fileID: 1398023289772320872}
   popupAnimation: {fileID: 172495221748571733}
   mainScene:

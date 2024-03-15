@@ -1,4 +1,5 @@
 using AT_RPG.Manager;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -78,6 +79,20 @@ namespace AT_RPG
             {
                 return;
             }
+
+            // 맵 설정 데이터 초기화
+            MapSettingData mapSettingData = new MapSettingData();
+            mapSettingData.mapName = mapName.text;
+            mapSettingData.lastModifiedTime = DateTime.Now.ToString();
+
+            // 맵 설정 데이터 저장
+            // 저장이 완료되면 맵 설정 팝업창을 닫고, 맵 선택 팝업창을 인스턴싱
+            DataManager.SaveMapSettingDataCoroutine(
+                DataManager.Setting.defaultSaveFolderPath, mapSettingData, null,
+                () =>
+                {
+                    InvokeDestroy();
+                });
         }
 
         /// <summary>
@@ -101,6 +116,14 @@ namespace AT_RPG
             {
                 LogPopup logPopup = InstantiateLogPopup();
                 logPopup.Log.text = "Can't be map name empty!";
+                return false;
+            }
+
+            if (DataManager.IsSaveDataDirectroyExist(
+                DataManager.Setting.defaultSaveFolderPath, mapName.text))
+            {
+                LogPopup logPopup = InstantiateLogPopup();
+                logPopup.Log.text = $"{mapName.text} already exist!";
                 return false;
             }
 
