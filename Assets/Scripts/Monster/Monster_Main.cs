@@ -249,6 +249,7 @@ public class MonsterMain : MonsterBattle, MDamage
     // Start is called before the first frame update
     void Start()
     {
+     
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         ChangeState(State.Idle);
