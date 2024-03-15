@@ -15,14 +15,14 @@ namespace AT_RPG
             // 현재 씬의 저장 대상을 유니티의 Application.persistentData 경로에 "DirToSave" 폴더를 만들어서 직렬화합니다.
             if (Input.GetKeyDown(KeyCode.F5))
             {
-                DataManager.SaveCoroutine(DataManager.Setting.DefaultSaveFolderPath, "DirToSave");
+                DataManager.SaveAllGameObjectsCoroutine(DataManager.Setting.defaultSaveFolderPath, "DirToSave");
                 Debug.Log("세이브 성공");
             }
 
             // "DirToSave" 폴더에 있는 직렬화 데이터를 가져와서 인스턴싱합니다.
             if (Input.GetKeyDown(KeyCode.F6))
             {
-                DataManager.LoadCoroutine(DataManager.Setting.DefaultSaveFolderPath, "DirToSave", null,
+                DataManager.LoadAllGameObjectsCoroutine(DataManager.Setting.defaultSaveFolderPath, "DirToSave", null,
                 (SerializedGameObjectsList serializedGameObjects) =>
                 {
                     DataManager.InstantiateGameObjects(serializedGameObjects);

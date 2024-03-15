@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace AT_RPG
 {
+    /// <summary>
+    /// 게임 오브젝트의 기본 정보를 저장하는 클래스
+    /// </summary>
     [Serializable]
     public class GameObjectData : SerializableData
     {

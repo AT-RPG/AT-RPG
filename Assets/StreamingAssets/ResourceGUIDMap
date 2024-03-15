@@ -102,6 +102,7 @@
     "TestDataManager": "3adc84b9-c306-4db7-a6ab-c2d3ebbe3c2e",
     "TestInputManager": "52b5e173-e622-4fff-a984-7299cb1951a6",
     "TestResourceManager": "8ca5ff92-bac7-432e-9747-ac5e523ba146",
+    "TestSaveGameObject": "90fe5acb-cc4c-4e8c-88cb-861dbeec9e0f",
     "TestSceneManager": "af432589-2dc7-4603-a99e-edfe915872e4",
     "DummyMainSceneCSHResource": "da8cd06e-74fd-40d7-aa46-52ca5efe09b5",
     "DummyMainSceneIJHResource": "5a1d957f-0539-4bba-b526-31efd5bb3dbe",
