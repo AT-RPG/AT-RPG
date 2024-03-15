@@ -38,7 +38,7 @@ namespace SickscoreGames.ExampleScene
 			// check if grounded
 			if (isGrounded) {
 				// directional input
-				Vector3 targetVelocity = new Vector3 (Input.GetAxis ("Horizontal"), 0f, Input.GetAxis ("Vertical"));
+				Vector3 targetVelocity = new Vector3 (Input.GetAxis ("MouseX"), 0f, Input.GetAxis ("MouseY"));
 				float moveSpeed = (Input.GetKey (KeyCode.LeftShift)) ? runSpeed : walkSpeed;
 				targetVelocity = _transform.TransformDirection (targetVelocity) * moveSpeed;
 

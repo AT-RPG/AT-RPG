@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 979309443
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fea3f1d1dade24768be7d8f7cd339f31
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 767148d2cba1a92a15442f2b767884c0
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: fea3f1d1dade24768be7d8f7cd339f31
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/AssetBundleResources/MainScene_JUJ/DummyMainSceneJUJResource.prefab
+Dependencies: []

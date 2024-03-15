@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - SpwanPoint
+  - SpawnPoint
+  - Item
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -11,12 +15,12 @@ TagManager:
   - 
   - Water
   - UI
+  - PopupUI
+  - BackgroundUI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Wall
   - 
   - 
   - 

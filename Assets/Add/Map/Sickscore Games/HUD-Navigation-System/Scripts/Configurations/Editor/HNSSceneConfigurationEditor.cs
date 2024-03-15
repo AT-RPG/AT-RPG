@@ -153,7 +153,7 @@ public class HNSSceneConfigurationEditor : HUDNavigationBaseEditor
 					{
 						GUILayout.Space(4); // SPACE
 						EditorGUILayout.BeginVertical();
-						EditorGUILayout.Slider(_pRadarFadeDistance, 1f, 100f, "Fade Distance");
+						EditorGUILayout.Slider(_pRadarFadeDistance, 1f, 100f, "FadeInImageAnimation Distance");
 						if (hudTarget.radarFadeDistance > hudTarget.radarMaxRadius)
 							hudTarget.radarFadeDistance = hudTarget.radarMaxRadius;
 						EditorGUILayout.Slider(_pRadarMinFade, 0f, 1f, "Minimum Opacity");
@@ -239,7 +239,7 @@ public class HNSSceneConfigurationEditor : HUDNavigationBaseEditor
 					if (hudTarget.useIndicatorFading) {
 						GUILayout.Space (4); // SPACE
 						EditorGUILayout.BeginVertical ();
-						EditorGUILayout.Slider (_pIndicatorFadeRadius, 1f, 500f, "Fade Radius");
+						EditorGUILayout.Slider (_pIndicatorFadeRadius, 1f, 500f, "FadeInImageAnimation Radius");
 						if (hudTarget.indicatorFadeRadius > hudTarget.indicatorRadius)
 							hudTarget.indicatorFadeRadius = hudTarget.indicatorRadius;
 						EditorGUILayout.Slider (_pIndicatorMinFade, 0f, 1f, "Minimum Opacity");
@@ -292,7 +292,7 @@ public class HNSSceneConfigurationEditor : HUDNavigationBaseEditor
 						{
 							GUILayout.Space(4); // SPACE
 							EditorGUILayout.BeginVertical();
-							EditorGUILayout.Slider(_pMinimapFadeDistance, 1f, 100f, "Fade Distance");
+							EditorGUILayout.Slider(_pMinimapFadeDistance, 1f, 100f, "FadeInImageAnimation Distance");
 							if (hudTarget.minimapFadeDistance > hudTarget.minimapRadius)
 								hudTarget.minimapFadeDistance = hudTarget.minimapRadius;
 							EditorGUILayout.Slider(_pMinimapMinFade, 0f, 1f, "Minimum Opacity");

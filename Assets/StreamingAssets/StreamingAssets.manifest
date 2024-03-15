@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 1502835139
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: mainscene_bjw
+      Dependencies: {}
+    Info_1:
+      Name: loadingscene
+      Dependencies: {}
+    Info_2:
+      Name: global
+      Dependencies: {}
+    Info_3:
+      Name: introscene
+      Dependencies: {}
+    Info_4:
+      Name: titlescene
+      Dependencies: {}
+    Info_5:
+      Name: mainscene
+      Dependencies: {}
+    Info_6:
+      Name: mainscene_csh
+      Dependencies: {}
+    Info_7:
+      Name: mainscene_ijh
+      Dependencies: {}
+    Info_8:
+      Name: mainscene_juj
+      Dependencies: {}
