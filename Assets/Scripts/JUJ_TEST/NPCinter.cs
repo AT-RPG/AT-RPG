@@ -10,6 +10,8 @@ public class NPCinter : MonoBehaviour
     public GameObject player; // 플레이어 오브젝트
     public bool canInter = false; // 상호작용가능 여부
     public Player playerMove; // 플레이어 참조 변수
+    public GameObject npcInter; //상호작용 UI 변수
+    public GameObject ChatInter; // NPC 대화 변수
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,15 @@ public class NPCinter : MonoBehaviour
     {
         // 플레이어와 NPC 사이의 거리 계산
         playerDistance = Vector3.Distance(transform.position, player.transform.position);
+
+        if(playerDistance <= interDistance) // 일정거리가 되면 
+        {
+            npcInter.SetActive(true); // 대화하기 UI 활성화
+        }
+        else
+        {
+            npcInter.SetActive(false); // 대화하기 Ui비활성화
+        }
 
         // 상호작용 가능한 거리 내에 플레이어가 있고, 특정 키를 눌렀을 때 상호작용 시작
         if (canInter == false && playerDistance <= interDistance && Input.GetKeyDown(interKey))
@@ -61,6 +72,8 @@ public class NPCinter : MonoBehaviour
     public void StartInteraction()
     {
         canInter = true;
+        npcInter.SetActive(false);
+        ChatInter.SetActive(true);
         Debug.Log("NPC와 상호작용 시작");
         // 여기에 상호작용 UI 표시 등의 코드 추가
     }
@@ -69,6 +82,8 @@ public class NPCinter : MonoBehaviour
     public void EndInteraction()
     {
         canInter = false;
+        npcInter.SetActive(true);
+        ChatInter.SetActive(false);
         Debug.Log("NPC와 상호작용 종료");
         // 여기에 상호작용 UI 숨기기 등의 코드 추가
     }
