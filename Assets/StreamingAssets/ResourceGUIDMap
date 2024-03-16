@@ -98,8 +98,6 @@
     "QuitGamePopup": "a803eb67-e262-48be-b895-b45a124642e1",
     "StartGamePopup": "0339027f-a64a-49f3-9783-e6b7b946bc14",
     "DummyGlobalSceneResource": "a611264f-41a8-4a7d-be7f-db6177d5da0f",
-    "ScreenFadeIn": "bf0dd8cd-17eb-480c-8261-c8603379252c",
-    "ScreenFadeOut": "bd3ecad9-d600-479b-81b4-fb995e46433f",
     "DummyIntroSceneResource": "e115884a-6593-4e2a-9185-9bb538851f57",
     "DummyLoadingSceneResource": "fcabc6b0-999b-4afa-895c-79842aa36b76",
     "DummyMainSceneResource": "72853ef5-89ca-4001-bef3-fdb7625a758a",

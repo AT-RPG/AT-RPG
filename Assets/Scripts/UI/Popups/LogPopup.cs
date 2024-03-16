@@ -9,7 +9,7 @@ namespace AT_RPG
     /// 설명 :                                                        <br/>
     /// + 팝업 캔버스에 로그 메시지를 출력해주는 팝업에 사용되는 클래스        <br/>
     /// </summary>
-    public partial class LogPopup : Popup
+    public partial class LogPopup : Popup, IPopupDestroy
     {
         [SerializeField] private FadeCanvasAnimation    fadeAnimation;
         [SerializeField] private PopupCanvasAnimation   popupAnimation;
@@ -23,20 +23,12 @@ namespace AT_RPG
         [Tooltip("팝업의 지속시간")]
         [SerializeField] private float         duration;
 
+
+
         private void Start()
         {
             AnimateStartSequence();
             StartCoroutine(DestroyUntil());
-        }
-
-        /// <summary>
-        /// 팝업 종료를 요청합니다.
-        /// </summary>
-        public override void InvokeDestroy()
-        {
-            base.InvokeDestroy();
-
-            AnimateEscapeSequence();
         }
 
         /// <summary>
@@ -46,6 +38,20 @@ namespace AT_RPG
         {
             fadeAnimation.StartFade();
             popupAnimation.StartPopup();
+        }
+
+        /// <summary>
+        /// 지속시간 후, 팝업을 종료합니다.
+        /// </summary>
+        private IEnumerator DestroyUntil()
+        {
+            yield return new WaitForSeconds(duration);
+            DestroyPopup();
+        }
+
+        public void DestroyPopup()
+        {
+            AnimateEscapeSequence();
         }
 
         /// <summary>
@@ -59,15 +65,6 @@ namespace AT_RPG
                 Destroy(gameObject);
             });
         }
-
-        /// <summary>
-        /// 지속시간 후, 팝업을 종료합니다.
-        /// </summary>
-        private IEnumerator DestroyUntil()
-        {
-            yield return new WaitForSeconds(duration);
-            InvokeDestroy();
-        }
     }
 
     /// <summary>                                                   <br/>
@@ -76,10 +73,10 @@ namespace AT_RPG
     public partial class LogPopup
     {
         // 출력할 로그
-        public TMP_Text Log
+        public string Log
         {
-            get => log;
-            set => log = value;
+            get => log.text;
+            set => log.text = value;
         }
 
         // 팝업의 지속시간

@@ -470,7 +470,7 @@ GameObject:
   - component: {fileID: 887423353491072224}
   - component: {fileID: 5093779936233377190}
   m_Layer: 6
-  m_Name: CreateNewMapButton
+  m_Name: CreateMapButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -491,9 +491,9 @@ RectTransform:
   - {fileID: 2676166119858724437}
   m_Father: {fileID: 5169413666197785269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 860, y: -40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1720, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7042931180981432706
@@ -580,7 +580,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4664930830730769637}
         m_TargetAssemblyTypeName: AT_RPG.StartGamePopup, Assembly-CSharp
-        m_MethodName: OnInstantiateMapSettingPopupButton
+        m_MethodName: OnInstantiateMapSettingPopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -803,9 +803,6 @@ MonoBehaviour:
     editorResource: {fileID: 8965330524674829111, guid: 180c1adda0e607441b40e1438da282b8,
       type: 3}
   mapButtonContents: {fileID: 6197927521789084195}
-  mainScene:
-    SceneName: MainScene
-    sceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}
   blurAnimation: {fileID: 6763834106052360070}

@@ -6,7 +6,7 @@ namespace AT_RPG
     /// 설명 :                                        <br/>
     /// + 멀티플레이 설정 팝업에서 사용되는 클래스       <br/>
     /// </summary>
-    public class MultiPlayerGamePopup : Popup
+    public class MultiPlayerGamePopup : Popup, IPopupDestroy
     {
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
@@ -18,16 +18,6 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// 팝업 종료를 요청합니다.
-        /// </summary>
-        public override void InvokeDestroy()
-        {
-            base.InvokeDestroy();
-
-            AnimateEscapeSequence();
-        }
-
-        /// <summary>
         /// 시작 애니메이션을 실행합니다.
         /// </summary>
         private void AnimateStartSequence()
@@ -35,6 +25,13 @@ namespace AT_RPG
             fadeAnimation.StartFade();
             popupAnimation.StartPopup();
             blurAnimation.StartFade();
+        }
+
+
+
+        public void DestroyPopup()
+        {
+            AnimateEscapeSequence();
         }
 
         /// <summary>

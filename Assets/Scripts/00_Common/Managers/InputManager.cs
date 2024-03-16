@@ -25,7 +25,7 @@ namespace AT_RPG.Manager
             {"Equipment3", new InputMappingContext(KeyCode.Alpha3, InputOption.GetKeyDown)},
             {"Equipment4", new InputMappingContext(KeyCode.Alpha4, InputOption.GetKeyDown)},
             {"Setting/Undo", new InputMappingContext(KeyCode.Escape, InputOption.GetKeyDown)},
-             {"Interaction", new InputMappingContext(KeyCode.F, InputOption.GetKey)},
+            {"Interaction", new InputMappingContext(KeyCode.F, InputOption.GetKey)},
 
         };
 

@@ -20,6 +20,8 @@ namespace AT_RPG.Manager
         // 현재 씬의 팝업UI를 관리
         private static PopupCanvas                          popupCanvas;
 
+        private static GameObject                           gameMenuPopupInstance;
+
 
 
         protected override void Awake()
@@ -27,6 +29,8 @@ namespace AT_RPG.Manager
             base.Awake();
 
             setting = Resources.Load<UIManagerSetting>("UIManagerSettings");
+
+            InputManager.AddKeyAction("Setting/Undo", OnInstantiateGameMenuPopup);
 
             GameManager.AfterFirstSceneLoadAction += OnUnLoadAllCanvases;
             GameManager.AfterFirstSceneLoadAction += OnLoadAllCanvases;
@@ -41,12 +45,27 @@ namespace AT_RPG.Manager
             SceneManager.AfterSceneLoadAction += OnSetupAllCanvasScalarsAsSetting;
         }
 
+        private static void OnInstantiateGameMenuPopup(InputValue inputValue)
+        {
+            // 아직 팝업이 남아있는가?
+            if (popupCanvas.GetPopupCount() >= 1)
+            {
+                return;
+            }
+
+            if (!gameMenuPopupInstance)
+            {
+                gameMenuPopupInstance = InstantiatePopup(setting.gameMenuPopupPrefab.Resource, PopupRenderMode.Hide, false);
+            }
+        }
+
         /// <summary>
         /// 모든 캔버스 래퍼런스를 버립니다.
         /// </summary>
         private static void OnUnLoadAllCanvases()
         {
             sceneCanvases = null;
+            popupCanvas = null;
         }
 
         /// <summary>
@@ -109,6 +128,25 @@ namespace AT_RPG.Manager
                         canvasScalar, canvasScalarSettingProperties[i].GetValue(setting.canvasScalerSetting));
                 }
             }
+        }
+
+
+
+        /// <summary>
+        /// 다른 캔버스에 가리지 않도록 전용 UIManager 팝업 캔버스에 팝업 UI를 인스턴싱
+        /// </summary>
+        public static GameObject InstantiatePopup(GameObject popupPrefab, PopupRenderMode popupRenderMode, bool registerPopupStack = true)
+        {
+            // 팝업 인스턴싱 및 초기화
+            GameObject popupInstance = Instantiate(popupPrefab, popupCanvas.Root.transform);
+            Popup popup = popupInstance.GetComponent<Popup>();
+            popup.PopupRenderMode = popupRenderMode;
+            popup.PopupCanvas = popupCanvas;
+
+            // 팝업 등록
+            if (registerPopupStack) { popupCanvas.Push(popup);}
+
+            return popupInstance;
         }
     }
 

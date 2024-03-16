@@ -11,7 +11,7 @@ namespace AT_RPG
     /// 설명 :                                 <br/>
     /// + 맵 선택 팝업에서 사용되는 클래스       <br/>
     /// </summary>
-    public class StartGamePopup : Popup
+    public class StartGamePopup : Popup, IPopupDestroy
     {
         [Tooltip("맵 설정 팝업 프리팹")]
         [SerializeField] private ResourceReference<GameObject> mapSettingPopupPrefab;
@@ -22,30 +22,29 @@ namespace AT_RPG
         [Tooltip("맵 버튼이 생성될 위치")]
         [SerializeField] private GameObject mapButtonContents;
 
-        [Tooltip("플레이 시 이동할 메인 씬")]
-        [SerializeField] private SceneReference mainScene;
-
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private BlurCanvasAnimation blurAnimation;
 
         // 피킹된 맵
-        private MapButton pickedMapButton;
+        private MapButton currPickedMapButton;
+
+
 
         private void Start()
         {
-            StartCoroutine(LoadAllSavedMapDatas());
             AnimateStartSequence();
+            StartCoroutine(LoadAllSavedMapDatas());
         }
 
         /// <summary>
-        /// 팝업 종료를 요청합니다.
+        /// 시작 애니메이션을 실행합니다.
         /// </summary>
-        public override void InvokeDestroy()
+        private void AnimateStartSequence()
         {
-            base.InvokeDestroy();
-
-            AnimateEscapeSequence();
+            fadeAnimation.StartFade();
+            popupAnimation.StartPopup();
+            blurAnimation.StartFade();
         }
 
         /// <summary>
@@ -91,14 +90,106 @@ namespace AT_RPG
             }
         }
 
-        /// <summary>
-        /// 시작 애니메이션을 실행합니다.
-        /// </summary>
-        private void AnimateStartSequence()
+        private void OnPickMap(GameObject mapButtonInstance)
         {
-            fadeAnimation.StartFade();
-            popupAnimation.StartPopup();
-            blurAnimation.StartFade();
+            // 맵 버튼이 맞는지?
+            MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
+            if (!mapButton)
+            {
+                Debug.LogError($"{mapButtonInstance}는 맵 버튼이 아닙니다.");
+                return;
+            }
+
+            currPickedMapButton = mapButton;
+        }
+
+
+
+        /// <summary>
+        /// 맵 설정 팝업을 생성합니다.
+        /// </summary>
+        public void OnInstantiateMapSettingPopup()
+        {
+            UIManager.InstantiatePopup(mapSettingPopupPrefab.Resource, PopupRenderMode.Hide);
+        }
+
+
+
+        /// <summary>
+        /// 선택한 맵을 플레이합니다. 
+        /// </summary>
+        public void OnPlayMap()
+        {
+            if (!currPickedMapButton)
+            {
+                Debug.LogError($"{currPickedMapButton}이 아직 선택되지 않았습니다.");
+                return;
+            }
+
+            InternalOnPlayMap();
+        }
+
+        /// <summary>
+        /// 맵을 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
+        /// TODO : 리소스 로딩 바로 직후 세이브 파일 로딩하면 에러가 생김...
+        /// </summary>
+        private void InternalOnPlayMap()
+        {
+            SerializedGameObjectsList gameObjectDatas = new SerializedGameObjectsList();
+
+            string fromScene = SceneManager.CurrentSceneName;
+            string toScene = SceneManager.Setting.MainScene;
+            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
+            {
+                // 리소스 로딩/언로딩 + 세이브 파일 로딩
+                ResourceManager.LoadAllResourcesCoroutine(toScene);
+                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+
+                // 로딩이 끝나면 씬을 변경합니다.
+                SceneManager.LoadSceneCoroutine(toScene,
+                () =>
+                {
+                    return !ResourceManager.IsLoading && !DataManager.IsLoading;
+                },
+                () =>
+                {
+                    DataManager.LoadMapSettingDataCoroutine(
+                        DataManager.Setting.defaultSaveFolderPath, currPickedMapButton.MapName,
+                        () => !DataManager.IsLoading && !ResourceManager.IsLoading,
+                        loadedMapSettingData => DataManager.MapSettingData = loadedMapSettingData);
+
+                    DataManager.LoadAllGameObjectsCoroutine(
+                        DataManager.Setting.defaultSaveFolderPath, currPickedMapButton.MapName,
+                        () => !DataManager.IsLoading && !ResourceManager.IsLoading,
+                        loadedGameObjectDatas => DataManager.InstantiateGameObjects(loadedGameObjectDatas));
+                });
+            });
+        }
+
+
+        /// <summary>
+        /// 선택된 맵을 삭제합니다.
+        /// </summary>
+        public void OnDeleteMap()
+        {
+            if (!currPickedMapButton)
+            {
+                Debug.LogError($"{currPickedMapButton}이 아직 선택되지 않았습니다.");
+                return;
+            }
+
+            string mapSaveDataPath 
+                = Path.Combine(DataManager.Setting.defaultSaveFolderPath, currPickedMapButton.MapName);
+            Directory.Delete(mapSaveDataPath, true);
+
+            Destroy(currPickedMapButton.gameObject);
+        }
+
+
+
+        public void DestroyPopup()
+        {
+            AnimateEscapeSequence();
         }
 
         /// <summary>
@@ -112,95 +203,6 @@ namespace AT_RPG
                 Destroy(gameObject);
             });
             blurAnimation.EndFade();
-        }
-
-        /// <summary>
-        /// 맵 새로 생성하기 버튼에서 사용됩니다. <br/>
-        /// + 맵 설정 팝업을 인스턴싱합니다. <br/>
-        /// + 팝업을 닫습니다.
-        /// </summary>
-        public void OnInstantiateMapSettingPopupButton()
-        {
-            GameObject popupInstance 
-                = Instantiate(mapSettingPopupPrefab.Resource, popupCanvas.Root.transform);
-            Popup popup = popupInstance.GetComponent<Popup>();
-            popup.PopupCanvas = popupCanvas;
-
-            InvokeDestroy();
-        }
-
-        /// <summary>
-        /// 맵을 선택합니다.
-        /// </summary>
-        public void OnPickMap(GameObject mapButtonInstance)
-        {
-            // 맵 버튼이 맞는지?
-            MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
-            if (!mapButton)
-            {
-                Debug.LogError($"{mapButtonInstance}는 맵 버튼이 아닙니다.");
-                return;
-            }
-
-            pickedMapButton = mapButton;
-        }
-
-        /// <summary>
-        /// 선택한 맵을 플레이합니다. 
-        /// </summary>
-        public void OnPlayMap()
-        {
-            if (!pickedMapButton)
-            {
-                Debug.LogError($"{pickedMapButton}이 아직 선택되지 않았습니다.");
-                return;
-            }
-
-            InternalOnPlayMap();
-        }
-
-        /// <summary>
-        /// 맵을 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
-        /// </summary>
-        private void InternalOnPlayMap()
-        {
-            string currentScene = SceneManager.CurrentSceneName;
-            SerializedGameObjectsList gameObjectDatas = new SerializedGameObjectsList();
-            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
-            {
-                ResourceManager.LoadAllResourcesCoroutine(mainScene);
-                ResourceManager.UnloadAllResourcesCoroutine(currentScene);
-                DataManager.LoadAllGameObjectsCoroutine(
-                    DataManager.Setting.defaultSaveFolderPath, pickedMapButton.MapName, null,
-                    loadedGameObjectDatas => loadedGameObjectDatas.ForEach(loadedGameObjectData => gameObjectDatas.Add(loadedGameObjectData)));
-                SceneManager.LoadSceneCoroutine(mainScene,
-                () =>
-                {
-                    return !ResourceManager.IsLoading;
-                },
-                () =>
-                {
-                    DataManager.InstantiateGameObjects(gameObjectDatas);
-                });
-            });
-        }
-
-        /// <summary>
-        /// 선택된 맵을 삭제합니다.
-        /// </summary>
-        public void OnDeleteMap()
-        {
-            if (!pickedMapButton)
-            {
-                Debug.LogError($"{pickedMapButton}이 아직 선택되지 않았습니다.");
-                return;
-            }
-
-            string mapSaveDataPath 
-                = Path.Combine(DataManager.Setting.defaultSaveFolderPath, pickedMapButton.MapName);
-            Directory.Delete(mapSaveDataPath, true);
-
-            Destroy(pickedMapButton.gameObject);
         }
     }
 }

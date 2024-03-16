@@ -1,6 +1,4 @@
 using AT_RPG.Manager;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace AT_RPG
@@ -8,7 +6,7 @@ namespace AT_RPG
     /// <summary>
     /// 인게임 플레이중에 ESC를 통해서 인스턴싱되는 게임 메뉴 팝업 클래스
     /// </summary>
-    public class GameMenuPopup : Popup
+    public class GameMenuPopup : Popup, IPopupDestroy
     {
         [Tooltip("게임 설정 팝업 프리팹")]
         [SerializeField] private ResourceReference<GameObject>  optionPopupPrefab;
@@ -27,6 +25,16 @@ namespace AT_RPG
         [SerializeField] private GameObject                     optionButtonInstance;
         [SerializeField] private GameObject                     titleButtonInstance;
         [SerializeField] private GameObject                     quitButtonInstance;
+
+        private bool isEscaped = false;
+
+
+
+        private void Awake()
+        {
+            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { saveButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleScene) { titleButtonInstance.SetActive(false); }
+        }
 
 
 
@@ -47,13 +55,90 @@ namespace AT_RPG
 
 
 
-        /// <summary>
-        /// 팝업 종료를 팝업 UI캔버스에 요청합니다.
-        /// </summary>
-        public override void InvokeDestroy()
+        private void Update()
         {
-            base.InvokeDestroy();
+            if (!isEscaped && Input.GetKeyDown(KeyCode.Escape))
+            {
+                isEscaped = true;
+                DestroyPopup();
+            }
+        }
 
+
+
+        /// <summary>
+        /// 게임 메뉴 팝업을 종료 합니다.
+        /// </summary>
+        public void OnDestroyPopup()
+        {
+            DestroyPopup();
+        }
+
+
+
+        /// <summary>
+        /// 현재 게임의 맵 설정과 저장 대상인 게임 오브젝트를 저장합니다.
+        /// </summary>
+        public void OnSaveMap()
+        {
+            DataManager.SaveMapSettingDataCoroutine(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
+
+            DataManager.SaveAllGameObjectsCoroutine(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+        }
+
+
+
+        /// <summary>
+        /// 게임 설정 팝업을 인스턴싱 합니다.
+        /// </summary>
+        public void OnInstantiateOptionPopup()
+        {
+            
+        }
+
+
+
+        /// <summary>
+        /// 게임 타이틀화면으로 돌아갑니다.
+        /// </summary>
+        public void OnLoadTitleScene()
+        {
+            DataManager.SaveMapSettingDataCoroutine(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
+
+            DataManager.SaveAllGameObjectsCoroutine(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+
+            // 타이틀 씬으로 이동
+            string fromScene = SceneManager.CurrentSceneName;
+            string toScene = SceneManager.Setting.TitleScene;
+            string loadingScene = SceneManager.Setting.LoadingScene;
+            SceneManager.LoadSceneCoroutine(loadingScene, () => !DataManager.IsSaving, () =>
+            {
+                ResourceManager.LoadAllResourcesCoroutine(toScene);
+
+                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+
+                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !DataManager.IsSaving);
+            });
+        }
+
+
+
+        /// <summary>
+        /// 컴퓨터 바탕화면으로 돌아갑니다. (게임을 종료합니다.)
+        /// </summary>
+        public void OnQuitGame()
+        {
+            Application.Quit();
+        }
+
+
+
+        public void DestroyPopup()
+        {
             AnimateEscapeSequence();
         }
 
@@ -68,79 +153,6 @@ namespace AT_RPG
                 Destroy(gameObject);
             });
             blurAnimation.EndFade();
-        }
-
-
-
-        /// <summary>
-        /// 게임 메뉴 팝업을 종료 합니다.
-        /// </summary>
-        public void OnContinueButtonClick()
-        {
-            
-        }
-
-
-
-        /// <summary>
-        /// 현재 게임의 맵 설정과 저장 대상인 게임 오브젝트를 저장합니다.
-        /// </summary>
-        public void OnSaveButtonClick()
-        {
-            DataManager.LoadMapSettingDataCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName);
-
-            DataManager.LoadAllGameObjectsCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName);
-        }
-
-
-
-        /// <summary>
-        /// 게임 설정 팝업을 인스턴싱 합니다.
-        /// </summary>
-        public void OnOptionButtonClick()
-        {
-            
-        }
-
-
-
-        /// <summary>
-        /// 게임 타이틀화면으로 돌아갑니다.
-        /// </summary>
-        public void OnTitleButtonClick()
-        {
-            // 씬 이동 전에 현재 월드 세이브
-            DataManager.LoadMapSettingDataCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName);
-
-            DataManager.LoadAllGameObjectsCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName);
-
-
-            // 타이틀 씬으로 이동
-            string fromScene = SceneManager.CurrentSceneName;
-            string toScene = SceneManager.Setting.TitleScene;
-            string loadingScene = SceneManager.Setting.LoadingScene;
-            SceneManager.LoadScene(loadingScene, () =>
-            {
-                ResourceManager.LoadAllResourcesCoroutine(toScene);
-
-                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
-
-                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
-            });
-        }
-
-
-
-        /// <summary>
-        /// 컴퓨터 바탕화면으로 돌아갑니다. (게임을 종료합니다.)
-        /// </summary>
-        public void OnQuitButtonClick()
-        {
-            Application.Quit();
         }
     }
 }

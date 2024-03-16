@@ -361,7 +361,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5705464750944686198}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3500212183437370214}
+        m_TargetAssemblyTypeName: AT_RPG.GameMenuPopup, Assembly-CSharp
+        m_MethodName: OnLoadTitleScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1724029390166523286
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,7 +494,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8970078139555147121}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3500212183437370214}
+        m_TargetAssemblyTypeName: AT_RPG.GameMenuPopup, Assembly-CSharp
+        m_MethodName: OnQuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2631230615385401249
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +627,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 741840158636006637}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3500212183437370214}
+        m_TargetAssemblyTypeName: AT_RPG.GameMenuPopup, Assembly-CSharp
+        m_MethodName: OnInstantiateOptionPopup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3097611223914018228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,11 +1056,11 @@ MonoBehaviour:
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}
   blurAnimation: {fileID: 6763834106052360070}
-  continueButton: {fileID: 5118852330498328079}
-  saveButton: {fileID: 6979748700135976169}
-  optionButton: {fileID: 2631230615385401249}
-  titleButton: {fileID: 1570454751662736881}
-  quitButton: {fileID: 1724029390166523286}
+  continueButtonInstance: {fileID: 5118852330498328079}
+  saveButtonInstance: {fileID: 6979748700135976169}
+  optionButtonInstance: {fileID: 2631230615385401249}
+  titleButtonInstance: {fileID: 1570454751662736881}
+  quitButtonInstance: {fileID: 1724029390166523286}
 --- !u!114 &2242849026916850878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1191,7 +1227,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3929732660819577921}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3500212183437370214}
+        m_TargetAssemblyTypeName: AT_RPG.GameMenuPopup, Assembly-CSharp
+        m_MethodName: OnDestroyPopup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5845298719604009933
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,7 +1852,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8814330741824226787}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3500212183437370214}
+        m_TargetAssemblyTypeName: AT_RPG.GameMenuPopup, Assembly-CSharp
+        m_MethodName: OnSaveMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7522723167707086497
 GameObject:
   m_ObjectHideFlags: 0

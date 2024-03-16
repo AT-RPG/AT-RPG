@@ -18,5 +18,8 @@ namespace AT_RPG
 
         [Tooltip("팝업을 관리하는 캔버스 인스턴스 프리팹")]
         public ResourceReference<GameObject>    popupCanvasPrefab;
+
+        [Tooltip("로그 팝업 프리팹")]
+        public ResourceReference<GameObject>    logPopupPrefab;
     }
 }
