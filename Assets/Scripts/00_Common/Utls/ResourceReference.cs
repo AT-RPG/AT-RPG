@@ -8,7 +8,7 @@ namespace AT_RPG
 {
     /// <summary>
     /// 에셋 번들의 리소스 레퍼런스 <br/>
-    /// 인스펙터에서 리소스를 바인딩하면 해당 리소스의 이름으로 리소스를 얻을 수 있습니다.
+    /// 인스펙터에서 리소스를 바인딩하면 해당 리소스의 이름으로 리소스를 얻을 수 있습니다.  <br/>
     /// </summary>
     [System.Serializable]
     public struct ResourceReference<T> where T : UnityObject

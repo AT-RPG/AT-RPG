@@ -17,15 +17,9 @@ namespace AT_RPG
 
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
-        [SerializeField] private SceneReference mainScene;
 
         // 맵 선택화면에서 피킹시 호출되는 이벤트
         private event Action<GameObject> onButtonClickAction;
-
-        // 더블 클릭 인터벌 변수
-        private float lastClickTime = 0f;
-        private float catchTime = 0.25f;
-
 
         private void Awake()
         {

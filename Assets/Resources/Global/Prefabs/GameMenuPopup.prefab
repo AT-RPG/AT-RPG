@@ -951,6 +951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5118925864023311138}
   - component: {fileID: 6634058085480399929}
+  - component: {fileID: 3500212183437370214}
   - component: {fileID: 2242849026916850878}
   - component: {fileID: 1970067337627839868}
   - component: {fileID: 6763834106052360070}
@@ -997,6 +998,33 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &3500212183437370214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4696516987986217221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173453a7c326c684380354e68c856da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  optionPopupPrefab:
+    resourceName: OptionPopup
+    editorResource: {fileID: 4696516987986217221, guid: b1eb8d0fd1390bd4685900047752bfe2,
+      type: 3}
+  titleScene:
+    SceneName: TitleScene
+    sceneAsset: {fileID: 102900000, guid: 61ed4e478a6346740bba2218e248ebcd, type: 3}
+  fadeAnimation: {fileID: 2242849026916850878}
+  popupAnimation: {fileID: 1970067337627839868}
+  blurAnimation: {fileID: 6763834106052360070}
+  continueButton: {fileID: 5118852330498328079}
+  saveButton: {fileID: 6979748700135976169}
+  optionButton: {fileID: 2631230615385401249}
+  titleButton: {fileID: 1570454751662736881}
+  quitButton: {fileID: 1724029390166523286}
 --- !u!114 &2242849026916850878
 MonoBehaviour:
   m_ObjectHideFlags: 0

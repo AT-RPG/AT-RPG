@@ -11,7 +11,7 @@ namespace AT_RPG
     public class GameMenuPopup : Popup
     {
         [Tooltip("게임 설정 팝업 프리팹")]
-        [SerializeField] private ResourceReference<GameObject>  optionPrefab;
+        [SerializeField] private ResourceReference<GameObject>  optionPopupPrefab;
 
         [Tooltip("타이틀 화면 씬")]
         [SerializeField] private SceneReference                 titleScene;
@@ -21,19 +21,18 @@ namespace AT_RPG
         [SerializeField] private PopupCanvasAnimation           popupAnimation;
         [SerializeField] private BlurCanvasAnimation            blurAnimation;
 
+        [Header("게임 메뉴 버튼")]
+        [SerializeField] private GameObject                     continueButtonInstance;
+        [SerializeField] private GameObject                     saveButtonInstance;
+        [SerializeField] private GameObject                     optionButtonInstance;
+        [SerializeField] private GameObject                     titleButtonInstance;
+        [SerializeField] private GameObject                     quitButtonInstance;
+
+
+
         private void Start()
         {
             AnimateStartSequence();
-        }
-
-        /// <summary>
-        /// 팝업 종료를 팝업 UI캔버스에 요청합니다.
-        /// </summary>
-        public override void InvokeDestroy()
-        {
-            base.InvokeDestroy();
-
-            AnimateEscapeSequence();
         }
 
         /// <summary>
@@ -44,6 +43,18 @@ namespace AT_RPG
             fadeAnimation.StartFade();
             popupAnimation.StartPopup();
             blurAnimation.StartFade();
+        }
+
+
+
+        /// <summary>
+        /// 팝업 종료를 팝업 UI캔버스에 요청합니다.
+        /// </summary>
+        public override void InvokeDestroy()
+        {
+            base.InvokeDestroy();
+
+            AnimateEscapeSequence();
         }
 
         /// <summary>
@@ -59,6 +70,8 @@ namespace AT_RPG
             blurAnimation.EndFade();
         }
 
+
+
         /// <summary>
         /// 게임 메뉴 팝업을 종료 합니다.
         /// </summary>
@@ -66,6 +79,8 @@ namespace AT_RPG
         {
             
         }
+
+
 
         /// <summary>
         /// 현재 게임의 맵 설정과 저장 대상인 게임 오브젝트를 저장합니다.
@@ -79,6 +94,8 @@ namespace AT_RPG
                 DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName);
         }
 
+
+
         /// <summary>
         /// 게임 설정 팝업을 인스턴싱 합니다.
         /// </summary>
@@ -86,6 +103,8 @@ namespace AT_RPG
         {
             
         }
+
+
 
         /// <summary>
         /// 게임 타이틀화면으로 돌아갑니다.
@@ -113,6 +132,8 @@ namespace AT_RPG
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
             });
         }
+
+
 
         /// <summary>
         /// 컴퓨터 바탕화면으로 돌아갑니다. (게임을 종료합니다.)
