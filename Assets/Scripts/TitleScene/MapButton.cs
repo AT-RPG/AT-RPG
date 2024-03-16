@@ -1,11 +1,12 @@
 using AT_RPG.Manager;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace AT_RPG
 {
-    public partial class MapButton : MonoBehaviour, IPointerClickHandler
+    public partial class MapButton : MonoBehaviour
     {
         // 버튼 뷰포트
         [SerializeField] private TMP_Text mapName;
@@ -17,6 +18,9 @@ namespace AT_RPG
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private SceneReference mainScene;
+
+        // 맵 선택화면에서 피킹시 호출되는 이벤트
+        private event Action<GameObject> onButtonClickAction;
 
         // 더블 클릭 인터벌 변수
         private float lastClickTime = 0f;
@@ -39,31 +43,11 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// 더블 클릭 시, 씬으로 이동
+        /// 버튼 클릭 시, 피킹 이벤트를 호출
         /// </summary>
-        /// <param name="eventData"></param>
-        public void OnPointerClick(PointerEventData eventData)
+        public void OnPick()
         {
-            if (eventData.button == PointerEventData.InputButton.Left)
-            {
-                // 더블 클릭시 씬 로딩
-                if (Time.time - lastClickTime < catchTime)
-                {
-                    string currSceneName = SceneManager.CurrentSceneName;
-                    string nextSceneName = mainScene;
-                    SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
-                    {
-                        ResourceManager.LoadAllResourcesCoroutine(nextSceneName);
-                        ResourceManager.UnloadAllResourcesCoroutine(currSceneName);
-                        SceneManager.LoadSceneCoroutine(nextSceneName, () =>
-                        {
-                            return !ResourceManager.IsLoading;
-                        });
-                    });
-                }
-
-                lastClickTime = Time.time;
-            }
+            onButtonClickAction?.Invoke(gameObject);
         }
     }
 
@@ -78,6 +62,11 @@ namespace AT_RPG
         {
             get => lastModifiedTime.text;
             set => lastModifiedTime.text = value;
+        }
+        public Action<GameObject> OnPickAction
+        {
+            get => onButtonClickAction;
+            set => onButtonClickAction = value;
         }
         public MapSettingData MapSettingData
         {

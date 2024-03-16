@@ -26,6 +26,9 @@ namespace AT_RPG.Manager
         // 세이브 파일 로딩중
         private static bool isLoading = false;
 
+        // 인 게임에 들어오면 초기화
+        private static MapSettingData mapSettingData = null;
+
         // 시작 조건 콜백
         public delegate bool StartCondition();
 
@@ -449,5 +452,12 @@ namespace AT_RPG.Manager
 
         // 매니저 기본 설정
         public static DataManagerSetting Setting => setting;
+
+        // 인 게임에 들어오면 초기화
+        public static MapSettingData MapSettingData
+        {
+            get => mapSettingData;
+            set => mapSettingData = value;
+        }
     }
 }

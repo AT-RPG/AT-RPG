@@ -19,12 +19,18 @@ namespace AT_RPG
         [Tooltip("맵 버튼 프리팹")]
         [SerializeField] private ResourceReference<GameObject> mapButtonPrefab;
 
-        [Tooltip("맵 버튼이 생성될 콘텐츠 드로어 인스턴스")]
+        [Tooltip("맵 버튼이 생성될 위치")]
         [SerializeField] private GameObject mapButtonContents;
+
+        [Tooltip("플레이 시 이동할 메인 씬")]
+        [SerializeField] private SceneReference mainScene;
 
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private BlurCanvasAnimation blurAnimation;
+
+        // 피킹된 맵
+        private MapButton pickedMapButton;
 
         private void Start()
         {
@@ -61,7 +67,8 @@ namespace AT_RPG
                 {
                     return !DataManager.IsLoading;
                 }    
-                , mapSettingData =>
+                , 
+                mapSettingData =>
                 {
                     mapSettingDatas.Add(mapSettingData);
                 });
@@ -80,6 +87,7 @@ namespace AT_RPG
                     = Instantiate(mapButtonPrefab.Resource, mapButtonContents.transform);
                 MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
                 mapButton.MapSettingData = mapSettingData;
+                mapButton.OnPickAction += OnPickMap;
             }
         }
 
@@ -119,6 +127,80 @@ namespace AT_RPG
             popup.PopupCanvas = popupCanvas;
 
             InvokeDestroy();
+        }
+
+        /// <summary>
+        /// 맵을 선택합니다.
+        /// </summary>
+        public void OnPickMap(GameObject mapButtonInstance)
+        {
+            // 맵 버튼이 맞는지?
+            MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
+            if (!mapButton)
+            {
+                Debug.LogError($"{mapButtonInstance}는 맵 버튼이 아닙니다.");
+                return;
+            }
+
+            pickedMapButton = mapButton;
+        }
+
+        /// <summary>
+        /// 선택한 맵을 플레이합니다. 
+        /// </summary>
+        public void OnPlayMap()
+        {
+            if (!pickedMapButton)
+            {
+                Debug.LogError($"{pickedMapButton}이 아직 선택되지 않았습니다.");
+                return;
+            }
+
+            InternalOnPlayMap();
+        }
+
+        /// <summary>
+        /// 맵을 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
+        /// </summary>
+        private void InternalOnPlayMap()
+        {
+            string currentScene = SceneManager.CurrentSceneName;
+            SerializedGameObjectsList gameObjectDatas = new SerializedGameObjectsList();
+            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
+            {
+                ResourceManager.LoadAllResourcesCoroutine(mainScene);
+                ResourceManager.UnloadAllResourcesCoroutine(currentScene);
+                DataManager.LoadAllGameObjectsCoroutine(
+                    DataManager.Setting.defaultSaveFolderPath, pickedMapButton.MapName, null,
+                    loadedGameObjectDatas => loadedGameObjectDatas.ForEach(loadedGameObjectData => gameObjectDatas.Add(loadedGameObjectData)));
+                SceneManager.LoadSceneCoroutine(mainScene,
+                () =>
+                {
+                    return !ResourceManager.IsLoading;
+                },
+                () =>
+                {
+                    DataManager.InstantiateGameObjects(gameObjectDatas);
+                });
+            });
+        }
+
+        /// <summary>
+        /// 선택된 맵을 삭제합니다.
+        /// </summary>
+        public void OnDeleteMap()
+        {
+            if (!pickedMapButton)
+            {
+                Debug.LogError($"{pickedMapButton}이 아직 선택되지 않았습니다.");
+                return;
+            }
+
+            string mapSaveDataPath 
+                = Path.Combine(DataManager.Setting.defaultSaveFolderPath, pickedMapButton.MapName);
+            Directory.Delete(mapSaveDataPath, true);
+
+            Destroy(pickedMapButton.gameObject);
         }
     }
 }
