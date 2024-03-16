@@ -1181,7 +1181,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3379442443698024612}
         m_TargetAssemblyTypeName: AT_RPG.MapSettingPopup, Assembly-CSharp
-        m_MethodName: OnCancelCreateMap
+        m_MethodName: OnInstantiateStartGamePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1583,7 +1583,7 @@ GameObject:
   - component: {fileID: 7925923913629786652}
   - component: {fileID: 896424249583338610}
   m_Layer: 6
-  m_Name: SettingContainer
+  m_Name: MapName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1756,6 +1756,10 @@ MonoBehaviour:
   startGamePopupPrefab:
     resourceName: StartGamePopup
     editorResource: {fileID: 4696516987986217221, guid: 2f6cc14bf8b3e634299f92cff87f5a57,
+      type: 3}
+  logPopupPrefab:
+    resourceName: LogPopup
+    editorResource: {fileID: 4604045765672551863, guid: 7fec57ba84b8d2844ab1a26125fbeba9,
       type: 3}
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}

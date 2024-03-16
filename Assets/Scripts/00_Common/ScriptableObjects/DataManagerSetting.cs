@@ -5,15 +5,19 @@ using UnityEngine;
 namespace AT_RPG
 {
     [CreateAssetMenu(fileName = "DataManagerSettings", menuName = "ScriptableObject/DataManager Setting")]
-    public class DataManagerSetting : ScriptableObject
+    public partial class DataManagerSetting : ScriptableObject
     {
         // 세이브 파일 기본 경로
-        [ReadOnly] private string defaultSaveFolderPath;
-        public string DefaultSaveFolderPath => defaultSaveFolderPath;
+        public string   defaultSaveFolderPath;
 
         // 세이브 파일 페이크 로딩 지속 시간
-        // NOTE : 비동기 로딩에만 적용
-        public float FakeLoadingDuration = 0.75f;
+        public float    fakeLoadingDuration = 0.75f;
+
+        // 직렬화된 게임 오브젝트 데이터의 확장명
+        public readonly string gameObjectDataFileExtension = "god";
+
+        // 직렬화된 맵 설정 데이터의 확장명
+        public readonly string mapSettingDataFileExtension = "msd";
 
         public void OnEnable()
         {
@@ -23,11 +27,9 @@ namespace AT_RPG
 
 
 #if UNITY_EDITOR
-    /// <summary>
-    /// 파일 저장 경로를 ReadOnly로 인스펙터에서 수정을 막는 클래스
-    /// </summary>
+
     [CustomEditor(typeof(DataManagerSetting))]
-    public class DataManagerSettingEditor : Editor
+    public partial class DataManagerSettingEditor : Editor
     {
         public override void OnInspectorGUI()
         {
@@ -36,14 +38,19 @@ namespace AT_RPG
             // 읽기 전용 필드 정의
             EditorGUI.BeginDisabledGroup(true);
             {
-                EditorGUILayout.LabelField(nameof(script.DefaultSaveFolderPath), script.DefaultSaveFolderPath);
+                EditorGUILayout.LabelField(
+                    nameof(script.defaultSaveFolderPath), script.defaultSaveFolderPath);
+                EditorGUILayout.LabelField(
+                    nameof(script.gameObjectDataFileExtension), script.gameObjectDataFileExtension);
+                EditorGUILayout.LabelField(
+                    nameof(script.mapSettingDataFileExtension), script.mapSettingDataFileExtension);
             }
             EditorGUI.EndDisabledGroup();
 
             // 수정 가능 필드 정의
             {
-                script.FakeLoadingDuration
-                    = EditorGUILayout.FloatField(nameof(script.FakeLoadingDuration), script.FakeLoadingDuration);
+                script.fakeLoadingDuration
+                    = EditorGUILayout.FloatField(nameof(script.fakeLoadingDuration), script.fakeLoadingDuration);
             }
 
             // 변경 내용 업데이트
