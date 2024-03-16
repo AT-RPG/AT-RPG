@@ -123,24 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!54 &92956312 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 2776848223720096894, guid: 7cc14e8e1b125e34e99bab7662529045,
-    type: 3}
-  m_PrefabInstance: {fileID: 262776097}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &92956313 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3611294423230776714, guid: 7cc14e8e1b125e34e99bab7662529045,
-    type: 3}
-  m_PrefabInstance: {fileID: 262776097}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ed00621f8743df468a35c950d405f9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &124932858 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5527567223492856501, guid: 0c49aefc561f531439742f08a2b7c89d,
@@ -270,16 +252,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2351630257098120849, guid: 7cc14e8e1b125e34e99bab7662529045,
+    - target: {fileID: 433360412200176511, guid: 7cc14e8e1b125e34e99bab7662529045,
         type: 3}
-      propertyPath: m_IsTrigger
+      propertyPath: m_PreviewTimeScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3611294423230776714, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: playerRigid
-      value: 
-      objectReference: {fileID: 92956312}
     - target: {fileID: 4806216708481372007, guid: 7cc14e8e1b125e34e99bab7662529045,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -337,48 +314,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
         type: 3}
-      propertyPath: fallingAct.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: fallingAct.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: fallingAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 92956313}
-    - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: fallingAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: fallingAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetFallState
-      objectReference: {fileID: 0}
-    - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: fallingStopAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 92956313}
-    - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: fallingStopAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: FallStop
-      objectReference: {fileID: 0}
-    - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: fallingAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7734379589040815535, guid: 7cc14e8e1b125e34e99bab7662529045,
-        type: 3}
-      propertyPath: fallingAct.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      propertyPath: groundMask.m_Bits
+      value: 1024
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
