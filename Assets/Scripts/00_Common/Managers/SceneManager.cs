@@ -120,7 +120,7 @@ namespace AT_RPG.Manager
             }
 
             isLoading = false;
-
+            yield return null;
             completed?.Invoke();
             afterSceneLoadAction?.Invoke();
         }

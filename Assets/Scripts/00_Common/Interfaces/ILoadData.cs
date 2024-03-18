@@ -7,6 +7,6 @@ namespace AT_RPG
         /// <summary>
         /// DataManager를 통해 데이터를 불러온 후, 호출
         /// </summary>
-        public void LoadData(SerializableData data);
+        public void LoadData(GameObjectData data);
     }
 }
