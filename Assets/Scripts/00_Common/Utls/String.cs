@@ -27,5 +27,15 @@ namespace AT_RPG
         {
             return source.Contains(toFind);
         }
+
+        /// <summary>
+        /// 루트 경로와 파일 이름을 통해 파일 경로를 생성합니다. <br/>
+        /// + (옵션) 파일 확장명을 변경합니다.
+        /// </summary>
+        public static string CreateFilePath(string rootPath, string fileName, string extension = null)
+        {
+            string path = Path.Combine(rootPath, fileName);
+            return extension == null ? path : Path.ChangeExtension(path, extension);
+        }
     }
 }
