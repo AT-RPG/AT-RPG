@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Pool;
@@ -21,14 +22,16 @@ public class MonsterMain : MonsterBattle, MDamage
     public void InitializeMonster()
     {
         transform.position = StartspawnPos.transform.position; //위치 초기화
-        ChangeState(State.Create); // 몬스터의 상태를 초기화 상태로 변경합니다.
     }
     private void Awake() //초기화
     {
         transform.position = StartspawnPos.transform.position; //스폰위치 설정
         ChangeState(State.Idle);
     }
-
+    void OnEnable()
+    {
+        ChangeState(State.Create);
+    }
 
 
     [SerializeField] Transform monResPos;
