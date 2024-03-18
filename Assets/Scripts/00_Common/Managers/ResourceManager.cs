@@ -246,6 +246,7 @@ namespace AT_RPG.Manager
             yield return LoadFakeDuration();
 
             isLoading = false;
+            yield return null;
             completed?.Invoke();
         }
 

@@ -184,7 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 180486516}
   m_Layer: 7
-  m_Name: Buttons
+  m_Name: Button Layout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,7 +197,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 180486515}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -206,7 +206,7 @@ RectTransform:
   - {fileID: 419198665}
   - {fileID: 1009346787}
   - {fileID: 341617537}
-  m_Father: {fileID: 197755201}
+  m_Father: {fileID: 738880543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -242,8 +242,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 180486516}
+  m_Children: []
   m_Father: {fileID: 738880543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -509,11 +508,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 341617541}
         m_TargetAssemblyTypeName: AT_RPG.PopupButton, Assembly-CSharp
-        m_MethodName: OnInstantiatePopupAt
-        m_Mode: 2
+        m_MethodName: OnInstantiatePopup
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 5488967292357975094}
-          m_ObjectArgumentAssemblyTypeName: AT_RPG.PopupCanvas, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -573,6 +572,7 @@ MonoBehaviour:
     resourceName: QuitGamePopup
     editorResource: {fileID: 4696516987986217221, guid: 45221a7409eff0f4e8071404ec4886ec,
       type: 3}
+  popupRenderMode: 0
 --- !u!1 &419198664
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,11 +659,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 419198669}
         m_TargetAssemblyTypeName: AT_RPG.PopupButton, Assembly-CSharp
-        m_MethodName: OnInstantiatePopupAt
-        m_Mode: 2
+        m_MethodName: OnInstantiatePopup
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 5488967292357975094}
-          m_ObjectArgumentAssemblyTypeName: AT_RPG.PopupCanvas, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -723,6 +723,7 @@ MonoBehaviour:
     resourceName: MultiplayerGamePopup
     editorResource: {fileID: 4696516987986217221, guid: 390bfcd211fc6304c870476032ea4f32,
       type: 3}
+  popupRenderMode: 1
 --- !u!1 &444991640
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,7 +734,7 @@ GameObject:
   m_Component:
   - component: {fileID: 444991641}
   m_Layer: 7
-  m_Name: BackgroundTitleName
+  m_Name: Title Layout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -754,10 +755,10 @@ RectTransform:
   - {fileID: 294724108}
   m_Father: {fileID: 158518112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 280}
-  m_SizeDelta: {x: 1200, y: 200}
+  m_SizeDelta: {x: -720, y: -880}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &452187517
 GameObject:
@@ -845,11 +846,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 452187522}
         m_TargetAssemblyTypeName: AT_RPG.PopupButton, Assembly-CSharp
-        m_MethodName: OnInstantiatePopupAt
-        m_Mode: 2
+        m_MethodName: OnInstantiatePopup
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 5488967292357975094}
-          m_ObjectArgumentAssemblyTypeName: AT_RPG.PopupCanvas, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -909,6 +910,7 @@ MonoBehaviour:
     resourceName: StartGamePopup
     editorResource: {fileID: 4696516987986217221, guid: 2f6cc14bf8b3e634299f92cff87f5a57,
       type: 3}
+  popupRenderMode: 1
 --- !u!1 &459209392
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,7 +1130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 738880543}
   m_Layer: 7
-  m_Name: Menu
+  m_Name: Menu Layout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1147,6 +1149,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 197755201}
+  - {fileID: 180486516}
   m_Father: {fileID: 158518112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1240,11 +1243,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1009346791}
         m_TargetAssemblyTypeName: AT_RPG.PopupButton, Assembly-CSharp
-        m_MethodName: OnInstantiatePopupAt
-        m_Mode: 2
+        m_MethodName: OnInstantiatePopup
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 5488967292357975094}
-          m_ObjectArgumentAssemblyTypeName: AT_RPG.PopupCanvas, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1304,6 +1307,7 @@ MonoBehaviour:
     resourceName: OptionPopup
     editorResource: {fileID: 4696516987986217221, guid: b1eb8d0fd1390bd4685900047752bfe2,
       type: 3}
+  popupRenderMode: 0
 --- !u!1 &1065629202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1906,7 +1910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1809644165}
   m_Layer: 7
-  m_Name: BackgroundImage
+  m_Name: Background Layout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1983,7 +1987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 1
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
@@ -2218,157 +2222,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2120667565}
   m_CullTransparentMesh: 1
---- !u!1 &685139743801916132
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6161006312418349460}
-  - component: {fileID: 4691473961813078096}
-  - component: {fileID: 9199367719468252120}
-  - component: {fileID: 5897676641363617288}
-  - component: {fileID: 5488967292357975094}
-  m_Layer: 6
-  m_Name: Popup Canvas
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &2705332053801651343
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6158183411256699808}
-  m_Layer: 6
-  m_Name: Root
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!223 &4691473961813078096
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685139743801916132}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 1
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 100
-  m_TargetDisplay: 0
---- !u!114 &5488967292357975094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685139743801916132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da6bde11c0b6074a8ad660ade2fa5c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  root: {fileID: 2705332053801651343}
---- !u!114 &5897676641363617288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685139743801916132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!224 &6158183411256699808
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2705332053801651343}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6161006312418349460}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &6161006312418349460
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685139743801916132}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6158183411256699808}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
---- !u!114 &9199367719468252120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685139743801916132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 1
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2377,4 +2230,3 @@ SceneRoots:
   - {fileID: 1501817651}
   - {fileID: 1199460420}
   - {fileID: 2092261918}
-  - {fileID: 6161006312418349460}
