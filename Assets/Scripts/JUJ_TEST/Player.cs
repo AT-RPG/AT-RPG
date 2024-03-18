@@ -13,43 +13,27 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // ȸ���� Rigidbody���� �ñ��� ����
+        rb.freezeRotation = true; //
     }
 
     void Update()
     {
-        // �̵� ����
-        float horizontal = Input.GetAxis("MouseX");
-        float vertical = Input.GetAxis("MouseY");
+        // 이동
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(horizontal, 0, vertical) * moveSpeed * Time.deltaTime;
         rb.MovePosition(transform.position + movement);
 
-        // ȸ�� ����
-        float rotate = Input.GetAxis("MouseX") * rotateSpeed;
+        // ?
+        float rotate = Input.GetAxis("Horizontal") * rotateSpeed;
         rb.angularVelocity = new Vector3(0, rotate, 0);
 
 
-        // ���� ����
+        // 점프
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("1");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
-    }
-    public void OnTriggerEnter(Collider other)
-    {
-        // �÷��̾ ���� ������ ���� ��
-        if (other.CompareTag("SpawnPoint"))
-        {
-            // �ٸ� ���� �������� �̵�
-            MoveToNewSpawnPoint(other.transform);
-        }
-    }
-
-    public void MoveToNewSpawnPoint(Transform newSpawnPoint)
-    {
-        // �÷��̾ ���ο� ���� �������� �̵�
-        transform.position = newSpawnPoint.position;
-        transform.rotation = newSpawnPoint.rotation;
     }
 }
