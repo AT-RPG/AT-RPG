@@ -370,6 +370,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pitboy
       objectReference: {fileID: 0}
+    - target: {fileID: 1047288833536503914, guid: cf1131d128f90d04b83e2bcbecaa659b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5787713509890153670, guid: cf1131d128f90d04b83e2bcbecaa659b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -691,6 +696,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 9068714913140099095}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1918004500 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
+    type: 3}
+  m_PrefabInstance: {fileID: 9068714913140099095}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1888667659575281885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -754,6 +765,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 4030030701416395658, guid: 1ced28b0f11fd91458c188c63f0a3a64,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6952810755073305995, guid: 1ced28b0f11fd91458c188c63f0a3a64,
         type: 3}
       propertyPath: monResPos
@@ -776,6 +792,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spike
+      objectReference: {fileID: 0}
+    - target: {fileID: 852305393678156617, guid: 443b90013d715c6428739756ef438f6a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7322936292352383320, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
@@ -849,6 +870,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Nosdman
+      objectReference: {fileID: 0}
+    - target: {fileID: 1171734178534584790, guid: 9960e583e0c3adc4bb42d5f35fc30ad4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1461945773763027405, guid: 9960e583e0c3adc4bb42d5f35fc30ad4,
         type: 3}
@@ -978,6 +1004,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monkeydong
       objectReference: {fileID: 0}
+    - target: {fileID: 7446491040383114651, guid: c20a0676738ce2a499f8141289ac1d86,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -995,6 +1026,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Treestor
+      objectReference: {fileID: 0}
+    - target: {fileID: 37076309853231208, guid: c0517368f3e93e24abc78504652353cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4331263144890722545, guid: c0517368f3e93e24abc78504652353cf,
         type: 3}
@@ -1051,6 +1087,11 @@ PrefabInstance:
       propertyPath: monResPos
       value: 
       objectReference: {fileID: 780490044}
+    - target: {fileID: 5055472182647133343, guid: c0517368f3e93e24abc78504652353cf,
+        type: 3}
+      propertyPath: StartspawnPos
+      value: 
+      objectReference: {fileID: 1918004500}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1119,6 +1160,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Imp
       objectReference: {fileID: 0}
+    - target: {fileID: 2584212705057138345, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1145,7 +1191,7 @@ PrefabInstance:
     - target: {fileID: 3253274047600182849, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.4
+      value: 8.12
       objectReference: {fileID: 0}
     - target: {fileID: 3253274047600182849, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}

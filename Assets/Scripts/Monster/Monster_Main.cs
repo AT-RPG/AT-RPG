@@ -10,18 +10,22 @@ public class MonsterMain : MonsterBattle, MDamage
 
     public void setManagedPool(IObjectPool<MonsterMain> pool)
     {
-        MonsterPool = pool;
+        MonsterPool = pool; //몬스터 풀설정
     }
     public void destroyMosnter()
     {
-        MonsterPool.Release(this);
+        //초기화 함수 추가
+        InitializeMonster();
+        MonsterPool.Release(this); //몬스터 풀반환
     }
-
-    private void Awake()
+    public void InitializeMonster()
     {
-        monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
-        monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
-        transform.position = StartspawnPos.transform.position;
+        transform.position = StartspawnPos.transform.position; //위치 초기화
+        ChangeState(State.Create); // 몬스터의 상태를 초기화 상태로 변경합니다.
+    }
+    private void Awake() //초기화
+    {
+        transform.position = StartspawnPos.transform.position; //스폰위치 설정
         ChangeState(State.Idle);
     }
 
@@ -78,6 +82,8 @@ public class MonsterMain : MonsterBattle, MDamage
     //몬스터 생성
     void createMonster()
     {
+        monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
+        monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         ChangeState(State.Idle);
     }
 
@@ -262,10 +268,8 @@ public class MonsterMain : MonsterBattle, MDamage
     void deadState()
     {
         StopAllCoroutines();
-        monsterAnim.SetBool("Move", false);
-        monsterAnim.SetBool("Run", false);
         monsterAnim.SetTrigger("Dead");
-        Invoke("destroyMosnter", 10f); //풀 릴리스 호출
+        Invoke("destroyMosnter", 5f); //풀 릴리스 호출
     }
 
 
@@ -282,6 +286,9 @@ public class MonsterMain : MonsterBattle, MDamage
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.F1)) //생성
+        {
+            ChangeState(State.Dead);
+        }
     }
 }
