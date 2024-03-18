@@ -207,6 +207,6 @@ namespace AT_RPG
     /// <summary>
     /// 직렬화 데이터를 포함하는 게임 오브젝트 리스트
     /// </summary>
-    public class SerializedGameObjectsList : List<List<GameObjectData>> { }
+    public class SerializedGameObjectsList : List<List<SerializableData>> { }
     #endregion
 }

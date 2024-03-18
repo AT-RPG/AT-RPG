@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class RootMotion : MonoBehaviour
 {
-    Animator myAnim;
+    // Animator myAnim;
     // Start is called before the first frame update
     void Start()
     {
-        myAnim = GetComponent<Animator>();
+        // myAnim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -18,7 +18,7 @@ public class RootMotion : MonoBehaviour
 
     private void OnAnimatorMove()
     {
-        transform.parent.position += myAnim.deltaPosition;
+        // transform.parent.position += myAnim.deltaPosition;
         // transform.parent.rotation *= myAnim.deltaRotation;
     }
 }
