@@ -12,40 +12,38 @@ public class NPCinter : MonoBehaviour
     public Player playerMove; // 플레이어 참조 변수
     public GameObject npcInter; //상호작용 UI 변수
     public GameObject ChatInter; // NPC 대화 변수
-    // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player"); // 태그가 플레이어인 오브젝트 찾기
         playerMove = player.GetComponent<Player>(); // 플레이어 컴포넌트 참조
     }
-    // Update is called once per frame
+
     void Update()
     {
         // 플레이어와 NPC 사이의 거리 계산
         playerDistance = Vector3.Distance(transform.position, player.transform.position);
 
-        if(playerDistance <= interDistance) // 일정거리가 되면 
+        if (playerDistance <= interDistance) // 일정거리가 되면 
         {
-            npcInter.SetActive(true); // 대화하기 UI 활성화
+            if(!ChatInter.activeSelf) npcInter.SetActive(true); // 대화하기 UI 활성화
+            if (canInter == false && Input.GetKeyDown(interKey))
+            {
+                StopMove();
+                StartInteraction();
+            }
+            // 상호작용 중일 때 상호작용 중지
+            else if(canInter == true && Input.GetKeyDown(interKey) || Input.GetKey(KeyCode.Escape))
+            {
+                EndInteraction();
+                ResumeMove();
+            }
         }
         else
         {
             npcInter.SetActive(false); // 대화하기 Ui비활성화
         }
-
         // 상호작용 가능한 거리 내에 플레이어가 있고, 특정 키를 눌렀을 때 상호작용 시작
-        if (canInter == false && playerDistance <= interDistance && Input.GetKeyDown(interKey))
-        {
-            StopMove();
-            StartInteraction();
-        }
 
-        // 상호작용 중일 때 상호작용 중지
-        else if (canInter == true && Input.GetKeyDown(interKey) || Input.GetKey(KeyCode.Escape))
-        {
-            EndInteraction();
-            ResumeMove();
-        }
         if (canInter == false && playerDistance <= interDistance && Input.GetMouseButtonDown(0))
         {
             // 마우스 클릭 지점에서 Ray를 발사
@@ -68,6 +66,7 @@ public class NPCinter : MonoBehaviour
             }
         }
     }
+
     // 상호작용 시작
     public void StartInteraction()
     {
