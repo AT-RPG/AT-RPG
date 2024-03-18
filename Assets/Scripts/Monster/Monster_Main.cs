@@ -2,11 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UnityEngine.Pool;
 
 public class MonsterMain : MonsterBattle, MDamage
 {
+    private IObjectPool<MonsterMain> MonsterPool;
+
+    public void setManagedPool(IObjectPool<MonsterMain> pool)
+    {
+        MonsterPool = pool;
+    }
+    public void destroyMosnter()
+    {
+        MonsterPool.Release(this);
+    }
+
+    private void Awake()
+    {
+        monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
+        monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
+        transform.position = StartspawnPos.transform.position;
+        ChangeState(State.Idle);
+    }
+
+
+
     [SerializeField] Transform monResPos;
+    [SerializeField] GameObject StartspawnPos;
 
     Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
@@ -242,17 +264,18 @@ public class MonsterMain : MonsterBattle, MDamage
         StopAllCoroutines();
         monsterAnim.SetBool("Move", false);
         monsterAnim.SetBool("Run", false);
-        monsterAnim.SetTrigger("Dead"); 
-        Destroy(gameObject, 200.0f * Time.deltaTime); 
+        monsterAnim.SetTrigger("Dead");
+        Invoke("destroyMosnter", 10f); //풀 릴리스 호출
     }
+
+
+
 
     // Start is called before the first frame update
     void Start()
     {
      
-        monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
-        monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
-        ChangeState(State.Idle);
+       
        
     }
 

@@ -534,7 +534,12 @@ MonoBehaviour:
     monsterHp: 100
     monsterMaxHp: 100
     monsterRpm: 2
-  monResPos: {fileID: 0}
+    monsterIdleTime: 0
+    longAttack: 0
+  monResPos: {fileID: 3253274047600182849, guid: 542a026ee413ac744961a9296ff4311a,
+    type: 3}
+  StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
+    type: 3}
   monsterAI: {fileID: 6058489181737877242}
   monsterState: 0
 --- !u!54 &2369730751244314370
