@@ -3,13 +3,13 @@ CRC: 2211904028
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: faa6ecc3c4cfc233bee9c95c908ea66b
+    Hash: 369d5f113caed2e3a8863dc66bd57d2e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: d6d5ac75b050f8c825bd7150fcbe3ca4
+    Hash: e4b47b82b28421b13e985046295e52ef
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: faa6ecc3c4cfc233bee9c95c908ea66b
+    Hash: 369d5f113caed2e3a8863dc66bd57d2e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -57,11 +57,11 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 173453a7c326c684380354e68c856da7, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 173453a7c326c684380354e68c856da7, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -157,5 +157,4 @@ Assets:
 - Assets/Resources/Global/Prefabs/Button.prefab
 - Assets/Resources/Global/Prefabs/GameMenuPopup.prefab
 - Assets/Resources/Global/Prefabs/PopupCanvas.prefab
-Dependencies:
-- D:/Devs/Github/AT-RPG/Assets/StreamingAssets/mainscene_bjw
+Dependencies: []
