@@ -15,9 +15,11 @@ public struct MonsterStat
     public float monsterDmage;
     public float monsterHp;
     public float monsterMaxHp;
-    //°ø°Ý¼Óµµ
+    //ï¿½ï¿½ï¿½Ý¼Óµï¿½
     public float monsterRpm;
     public float monsterIdleTime;
+
+    public bool longAttack;
 }
 
 public class MonsterBattle : MonsterPorperty

@@ -708,7 +708,7 @@ MonoBehaviour:
   findPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2359828592416578771}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
         m_MethodName: StartTracking
         m_Mode: 0
@@ -723,10 +723,10 @@ MonoBehaviour:
   lostPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: StopTracking
-        m_Mode: 1
+      - m_Target: {fileID: 2359828592416578771}
+        m_TargetAssemblyTypeName: UnityEngine.MonoBehaviour, UnityEngine
+        m_MethodName: StopCoroutine
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -893,7 +893,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7446491040383114651}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -921,6 +921,8 @@ MonoBehaviour:
     monsterHp: 300
     monsterMaxHp: 300
     monsterRpm: 5
+    monsterIdleTime: 0
+    longAttack: 0
   monResPos: {fileID: 0}
   monsterAI: {fileID: 5145294031541860992}
   monsterState: 0
@@ -1280,7 +1282,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAct:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2359828592416578771}
+        m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
+        m_MethodName: TakeDamage
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   deadAct:
     m_PersistentCalls:
       m_Calls: []

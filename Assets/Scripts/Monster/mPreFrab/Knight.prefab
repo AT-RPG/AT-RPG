@@ -199,7 +199,7 @@ MonoBehaviour:
   findPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6952810755073305995}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
         m_MethodName: StartTracking
         m_Mode: 0
@@ -214,7 +214,7 @@ MonoBehaviour:
   lostPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6952810755073305995}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
         m_MethodName: StopTracking
         m_Mode: 1
@@ -484,7 +484,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackAct:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6952810755073305995}
+        m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
+        m_MethodName: TakeDamage
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   deadAct:
     m_PersistentCalls:
       m_Calls: []
@@ -757,6 +769,8 @@ MonoBehaviour:
     monsterHp: 100
     monsterMaxHp: 100
     monsterRpm: 3
+    monsterIdleTime: 0
+    longAttack: 0
   monResPos: {fileID: 0}
   monsterAI: {fileID: 2980993339573348086}
   monsterState: 0

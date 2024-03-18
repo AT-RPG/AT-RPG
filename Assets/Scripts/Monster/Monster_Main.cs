@@ -217,7 +217,7 @@ public class MonsterMain : MonsterBattle, MDamage
     {
         monsterAnim.SetBool("Move", false);
         monsterAnim.SetTrigger("NormalAttack");
-
+       
         if (move != null)
         {
             StopCoroutine(move);
@@ -253,6 +253,7 @@ public class MonsterMain : MonsterBattle, MDamage
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         ChangeState(State.Idle);
+       
     }
 
     // Update is called once per frame

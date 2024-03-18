@@ -11,24 +11,24 @@ public class MonsterMove : MonoBehaviour
     {
         if (moveCoroutine != null)
         {
-            // ÀÌµ¿ ÄÚ·çÆ¾ ÁßÁö
+            // ï¿½Ìµï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½
             StopCoroutine(moveCoroutine);
         }
         if (rotateCoroutine != null)
         {
-            // È¸Àü ÄÚ·çÆ¾ ÁßÁö
+            // È¸ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½
             StopCoroutine(rotateCoroutine);
         }
-        // ÀÌµ¿ ¹× È¸Àü ÄÚ·çÆ¾ ½ÃÀÛ
+        // ï¿½Ìµï¿½ ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½
         moveCoroutine = StartCoroutine(MovingCoroutine(transform, targetPosition, moveSpeed));
     }
 
     private IEnumerator MovingCoroutine(Transform transform, Vector3 targetPosition, float moveSpeed)
     {
-        // ¸ñÇ¥ ¹æÇâ °è»ê
+        // ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         Vector3 direction = (targetPosition - transform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
-        // ¸ñÇ¥ ÁöÁ¡±îÁö ÀÌµ¿ ¹× È¸Àü
+        // ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ È¸ï¿½ï¿½
         while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
