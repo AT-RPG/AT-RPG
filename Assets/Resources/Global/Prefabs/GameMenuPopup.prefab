@@ -1048,8 +1048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   optionPopupPrefab:
     resourceName: OptionPopup
-    editorResource: {fileID: 4696516987986217221, guid: b1eb8d0fd1390bd4685900047752bfe2,
-      type: 3}
+    resourceGUID: b1eb8d0fd1390bd4685900047752bfe2
   titleScene:
     SceneName: TitleScene
     sceneAsset: {fileID: 102900000, guid: 61ed4e478a6346740bba2218e248ebcd, type: 3}

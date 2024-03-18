@@ -796,12 +796,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapSettingPopupPrefab:
     resourceName: MapSettingPopup
-    editorResource: {fileID: 4696516987986217221, guid: 12c6709d56b3e194e88f224d6db7105c,
-      type: 3}
+    resourceGUID: 12c6709d56b3e194e88f224d6db7105c
   mapButtonPrefab:
     resourceName: MapButton
-    editorResource: {fileID: 8965330524674829111, guid: 180c1adda0e607441b40e1438da282b8,
-      type: 3}
+    resourceGUID: 180c1adda0e607441b40e1438da282b8
   mapButtonContents: {fileID: 6197927521789084195}
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}
