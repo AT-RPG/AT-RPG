@@ -11,10 +11,10 @@ namespace AT_RPG.Manager
         // 인게임 키보드 매핑에 키 값을 설정하기 위해 사용됩니다.
         [SerializeField] private static KeyActionMap keyActionsMap = new KeyActionMap()
         {
-            {"Move Forward/Move Backward", new InputMappingContext(KeyCode.W | KeyCode.S, InputOption.GetAxis)},
-            // {"Move Backward", new InputMappingContext(KeyCode.S, InputOption.GetKey)},
-            {"Move Left/Move Right", new InputMappingContext(KeyCode.A | KeyCode.D, InputOption.GetAxis)},
-            // {"Move Right", new InputMappingContext(KeyCode.D, InputOption.GetKey)},
+            {"Move Forward", new InputMappingContext(KeyCode.W, InputOption.GetKey)},
+            {"Move Backward", new InputMappingContext(KeyCode.S, InputOption.GetKey)},
+            {"Move Left", new InputMappingContext(KeyCode.A, InputOption.GetKey)},
+            {"Move Right", new InputMappingContext(KeyCode.D, InputOption.GetKey)},
             {"Crouch", new InputMappingContext(KeyCode.C, InputOption.GetKeyDown)},
             {"Inventory", new InputMappingContext(KeyCode.I, InputOption.GetKeyDown)},
             {"Attack/Fire", new InputMappingContext(KeyCode.Mouse0, InputOption.GetKey)},
@@ -25,8 +25,8 @@ namespace AT_RPG.Manager
             {"Equipment3", new InputMappingContext(KeyCode.Alpha3, InputOption.GetKeyDown)},
             {"Equipment4", new InputMappingContext(KeyCode.Alpha4, InputOption.GetKeyDown)},
             {"Setting/Undo", new InputMappingContext(KeyCode.Escape, InputOption.GetKeyDown)},
-            {"Interaction", new InputMappingContext(KeyCode.F, InputOption.GetKeyDown)},
-            {"Dodge", new InputMappingContext(KeyCode.LeftControl, InputOption.GetKeyDown)}
+             {"Interaction", new InputMappingContext(KeyCode.F, InputOption.GetKey)},
+
         };
 
 
@@ -137,9 +137,6 @@ namespace AT_RPG.Manager
 
             // 키 매핑에 등록된 키가 눌렸는지?
             bool isActionsTriggered = false;
-            bool isMovingActionsTriggered = false;
-            float horizontalInputValue = 0f;
-            float verticalInputValue = 0f;
             if ((keyInputOption == InputOption.GetKeyDown)  && Input.GetKeyDown(keyboardCode))
             {
                 isActionsTriggered = true;
@@ -154,24 +151,11 @@ namespace AT_RPG.Manager
             {
                 isActionsTriggered = true;
             }
-            else
-            if ((keyInputOption & InputOption.GetAxis) != 0)
-            {
-                horizontalInputValue = Input.GetAxis("Horizontal");
-                verticalInputValue = Input.GetAxis("Vertical");
-                isMovingActionsTriggered = true;
-            }
-            
+
             // 키보드 키에 바인딩된 액션 실행
             if (isActionsTriggered)
             {
                 inputMappingContext.KeyAction?.Invoke(true);
-            }
-            else
-            if (isMovingActionsTriggered)
-            {
-                inputMappingContext.KeyAction?.Invoke(new Vector2(
-                    horizontalInputValue, verticalInputValue));
             }
         }
 

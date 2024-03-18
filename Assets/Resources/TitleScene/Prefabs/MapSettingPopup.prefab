@@ -603,9 +603,9 @@ RectTransform:
   - {fileID: 8778166118561571935}
   m_Father: {fileID: 3034308594241384020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 300, y: -137.5}
   m_SizeDelta: {x: 350, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9129518423317447576
@@ -1092,9 +1092,9 @@ RectTransform:
   - {fileID: 5360071340803086523}
   m_Father: {fileID: 3034308594241384020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 300, y: -292.5}
   m_SizeDelta: {x: 350, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &329448959707029255
@@ -1181,7 +1181,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3379442443698024612}
         m_TargetAssemblyTypeName: AT_RPG.MapSettingPopup, Assembly-CSharp
-        m_MethodName: OnInstantiateStartGamePopup
+        m_MethodName: OnCancelCreateMap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1583,7 +1583,7 @@ GameObject:
   - component: {fileID: 7925923913629786652}
   - component: {fileID: 896424249583338610}
   m_Layer: 6
-  m_Name: MapName
+  m_Name: SettingContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1605,9 +1605,9 @@ RectTransform:
   - {fileID: 1926572149808694398}
   m_Father: {fileID: 8152090962410031094}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 650, y: -50}
   m_SizeDelta: {x: 1200, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7925923913629786652
@@ -1755,10 +1755,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startGamePopupPrefab:
     resourceName: StartGamePopup
-    resourceGUID: 2f6cc14bf8b3e634299f92cff87f5a57
-  logPopupPrefab:
-    resourceName: LogPopup
-    resourceGUID: 7fec57ba84b8d2844ab1a26125fbeba9
+    editorResource: {fileID: 4696516987986217221, guid: 2f6cc14bf8b3e634299f92cff87f5a57,
+      type: 3}
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}
   blurAnimation: {fileID: 6763834106052360070}

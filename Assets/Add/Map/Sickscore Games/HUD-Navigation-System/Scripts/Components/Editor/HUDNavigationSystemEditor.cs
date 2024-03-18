@@ -142,7 +142,7 @@ public class HUDNavigationSystemEditor : HUDNavigationBaseEditor
 			// CONTENT BEGIN
 			EditorGUILayout.PropertyField(_pRotationReference, new GUIContent("Rotation Reference", "The transform you want to use as rotation reference."));
 			EditorGUILayout.PropertyField(_pUpdateMode, new GUIContent("Update Mode", "Change, if indicators are not positioned correctly on fast character/camera movements."));
-			EditorGUILayout.PropertyField(_pKeepAliveOnLoad, new GUIContent("Don't DestroyPopup On LoadSceneCoroutine", "If enabled, the system will automatically persist between scene changes. DontDestroyOnLoad()."));
+			EditorGUILayout.PropertyField(_pKeepAliveOnLoad, new GUIContent("Don't Destroy On LoadSceneCoroutine", "If enabled, the system will automatically persist between scene changes. DontDestroyOnLoad()."));
 			// CONTENT ENDOF
 		}
 		EditorGUILayout.EndVertical();

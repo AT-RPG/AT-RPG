@@ -60,9 +60,6 @@ namespace AT_RPG.Manager
         {
             GameManager gameManager = GetInstance();
 
-            inputManager = InputManager.GetInstance();
-            inputManager.transform.SetParent(gameManager.transform);
-
             resourceManager = ResourceManager.GetInstance();
             resourceManager.transform.SetParent(gameManager.transform);
 
@@ -74,6 +71,9 @@ namespace AT_RPG.Manager
 
             dataManager = DataManager.GetInstance();
             dataManager.transform.SetParent(gameManager.transform);
+
+            inputManager = InputManager.GetInstance();
+            inputManager.transform.SetParent(gameManager.transform);
         }
     }
 

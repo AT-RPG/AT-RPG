@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6576697748793204607}
   - component: {fileID: 5616737532801860262}
   m_Layer: 6
-  m_Name: LastModifiedTime
+  m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 8686970468213681096}
   - component: {fileID: 1317573262428770523}
   m_Layer: 6
-  m_Name: MapName
+  m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5882353}
+  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 0.5882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -393,19 +393,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5536957704223087050}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7916699252413964083}
-        m_TargetAssemblyTypeName: AT_RPG.MapButton, Assembly-CSharp
-        m_MethodName: OnPick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!225 &3931010363627253345
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -430,11 +418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc9fd2b7564e346428183cad26d968ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapName: {fileID: 1317573262428770523}
-  lastModifiedTime: {fileID: 5616737532801860262}
-  mapSettingData:
-    mapName: 
-    lastModifiedTime: 
   fadeAnimation: {fileID: 1398023289772320872}
   popupAnimation: {fileID: 172495221748571733}
   mainScene:
