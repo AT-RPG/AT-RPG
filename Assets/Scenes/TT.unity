@@ -257,6 +257,11 @@ PrefabInstance:
       propertyPath: m_PreviewTimeScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3611294423230776714, guid: 7cc14e8e1b125e34e99bab7662529045,
+        type: 3}
+      propertyPath: baseBattleStat.maxHP
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 4806216708481372007, guid: 7cc14e8e1b125e34e99bab7662529045,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -320,7 +325,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3399419446119975402, guid: 7cc14e8e1b125e34e99bab7662529045,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 762530341}
   m_SourcePrefab: {fileID: 100100000, guid: 7cc14e8e1b125e34e99bab7662529045, type: 3}
 --- !u!1 &330585543
 GameObject:
@@ -594,6 +603,45 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &762530337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3399419446119975402, guid: 7cc14e8e1b125e34e99bab7662529045,
+    type: 3}
+  m_PrefabInstance: {fileID: 262776097}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &762530341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762530337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf9406b459b4784d939b471e3223a5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackAct:
+    m_PersistentCalls:
+      m_Calls: []
+  deadAct:
+    m_PersistentCalls:
+      m_Calls: []
+  comboCheckAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2123484245}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: ComboCheck
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &781163525 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5527567221988388135, guid: 0c49aefc561f531439742f08a2b7c89d,
@@ -1205,6 +1253,18 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!114 &2123484245 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3611294423230776714, guid: 7cc14e8e1b125e34e99bab7662529045,
+    type: 3}
+  m_PrefabInstance: {fileID: 262776097}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ed00621f8743df468a35c950d405f9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
