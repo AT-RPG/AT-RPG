@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -68,7 +67,7 @@ namespace AT_RPG
                 var filteredAssets = importedAssets.Where(assetPath =>
                 {
                     return  String.GetFileType(assetPath) != "" &&
-                           (String.ContainsString(assetPath, "Resources") ||
+                           (String.ContainsFolder(assetPath, "Resources") ||
                             String.ContainsString(assetPath, setting.AssetBundlesSavePath));
                 }).ToList();
                 if (filteredAssets.Count >= 1)
@@ -82,7 +81,7 @@ namespace AT_RPG
                 var filteredAssets = deletedAssets.Where(assetPath =>
                 {
                     return  String.GetFileType(assetPath) != "" &&
-                           (String.ContainsString(assetPath, "Resources") ||
+                           (String.ContainsFolder(assetPath, "Resources") ||
                             String.ContainsString(assetPath, setting.AssetBundlesSavePath));
                 }).ToList();
                 if (filteredAssets.Count >= 1)
@@ -96,7 +95,7 @@ namespace AT_RPG
                 var filteredAssets = movedAssets.Where(assetPath =>
                 {
                     return  String.GetFileType(assetPath) != "" &&
-                           (String.ContainsString(assetPath, "Resources") ||
+                           (String.ContainsFolder(assetPath, "Resources") ||
                             String.ContainsString(assetPath, setting.AssetBundlesSavePath));
                 }).ToList();
                 if (filteredAssets.Count >= 1)
@@ -182,7 +181,7 @@ namespace AT_RPG
                 return (String.GetFileName(duplicatedNameAssetPath) == String.GetFileName(assetPath)) &&
                        (String.GetFileType(duplicatedNameAssetPath) == assetType &&
                         String.GetFileType(duplicatedNameAssetPath) != "") &&
-                       (String.ContainsString(duplicatedNameAssetPath, "Resources") ||
+                       (String.ContainsFolder(duplicatedNameAssetPath, "Resources") ||
                         String.ContainsString(duplicatedNameAssetPath, setting.AssetBundlesSavePath));
             }).ToList();
         }

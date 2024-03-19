@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace AT_RPG
@@ -26,6 +27,23 @@ namespace AT_RPG
         public static bool ContainsString(string source, string toFind)
         {
             return source.Contains(toFind);
+        }
+
+        public static bool ContainsFolder(string path, string folderName)
+        {
+            // 시스템에 맞는 디렉토리 구분자로 경로를 분리합니다.
+            string[] pathParts = path.Split(Path.DirectorySeparatorChar);
+
+            // 분리된 경로의 각 부분을 순회하며 폴더 이름을 확인합니다.
+            foreach (string part in pathParts)
+            {
+                if (part.Equals(folderName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
