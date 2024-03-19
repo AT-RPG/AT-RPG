@@ -30,8 +30,8 @@ namespace AT_RPG.Manager
         {
             GameObject launcherInstance = Instantiate(setting.multiplayLauncherPrefab.Resource);
             MultiplayLauncher launcher = launcherInstance.GetComponent<MultiplayLauncher>();
-            launcher.OnConnectedCallback += connected;
             launcher.OnConnectedCallback += CreateAuthentication;
+            launcher.OnConnectedCallback += connected;
             launcher.OnDisconnectedCallback += disconnected;
         }
 
@@ -44,6 +44,8 @@ namespace AT_RPG.Manager
     public partial class MultiplayManager
     {
         public static MultiplayManagerSetting Setting => setting;
+
+        public static MultiplayAuthentication Authentication => authentication;
 
         public static bool IsConnected => isConnected;
     }

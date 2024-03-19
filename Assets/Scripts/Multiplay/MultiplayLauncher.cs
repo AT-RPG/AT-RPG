@@ -1,7 +1,5 @@
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine;
-using System;
 
 namespace AT_RPG
 {
@@ -23,8 +21,6 @@ namespace AT_RPG
         {
             base.OnConnectedToMaster();
 
-            Debug.Log("server connected");
-
             OnConnectedCallback?.Invoke();
 
             Destroy(gameObject);
@@ -33,8 +29,6 @@ namespace AT_RPG
         public override void OnDisconnected(DisconnectCause cause)
         {
             base.OnDisconnected(cause);
-
-            Debug.Log("server disconnected");
 
             OnDisconnectedCallback?.Invoke();
 

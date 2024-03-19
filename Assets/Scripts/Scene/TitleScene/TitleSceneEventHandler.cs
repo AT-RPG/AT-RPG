@@ -1,6 +1,4 @@
 using AT_RPG.Manager;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -27,7 +25,7 @@ namespace AT_RPG
 
         private void SetOnline()
         {
-            connectedInfo.text = "Online";
+            connectedInfo.text = $"Online, nickname : {MultiplayManager.Authentication.NickName}, guid : {MultiplayManager.Authentication.GUID}";
         }
 
         private void SetOffline()

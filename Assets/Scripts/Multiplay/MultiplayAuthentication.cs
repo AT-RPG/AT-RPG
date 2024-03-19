@@ -1,6 +1,4 @@
-using Photon.Pun;
 using UnityEngine;
-using Photon.Realtime;
 using System;
 using System.IO;
 using AT_RPG.Manager;
