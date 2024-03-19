@@ -9,8 +9,6 @@ AnimatorOverrideController:
   m_Name: Pitboy
   m_Controller: {fileID: 9100000, guid: 18ed30ec93f2b054a8192f89895f1af5, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 7cedb2dd3125e3c43afb4452890d69da, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: b0f8341d4f65450419c59b571853e606, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 91029adf1542e274395976102b8a13e2, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 9c1fd4f215a86a14ab9afb95bd203c32, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 91673639578a13d4ea13060fabedf459, type: 2}
@@ -21,3 +19,5 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: bb2013f53bd99df469f294af0b13903f, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 5c71d29da75f6bf44bfc3312ef65e7c8, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 52d1962de0c502547a5c7b13af28e1a1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 65a1c818ea452274fa07733786e5fe55, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b0f8341d4f65450419c59b571853e606, type: 2}

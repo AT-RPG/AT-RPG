@@ -246,12 +246,15 @@ public class MonsterMain : MonsterBattle, MDamage
 
     void AttackPlayer()
     {
-        monsterAnim.SetBool("Move", false);
-        monsterAnim.SetTrigger("NormalAttack");
-       
         if (move != null)
         {
             StopCoroutine(move);
+        }
+        monsterAnim.SetBool("Move", false);
+        monsterAnim.SetTrigger("NormalAttack");
+        if (mStat.longAttack == true)
+        {
+            //원거리 공격실행
         }
     }
 
