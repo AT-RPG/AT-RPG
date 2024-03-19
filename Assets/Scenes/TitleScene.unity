@@ -570,8 +570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab:
     resourceName: QuitGamePopup
-    editorResource: {fileID: 4696516987986217221, guid: 45221a7409eff0f4e8071404ec4886ec,
-      type: 3}
+    resourceGUID: 
   popupRenderMode: 0
 --- !u!1 &419198664
 GameObject:
@@ -721,8 +720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab:
     resourceName: MultiplayerGamePopup
-    editorResource: {fileID: 4696516987986217221, guid: 390bfcd211fc6304c870476032ea4f32,
-      type: 3}
+    resourceGUID: 
   popupRenderMode: 1
 --- !u!1 &444991640
 GameObject:
@@ -908,8 +906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab:
     resourceName: StartGamePopup
-    editorResource: {fileID: 4696516987986217221, guid: 2f6cc14bf8b3e634299f92cff87f5a57,
-      type: 3}
+    resourceGUID: 
   popupRenderMode: 1
 --- !u!1 &459209392
 GameObject:
@@ -1305,8 +1302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab:
     resourceName: OptionPopup
-    editorResource: {fileID: 4696516987986217221, guid: b1eb8d0fd1390bd4685900047752bfe2,
-      type: 3}
+    resourceGUID: 
   popupRenderMode: 0
 --- !u!1 &1065629202
 GameObject:
