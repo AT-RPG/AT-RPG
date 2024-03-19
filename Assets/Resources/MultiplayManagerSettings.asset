@@ -10,5 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e7aa4da0f4dceb45a1de019c48a59d1, type: 3}
-  m_Name: MultiplayManagerSetting
+  m_Name: MultiplayManagerSettings
   m_EditorClassIdentifier: 
+  multiplayLauncherPrefab:
+    resourceName: Multiplay Launcher
+    resourceGUID: 17089e5d5e9b49646a76e0adc10b075b

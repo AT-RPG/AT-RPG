@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2211904028
+CRC: 840359120
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 369d5f113caed2e3a8863dc66bd57d2e
+    Hash: 397b1689b39bd4142e244ebd3fb3c93e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e4b47b82b28421b13e985046295e52ef
+    Hash: 9905ce1b28b9f7496498010f1f6c555e
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 369d5f113caed2e3a8863dc66bd57d2e
+    Hash: 397b1689b39bd4142e244ebd3fb3c93e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -35,8 +35,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: b37c3f44d0f21a841a6e5efb0e53c995, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 56c68c9f207168545bbc90b6ed1bd900, type: 3}
@@ -45,15 +43,9 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 2c1cdb5d1c6edd14db141b3413902e29, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
@@ -62,6 +54,16 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6bb54c1cde70f404c9eb9c1181cb4016, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -154,6 +156,7 @@ SerializeReferenceClassIdentifiers:
 Assets:
 - Assets/AssetBundleResources/Global/DummyGlobalSceneResource.prefab
 - Assets/Resources/Global/Prefabs/CanvasScalerSettingReference.prefab
+- Assets/Resources/Global/Prefabs/Multiplay Launcher.prefab
 - Assets/Resources/Global/Prefabs/Button.prefab
 - Assets/Resources/Global/Prefabs/GameMenuPopup.prefab
 - Assets/Resources/Global/Prefabs/PopupCanvas.prefab

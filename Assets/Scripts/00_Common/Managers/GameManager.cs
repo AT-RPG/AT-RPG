@@ -16,11 +16,12 @@ namespace AT_RPG.Manager
         private static event Action afterFirstSceneLoadAction;
 
         // 매니저
-        private static ResourceManager resourceManager  = null;
-        private static SceneManager sceneManager        = null;
-        private static UIManager uiManager              = null;
-        private static DataManager dataManager          = null;
-        private static InputManager inputManager        = null;
+        private static ResourceManager resourceManager      = null;
+        private static SceneManager sceneManager            = null;
+        private static UIManager uiManager                  = null;
+        private static DataManager dataManager              = null;
+        private static InputManager inputManager            = null;
+        private static MultiplayManager multiplayManager    = null;
 
 
 
@@ -59,6 +60,9 @@ namespace AT_RPG.Manager
         private static void Init()
         {
             GameManager gameManager = GetInstance();
+
+            multiplayManager = MultiplayManager.GetInstance();
+            multiplayManager.transform.SetParent(gameManager.transform);
 
             inputManager = InputManager.GetInstance();
             inputManager.transform.SetParent(gameManager.transform);

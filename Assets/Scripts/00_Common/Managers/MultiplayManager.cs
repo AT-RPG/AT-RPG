@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AT_RPG.Manager
@@ -11,16 +9,36 @@ namespace AT_RPG.Manager
     {
         private static MultiplayManagerSetting setting;
 
+        // 포톤 클라우드 애플리케이션 서버에 연결되었는지?
+        private static bool isConnected = false;
+
+
+
         protected override void Awake()
         {
             base.Awake();
 
             setting = Resources.Load<MultiplayManagerSetting>("MultiplayManagerSettings");
         }
+
+
+
+        /// <summary>
+        /// 포톤 PUN2 서버에 연결을 시도합니다.
+        /// </summary>
+        public static void ConnectToServer(OnConnectedCallback connected, OnDisconnectedCallback disconnected)
+        {
+            GameObject launcherInstance = Instantiate(setting.multiplayLauncherPrefab.Resource);
+            MultiplayLauncher launcher = launcherInstance.GetComponent<MultiplayLauncher>();
+            launcher.OnConnectedCallback += connected;
+            launcher.OnDisconnectedCallback += disconnected;
+        }
     }
 
     public partial class MultiplayManager
     {
         public static MultiplayManagerSetting Setting => setting;
+
+        public static bool IsConnected => isConnected;
     }
 }

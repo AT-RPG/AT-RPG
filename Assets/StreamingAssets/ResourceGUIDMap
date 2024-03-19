@@ -7,6 +7,7 @@
     "Button": "e232bb4f-e154-4911-a9c6-52b6b19769e9",
     "CanvasScalerSettingReference": "0dd7a830-b7d3-4348-871e-af36532921c4",
     "GameMenuPopup": "2ac1bb3a-15ac-45f7-b8d4-cb42f7a5e037",
+    "Multiplay Launcher": "98d64dc8-4586-49b8-908f-bd3a6159fc54",
     "PopupCanvas": "f6631eee-f51f-4f2f-aed1-501c15983fd0",
     "DummyMainSceneBJWResources": "8bf2e93b-f969-48eb-bec8-769fa77578e1",
     "My Robot Kyle -done-": "5355f396-5cf5-41c0-89d3-9d0a20d1c926",
@@ -165,6 +166,9 @@
   "TextAsset": {
     "LineBreaking Following Characters": "0f9f8a03-0cb3-4761-a349-f60f5231ec5f",
     "LineBreaking Leading Characters": "e890a627-6340-4d6a-8d2b-b7d247deac2b"
+  },
+  "MultiplayManagerSetting": {
+    "MultiplayManagerSetting": "2fd7f7ce-0bca-4f46-8a8d-5e9f271814d3"
   },
   "ServerSettings": {
     "PhotonServerSettings": "1a801509-912e-4701-bca0-c557f6313e38"

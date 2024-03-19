@@ -418,13 +418,13 @@ namespace Photon.Chat.Demo
 
         public void OnDisconnected()
         {
-            Debug.Log("OnDisconnected()");
+            Debug.Log("OnDisconnectedCallback()");
             this.ConnectingLabel.SetActive(false);
         }
 
         public void OnChatStateChange(ChatState state)
         {
-            // use OnConnected() and OnDisconnected()
+            // use OnConnectedCallback() and OnDisconnectedCallback()
             // this method might become more useful in the future, when more complex states are being used.
 
             this.StateText.text = state.ToString();

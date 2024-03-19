@@ -62,13 +62,13 @@ namespace Photon.Realtime.Demo
 
         public void OnConnectedToMaster()
         {
-            Debug.Log("OnConnectedToMaster");
+            Debug.Log("ConnectedToMaster");
             this.lbc.OpJoinRandomRoom();    // joins any open room (no filter)
         }
 
         public void OnDisconnected(DisconnectCause cause)
         {
-            Debug.Log("OnDisconnected(" + cause + ")");
+            Debug.Log("OnDisconnectedCallback(" + cause + ")");
         }
 
         public void OnCustomAuthenticationResponse(Dictionary<string, object> data)
