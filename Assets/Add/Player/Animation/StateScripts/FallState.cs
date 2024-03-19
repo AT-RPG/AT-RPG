@@ -50,5 +50,7 @@ public class FallState : StateMachineBehaviour
         }
         animator.SetBool("isRolling", false);
         animator.SetBool("isJumping", false);
+        animator.SetBool("isAttacking", false);
+        animator.SetBool("isComboAttack", false);
     }
 }
