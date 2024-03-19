@@ -25,14 +25,14 @@ namespace AT_RPG
             MultiplayManager.ConnectToServer(SetOnline, SetOffline);
         }
 
-        private void SetOffline()
-        {
-            connectedInfo.text = "Offline";
-        }
-
         private void SetOnline()
         {
             connectedInfo.text = "Online";
+        }
+
+        private void SetOffline()
+        {
+            connectedInfo.text = "Offline";
         }
     }
 

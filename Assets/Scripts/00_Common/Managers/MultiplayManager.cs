@@ -9,6 +9,8 @@ namespace AT_RPG.Manager
     {
         private static MultiplayManagerSetting setting;
 
+        private static MultiplayAuthentication authentication;
+
         // 포톤 클라우드 애플리케이션 서버에 연결되었는지?
         private static bool isConnected = false;
 
@@ -20,8 +22,6 @@ namespace AT_RPG.Manager
 
             setting = Resources.Load<MultiplayManagerSetting>("MultiplayManagerSettings");
         }
-
-
 
         /// <summary>
         /// 포톤 PUN2 서버에 연결을 시도합니다.
