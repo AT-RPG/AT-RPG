@@ -1,8 +1,6 @@
-using UnityEngine;
 using System;
 using System.IO;
 using AT_RPG.Manager;
-using Newtonsoft.Json;
 using Unity.Serialization.Json;
 
 namespace AT_RPG
