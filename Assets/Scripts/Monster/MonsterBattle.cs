@@ -15,7 +15,7 @@ public struct MonsterStat
     public float monsterDmage;
     public float monsterHp;
     public float monsterMaxHp;
-    //���ݼӵ�
+    
     public float monsterRpm;
     public float monsterIdleTime;
 
