@@ -31,7 +31,13 @@ namespace AT_RPG.Manager
             GameObject launcherInstance = Instantiate(setting.multiplayLauncherPrefab.Resource);
             MultiplayLauncher launcher = launcherInstance.GetComponent<MultiplayLauncher>();
             launcher.OnConnectedCallback += connected;
+            launcher.OnConnectedCallback += CreateAuthentication;
             launcher.OnDisconnectedCallback += disconnected;
+        }
+
+        public static void CreateAuthentication()
+        {
+            authentication = MultiplayAuthentication.IsExist() ? MultiplayAuthentication.Load() : MultiplayAuthentication.CreateNew();
         }
     }
 
