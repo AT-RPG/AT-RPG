@@ -25,7 +25,7 @@ namespace AT_RPG
 
         private void SetOnline()
         {
-            connectedInfo.text = $"Online, nickname : {MultiplayManager.Authentication.NickName}, guid : {MultiplayManager.Authentication.GUID}";
+            connectedInfo.text = $"Online, nickname : {MultiplayManager.Authentication.NickName}, GUID : {MultiplayManager.Authentication.GUID}";
         }
 
         private void SetOffline()

@@ -3,14 +3,15 @@ using System;
 using System.IO;
 using AT_RPG.Manager;
 using Newtonsoft.Json;
+using Unity.Serialization.Json;
 
 namespace AT_RPG
 {
     [Serializable]
-    public partial class MultiplayAuthentication 
+    public class MultiplayAuthentication 
     {
-        [SerializeField] private string               guid;
-        [SerializeField] private string               nickName = "Guest";
+        public string               GUID;
+        public string               NickName = "Guest";
 
         /// <summary>
         /// 클라이언트 인증 식별자를 새로 초기화 합니다. 
@@ -18,8 +19,8 @@ namespace AT_RPG
         public static MultiplayAuthentication CreateNew(string nickName = "Guest")
         {
             MultiplayAuthentication authentication = new MultiplayAuthentication();
-            authentication.guid = Guid.NewGuid().ToString();
-            authentication.nickName = nickName;
+            authentication.GUID = System.Guid.NewGuid().ToString();
+            authentication.NickName = nickName;
 
             authentication.Save();
 
@@ -46,7 +47,7 @@ namespace AT_RPG
             using (FileStream stream = new FileStream(filePath, FileMode.Create))
             using (StreamWriter writer = new StreamWriter(stream))
             {
-                string dataToJson = JsonConvert.SerializeObject(this, Formatting.Indented);
+                string dataToJson = JsonSerialization.ToJson(this);
                 writer.WriteLine(dataToJson);
             }
         }
@@ -57,31 +58,15 @@ namespace AT_RPG
         /// </summary>
         public static MultiplayAuthentication Load()
         {
-            MultiplayAuthentication authentication;
-
+            string dataFromJson;
             string filePath = Path.Combine(MultiplayManager.Setting.AuthenticationDataPath, "Authentication");
             using (FileStream stream = new FileStream(filePath, FileMode.Open))
             using (StreamReader reader = new StreamReader(stream))
             {
-                string dataFromJson = reader.ReadToEnd();
-                authentication =  JsonConvert.DeserializeObject<MultiplayAuthentication>(dataFromJson);
+                dataFromJson = reader.ReadToEnd();
             }
 
-            authentication.Save();
-
-            return authentication;
+            return JsonSerialization.FromJson<MultiplayAuthentication>(dataFromJson);
         }
     }
-
-    public partial class MultiplayAuthentication
-    {
-        public string GUID => guid;
-
-        public string NickName
-        {
-            get => nickName;
-            set => nickName = value;
-        }
-    }
-
 }
