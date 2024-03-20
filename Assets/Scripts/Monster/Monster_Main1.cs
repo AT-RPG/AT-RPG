@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Pool;
 using UnityEngine.AI;
-
+/*
 public class MonsterMain : MonsterBattle, MDamage
 {
     private IObjectPool<MonsterMain> MonsterPool;
@@ -45,10 +45,10 @@ public class MonsterMain : MonsterBattle, MDamage
 
     public MonsterAI monsterAI; 
     private bool isTracking = false;
-    Transform monsterTarget;
+    Transform monsterTarget; 
 
 
-    NavMeshAgent monNav;
+
 
     //몬스터 상태
     public enum State 
@@ -76,7 +76,7 @@ public class MonsterMain : MonsterBattle, MDamage
                 idleState();
                 break;
             case State.Move:
-                SetRndDir();
+                moveState();
                 break;
             case State.Battle:
                 StartCoroutine(battleState());
@@ -93,7 +93,6 @@ public class MonsterMain : MonsterBattle, MDamage
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         transform.position = transform.parent.position; //스폰위치 설정
-        monNav = GetComponent<NavMeshAgent>(); //네브메쉬 할당
         ChangeState(State.Idle);
     }
 
@@ -113,46 +112,39 @@ public class MonsterMain : MonsterBattle, MDamage
     }
 
 
-    //랜덤한 방향설정
-    void SetRndDir()
+   //몬스터 이동상태
+    void moveState()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * Random.Range(10.0f, 30.0f);
-        randomDirection += monResPos.position; 
-        NavMeshHit hit = new NavMeshHit();   // NavMesh 상에서 가장 가까운 유효한 위치로 설정
-
-        if (NavMesh.SamplePosition(randomDirection, out hit, 30.0f, NavMesh.AllAreas))
-        {
-            MoveToPos(hit.position);  // 유효한 위치가 발견되면 해당 위치를 목표 위치로 설정
-        }
-        else
-        {
-            Debug.LogWarning("유효한 목표 위치를 찾을 수 없습니다.");  // 유효한 위치를 찾지 못한 경우에는 경고 출력
-        }
+        Vector3 dir = Vector3.forward;
+        SetRndDir(dir);
     }
-    void MoveToPos(Vector3 target)
+
+    //랜덤한 방향설정
+    void SetRndDir(Vector3 dir)
     {
-        if (move != null)
+        Vector3 GetRndPos()
+        {
+            dir = Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0) * dir;
+            dir *= Random.Range(10.0f, 30.0f);
+            return monResPos.position + dir;
+        }
+        MoveToPos(GetRndPos());
+    }
+
+    //목표위치로 이동
+    void MoveToPos(Vector3 target) 
+    {
+        if (move != null) 
         {
             StopCoroutine(move);
         }
         move = StartCoroutine(MovingCoroutine(target));
     }
-    IEnumerator MovingCoroutine(Vector3 target)
-    {
-        monNav.SetDestination(target);
-        while (monNav.remainingDistance > monNav.stoppingDistance)
-        {
-            IsRunning(monNav.remainingDistance);
-            yield return null;
-        }
-        // 이동이 완료되면 상태를 변경합니다.
-        ChangeState(State.Idle);
-    }
 
-    void IsRunning(float remainingDistance)//달리기
+    void IsRunning(float dist)//달리기
     {
         float runOk = 40.0f;
-        if (remainingDistance >= runOk)
+        if (dist >= runOk)
         {
             mStat.monsterMoveSpeed = 6.0f;
             monsterAnim.SetBool("Move", false);
@@ -165,6 +157,59 @@ public class MonsterMain : MonsterBattle, MDamage
             monsterAnim.SetBool("Move", true);
         }
 
+    }
+
+    //몬스터 이동코룬틴
+    IEnumerator MovingCoroutine(Vector3 target)
+    {
+        Vector3 dir = target - transform.position;
+        float dist = dir.magnitude;
+        dir.Normalize();
+
+        if (rotate != null) StopCoroutine(rotate);
+        rotate = StartCoroutine(RotatingCoroutine(dir));
+
+        while (dist > 0.1f)
+        {
+            float delta = mStat.monsterMoveSpeed * Time.deltaTime;
+            if (delta > dist) delta = dist;
+            dist -= delta;
+            IsRunning(dist);
+            transform.Translate(dir * delta, Space.World);
+            yield return null;
+        }
+        if (isTracking == false)
+        {
+            ChangeState(State.Idle);
+        }
+        else
+        {
+            ChangeState(State.Battle);
+        }
+    }
+
+    //몬스터 회전코룬틴
+    IEnumerator RotatingCoroutine(Vector3 dir)
+    {
+        float angle = Vector3.Angle(transform.forward, dir);
+        float rotDir = 1.0f;
+        //회전 방향 결정
+        if (Vector3.Dot(transform.right, dir) < 0.0f)
+        {
+            rotDir = -1.0f;
+        }
+        //회전 시작
+        while (!Mathf.Approximately(angle, 0.0f))
+        {
+            float delta = 360.0f * Time.deltaTime;
+            if (delta > angle)
+            {
+                delta = angle;
+            }
+            angle -= delta;
+            transform.Rotate(Vector3.up * rotDir * delta);
+            yield return null;
+        }
     }
 
 
@@ -256,6 +301,6 @@ public class MonsterMain : MonsterBattle, MDamage
         {
             ChangeState(State.Dead);
         }
-       
     }
 }
+*/
