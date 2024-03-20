@@ -1925,7 +1925,7 @@ MonoBehaviour:
     resourceName: StartGamePopup
     resourceGUID: 2f6cc14bf8b3e634299f92cff87f5a57
   mapName: {fileID: 1283224406103290350}
-  isMultiplayEnabled: {fileID: 0}
+  isMultiplayEnabled: {fileID: 7577103347939362531}
   createButtonInstance: {fileID: 1468565602837076052}
   changeButtonInstance: {fileID: 7403264185032434019}
   cancelButtonInstance: {fileID: 3013612402578491994}

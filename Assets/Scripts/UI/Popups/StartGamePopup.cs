@@ -124,7 +124,7 @@ namespace AT_RPG
         {
             if (!currPickedMapButton)
             {
-                Debug.LogError($"{currPickedMapButton}이 아직 선택되지 않았습니다.");
+                Debug.LogError($"맵이 아직 선택되지 않았습니다.");
                 return;
             }
 
@@ -133,7 +133,6 @@ namespace AT_RPG
 
         /// <summary>
         /// 맵을 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
-        /// TODO : 리소스 로딩 바로 직후 세이브 파일 로딩하면 에러가 생김...
         /// </summary>
         private void InternalOnPlayMap()
         {
@@ -155,11 +154,20 @@ namespace AT_RPG
                 },
                 () =>
                 {
+                    // 로드한 맵 설정에서 멀티플레이가 활성화 되어있다면 세션을 만듭니다.
                     DataManager.LoadMapSettingDataCoroutine(
                         DataManager.Setting.defaultSaveFolderPath, currPickedMapButton.MapName,
                         () => !DataManager.IsLoading && !ResourceManager.IsLoading,
-                        loadedMapSettingData => DataManager.MapSettingData = loadedMapSettingData);
+                        loadedMapSettingData =>
+                        {
+                            DataManager.MapSettingData = loadedMapSettingData;
 
+                            if (!loadedMapSettingData.isMultiplayEnabled) { return; }
+
+                            MultiplayManager.ConnectToServerAsync(loadedMapSettingData);
+                        });
+
+                    // 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.
                     DataManager.LoadAllGameObjectsCoroutine(
                         DataManager.Setting.defaultSaveFolderPath, currPickedMapButton.MapName,
                         () => !DataManager.IsLoading && !ResourceManager.IsLoading,
@@ -167,6 +175,7 @@ namespace AT_RPG
                 });
             });
         }
+
 
 
         /// <summary>

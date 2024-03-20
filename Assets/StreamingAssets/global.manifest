@@ -1,163 +1,22 @@
 ManifestFileVersion: 0
-CRC: 2104038866
+CRC: 802382285
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: dee777659d69e83e056845f865c3cf40
+    Hash: a5b66a2793bf95226a908992f0103be0
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a01d01e9629a0f222ae69af1e62f4b0d
+    Hash: 767148d2cba1a92a15442f2b767884c0
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: dee777659d69e83e056845f865c3cf40
+    Hash: a5b66a2793bf95226a908992f0103be0
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
   Script: {instanceID: 0}
-- Class: 21
-  Script: {instanceID: 0}
-- Class: 28
-  Script: {instanceID: 0}
-- Class: 48
-  Script: {instanceID: 0}
-- Class: 114
-  Script: {fileID: 11500000, guid: 6bb54c1cde70f404c9eb9c1181cb4016, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: b37c3f44d0f21a841a6e5efb0e53c995, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 56c68c9f207168545bbc90b6ed1bd900, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 3da6bde11c0b6074a8ad660ade2fa5c7, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 2c1cdb5d1c6edd14db141b3413902e29, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 173453a7c326c684380354e68c856da7, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-- Class: 115
-  Script: {instanceID: 0}
-- Class: 128
-  Script: {instanceID: 0}
-- Class: 213
-  Script: {instanceID: 0}
-- Class: 222
-  Script: {instanceID: 0}
-- Class: 223
-  Script: {instanceID: 0}
-- Class: 224
-  Script: {instanceID: 0}
-- Class: 225
-  Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers:
-- AssemblyName: Assembly-CSharp
-  ClassName: AT_RPG.ResourceReference`1[UnityEngine.GameObject]
-- AssemblyName: Assembly-CSharp
-  ClassName: AT_RPG.SceneReference
-- AssemblyName: Unity.RenderPipelines.Core.Runtime
-  ClassName: UnityEngine.Rendering.BoolParameter
-- AssemblyName: Unity.RenderPipelines.Core.Runtime
-  ClassName: UnityEngine.Rendering.ClampedFloatParameter
-- AssemblyName: Unity.RenderPipelines.Core.Runtime
-  ClassName: UnityEngine.Rendering.ClampedIntParameter
-- AssemblyName: Unity.RenderPipelines.Core.Runtime
-  ClassName: UnityEngine.Rendering.ColorParameter
-- AssemblyName: Unity.RenderPipelines.Core.Runtime
-  ClassName: UnityEngine.Rendering.FloatParameter
-- AssemblyName: Unity.RenderPipelines.Core.Runtime
-  ClassName: UnityEngine.Rendering.MinFloatParameter
-- AssemblyName: Unity.RenderPipelines.Universal.Runtime
-  ClassName: UnityEngine.Rendering.Universal.DepthOfFieldModeParameter
-- AssemblyName: Unity.RenderPipelines.Universal.Runtime
-  ClassName: UnityEngine.Rendering.Universal.HDRACESPresetParameter
-- AssemblyName: Unity.RenderPipelines.Universal.Runtime
-  ClassName: UnityEngine.Rendering.Universal.NeutralRangeReductionModeParameter
-- AssemblyName: Unity.RenderPipelines.Universal.Runtime
-  ClassName: UnityEngine.Rendering.Universal.TonemappingModeParameter
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.FaceInfo_Legacy
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.FontAssetCreationSettings
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.KerningTable
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_Character
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_FontFeatureTable
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_FontWeightPair
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphAdjustmentRecord
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphPairAdjustmentRecord
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphValueRecord
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.VertexGradient
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.ArgumentCache
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.PersistentCallGroup
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.PersistentListenerMode
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.RectOffset
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.FaceInfo
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.Glyph
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.GlyphMetrics
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.GlyphRect
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.AnimationTriggers
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.Button/ButtonClickedEvent
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.ColorBlock
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.Navigation
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.ScrollRect/ScrollRectEvent
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.SpriteState
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/AssetBundleResources/Global/DummyGlobalSceneResource.prefab
-- Assets/Resources/Global/Prefabs/CanvasScalerSettingReference.prefab
-- Assets/Resources/Global/Prefabs/Multiplay Launcher.prefab
-- Assets/Resources/Global/Prefabs/Button.prefab
-- Assets/Resources/Global/Prefabs/GameMenuPopup.prefab
-- Assets/Resources/Global/Prefabs/PopupCanvas.prefab
 Dependencies: []
