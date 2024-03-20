@@ -462,7 +462,7 @@ public class FusionStats : Fusion.Behaviour {
         return null;
       }
 
-      // If the current runner shutdown, reset the runner so a new one can be found
+      // If the current networkRunnerInstance shutdown, reset the networkRunnerInstance so a new one can be found
       if (_runner) {
         if (_runner.IsShutdown) {
           Runner = null;
@@ -563,8 +563,8 @@ public class FusionStats : Fusion.Behaviour {
   }
 
   /// <summary>
-  /// Automatically destroys this <see cref="FusionStats"/> GameObject if the associated runner is null or inactive.
-  /// Otherwise attempts will continuously be made to find an new active runner which is running in <see cref="SimulationModes"/> specified by <see cref="ConnectTo"/>, and connect to that.
+  /// Automatically destroys this <see cref="FusionStats"/> GameObject if the associated networkRunnerInstance is null or inactive.
+  /// Otherwise attempts will continuously be made to find an new active networkRunnerInstance which is running in <see cref="SimulationModes"/> specified by <see cref="ConnectTo"/>, and connect to that.
   /// </summary>
   [Header("Life-Cycle")]
   [InlineHelp]
@@ -988,7 +988,7 @@ public class FusionStats : Fusion.Behaviour {
     _canvas = _canvasRT.gameObject.AddComponent<Canvas>();
     _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 
-    // If the runner has already started, the root FusionStats has been added to the VisNodes registration for the runner,
+    // If the networkRunnerInstance has already started, the root FusionStats has been added to the VisNodes registration for the networkRunnerInstance,
     // But any generated children GOs here will not. Add the generated components to the visibility system.
     if (Runner && Runner.IsRunning) {
       RunnerVisibilityNode.AddVisibilityNodes(_canvasRT.gameObject, Runner);
@@ -1149,7 +1149,7 @@ public class FusionStats : Fusion.Behaviour {
       _pauseIcon.text = icon;
       _pauseLabel.text = label;
 
-      // Pause for all SimStats tied to this runner if all related FusionStats are paused.
+      // Pause for all SimStats tied to this networkRunnerInstance if all related FusionStats are paused.
       if (_statsForRunnerLookup.TryGetValue(_runner, out var stats)) {
 
         bool statsAreBeingUsed = false;

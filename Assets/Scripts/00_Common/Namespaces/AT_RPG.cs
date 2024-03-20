@@ -213,10 +213,10 @@ namespace AT_RPG
     #region MultiplayManager
 
     // 포톤 클라우드 애플리케이션 서버에 연결이 성공한 경우
-    public delegate void OnConnectedCallback();
+    public delegate void ConnectedCallback();
 
     // 포톤 클라우드 애플리케이션 서버에 연결이 실패한 경우
-    public delegate void OnDisconnectedCallback();
+    public delegate void DisconnectedCallback();
 
     #endregion
 }

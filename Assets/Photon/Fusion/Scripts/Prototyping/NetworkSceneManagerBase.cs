@@ -137,7 +137,7 @@ namespace Fusion {
         }
 
         if (addVisibilityNodes) {
-          // register all render related components on this gameobject with the runner, for use with IsVisible
+          // register all render related components on this gameobject with the networkRunnerInstance, for use with IsVisible
           RunnerVisibilityNode.AddVisibilityNodes(go, Runner);
         }
       }

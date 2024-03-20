@@ -8,7 +8,7 @@ namespace AT_RPG
     {
         [ReadOnly] public readonly string AuthenticationDataPath = Application.streamingAssetsPath;
 
-        [Tooltip("게임 메뉴 팝업 프리팹")]
-        public ResourceReference<GameObject> multiplayLauncherPrefab;
+        [Tooltip("포톤 API 랩핑 인스턴스")]
+        public ResourceReference<GameObject> MultiplayNetworkRunnerPrefab;
     }
 }

@@ -112,7 +112,7 @@ namespace Fusion.Assistants {
         nr = FusionAssistants.EnsureExistsInScene<NetworkRunner>("Prototype Runner");
 
         nds.RunnerPrefab = nr;
-        // The runner go is also our fallback spawn point... so raise it into the air a bit
+        // The networkRunnerInstance go is also our fallback spawn point... so raise it into the air a bit
         nr.transform.position = new Vector3(0, 3, 0);
       }
 

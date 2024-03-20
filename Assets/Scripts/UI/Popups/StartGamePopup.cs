@@ -147,11 +147,8 @@ namespace AT_RPG
                 ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
                 // 로딩이 끝나면 씬을 변경합니다.
-                SceneManager.LoadSceneCoroutine(toScene,
-                () =>
-                {
-                    return !ResourceManager.IsLoading && !DataManager.IsLoading;
-                },
+                SceneManager.LoadSceneCoroutine(toScene, 
+                () => !ResourceManager.IsLoading && !DataManager.IsLoading,
                 () =>
                 {
                     // 로드한 맵 설정에서 멀티플레이가 활성화 되어있다면 세션을 만듭니다.
@@ -164,7 +161,7 @@ namespace AT_RPG
 
                             if (!loadedMapSettingData.isMultiplayEnabled) { return; }
 
-                            MultiplayManager.ConnectToServerAsync(loadedMapSettingData);
+                            MultiplayManager.ConnectToCloud();
                         });
 
                     // 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.

@@ -111,7 +111,7 @@ namespace AT_RPG
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
             logPopup.Log = IsMultiplayEnabled() ?
-                           $"Invite code : {MultiplayManager.CreateInviteCode()} was generated! \n" +
+                           $"Invite code : {MultiplayManager.InviteCode} was generated! \n" +
                            $"Share this code to other player!" :
                            $"Multiplay is disabled. \n" +
                            $"Check multiplay enabled at map setting option";
@@ -159,8 +159,7 @@ namespace AT_RPG
 
                 ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
-                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !DataManager.IsSaving, 
-                    () => MultiplayManager.DisconnectToServer());
+                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !DataManager.IsSaving, () => MultiplayManager.Disconnect());
             });
         }
 
@@ -172,7 +171,7 @@ namespace AT_RPG
         public void OnQuitGame()
         {
             SaveGame();
-            MultiplayManager.DisconnectToServer();
+            MultiplayManager.Disconnect();
             Application.Quit();
         }
 

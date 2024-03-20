@@ -45,7 +45,7 @@ public class NetworkDebugStart : Fusion.Behaviour {
 
   /// <summary>
   /// Supply a Prefab or a scene object which has the <see cref="NetworkRunner"/> component on it, 
-  /// as well as any runner dependent components which implement <see cref="INetworkRunnerCallbacks"/>, 
+  /// as well as any networkRunnerInstance dependent components which implement <see cref="INetworkRunnerCallbacks"/>, 
   /// such as <see cref="NetworkEvents"/> or your own custom INetworkInput implementations.
   /// </summary>
   [InlineHelp]
@@ -205,7 +205,7 @@ public class NetworkDebugStart : Fusion.Behaviour {
         Destroy(this);
         return;
       } else {
-        // If no RunnerPrefab is supplied, use the scene runner.
+        // If no RunnerPrefab is supplied, use the scene networkRunnerInstance.
         if (RunnerPrefab == null) {
           RunnerPrefab = existingrunner;
         }
@@ -417,7 +417,7 @@ public class NetworkDebugStart : Fusion.Behaviour {
 
     var currentScene = SceneManager.GetActiveScene();
 
-    // must have a runner
+    // must have a networkRunnerInstance
     if (!RunnerPrefab) {
       Debug.LogError($"{nameof(RunnerPrefab)} not set, can't perform debug start.");
       yield break;

@@ -461,7 +461,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -90}
-  m_SizeDelta: {x: 400, y: 75}
+  m_SizeDelta: {x: 600, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &341617538
 MonoBehaviour:
@@ -571,7 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab:
     resourceName: QuitGamePopup
-    resourceGUID: 
+    resourceGUID: 45221a7409eff0f4e8071404ec4886ec
   popupRenderMode: 0
 --- !u!1 &419198664
 GameObject:
@@ -611,7 +611,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 120}
-  m_SizeDelta: {x: 400, y: 75}
+  m_SizeDelta: {x: 600, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419198666
 MonoBehaviour:
@@ -721,8 +721,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab:
     resourceName: MultiplayerGamePopup
-    resourceGUID: 
-  popupRenderMode: 1
+    resourceGUID: 390bfcd211fc6304c870476032ea4f32
+  popupRenderMode: 0
 --- !u!1 &444991640
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,7 +797,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 230}
-  m_SizeDelta: {x: 400, y: 75}
+  m_SizeDelta: {x: 600, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &452187519
 MonoBehaviour:
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab:
     resourceName: StartGamePopup
-    resourceGUID: 
+    resourceGUID: 2f6cc14bf8b3e634299f92cff87f5a57
   popupRenderMode: 1
 --- !u!1 &459209392
 GameObject:
@@ -1230,7 +1230,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 20}
-  m_SizeDelta: {x: 400, y: 75}
+  m_SizeDelta: {x: 600, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1009346788
 MonoBehaviour:
@@ -1340,8 +1340,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupPrefab:
     resourceName: OptionPopup
-    resourceGUID: 
-  popupRenderMode: 0
+    resourceGUID: b1eb8d0fd1390bd4685900047752bfe2
+  popupRenderMode: 1
 --- !u!1 &1065629202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2037,7 +2037,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Join Multiplayer Game
+  m_text: Join Multiplayer Game(Invite Code)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 76ad16a80c7ca64469677396cb496eba, type: 2}
   m_sharedMaterial: {fileID: 5493834397770338636, guid: 76ad16a80c7ca64469677396cb496eba,

@@ -62,22 +62,16 @@ namespace AT_RPG.Manager
             GameManager gameManager = GetInstance();
 
             multiplayManager = MultiplayManager.GetInstance();
-            multiplayManager.transform.SetParent(gameManager.transform);
 
             inputManager = InputManager.GetInstance();
-            inputManager.transform.SetParent(gameManager.transform);
 
             resourceManager = ResourceManager.GetInstance();
-            resourceManager.transform.SetParent(gameManager.transform);
 
             sceneManager = SceneManager.GetInstance();
-            sceneManager.transform.SetParent(gameManager.transform);
 
             uiManager = UIManager.GetInstance();
-            uiManager.transform.SetParent(gameManager.transform);
 
             dataManager = DataManager.GetInstance();
-            dataManager.transform.SetParent(gameManager.transform);
         }
     }
 

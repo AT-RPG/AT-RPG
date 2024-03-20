@@ -1,30 +1,24 @@
-using Fusion;
-using Fusion.Sockets;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace AT_RPG.Manager
 {
     /// <summary>
     /// 멀티플레이와 관련된 모든 기능을 관리합니다.
     /// </summary>
-    public partial class MultiplayManager : Singleton<MultiplayManager>, INetworkRunnerCallbacks
+    public partial class MultiplayManager : Singleton<MultiplayManager>
     {
-        private static MultiplayManagerSetting setting;
+        private static MultiplayManagerSetting setting = null;
 
-        private static MultiplayAuthentication authentication;
+        // 데이터를 실제로 주고받는걸 구현하는 클래스
+        private static MultiplayNetworkRunner networkRunner = null;
 
-        // 포톤 클라우드 네트워크 객체
-        private static NetworkRunner runner;
+        // 클라이언트의 고유 식별자
+        // 이 식별자를 통해, 이전 월드에 기록이 있는 경우, 데이터를 불러옵니다.
+        private static MultiplayAuthentication authentication = null;
 
-        private static StartGameArgs sessionOption;
-
-        // 초대 코드와 세션옵션을 연결
-        // 다른 플레이어가 초대 코드로 세션에 입장할 때 사용됩니다.
-        private static KeyValuePair<int, StartGameArgs> inviteCodeToSessionOption;
+        // 다른 클라이언트가 세션에 들어올 수 있도록 하는 초대코드
+        // 이 코드를 생성 후, 다른 클라이언트에게 공유합니다.
+        private static int inviteCode = 0;
 
 
 
@@ -38,85 +32,62 @@ namespace AT_RPG.Manager
 
 
         /// <summary>
-        /// 포톤 클라우드 서버에 연결을 시도합니다.
+        /// 포톤 클라우드에 연결을 시도합니다. <br/>
+        /// 클라우드에 연결되면, 다른 클라이언트가 초대코드로 접근할 수 있는 세션을 생성합니다.
         /// </summary>
-        public static async void ConnectToServerAsync(MapSettingData mapSettingData, OnConnectedCallback connected = null, OnDisconnectedCallback disconnected = null)
+        public static void ConnectToCloud(ConnectedCallback connected = null, DisconnectedCallback disconnected = null)
         {
-            // 맵 데이터를 통해 세션 정보를 새로 만듭니다.
-            var sessionStartOption = new StartGameArgs()
-            {
-                GameMode = GameMode.Host,
-                SessionName = mapSettingData.mapName,
-                Scene = UnitySceneManager.GetActiveScene().buildIndex,
-                SceneManager = Instance.gameObject.AddComponent<NetworkSceneManagerDefault>()
-            };
+            if (networkRunner) { return; }
 
-            // 설정된 세션 정보는 이제 멀티플레이 매니저가 정보를 캐싱합니다.
-            sessionOption = sessionStartOption;
-
-            // 설정된 세션 정보로 포톤 클라우드 서버에 세션 생성을 요청합니다.
-            runner = Instance.gameObject.AddComponent<NetworkRunner>();
-            runner.ProvideInput = true;
-            StartGameResult serverConnection = await runner.StartGame(sessionStartOption);
-            if (serverConnection.Ok)
-            {
-                connected?.Invoke();
-                Debug.Log("세션 생성 성공");
-            }
-            else
-            {
-                disconnected?.Invoke();
-                Debug.Log($"세션 생성 실패 : {serverConnection.ErrorMessage}");
-            }
+            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource, Instance.transform).GetComponent<MultiplayNetworkRunner>();
+            networkRunner.ConnectToCloud(connected, disconnected);
         }
-
-        public static void DisconnectToServer()
-        {
-            runner.Shutdown();
-            Destroy(runner);
-
-            sessionOption = default;
-            runner = null;
-        }
+        
 
         /// <summary>
-        /// 클라이언트의 고유 식별자를 생성합니다.
+        /// 다른 클라이언트가 만든 세션에 연결을 시도합니다. <br/>
+        /// 세션에 연결되면, 게임을 시작합니다.
+        /// </summary>
+        public static void ConnectToPlayer(string inviteCode, ConnectedCallback connected = null, DisconnectedCallback disconnected = null)
+        {
+            if (networkRunner) { return; }
+
+            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource, Instance.transform).GetComponent<MultiplayNetworkRunner>();
+            networkRunner.ConnectToPlayer(inviteCode, connected, disconnected);
+        }
+
+
+        /// <summary>
+        /// 세션에 연결을 종료합니다.
+        /// </summary>
+        public static void Disconnect()
+        {
+            if (networkRunner) { return; }
+
+            networkRunner.Disconnect();
+            networkRunner = null;
+        }
+
+
+        /// <summary>
+        /// 클라이언트의 고유 식별자를 생성합니다. <br/>
         /// 호스트에서 이 식별자를 통해, 이전에 월드에 접속했는지 여부를 판단하게됩니다.
         /// </summary>
-        public static void CreateAuthentication()
+        public static MultiplayAuthentication CreateAuthentication()
         {
             authentication = MultiplayAuthentication.IsExist() ? MultiplayAuthentication.Load() : MultiplayAuthentication.CreateNew();
+            return authentication;
         }
+
 
         /// <summary>
         /// 다른 클라이언트가 호스트의 세션에 들어올 수 있도록 초대 코드를 생성합니다.
         /// </summary>
         public static int CreateInviteCode()
         {
-            int inviteCode = UnityEngine.Random.Range(100000, 1000000);
-            inviteCodeToSessionOption = new KeyValuePair<int, StartGameArgs>(inviteCode, sessionOption);    
+            inviteCode = inviteCode == 0 ? UnityEngine.Random.Range(100000, 1000000) : inviteCode;
             return inviteCode;
         }
-
-
-
-
-        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) { }
-        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
-        public void OnInput(NetworkRunner runner, NetworkInput input) { }
-        public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
-        public void OnConnectedToServer(NetworkRunner runner) { }
-        public void OnDisconnectedFromServer(NetworkRunner runner) { }
-        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
-        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
-        public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
-        public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
-        public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
-        public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
-        public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
-        public void OnSceneLoadDone(NetworkRunner runner) { }
-        public void OnSceneLoadStart(NetworkRunner runner) { }
     }
 
     public partial class MultiplayManager
@@ -125,10 +96,6 @@ namespace AT_RPG.Manager
 
         public static MultiplayAuthentication Authentication => authentication;
 
-        public static StartGameArgs SessionOption
-        {
-            get => sessionOption;
-            set => sessionOption = value;
-        }
+        public static int InviteCode => inviteCode;
     }
 }

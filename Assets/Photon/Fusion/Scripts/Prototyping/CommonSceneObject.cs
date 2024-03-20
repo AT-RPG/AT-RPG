@@ -13,7 +13,7 @@
 //[System.Obsolete("Use " + nameof(RunnerVisibilityNode))]
 //public class CommonSceneObject : Fusion.Behaviour {
 
-//  public const string FUSION_HELP_TEXT = "Flags this GameObject as object that should only be enabled in one runner in InstanceModes.SharedInstance. " +
+//  public const string FUSION_HELP_TEXT = "Flags this GameObject as object that should only be enabled in one networkRunnerInstance in InstanceModes.SharedInstance. " +
 //    "While running in Shared Instance mode this will SetActive(false) all but one networked instance. Use to disable objects like lights or UI elements.";
 
 //  public enum PreferredRunner { Server, NotServer, Client }
@@ -94,15 +94,15 @@
 //  }
 
 //  private void SearchForPreferredRunner() {
-//    var runner = Runner;
+//    var networkRunnerInstance = Runner;
 //    var pref = _preferredRunner;
 
-//    // Test if current active object already is the preferred runner.
-//    if (runner != null) {
+//    // Test if current active object already is the preferred networkRunnerInstance.
+//    if (networkRunnerInstance != null) {
 //      if (
-//        (!runner.IsServer && pref == PreferredRunner.NotServer) ||
-//        (runner.IsServer && pref == PreferredRunner.Server) ||
-//        (runner.IsClient && pref == PreferredRunner.Client)) {
+//        (!networkRunnerInstance.IsServer && pref == PreferredRunner.NotServer) ||
+//        (networkRunnerInstance.IsServer && pref == PreferredRunner.Server) ||
+//        (networkRunnerInstance.IsClient && pref == PreferredRunner.Client)) {
 //        _preferredRunnerFound = true;
 //        return;
 //      }
@@ -110,7 +110,7 @@
 
 //    if (_inactives.TryGetValue(_uid, out var inactives)) {
 
-//      // cycle through all inactive until we find a server runner
+//      // cycle through all inactive until we find a server networkRunnerInstance
 //      for (int i = 0, cnt = inactives.Count; i < cnt; ++i) {
 //        var other = inactives.Dequeue();
 //        var otherRunner = other.Runner;
@@ -121,7 +121,7 @@
 
 //        var isServer = otherRunner.IsServer;
 //        var isClient = otherRunner.IsClient;
-//        // if we found an alternate instance that is our desired runner type, switch that to active
+//        // if we found an alternate instance that is our desired networkRunnerInstance type, switch that to active
 //        if (
 //          (!isServer && pref == PreferredRunner.NotServer) ||
 //          (isServer  && pref == PreferredRunner.Server) ||
@@ -145,15 +145,15 @@
 //    var runners = NetworkRunner.GetInstancesEnumerator();
 
 //    while (runners.MoveNext()) {
-//      var runner = runners.Current;
+//      var networkRunnerInstance = runners.Current;
 //      // Ignore inactive runners - might just be unused scene objects or other orphans.
-//      if (!runner.IsRunning)
+//      if (!networkRunnerInstance.IsRunning)
 //        continue;
 
-//      if (runner.SharedInstanceUnitySceneRoot) {
-//        var scene = runner.SharedInstanceUnitySceneRoot.scene;
+//      if (networkRunnerInstance.SharedInstanceUnitySceneRoot) {
+//        var scene = networkRunnerInstance.SharedInstanceUnitySceneRoot.scene;
 //        if (scene == gameObject.scene) {
-//          return runner;
+//          return networkRunnerInstance;
 //        }
 //      }
 //    }
