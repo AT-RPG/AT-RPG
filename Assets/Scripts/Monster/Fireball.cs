@@ -58,7 +58,8 @@ public class Fireball : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(direction*Time.deltaTime*ballSpeed); //발사
+        //  transform.Translate(direction*Time.deltaTime*ballSpeed); //발사
+        transform.Translate(Vector3.forward * Time.deltaTime * ballSpeed); //발사
     }
     
 

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 37076309853231208}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 68.1, y: 0, z: 68.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -57,7 +57,9 @@ MonoBehaviour:
     monsterRpm: 4
     monsterIdleTime: 0
     longAttack: 1
-  monResPos: {fileID: 0}
+  monResPos: {fileID: 4331263144890722545}
+  StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
+    type: 3}
   monsterAI: {fileID: 6437586279566940113}
   monsterState: 0
 --- !u!54 &2526612417394279528

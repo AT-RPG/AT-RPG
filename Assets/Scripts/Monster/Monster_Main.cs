@@ -25,8 +25,9 @@ public class MonsterMain : MonsterBattle, MDamage
     }
     private void Awake() //초기화
     {
-        transform.position = StartspawnPos.transform.position; //스폰위치 설정
-        ChangeState(State.Idle);
+        //transform.position = MonsterPool.transform.position; //스폰위치 설정
+       // transform.position = transform.parent.position ; //스폰위치 설정
+        ChangeState(State.Create);
     }
     void OnEnable()
     {
@@ -87,6 +88,7 @@ public class MonsterMain : MonsterBattle, MDamage
     {
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
+        transform.position = transform.parent.position; //스폰위치 설정
         ChangeState(State.Idle);
     }
 
@@ -254,6 +256,7 @@ public class MonsterMain : MonsterBattle, MDamage
         monsterAnim.SetTrigger("NormalAttack");
         if (mStat.longAttack == true)
         {
+          
             //원거리 공격실행
         }
     }
@@ -284,9 +287,7 @@ public class MonsterMain : MonsterBattle, MDamage
     // Start is called before the first frame update
     void Start()
     {
-     
-       
-       
+        ChangeState(State.Idle);
     }
 
     // Update is called once per frame
