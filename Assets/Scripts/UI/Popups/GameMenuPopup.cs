@@ -8,8 +8,11 @@ namespace AT_RPG
     /// </summary>
     public class GameMenuPopup : Popup, IPopupDestroy
     {
-        [Tooltip("게임 설정 팝업 프리팹")]
+        [Header("하위 팝업")]
+
+        [Tooltip("게임 설정 팝업")]
         [SerializeField] private ResourceReference<GameObject>  optionPopupPrefab;
+        [SerializeField] private ResourceReference<GameObject>  mapSettingPopupPrefab;
 
         [Tooltip("타이틀 화면 씬")]
         [SerializeField] private SceneReference                 titleScene;
@@ -86,11 +89,13 @@ namespace AT_RPG
         /// </summary>
         public void OnSaveMap()
         {
-            DataManager.SaveMapSettingDataCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
+            SaveGame();
 
-            DataManager.SaveAllGameObjectsCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
+            LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
+
+            logPopup.Log = $"Save Completed!";
+            logPopup.Duration = 3.0f;
         }
 
 
@@ -100,13 +105,26 @@ namespace AT_RPG
         /// </summary>
         public void OnCreateInviteCode()
         {
+            IsMultiplayEnabled();
+
             GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
-            logPopup.Log = $"Invite code : {MultiplayManager.CreateInviteCode()} was generated! \n" +
-                           $"Share this code to other player!";
+            logPopup.Log = IsMultiplayEnabled() ?
+                           $"Invite code : {MultiplayManager.CreateInviteCode()} was generated! \n" +
+                           $"Share this code to other player!" :
+                           $"Multiplay is disabled. \n" +
+                           $"Check multiplay enabled at map setting option";
 
-            logPopup.Duration = 8.0f;
+            logPopup.Duration = IsMultiplayEnabled() ? 8.0f : 4.0f;
+        }
+
+        /// <summary>
+        /// 플레이어 초대 코드를 생성하기전에 맵 설정에 멀티플레이가 켜져있는지 확인합니다.
+        /// </summary>
+        private bool IsMultiplayEnabled()
+        {
+            return DataManager.MapSettingData.isMultiplayEnabled;
         }
 
 
@@ -116,7 +134,8 @@ namespace AT_RPG
         /// </summary>
         public void OnInstantiateOptionPopup()
         {
-            
+            UIManager.InstantiatePopup(optionPopupPrefab.Resource, PopupRenderMode.Hide);
+            DestroyPopup();
         }
 
 
@@ -126,11 +145,7 @@ namespace AT_RPG
         /// </summary>
         public void OnLoadTitleScene()
         {
-            DataManager.SaveMapSettingDataCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
-
-            DataManager.SaveAllGameObjectsCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+            SaveGame();
 
             // 타이틀 씬으로 이동
             string fromScene = SceneManager.CurrentSceneName;
@@ -153,6 +168,7 @@ namespace AT_RPG
         /// </summary>
         public void OnQuitGame()
         {
+            SaveGame();
             Application.Quit();
         }
 
@@ -174,6 +190,17 @@ namespace AT_RPG
                 Destroy(gameObject);
             });
             blurAnimation.EndFade();
+        }
+
+        private void SaveGame()
+        {
+            DataManager.SaveMapSettingDataCoroutine(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
+
+            DataManager.SaveAllGameObjectsCoroutine(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+
+            DataManager.MapSettingData = null;
         }
     }
 }

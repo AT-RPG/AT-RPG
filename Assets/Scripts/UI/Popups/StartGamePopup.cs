@@ -13,15 +13,17 @@ namespace AT_RPG
     /// </summary>
     public class StartGamePopup : Popup, IPopupDestroy
     {
+        [Tooltip("맵 버튼이 생성될 위치")]
+        [SerializeField] private GameObject mapButtonContents;
+
+        [Header("하위 팝업")]
         [Tooltip("맵 설정 팝업 프리팹")]
         [SerializeField] private ResourceReference<GameObject> mapSettingPopupPrefab;
 
         [Tooltip("맵 버튼 프리팹")]
         [SerializeField] private ResourceReference<GameObject> mapButtonPrefab;
 
-        [Tooltip("맵 버튼이 생성될 위치")]
-        [SerializeField] private GameObject mapButtonContents;
-
+        [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private BlurCanvasAnimation blurAnimation;
