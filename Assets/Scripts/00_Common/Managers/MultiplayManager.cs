@@ -22,9 +22,6 @@ namespace AT_RPG.Manager
 
         private static StartGameArgs sessionOption;
 
-        // 포톤 클라우드 애플리케이션 서버에 연결되었는지?
-        private static bool isConnected = false;
-
         // 초대 코드와 세션옵션을 연결
         // 다른 플레이어가 초대 코드로 세션에 입장할 때 사용됩니다.
         private static KeyValuePair<int, StartGameArgs> inviteCodeToSessionOption;
@@ -64,11 +61,22 @@ namespace AT_RPG.Manager
             if (serverConnection.Ok)
             {
                 connected?.Invoke();
+                Debug.Log("세션 생성 성공");
             }
             else
             {
                 disconnected?.Invoke();
+                Debug.Log($"세션 생성 실패 : {serverConnection.ErrorMessage}");
             }
+        }
+
+        public static void DisconnectToServer()
+        {
+            runner.Shutdown();
+            Destroy(runner);
+
+            sessionOption = default;
+            runner = null;
         }
 
         /// <summary>
@@ -122,7 +130,5 @@ namespace AT_RPG.Manager
             get => sessionOption;
             set => sessionOption = value;
         }
-
-        public static bool IsConnected => isConnected;
     }
 }

@@ -147,6 +147,8 @@ namespace AT_RPG
         {
             SaveGame();
 
+            DataManager.MapSettingData = null;
+
             // 타이틀 씬으로 이동
             string fromScene = SceneManager.CurrentSceneName;
             string toScene = SceneManager.Setting.TitleScene;
@@ -157,7 +159,8 @@ namespace AT_RPG
 
                 ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
-                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !DataManager.IsSaving);
+                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !DataManager.IsSaving, 
+                    () => MultiplayManager.DisconnectToServer());
             });
         }
 
@@ -169,6 +172,7 @@ namespace AT_RPG
         public void OnQuitGame()
         {
             SaveGame();
+            MultiplayManager.DisconnectToServer();
             Application.Quit();
         }
 
@@ -199,8 +203,6 @@ namespace AT_RPG
 
             DataManager.SaveAllGameObjectsCoroutine(
                 DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
-
-            DataManager.MapSettingData = null;
         }
     }
 }
