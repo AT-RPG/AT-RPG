@@ -22,17 +22,22 @@ namespace AT_RPG
         [Header("게임 메뉴 버튼")]
         [SerializeField] private GameObject                     continueButtonInstance;
         [SerializeField] private GameObject                     saveButtonInstance;
+        [SerializeField] private GameObject                     inviteButtonInstance;
         [SerializeField] private GameObject                     optionButtonInstance;
         [SerializeField] private GameObject                     titleButtonInstance;
         [SerializeField] private GameObject                     quitButtonInstance;
 
         private bool isEscaped = false;
 
-
+        
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { saveButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) 
+            { 
+                saveButtonInstance.SetActive(false);
+                inviteButtonInstance.SetActive(false);
+            }
             if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleScene) { titleButtonInstance.SetActive(false); }
         }
 
@@ -86,6 +91,22 @@ namespace AT_RPG
 
             DataManager.SaveAllGameObjectsCoroutine(
                 DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+        }
+
+
+        
+        /// <summary>
+        /// 현재 세션에 대한 초대코드를 생성합니다.
+        /// </summary>
+        public void OnCreateInviteCode()
+        {
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
+            LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
+
+            logPopup.Log = $"Invite code : {MultiplayManager.CreateInviteCode()} was generated! \n" +
+                           $"Share this code to other player!";
+
+            logPopup.Duration = 8.0f;
         }
 
 

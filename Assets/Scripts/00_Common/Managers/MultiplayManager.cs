@@ -14,7 +14,7 @@ namespace AT_RPG.Manager
         // 포톤 클라우드 애플리케이션 서버에 연결되었는지?
         private static bool isConnected = false;
 
-
+        private static int inviteCode;
 
         protected override void Awake()
         {
@@ -38,6 +38,12 @@ namespace AT_RPG.Manager
         public static void CreateAuthentication()
         {
             authentication = MultiplayAuthentication.IsExist() ? MultiplayAuthentication.Load() : MultiplayAuthentication.CreateNew();
+        }
+
+        public static int CreateInviteCode()
+        {
+            inviteCode = Random.Range(100000, 1000000);
+            return inviteCode;
         }
     }
 

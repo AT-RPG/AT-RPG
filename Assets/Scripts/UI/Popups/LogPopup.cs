@@ -15,13 +15,13 @@ namespace AT_RPG
         [SerializeField] private PopupCanvasAnimation   popupAnimation;
 
         [Tooltip("출력할 로그 이미지")]
-        [SerializeField] private Image         logImage;
+        [SerializeField] private Image                  logImage;
 
         [Tooltip("출력할 로그")]
-        [SerializeField] private TMP_Text      log;
+        [SerializeField] private TMP_InputField         log;
 
         [Tooltip("팝업의 지속시간")]
-        [SerializeField] private float         duration;
+        [SerializeField] private float                  duration;
 
 
 
@@ -67,7 +67,7 @@ namespace AT_RPG
         }
     }
 
-    /// <summary>                                                   <br/>
+    /// <summary>                                                   
     /// 프로퍼티 선언 분리 클래스
     /// </summary>
     public partial class LogPopup
