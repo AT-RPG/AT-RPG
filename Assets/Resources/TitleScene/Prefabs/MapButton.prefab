@@ -67,8 +67,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Time
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 76ad16a80c7ca64469677396cb496eba, type: 2}
+  m_sharedMaterial: {fileID: 5493834397770338636, guid: 76ad16a80c7ca64469677396cb496eba,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -201,8 +202,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 76ad16a80c7ca64469677396cb496eba, type: 2}
+  m_sharedMaterial: {fileID: 5493834397770338636, guid: 76ad16a80c7ca64469677396cb496eba,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -433,13 +435,11 @@ MonoBehaviour:
   mapName: {fileID: 1317573262428770523}
   lastModifiedTime: {fileID: 5616737532801860262}
   mapSettingData:
-    mapName: 
+    worldName: 
+    isMultiplayEnabled: 0
     lastModifiedTime: 
   fadeAnimation: {fileID: 1398023289772320872}
   popupAnimation: {fileID: 172495221748571733}
-  mainScene:
-    SceneName: MainScene_BJW
-    sceneAsset: {fileID: 102900000, guid: 16c8bcf627640964f8ca2c2e1fd70a6f, type: 3}
 --- !u!114 &172495221748571733
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -68,7 +68,7 @@ namespace AT_RPG
             set
             {
                 mapSettingData = value;
-                mapName.text = mapSettingData.mapName;
+                mapName.text = mapSettingData.worldName;
                 lastModifiedTime.text = mapSettingData.lastModifiedTime;
             }
         }

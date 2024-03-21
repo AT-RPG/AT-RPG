@@ -2,6 +2,7 @@ using AT_RPG.Manager;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AT_RPG
 {
@@ -11,18 +12,30 @@ namespace AT_RPG
     /// </summary>
     public class MapSettingPopup : Popup, IPopupDestroy
     {
-        [Tooltip("맵 선택 팝업 프리팹")]
-        [SerializeField] protected ResourceReference<GameObject> startGamePopupPrefab;
-
-        [Tooltip("에러 로그용 프리팹")]
-        [SerializeField] private ResourceReference<GameObject> logPopupPrefab;
-
+        [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private BlurCanvasAnimation blurAnimation;
 
+        [Header("하위 팝업")]
+        [Tooltip("맵 선택창 팝업")]
+        [SerializeField] protected ResourceReference<GameObject> startGamePopupPrefab;
+
         [Header("맵 설정")]
         [SerializeField] private TMP_InputField mapName;
+        [SerializeField] private Toggle         isMultiplayEnabled;
+
+        [Header("맵 설정 버튼")]
+        [SerializeField] private GameObject     createButtonInstance;
+        [SerializeField] private GameObject     changeButtonInstance;
+        [SerializeField] private GameObject     cancelButtonInstance;
+
+
+        private void Awake()
+        {
+            if (SceneManager.CurrentSceneName == SceneManager.Setting.MainScene) { createButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { changeButtonInstance.SetActive(false); }
+        }
 
 
         private void Start()
@@ -45,25 +58,36 @@ namespace AT_RPG
         /// <summary>
         /// 현재 팝업을 닫고, 맵 설정에 따라 맵 데이터를 생성합니다.
         /// </summary>
-        public void OnCreateMap()
+        public void OnCreateMapSetting()
         {
-            if (!IsMapSettingEnable())
-            {
-                return;
-            }
+            if (!IsMapSettingEnable()) { return; }
 
             // 맵 설정 데이터 초기화
             MapSettingData mapSettingData = new MapSettingData();
-            mapSettingData.mapName = mapName.text;
+            mapSettingData.worldName = mapName.text;
+            mapSettingData.isMultiplayEnabled = isMultiplayEnabled.isOn;
             mapSettingData.lastModifiedTime = DateTime.Now.ToString();
 
             // 맵 설정 데이터 저장
             // 저장이 완료되면 맵 설정 팝업창을 닫고, 맵 선택 팝업창을 인스턴싱
-            DataManager.SaveMapSettingDataCoroutine(DataManager.Setting.defaultSaveFolderPath, mapSettingData, null, () =>
+            DataManager.SaveWorldSettingData(DataManager.Setting.defaultSaveFolderPath, mapSettingData, null, () =>
             {
                 popupCanvas?.RemoveAllPopupInstance();
                 UIManager.InstantiatePopup(startGamePopupPrefab.Resource, PopupRenderMode.Hide);
             });
+        }
+
+        public void OnChangeMapSetting()
+        {
+            if (!IsMapSettingEnable()) { return; }
+
+            // 맵 설정 데이터 초기화
+            MapSettingData mapSettingData = new MapSettingData();
+            mapSettingData.worldName = mapName.text;
+            mapSettingData.isMultiplayEnabled = isMultiplayEnabled.isOn;
+            mapSettingData.lastModifiedTime = DateTime.Now.ToString();
+
+            DataManager.WorldSettingData = mapSettingData;
         }
 
         /// <summary>
@@ -98,6 +122,7 @@ namespace AT_RPG
 
             return true;
         }
+
 
 
 
