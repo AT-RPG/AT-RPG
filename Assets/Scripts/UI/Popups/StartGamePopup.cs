@@ -134,6 +134,7 @@ namespace AT_RPG
         /// <summary>
         /// 맵을 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
         /// </summary>
+        /// TODO : 리펙토링
         private void InternalOnPlayMap()
         {
             SerializedGameObjectsList gameObjectDatas = new SerializedGameObjectsList();
@@ -157,7 +158,7 @@ namespace AT_RPG
                         () => !DataManager.IsLoading && !ResourceManager.IsLoading,
                         loadedMapSettingData =>
                         {
-                            DataManager.MapSettingData = loadedMapSettingData;
+                            DataManager.WorldSettingData = loadedMapSettingData;
 
                             if (!loadedMapSettingData.isMultiplayEnabled) { return; }
 

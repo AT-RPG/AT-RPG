@@ -15,11 +15,11 @@ namespace AT_RPG
             // 현재 씬의 저장 대상을 유니티의 Application.persistentData 경로에 "DirToSave" 폴더를 만들어서 직렬화합니다.
             if (Input.GetKeyDown(KeyCode.F5))
             {
-                DataManager.SaveMapSettingDataCoroutine(
-                    DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
+                DataManager.SaveWorldSettingData(
+                    DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData, () => !DataManager.IsSaving);
 
-                DataManager.SaveAllGameObjectsCoroutine(
-                    DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+                DataManager.SaveWorldGameObjectDatas(
+                    DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData.worldName, () => !DataManager.IsSaving);
 
                 Debug.Log("세이브 성공");
             }
@@ -27,12 +27,12 @@ namespace AT_RPG
             if (Input.GetKeyDown(KeyCode.F6))
             {
                 DataManager.LoadMapSettingDataCoroutine(
-                    DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, 
+                    DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData.worldName, 
                     () => !DataManager.IsLoading,
-                    loadedMapSettingData => DataManager.MapSettingData = loadedMapSettingData);
+                    loadedMapSettingData => DataManager.WorldSettingData = loadedMapSettingData);
 
                 DataManager.LoadAllGameObjectsCoroutine(
-                   DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName,
+                   DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData.worldName,
                    () => !DataManager.IsLoading,
                    loadedGameObjectDatas => DataManager.InstantiateGameObjects(loadedGameObjectDatas));
 

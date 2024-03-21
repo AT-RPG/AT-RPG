@@ -63,7 +63,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 폴더(= 맵 이름)에 현재 씬에 있는 모든 세이브 대상(GameObjectDataController.cs를 가진 게임 오브젝트) 세이브 파일을 생성합니다.
         /// </summary>
-        public static void SaveAllGameObjectsCoroutine(
+        public static void SaveWorldGameObjectDatas(
             string rootPath, string mapName, StartCondition started = null, SaveCompleted completed = null)
         {
             if (isSaving)
@@ -283,7 +283,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 폴더(= 맵 이름)에 맵 설정 데이터 파일을 생성합니다.
         /// </summary>
-        public static void SaveMapSettingDataCoroutine(
+        public static void SaveWorldSettingData(
             string rootPath, MapSettingData mapSettingData, StartCondition started = null, SaveCompleted completed = null)
         {
             if (isSaving)
@@ -294,14 +294,14 @@ namespace AT_RPG.Manager
 
             // 폴더(= 맵 이름)를 생성
             // 폴더에 맵 설정 세이브 파일 정리
-            string mapSaveDataPath = Path.Combine(rootPath, mapSettingData.mapName);
+            string mapSaveDataPath = Path.Combine(rootPath, mapSettingData.worldName);
             if (!Directory.Exists(mapSaveDataPath))
             {
-                CreateSaveDataDirectroy(rootPath, mapSettingData.mapName);
+                CreateSaveDataDirectroy(rootPath, mapSettingData.worldName);
             }
             else
             {
-                DeleteSaveDatas(rootPath, mapSettingData.mapName, setting.mapSettingDataFileExtension);
+                DeleteSaveDatas(rootPath, mapSettingData.worldName, setting.mapSettingDataFileExtension);
             }
 
             Instance.StartCoroutine(
@@ -330,7 +330,7 @@ namespace AT_RPG.Manager
         {
             string mapSettingDataFilePath = String.CreateFilePath(
                 mapSaveDataPath,
-                mapSettingData.mapName,
+                mapSettingData.worldName,
                 setting.mapSettingDataFileExtension);   
 
             using (FileStream stream = new FileStream(mapSettingDataFilePath, FileMode.Create))
@@ -454,7 +454,7 @@ namespace AT_RPG.Manager
         public static DataManagerSetting Setting => setting;
 
         // 인 게임에 들어오면 초기화
-        public static MapSettingData MapSettingData
+        public static MapSettingData WorldSettingData
         {
             get => mapSettingData;
             set => mapSettingData = value;

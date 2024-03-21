@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 using AT_RPG.Manager;
+using System.Threading.Tasks;
 
 namespace AT_RPG
 {
@@ -35,7 +36,7 @@ namespace AT_RPG
         /// 포톤 클라우드에 연결을 시도합니다. <br/>
         /// 클라우드에 연결되면, 다른 클라이언트가 초대코드로 접근할 수 있는 세션을 생성합니다.
         /// </summary>
-        public async void ConnectToCloud(ConnectedCallback connected = null, DisconnectedCallback disconnected = null)
+        public async Task<StartGameResult> ConnectToCloud()
         {
             // 세션 정보를 새로 만듭니다.
             var sessionStartOption = new StartGameArgs()
@@ -51,16 +52,9 @@ namespace AT_RPG
             // 설정된 세션 정보로 포톤 클라우드 서버에 세션 생성을 요청합니다.
             runner = gameObject.AddComponent<NetworkRunner>();
             runner.ProvideInput = true;
-            StartGameResult serverConnection = await runner.StartGame(sessionStartOption);
-            if (serverConnection.Ok)
-            {
-                connected?.Invoke();
-            }
-            else
-            {
-                disconnected?.Invoke();
-                Disconnect();
-            }
+            StartGameResult connectionResult = await runner.StartGame(sessionStartOption);
+
+            return connectionResult;
         }
 
 
@@ -68,7 +62,7 @@ namespace AT_RPG
         /// 다른 클라이언트가 만든 세션에 연결을 시도합니다. <br/>
         /// 세션에 연결되면, 게임을 시작합니다.
         /// </summary>
-        public async void ConnectToPlayer(string inviteCode, ConnectedCallback connected = null, DisconnectedCallback disconnected = null)
+        public async Task<StartGameResult> ConnectToPlayer(string inviteCode)
         {
             // 세션 정보를 새로 만듭니다.
             var sessionStartOption = new StartGameArgs()
@@ -80,19 +74,12 @@ namespace AT_RPG
                 DisableClientSessionCreation = true
             };
 
-            // 설정된 세션 정보로 다른 플레이어의 세션 연결을 요청합니다.
+            // 설정된 세션 정보로 다른 클라이언트의 세션 연결을 요청합니다.
             runner = gameObject.AddComponent<NetworkRunner>();
             runner.ProvideInput = true;
-            StartGameResult serverConnection = await runner.StartGame(sessionStartOption);
-            if (serverConnection.Ok)
-            {
-                connected?.Invoke();
-            }
-            else
-            {
-                disconnected?.Invoke();
-                Disconnect();
-            }
+            StartGameResult connectionResult = await runner.StartGame(sessionStartOption);
+
+            return connectionResult;
         }
 
 
@@ -104,6 +91,7 @@ namespace AT_RPG
             runner.Shutdown();
             Destroy(gameObject);
         }
+
 
 
         void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player) { }

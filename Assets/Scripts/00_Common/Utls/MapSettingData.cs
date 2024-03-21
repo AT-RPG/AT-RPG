@@ -9,7 +9,7 @@ namespace AT_RPG
     public class MapSettingData
     {
         // 생성되는 맵의 이름
-        public string mapName;
+        public string worldName;
 
         // 멀티플레이 설정
         public bool   isMultiplayEnabled;

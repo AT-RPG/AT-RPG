@@ -64,13 +64,13 @@ namespace AT_RPG
 
             // 맵 설정 데이터 초기화
             MapSettingData mapSettingData = new MapSettingData();
-            mapSettingData.mapName = mapName.text;
+            mapSettingData.worldName = mapName.text;
             mapSettingData.isMultiplayEnabled = isMultiplayEnabled.isOn;
             mapSettingData.lastModifiedTime = DateTime.Now.ToString();
 
             // 맵 설정 데이터 저장
             // 저장이 완료되면 맵 설정 팝업창을 닫고, 맵 선택 팝업창을 인스턴싱
-            DataManager.SaveMapSettingDataCoroutine(DataManager.Setting.defaultSaveFolderPath, mapSettingData, null, () =>
+            DataManager.SaveWorldSettingData(DataManager.Setting.defaultSaveFolderPath, mapSettingData, null, () =>
             {
                 popupCanvas?.RemoveAllPopupInstance();
                 UIManager.InstantiatePopup(startGamePopupPrefab.Resource, PopupRenderMode.Hide);
@@ -83,11 +83,11 @@ namespace AT_RPG
 
             // 맵 설정 데이터 초기화
             MapSettingData mapSettingData = new MapSettingData();
-            mapSettingData.mapName = mapName.text;
+            mapSettingData.worldName = mapName.text;
             mapSettingData.isMultiplayEnabled = isMultiplayEnabled.isOn;
             mapSettingData.lastModifiedTime = DateTime.Now.ToString();
 
-            DataManager.MapSettingData = mapSettingData;
+            DataManager.WorldSettingData = mapSettingData;
         }
 
         /// <summary>

@@ -36,12 +36,18 @@ namespace AT_RPG
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) 
+            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleScene) 
             { 
+                titleButtonInstance.SetActive(false);
+                saveButtonInstance.SetActive(false);
+                inviteButtonInstance.SetActive(false);
+            }         
+
+            if (MultiplayManager.PlayMode == PlayMode.Client)
+            {
                 saveButtonInstance.SetActive(false);
                 inviteButtonInstance.SetActive(false);
             }
-            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleScene) { titleButtonInstance.SetActive(false); }
         }
 
 
@@ -89,7 +95,8 @@ namespace AT_RPG
         /// </summary>
         public void OnSaveMap()
         {
-            SaveGame();
+            PlayMode currentPlayMode = MultiplayManager.PlayMode;
+            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
 
             GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
@@ -124,7 +131,7 @@ namespace AT_RPG
         /// </summary>
         private bool IsMultiplayEnabled()
         {
-            return DataManager.MapSettingData.isMultiplayEnabled;
+            return DataManager.WorldSettingData.isMultiplayEnabled;
         }
 
 
@@ -145,9 +152,10 @@ namespace AT_RPG
         /// </summary>
         public void OnLoadTitleScene()
         {
-            SaveGame();
+            PlayMode currentPlayMode = MultiplayManager.PlayMode;
+            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
 
-            DataManager.MapSettingData = null;
+            DataManager.WorldSettingData = null;
 
             // 타이틀 씬으로 이동
             string fromScene = SceneManager.CurrentSceneName;
@@ -170,7 +178,9 @@ namespace AT_RPG
         /// </summary>
         public void OnQuitGame()
         {
-            SaveGame();
+            PlayMode currentPlayMode = MultiplayManager.PlayMode;
+            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
+
             MultiplayManager.Disconnect();
             Application.Quit();
         }
@@ -195,13 +205,13 @@ namespace AT_RPG
             blurAnimation.EndFade();
         }
 
-        private void SaveGame()
+        private void SaveWorld()
         {
-            DataManager.SaveMapSettingDataCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
+            DataManager.SaveWorldSettingData(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData, () => !DataManager.IsSaving);
 
-            DataManager.SaveAllGameObjectsCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+            DataManager.SaveWorldGameObjectDatas(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData.worldName, () => !DataManager.IsSaving);
         }
     }
 }
