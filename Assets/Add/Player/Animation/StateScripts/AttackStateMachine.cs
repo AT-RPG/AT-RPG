@@ -37,13 +37,15 @@ public class AttackStateMachine : StateMachineBehaviour
     // OnStateMachineEnter is called when entering a state machine via its Entry Node
     override public void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
     {
-       animator.SetBool("isAttacking", true);
+      animator.SetBool("isAttacking", true);
+      animator.SetBool("isMove", false);
     }
 
     // OnStateMachineExit is called when exiting a state machine via its Exit Node
     override public void OnStateMachineExit(Animator animator, int stateMachinePathHash)
     {
-       animator.SetBool("isAttacking", false);
-       animator.SetBool("isComboAttack", false);
+      animator.ResetTrigger("NormalAttack");
+      animator.SetBool("isAttacking", false);
+      animator.SetBool("isComboAttack", false);
     }
 }

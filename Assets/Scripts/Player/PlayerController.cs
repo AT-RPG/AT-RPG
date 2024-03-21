@@ -7,11 +7,15 @@ using AT_RPG.Manager;
 public class PlayerController : CommonBattle
 {
     public LayerMask enemyMask;
+    [SerializeField] private GameObject[] weapons;
     [SerializeField] private Transform characterBody;
     [SerializeField] private Transform cameraArm;
     [SerializeField] private Rigidbody playerRigid;
     [SerializeField] private float moveSpeed = 3.0f;
+    [SerializeField] private int curWeaponDamage = 0;
     private bool isComboCheck = false;
+    [SerializeField] private Transform[] weaponAttackPoints;
+    [SerializeField] private Transform myAttackPoint;
     // [SerializeField] Transform myCam;
 
     // public LayerMask crashMask;
@@ -34,6 +38,7 @@ public class PlayerController : CommonBattle
     // Start is called before the first frame update
     void Start()
     {
+        base.Initialize();
         // camDist = targetDist = Mathf.Abs(myCam.localPosition.z);
     }
 
@@ -170,8 +175,37 @@ public class PlayerController : CommonBattle
         }
     }
 
-    
+    public new void OnAttack()
+    {
+        Collider[] list = Physics.OverlapSphere(myAttackPoint.position, 0.5f, enemyMask);
 
+        foreach(Collider col in list)
+        {
+            ICharacterDamage cd = col.GetComponent<ICharacterDamage>();
+            cd?.TakeDamage(baseBattleStat.attackPoint + curWeaponDamage);
+        }
+    }
+
+    public void ChangeWeaponInfo(WeaponData curWeapon)
+    {
+        myAnim.runtimeAnimatorController = curWeapon.AnimatorOverride;
+        curWeaponDamage = curWeapon.Damage;
+        Debug.Log(baseBattleStat.attackPoint + curWeaponDamage);
+
+        switch(curWeapon.MyState)
+        {
+            case WeaponState.OneHand:
+            weapons[0].SetActive(true);
+            weapons[1].SetActive(false);
+            myAttackPoint = weaponAttackPoints[(int)WeaponState.OneHand - 1];
+            break;
+            case WeaponState.TwoHand:
+            weapons[0].SetActive(false);
+            weapons[1].SetActive(true);
+            myAttackPoint = weaponAttackPoints[(int)WeaponState.TwoHand - 1];
+            break;
+        }
+    }
     /// <summary>
     /// 지면을 감지하는 값을 받아 처리하는 함수
     /// </summary>
