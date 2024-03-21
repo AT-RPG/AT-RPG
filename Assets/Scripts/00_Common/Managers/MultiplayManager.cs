@@ -52,6 +52,7 @@ namespace AT_RPG.Manager
             else
             {
                 disconnected?.Invoke();
+                SetPlayMode(PlayMode.Single);
                 Disconnect();
             }
         }
@@ -75,6 +76,7 @@ namespace AT_RPG.Manager
             else
             {
                 disconnected?.Invoke();
+                SetPlayMode(PlayMode.Single);
                 Disconnect();
             }
         }
