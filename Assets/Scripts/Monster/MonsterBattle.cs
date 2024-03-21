@@ -10,6 +10,7 @@ public interface MDamage
 [System.Serializable]
 public struct MonsterStat
 {
+    public float monsterRunSpeed;
     public float monsterMoveSpeed;
     public float monsterRange;
     public float monsterDmage;
@@ -24,6 +25,7 @@ public struct MonsterStat
 
 public class MonsterBattle : MonsterPorperty
 {
+
     [SerializeField] public MonsterStat mStat;
     protected float curHP;
 }

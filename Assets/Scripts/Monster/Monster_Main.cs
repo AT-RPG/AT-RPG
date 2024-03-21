@@ -26,13 +26,18 @@ public class MonsterMain : MonsterBattle, MDamage
     }
     private void Awake() //초기화
     {
-        //transform.position = MonsterPool.transform.position; //스폰위치 설정
-       // transform.position = transform.parent.position ; //스폰위치 설정
-        ChangeState(State.Create);
+        transform.position = transform.parent.position; //스폰위치 설정
+        monNav = GetComponent<NavMeshAgent>(); //네브메쉬 할당
+        monNav.speed = mStat.monsterMoveSpeed;
+        monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
+        monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
+        idleState();
     }
     void OnEnable()
     {
-        ChangeState(State.Create);
+        monNav.speed = mStat.monsterMoveSpeed;
+        transform.position = transform.parent.position; //스폰위치 설정
+        idleState();
     }
 
 
@@ -41,26 +46,23 @@ public class MonsterMain : MonsterBattle, MDamage
 
     Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
-    Coroutine rotate = null; //몬스터의 회전을 관리
 
     public MonsterAI monsterAI; 
     private bool isTracking = false;
     Transform monsterTarget;
-
 
     NavMeshAgent monNav;
 
     //몬스터 상태
     public enum State 
     {
-        Create,
         Idle,
         Move,
         Battle,
         Dead
     }
     //몬스터의 기본상태 설정
-    public State monsterState = State.Create;
+    public State monsterState;
 
     //몬스터 상태변경
     void ChangeState(State newState) 
@@ -69,9 +71,6 @@ public class MonsterMain : MonsterBattle, MDamage
         monsterState = newState; 
         switch (monsterState)
         {
-            case State.Create:
-                createMonster();
-                break;
             case State.Idle: 
                 idleState();
                 break;
@@ -88,14 +87,7 @@ public class MonsterMain : MonsterBattle, MDamage
     }
 
     //몬스터 생성
-    void createMonster()
-    {
-        monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
-        monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
-        transform.position = transform.parent.position; //스폰위치 설정
-        monNav = GetComponent<NavMeshAgent>(); //네브메쉬 할당
-        ChangeState(State.Idle);
-    }
+   
 
     //몬스터 대기 상태
     void idleState()
@@ -126,15 +118,17 @@ public class MonsterMain : MonsterBattle, MDamage
         }
         else
         {
-            Debug.LogWarning("유효한 목표 위치를 찾을 수 없습니다.");  // 유효한 위치를 찾지 못한 경우에는 경고 출력
+            SetRndDir();
         }
     }
     void MoveToPos(Vector3 target)
     {
+       
         if (move != null)
         {
             StopCoroutine(move);
         }
+       
         move = StartCoroutine(MovingCoroutine(target));
     }
     IEnumerator MovingCoroutine(Vector3 target)
@@ -142,11 +136,18 @@ public class MonsterMain : MonsterBattle, MDamage
         monNav.SetDestination(target);
         while (monNav.remainingDistance > monNav.stoppingDistance)
         {
-            IsRunning(monNav.remainingDistance);
             yield return null;
+            IsRunning(monNav.remainingDistance);
         }
-        // 이동이 완료되면 상태를 변경합니다.
-        ChangeState(State.Idle);
+
+        if (isTracking == false)
+        {
+            ChangeState(State.Idle);
+        }
+        else
+        {
+            ChangeState(State.Battle);
+        }
     }
 
     void IsRunning(float remainingDistance)//달리기
@@ -154,13 +155,14 @@ public class MonsterMain : MonsterBattle, MDamage
         float runOk = 40.0f;
         if (remainingDistance >= runOk)
         {
-            mStat.monsterMoveSpeed = 6.0f;
+
+            monNav.speed = mStat.monsterRunSpeed;
             monsterAnim.SetBool("Move", false);
             monsterAnim.SetBool("Run", true);
         }
         else
         {
-            mStat.monsterMoveSpeed = 3.0f;
+            monNav.speed=mStat.monsterMoveSpeed;
             monsterAnim.SetBool("Run", false);
             monsterAnim.SetBool("Move", true);
         }
@@ -236,6 +238,8 @@ public class MonsterMain : MonsterBattle, MDamage
     void deadState()
     {
         StopAllCoroutines();
+        monsterAnim.SetBool("Run", false);
+        monsterAnim.SetBool("Move", false);
         monsterAnim.SetTrigger("Dead");
         Invoke("destroyMosnter", 5f); //풀 릴리스 호출
     }
