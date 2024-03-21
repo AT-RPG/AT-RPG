@@ -209,4 +209,14 @@ namespace AT_RPG
     /// </summary>
     public class SerializedGameObjectsList : List<List<GameObjectData>> { }
     #endregion
+
+    #region MultiplayManager
+
+    // 포톤 클라우드 애플리케이션 서버에 연결이 성공한 경우
+    public delegate void ConnectedCallback();
+
+    // 포톤 클라우드 애플리케이션 서버에 연결이 실패한 경우
+    public delegate void DisconnectedCallback();
+
+    #endregion
 }

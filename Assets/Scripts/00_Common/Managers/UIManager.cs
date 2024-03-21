@@ -48,10 +48,7 @@ namespace AT_RPG.Manager
         private static void OnInstantiateGameMenuPopup(InputValue inputValue)
         {
             // 아직 팝업이 남아있는가?
-            if (popupCanvas.GetPopupCount() >= 1)
-            {
-                return;
-            }
+            if (popupCanvas.GetPopupCount() >= 1) { return; }
 
             if (!gameMenuPopupInstance)
             {
