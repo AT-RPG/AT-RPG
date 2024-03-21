@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class CommonBattle : CharacterProperty, ICharacterDamage
 {
-    protected BaseBattleStat baseBattleStat;
+    [SerializeField] protected BaseBattleStat baseBattleStat;
     public UnityEvent<float> changeHpAct;
     public event UnityAction deathAlarm;
     float _curHP = 0.0f;
@@ -49,14 +49,15 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
     public void TakeDamage(float dmg)
     {
         curHP -= dmg;
-        if (curHP <= 0.0f)
-        {
-            //Die
-        }
-        else
-        {
-            //Damage
-        }
+        Debug.Log(curHP);
+        // if (curHP <= 0.0f)
+        // {
+        //     //Die
+        // }
+        // else
+        // {
+        //     //Damage
+        // }
     }
 
     public void OnAttack()
