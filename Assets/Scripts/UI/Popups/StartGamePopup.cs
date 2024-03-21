@@ -13,15 +13,17 @@ namespace AT_RPG
     /// </summary>
     public class StartGamePopup : Popup, IPopupDestroy
     {
+        [Tooltip("맵 버튼이 생성될 위치")]
+        [SerializeField] private GameObject mapButtonContents;
+
+        [Header("하위 팝업")]
         [Tooltip("맵 설정 팝업 프리팹")]
         [SerializeField] private ResourceReference<GameObject> mapSettingPopupPrefab;
 
         [Tooltip("맵 버튼 프리팹")]
         [SerializeField] private ResourceReference<GameObject> mapButtonPrefab;
 
-        [Tooltip("맵 버튼이 생성될 위치")]
-        [SerializeField] private GameObject mapButtonContents;
-
+        [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private BlurCanvasAnimation blurAnimation;
@@ -122,7 +124,7 @@ namespace AT_RPG
         {
             if (!currPickedMapButton)
             {
-                Debug.LogError($"{currPickedMapButton}이 아직 선택되지 않았습니다.");
+                Debug.LogError($"맵이 아직 선택되지 않았습니다.");
                 return;
             }
 
@@ -131,8 +133,8 @@ namespace AT_RPG
 
         /// <summary>
         /// 맵을 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
-        /// TODO : 리소스 로딩 바로 직후 세이브 파일 로딩하면 에러가 생김...
         /// </summary>
+        /// TODO : 리펙토링
         private void InternalOnPlayMap()
         {
             SerializedGameObjectsList gameObjectDatas = new SerializedGameObjectsList();
@@ -146,18 +148,24 @@ namespace AT_RPG
                 ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
                 // 로딩이 끝나면 씬을 변경합니다.
-                SceneManager.LoadSceneCoroutine(toScene,
+                SceneManager.LoadSceneCoroutine(toScene, 
+                () => !ResourceManager.IsLoading && !DataManager.IsLoading,
                 () =>
                 {
-                    return !ResourceManager.IsLoading && !DataManager.IsLoading;
-                },
-                () =>
-                {
+                    // 로드한 맵 설정에서 멀티플레이가 활성화 되어있다면 세션을 만듭니다.
                     DataManager.LoadMapSettingDataCoroutine(
                         DataManager.Setting.defaultSaveFolderPath, currPickedMapButton.MapName,
                         () => !DataManager.IsLoading && !ResourceManager.IsLoading,
-                        loadedMapSettingData => DataManager.MapSettingData = loadedMapSettingData);
+                        loadedMapSettingData =>
+                        {
+                            DataManager.WorldSettingData = loadedMapSettingData;
 
+                            if (!loadedMapSettingData.isMultiplayEnabled) { return; }
+
+                            MultiplayManager.ConnectToCloud();
+                        });
+
+                    // 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.
                     DataManager.LoadAllGameObjectsCoroutine(
                         DataManager.Setting.defaultSaveFolderPath, currPickedMapButton.MapName,
                         () => !DataManager.IsLoading && !ResourceManager.IsLoading,
@@ -165,6 +173,7 @@ namespace AT_RPG
                 });
             });
         }
+
 
 
         /// <summary>

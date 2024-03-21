@@ -31,7 +31,7 @@ namespace AT_RPG
             }
 
 #if UNITY_EDITOR
-            resourceGUID = Guid.Empty.ToString();
+            resourceGUID = Guid.Empty.ToString();        
 #endif
         }
 

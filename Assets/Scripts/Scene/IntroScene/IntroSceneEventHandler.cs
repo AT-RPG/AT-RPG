@@ -13,10 +13,7 @@ namespace AT_RPG
 
                 ResourceManager.UnloadAllResourcesCoroutine(SceneManager.CurrentSceneName);
 
-                SceneManager.LoadSceneCoroutine(SceneManager.Setting.TitleScene, () =>
-                {
-                    return !ResourceManager.IsLoading;
-                });
+                SceneManager.LoadSceneCoroutine(SceneManager.Setting.TitleScene, () => !ResourceManager.IsLoading);
             });
         }
     }

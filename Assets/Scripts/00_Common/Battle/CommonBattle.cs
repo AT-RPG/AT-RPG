@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class CommonBattle : CharacterProperty, ICharacterDamage
 {
-    BaseBattleStat baseBattleStat;
+    protected BaseBattleStat baseBattleStat;
     public UnityEvent<float> changeHpAct;
     public event UnityAction deathAlarm;
     float _curHP = 0.0f;
