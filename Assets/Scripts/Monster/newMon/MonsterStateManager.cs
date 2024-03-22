@@ -13,14 +13,13 @@ public class MonsterStateManager : MonsterBattle
     /// </summary>
     private MonsterMoveManager monsterMoveManager; //이동관리 컴포넌트 추가
     private MonsterBattleManager monsterBattleManager; //전투관리 컴포넌트 추가
-    private MonsterAI monsterAI; //플레이어 추적 판단여부 컴포넌트 추가
+    [SerializeField] private MonsterAI monsterAI; //플레이어 추적 판단여부 컴포넌트 추가
 
     /// <summary>
     /// 스크립트 내에서 사용할 변수
     /// </summary>
     private Vector3 monTargetPos=Vector3.zero; //타겟의 위치를 지정(이동 목적지/플레이어 위치)
     private bool isInBattle=false;
-    private float idleTime = 0.0f;
 
     /// <summary>
     /// 풀 관리 스크립트
@@ -32,18 +31,18 @@ public class MonsterStateManager : MonsterBattle
     }
     public void destroyMosnter()
     {
+        ChangeState(MonsterState.Idle);
         MonsterPool.Release(this); //몬스터 풀반환
     }
     private void Awake() //초기화
     {
-        monsterAI = GetComponent<MonsterAI>();
+        monsterAI = GetComponentInChildren<MonsterAI>();
         monsterAI.findPlayer.AddListener(StartTracking);
         monsterAI.lostPlayer.AddListener(StopTracking);
 
         monsterMoveManager = GetComponent<MonsterMoveManager>();
         monsterBattleManager = GetComponent<MonsterBattleManager>();
-
-        ChangeState(MonsterState.Idle);
+        MonsterIdle();
     }
     void OnEnable()
     {
@@ -59,6 +58,7 @@ public class MonsterStateManager : MonsterBattle
         Battle, 
         Dead    
     }
+    [SerializeField]
     private MonsterState monState=MonsterState.Idle;
 
     private void ChangeState(MonsterState newState)
@@ -72,7 +72,8 @@ public class MonsterStateManager : MonsterBattle
                 MonsterIdle();
                 break;
             case MonsterState.Moving:
-                monsterMoveManager.Move(monTargetPos, isInBattle,mStat.monsterRange,mStat.longAttack);
+                monsterAnim.SetBool("Move", true);
+                monsterMoveManager.Move(monTargetPos, isInBattle,mStat.monsterRange,mStat.longAttack,mStat.monsterMoveSpeed);
                 break;
             case MonsterState.Battle:
                 monsterBattleManager.Attack();
@@ -89,10 +90,12 @@ public class MonsterStateManager : MonsterBattle
     {
         monTargetPos = target.position;
         isInBattle = true;
+        ChangeState(MonsterState.Battle);
     }
     public void StopTracking()
     {
         isInBattle = false;
+        ChangeState(MonsterState.Idle);
     }
 
     /// <summary>
@@ -102,8 +105,8 @@ public class MonsterStateManager : MonsterBattle
     {
         monsterAnim.SetBool("Run", false);
         monsterAnim.SetBool("Move", false);
-        idleTime = Random.Range(2, 4);
-        Invoke("ChangeStateMove", idleTime);
+        mStat.monsterIdleTime = Random.Range(2, 4);
+        Invoke("ChangeStateMove", mStat.monsterIdleTime);
     }
     private void ChangeStateMove()
     {
@@ -126,15 +129,12 @@ public class MonsterStateManager : MonsterBattle
     // Start is called before the first frame update
     void Start()
     {
-        
+      //  ChangeState(MonsterState.Idle);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isInBattle == true)
-        {
-            ChangeState(MonsterState.Battle);
-        }
+
     }
 }

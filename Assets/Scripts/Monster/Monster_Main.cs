@@ -487,6 +487,7 @@ public class MonsterMain : MonsterBattle, MDamage
     }
 
     //몬스터 전투상태
+    private RangeAttack rangeAttack;
     IEnumerator battleState()
     {
         while (monsterTarget != null)
@@ -518,7 +519,7 @@ public class MonsterMain : MonsterBattle, MDamage
         monsterAnim.SetTrigger("NormalAttack");
         if (mStat.longAttack == true)
         {
-
+            rangeAttack.OnShoot(monResPos.transform.position, monsterTarget.transform.position);
             //원거리 공격실행
         }
     }

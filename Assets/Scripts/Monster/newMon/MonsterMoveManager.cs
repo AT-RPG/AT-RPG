@@ -17,11 +17,11 @@ public class MonsterMoveManager : MonoBehaviour
         monsterStateManager = GetComponent<MonsterStateManager>();
     }
 
-    public void Move(Vector3 targetPos, bool isInBattle,float mRange,bool rangeType)
+    public void Move(Vector3 targetPos, bool isInBattle,float mRange,bool rangeType,float monSpeed)
     {
         range= mRange;
         longAttack = rangeType;
-
+        navMeshAgent.speed = monSpeed;
         ///이동 부분
         if (isInBattle == true)
         {

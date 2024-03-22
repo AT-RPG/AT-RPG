@@ -44,7 +44,6 @@ public class RangeAttack : MonoBehaviour
     public void OnShoot(Vector3 fireballPosition, Vector3 fireballDirection)
     {
         var fireball = rangePool.Get();
-        fireball.transform.position = fireballPosition;
-        fireball.mShoot(fireballDirection);
+   
     }
 }
