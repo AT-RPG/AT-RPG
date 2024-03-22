@@ -9,8 +9,6 @@ AnimatorOverrideController:
   m_Name: Monkeydong
   m_Controller: {fileID: 9100000, guid: 18ed30ec93f2b054a8192f89895f1af5, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 7cedb2dd3125e3c43afb4452890d69da, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 694fe2af03c582f4ab7bb2bb5c935b14, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 91029adf1542e274395976102b8a13e2, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: b0e48387b20b0ba47b414ca04c3797a5, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 91673639578a13d4ea13060fabedf459, type: 2}
@@ -21,3 +19,5 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: f76c58b2c1ee1624abb22c0faad18ee3, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 5c71d29da75f6bf44bfc3312ef65e7c8, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: a2873439ab5491b4eabfcac2474b357e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 65a1c818ea452274fa07733786e5fe55, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 694fe2af03c582f4ab7bb2bb5c935b14, type: 2}
