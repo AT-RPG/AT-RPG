@@ -1,37 +1,59 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using AT_RPG;
+using AT_RPG.Manager;
 
-public class PlayerController : CharacterProperty
+
+public class PlayerController : CommonBattle
 {
+    public LayerMask enemyMask;
+    [SerializeField] private GameObject[] weapons;
     [SerializeField] private Transform characterBody;
     [SerializeField] private Transform cameraArm;
-    [SerializeField] Transform myCam;
+    [SerializeField] private Rigidbody playerRigid;
+    [SerializeField] private float moveSpeed = 3.0f;
+    [SerializeField] private int curWeaponDamage = 0;
+    private bool isComboCheck = false;
+    [SerializeField] private Transform[] weaponAttackPoints;
+    [SerializeField] private Transform myAttackPoint;
+    // [SerializeField] Transform myCam;
+
     // public LayerMask crashMask;
 
     // float targetDist;
     // float camDist;
 
+    /// <summary>
+    /// 입력 키 추가
+    /// </summary>
+    void Awake()
+    {
+        InputManager.AddKeyAction("Dodge", Dodge);
+        InputManager.AddKeyAction("Jump", Jump);
+        InputManager.AddKeyAction("Move Forward/Move Backward", Move);
+        InputManager.AddKeyAction("Move Left/Move Right", Move);
+        InputManager.AddKeyAction("Aim", LookAround);
+        InputManager.AddKeyAction("Attack/Fire", Attack);
+    }
     // Start is called before the first frame update
     void Start()
     {
+        base.Initialize();
         // camDist = targetDist = Mathf.Abs(myCam.localPosition.z);
     }
 
     // Update is called once per frame
     void Update()
     {
-        LookAround();
-        Move();
-        if(Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            myAnim.SetTrigger("isDodge");
-            // Dodge();
-        }
     }
 
-    private void Move()
+    /// <summary>
+    /// 플레이어의 이동
+    /// </summary>
+    private void Move(InputValue value)
     {
+        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isAttacking")) return;
+
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         bool isMove = moveInput.magnitude != 0;
         myAnim.SetBool("isMove", isMove);
@@ -42,12 +64,15 @@ public class PlayerController : CharacterProperty
             Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
 
             characterBody.forward = moveDir;
-            transform.position += moveDir * Time.deltaTime * 3.0f;
+            transform.position += moveDir * Time.deltaTime * moveSpeed;
         }
         Debug.DrawRay(cameraArm.position, new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized, Color.red);
     }
 
-    private void LookAround()
+    /// <summary>
+    /// 카메라 시선 처리
+    /// </summary>
+    private void LookAround(InputValue value)
     {
         Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         Vector3 camAngle = cameraArm.rotation.eulerAngles;
@@ -75,8 +100,131 @@ public class PlayerController : CharacterProperty
         // myCam.localPosition = new Vector3(0, 0, -camDist);
     }
 
-    private void Dodge()
+    /// <summary>
+    /// 회피
+    /// </summary>
+    private void Dodge(InputValue value)
     {
-        myAnim.SetTrigger("isDodge");
+        if(myAnim.GetBool("isJumping") || myAnim.GetBool("isAttacking")) return;
+
+        myAnim.SetTrigger("Dodge");
+        myAnim.SetBool("isRolling", true);
+    }
+
+    /// <summary>
+    /// 점프
+    /// </summary>
+    private void Jump(InputValue value)
+    {
+        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping")) return;
+
+        myAnim.SetTrigger("Jump");
+        myAnim.SetBool("isJumping", true);
+        playerRigid.AddForce(Vector3.up * 200.0f);
+    }
+
+    /// <summary>
+    /// 콤보공격 체크 ( 다른 스크립트에서 UnityEvent로 실행중 )
+    /// </summary>
+    public void ComboCheck(bool v)
+    {
+        if(v)
+        {
+            StartCoroutine(ComboChecking());
+        }
+        else
+        {
+            isComboCheck = false;
+        }
+    }
+
+    /// <summary>
+    /// 콤보 공격 마우스 입력값 체크하는 코루틴
+    /// </summary>
+    IEnumerator ComboChecking()
+    {
+        int clickCount = 0;
+        isComboCheck = true;
+        myAnim.SetBool("isComboAttack", true);
+        while (isComboCheck)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                clickCount++;
+            }
+            yield return null;
+        }
+
+        if(clickCount == 0)
+        {
+            myAnim.SetBool("isComboAttack", false);
+        }
+    }
+
+    /// <summary>
+    /// 마우스 좌클릭 시 공격트리거 작동
+    /// </summary>
+    private void Attack(InputValue value)
+    {
+        if(!myAnim.GetBool("isAttacking"))
+        {
+            // if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            {
+                myAnim.SetTrigger("NormalAttack");
+            }
+        }
+    }
+
+    public new void OnAttack()
+    {
+        Collider[] list = Physics.OverlapSphere(myAttackPoint.position, 0.5f, enemyMask);
+
+        foreach(Collider col in list)
+        {
+            ICharacterDamage cd = col.GetComponent<ICharacterDamage>();
+            cd?.TakeDamage(baseBattleStat.attackPoint + curWeaponDamage);
+        }
+    }
+
+    public void ChangeWeaponInfo(WeaponData curWeapon)
+    {
+        myAnim.runtimeAnimatorController = curWeapon.AnimatorOverride;
+        curWeaponDamage = curWeapon.Damage;
+        Debug.Log(baseBattleStat.attackPoint + curWeaponDamage);
+
+        switch(curWeapon.MyState)
+        {
+            case WeaponState.OneHand:
+            weapons[0].SetActive(true);
+            weapons[1].SetActive(false);
+            myAttackPoint = weaponAttackPoints[(int)WeaponState.OneHand - 1];
+            break;
+            case WeaponState.TwoHand:
+            weapons[0].SetActive(false);
+            weapons[1].SetActive(true);
+            myAttackPoint = weaponAttackPoints[(int)WeaponState.TwoHand - 1];
+            break;
+        }
+    }
+    /// <summary>
+    /// 지면을 감지하는 값을 받아 처리하는 함수
+    /// </summary>
+    public void SetFallState(bool isGround)
+    {
+        myAnim.SetBool("isGround", isGround);
+    }
+
+    /// <summary>
+    /// 오브젝트 삭제시(ex:씬 이동) 추가했던 키 제거 (중복방지)
+    /// </summary>
+    private void OnDestroy() 
+    {
+        InputManager.RemoveKeyAction("Dodge", Dodge);
+        InputManager.RemoveKeyAction("Jump", Jump);
+        InputManager.RemoveKeyAction("Move Forward/Move Backward", Move);
+        InputManager.RemoveKeyAction("Move Left/Move Right", Move);
+        InputManager.RemoveKeyAction("Aim", LookAround);
+        InputManager.RemoveKeyAction("Attack/Fire", Attack);
     }
 }
+

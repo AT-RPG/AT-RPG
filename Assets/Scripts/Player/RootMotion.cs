@@ -4,21 +4,33 @@ using UnityEngine;
 
 public class RootMotion : MonoBehaviour
 {
-    // Animator myAnim;
-    // Start is called before the first frame update
+    Animator myAnim;
+    Vector3 deltaPos;
+    Quaternion deltaRot;
+
     void Start()
     {
-        // myAnim = GetComponent<Animator>();
+        myAnim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {        
+    private void FixedUpdate()
+    {
+        if(Physics.Raycast(new Ray(transform.position, deltaPos.normalized), out RaycastHit hit,
+            deltaPos.magnitude, LayerMask.GetMask("Wall")))
+        {
+            deltaPos = deltaPos.normalized * hit.distance;
+        }
+
+        transform.parent.position += deltaPos;
+        transform.parent.rotation *= deltaRot;
+        deltaPos = Vector3.zero;
+        deltaRot = Quaternion.identity;
     }
 
     private void OnAnimatorMove()
     {
-        // transform.parent.position += myAnim.deltaPosition;
-        // transform.parent.rotation *= myAnim.deltaRotation;
+        deltaPos += myAnim.deltaPosition;
+        deltaRot *= myAnim.deltaRotation;
     }
 }
+

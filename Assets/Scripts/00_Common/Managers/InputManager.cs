@@ -17,7 +17,7 @@ namespace AT_RPG.Manager
             {"Move Right", new InputMappingContext(KeyCode.D, InputOption.GetKey)},
             {"Crouch", new InputMappingContext(KeyCode.C, InputOption.GetKeyDown)},
             {"Inventory", new InputMappingContext(KeyCode.I, InputOption.GetKeyDown)},
-            {"Attack/Fire", new InputMappingContext(KeyCode.Mouse0, InputOption.GetKey)},
+            {"Attack/Fire", new InputMappingContext(KeyCode.Mouse0, InputOption.GetKeyDown)},
             {"Aim", new InputMappingContext(MouseKeyCode.MouseX | MouseKeyCode.MouseY, InputOption.GetAxis)},
             {"Jump", new InputMappingContext(KeyCode.Space, InputOption.GetKeyDown)},
             {"Equipment1", new InputMappingContext(KeyCode.Alpha1, InputOption.GetKeyDown)},

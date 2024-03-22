@@ -1,4 +1,5 @@
 using UnityEngine;
+using AT_RPG.Manager;
 
 namespace AT_RPG
 {
@@ -6,25 +7,32 @@ namespace AT_RPG
     /// 설명 :                                <br/>
     /// + 게임 설정 팝업에서 사용되는 클래스     <br/>
     /// </summary>
-    public class OptionPopup : Popup
+    public class OptionPopup : Popup, IPopupDestroy
     {
+        [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private BlurCanvasAnimation blurAnimation;
 
+        [Header("하위 팝업")]
+        [SerializeField] private ResourceReference<GameObject> mapSettingPopup;
+
+        [Header("옵션 메뉴 버튼")]
+        [Tooltip("그래픽 설정 버튼")]
+        [SerializeField] private GameObject graphicButtonInstance;
+        [Tooltip("조작키 설정 버튼")]
+        [SerializeField] private GameObject controlButtonInstance;
+        [Tooltip("인게임 설정 버튼")]
+        [SerializeField] private GameObject gamesButtonInstance;
+
+        private void Awake()
+        {
+            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { gamesButtonInstance.SetActive(false); }
+        }
+
         private void Start()
         {
             AnimateStartSequence();
-        }
-
-        /// <summary>
-        /// 팝업 종료를 요청합니다.
-        /// </summary>
-        public override void InvokeDestroy()
-        {
-            base.InvokeDestroy();
-
-            AnimateEscapeSequence();
         }
 
         /// <summary>
@@ -35,6 +43,13 @@ namespace AT_RPG
             fadeAnimation.StartFade();
             popupAnimation.StartPopup();
             blurAnimation.StartFade();
+        }
+
+
+
+        public void DestroyPopup()
+        {
+            AnimateEscapeSequence();
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ TagManager:
   - SpawnPoint
   - Item
   - Door
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -17,10 +18,11 @@ TagManager:
   - UI
   - PopupUI
   - BackgroundUI
-  - 
-  - 
+  - Player
+  - Monster
   - Ground
   - Wall
+  - NPC
   - 
   - 
   - 
@@ -28,8 +30,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Weapon
   - 
   - 
   - 
