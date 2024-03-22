@@ -1,4 +1,5 @@
 using AT_RPG.Manager;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AT_RPG
@@ -167,7 +168,10 @@ namespace AT_RPG
 
                 ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
-                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !DataManager.IsSaving, () => MultiplayManager.Disconnect());
+                SceneManager.LoadSceneCoroutine(
+                    toScene, 
+                    () => !ResourceManager.IsLoading && !DataManager.IsSaving, 
+                    () => MultiplayManager.Disconnect());
             });
         }
 

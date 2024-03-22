@@ -17,7 +17,11 @@ namespace AT_RPG
     {
         private static NetworkRunner runner;
 
+        [SerializeField] private NetworkPrefabRef _playerPrefab;
+        private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
+        private bool _mouseButton0;
+        private bool _mouseButton1;
 
         private void Awake()
         {
@@ -30,6 +34,12 @@ namespace AT_RPG
             runner.Shutdown();
         }
 
+
+        private void Update()
+        {
+            _mouseButton0 = _mouseButton0 || Input.GetMouseButton(0);
+            _mouseButton1 = _mouseButton1 || Input.GetMouseButton(1);
+        }
 
 
         /// <summary>
@@ -94,12 +104,62 @@ namespace AT_RPG
 
 
 
-        void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player) { }
-        void INetworkRunnerCallbacks.OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
-        void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input) { }
+        void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
+        {
+            if (runner.IsServer)
+            {
+                // Create a unique position for the player
+                Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1, 0);
+                NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+                // Keep track of the player avatars so we can remove it when they disconnect
+                _spawnedCharacters.Add(player, networkPlayerObject);
+            }
+        }
+
+        void INetworkRunnerCallbacks.OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+        {
+            // Find and remove the players avatar
+            if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
+            {
+                runner.Despawn(networkObject);
+                _spawnedCharacters.Remove(player);
+            }
+        }
+
+        void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input) 
+        {
+            var data = new NetworkInputData();
+
+            if (Input.GetKey(KeyCode.W))
+                data.direction += Vector3.forward;
+
+            if (Input.GetKey(KeyCode.S))
+                data.direction += Vector3.back;
+
+            if (Input.GetKey(KeyCode.A))
+                data.direction += Vector3.left;
+
+            if (Input.GetKey(KeyCode.D))
+                data.direction += Vector3.right;
+
+            if (_mouseButton0)
+                data.buttons |= NetworkInputData.MOUSEBUTTON1;
+
+            if (_mouseButton1)
+                data.buttons |= NetworkInputData.MOUSEBUTTON2;
+
+            _mouseButton0 = false;
+            _mouseButton1 = false;
+
+            input.Set(data);
+        }
+
         void INetworkRunnerCallbacks.OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
         void INetworkRunnerCallbacks.OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
-        void INetworkRunnerCallbacks.OnConnectedToServer(NetworkRunner runner) { }
+        void INetworkRunnerCallbacks.OnConnectedToServer(NetworkRunner runner) 
+        {
+            Debug.Log("test");
+        }
         void INetworkRunnerCallbacks.OnDisconnectedFromServer(NetworkRunner runner) { }
         void INetworkRunnerCallbacks.OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
         void INetworkRunnerCallbacks.OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }

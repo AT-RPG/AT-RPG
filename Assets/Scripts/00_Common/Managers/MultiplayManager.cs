@@ -42,7 +42,7 @@ namespace AT_RPG.Manager
         {
             if (networkRunner) { return; }
 
-            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource, Instance.transform).GetComponent<MultiplayNetworkRunner>();
+            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource).GetComponent<MultiplayNetworkRunner>();
             StartGameResult connectionResult = await networkRunner.ConnectToCloud();
             if (connectionResult.Ok)
             {
@@ -52,6 +52,7 @@ namespace AT_RPG.Manager
             else
             {
                 disconnected?.Invoke();
+                SetPlayMode(PlayMode.Single);
                 Disconnect();
             }
         }
@@ -65,7 +66,7 @@ namespace AT_RPG.Manager
         {
             if (networkRunner) { return; }
 
-            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource, Instance.transform).GetComponent<MultiplayNetworkRunner>();
+            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource).GetComponent<MultiplayNetworkRunner>();
             StartGameResult connectionResult = await networkRunner.ConnectToPlayer(inviteCode);
             if (connectionResult.Ok)
             {
@@ -75,6 +76,7 @@ namespace AT_RPG.Manager
             else
             {
                 disconnected?.Invoke();
+                SetPlayMode(PlayMode.Single);
                 Disconnect();
             }
         }
