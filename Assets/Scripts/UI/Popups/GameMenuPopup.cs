@@ -1,4 +1,5 @@
 using AT_RPG.Manager;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AT_RPG
@@ -8,8 +9,11 @@ namespace AT_RPG
     /// </summary>
     public class GameMenuPopup : Popup, IPopupDestroy
     {
-        [Tooltip("게임 설정 팝업 프리팹")]
+        [Header("하위 팝업")]
+
+        [Tooltip("게임 설정 팝업")]
         [SerializeField] private ResourceReference<GameObject>  optionPopupPrefab;
+        [SerializeField] private ResourceReference<GameObject>  mapSettingPopupPrefab;
 
         [Tooltip("타이틀 화면 씬")]
         [SerializeField] private SceneReference                 titleScene;
@@ -22,18 +26,29 @@ namespace AT_RPG
         [Header("게임 메뉴 버튼")]
         [SerializeField] private GameObject                     continueButtonInstance;
         [SerializeField] private GameObject                     saveButtonInstance;
+        [SerializeField] private GameObject                     inviteButtonInstance;
         [SerializeField] private GameObject                     optionButtonInstance;
         [SerializeField] private GameObject                     titleButtonInstance;
         [SerializeField] private GameObject                     quitButtonInstance;
 
         private bool isEscaped = false;
 
-
+        
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { saveButtonInstance.SetActive(false); }
-            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleScene) { titleButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleScene) 
+            { 
+                titleButtonInstance.SetActive(false);
+                saveButtonInstance.SetActive(false);
+                inviteButtonInstance.SetActive(false);
+            }         
+
+            if (MultiplayManager.PlayMode == PlayMode.Client)
+            {
+                saveButtonInstance.SetActive(false);
+                inviteButtonInstance.SetActive(false);
+            }
         }
 
 
@@ -81,11 +96,43 @@ namespace AT_RPG
         /// </summary>
         public void OnSaveMap()
         {
-            DataManager.SaveMapSettingDataCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
+            PlayMode currentPlayMode = MultiplayManager.PlayMode;
+            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
 
-            DataManager.SaveAllGameObjectsCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
+            LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
+
+            logPopup.Log = $"Save Completed!";
+            logPopup.Duration = 3.0f;
+        }
+
+
+        
+        /// <summary>
+        /// 현재 세션에 대한 초대코드를 생성합니다.
+        /// </summary>
+        public void OnCreateInviteCode()
+        {
+            IsMultiplayEnabled();
+
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
+            LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
+
+            logPopup.Log = IsMultiplayEnabled() ?
+                           $"Invite code : {MultiplayManager.InviteCode} was generated! \n" +
+                           $"Share this code to other player!" :
+                           $"Multiplay is disabled. \n" +
+                           $"Check multiplay enabled at map setting option";
+
+            logPopup.Duration = IsMultiplayEnabled() ? 8.0f : 4.0f;
+        }
+
+        /// <summary>
+        /// 플레이어 초대 코드를 생성하기전에 맵 설정에 멀티플레이가 켜져있는지 확인합니다.
+        /// </summary>
+        private bool IsMultiplayEnabled()
+        {
+            return DataManager.WorldSettingData.isMultiplayEnabled;
         }
 
 
@@ -95,7 +142,8 @@ namespace AT_RPG
         /// </summary>
         public void OnInstantiateOptionPopup()
         {
-            
+            UIManager.InstantiatePopup(optionPopupPrefab.Resource, PopupRenderMode.Hide);
+            DestroyPopup();
         }
 
 
@@ -105,11 +153,10 @@ namespace AT_RPG
         /// </summary>
         public void OnLoadTitleScene()
         {
-            DataManager.SaveMapSettingDataCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData, () => !DataManager.IsSaving);
+            PlayMode currentPlayMode = MultiplayManager.PlayMode;
+            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
 
-            DataManager.SaveAllGameObjectsCoroutine(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.MapSettingData.mapName, () => !DataManager.IsSaving);
+            DataManager.WorldSettingData = null;
 
             // 타이틀 씬으로 이동
             string fromScene = SceneManager.CurrentSceneName;
@@ -121,7 +168,10 @@ namespace AT_RPG
 
                 ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
-                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !DataManager.IsSaving);
+                SceneManager.LoadSceneCoroutine(
+                    toScene, 
+                    () => !ResourceManager.IsLoading && !DataManager.IsSaving, 
+                    () => MultiplayManager.Disconnect());
             });
         }
 
@@ -132,6 +182,10 @@ namespace AT_RPG
         /// </summary>
         public void OnQuitGame()
         {
+            PlayMode currentPlayMode = MultiplayManager.PlayMode;
+            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
+
+            MultiplayManager.Disconnect();
             Application.Quit();
         }
 
@@ -153,6 +207,15 @@ namespace AT_RPG
                 Destroy(gameObject);
             });
             blurAnimation.EndFade();
+        }
+
+        private void SaveWorld()
+        {
+            DataManager.SaveWorldSettingData(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData, () => !DataManager.IsSaving);
+
+            DataManager.SaveWorldGameObjectDatas(
+                DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData.worldName, () => !DataManager.IsSaving);
         }
     }
 }

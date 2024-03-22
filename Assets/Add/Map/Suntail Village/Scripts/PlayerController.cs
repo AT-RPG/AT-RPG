@@ -102,7 +102,6 @@ namespace Suntail
         private void Update()
         {
             Movement();
-            MouseLook();
             GroundChecker();
         }
 
@@ -131,17 +130,6 @@ namespace Suntail
             _velocity.y += gravity * Time.deltaTime;
             _characterController.Move(_velocity * Time.deltaTime);
 
-        }
-
-        private void MouseLook()
-        {   
-            _xAxis = Input.GetAxis("MouseKey X"); 
-            _yAxis = Input.GetAxis("MouseKey Y");
-
-            _verticalRotation += -_yAxis * mouseSensivity;
-            _verticalRotation = Mathf.Clamp(_verticalRotation, -mouseVerticalClamp, mouseVerticalClamp);
-            playerCamera.transform.localRotation = Quaternion.Euler(_verticalRotation, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, _xAxis * mouseSensivity, 0);
         }
 
         //Playing footstep sound when controller moves and grounded

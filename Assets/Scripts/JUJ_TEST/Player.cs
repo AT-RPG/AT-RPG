@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f;
     public float rotateSpeed = 2f;
     public float jumpForce = 10f;
+    public float camerarotationSpeed = 1f;
+    public Transform mainCamera;
 
     void Start()
     {
@@ -25,7 +27,7 @@ public class Player : MonoBehaviour
         rb.MovePosition(transform.position + movement);
 
         // ?
-        float rotate = Input.GetAxis("Horizontal") * rotateSpeed;
+        float rotate = Input.GetAxis("Mouse X") * rotateSpeed;
         rb.angularVelocity = new Vector3(0, rotate, 0);
 
 
@@ -35,5 +37,10 @@ public class Player : MonoBehaviour
             Debug.Log("1");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+
+        float mouseX = Input.GetAxis("Mouse X") * camerarotationSpeed;
+
+        // 카메라의 회전을 적용
+        mainCamera.Rotate(Vector3.up, mouseX);
     }
 }

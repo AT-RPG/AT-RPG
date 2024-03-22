@@ -20,8 +20,9 @@ public class DodgeState : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-       animator.ResetTrigger(triggerName);
-       animator.SetBool("isRolling", false);
+        animator.SetBool("isMove", false);
+        animator.ResetTrigger(triggerName);
+        animator.SetBool("isRolling", false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
