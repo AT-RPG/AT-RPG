@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using AT_RPG;
 using UnityEngine;
 using UnityEngine.Events;
+using AT_RPG.Manager;
+
 
 public enum WeaponState
 {
@@ -14,27 +13,31 @@ public class PlayerWeapon : MonoBehaviour
 {
     public UnityEvent<WeaponData> weaponChangeAct;
     [SerializeField] WeaponState myState;
-    [SerializeField] WeaponData defaultWeapon = null;
+    [SerializeField] WeaponData defaultWeapon;
     [SerializeField] WeaponData currentWeapon;
 
-    void ChangeWeapon(WeaponState s)
+    private void Awake() 
+    {
+        InputManager.AddKeyAction("ChangeNoneWeapon", ChangeNoneWeapon);
+    }
+
+    private void ChangeWeapon(WeaponState s)
     {
         if (myState == s) return;
         myState = s;
         switch (myState)
         {
             case WeaponState.None:
-            break;
             case WeaponState.OneHand:
             case WeaponState.TwoHand:
             weaponChangeAct?.Invoke(currentWeapon);
             break;
         }
     }
-    void Start()
+    private void Start()
     {
-        ChangeWeapon(WeaponState.None);
         currentWeapon = defaultWeapon;
+        ChangeWeapon(currentWeapon.MyState);
     }
 
     private void OnTriggerEnter(Collider other) 
@@ -49,9 +52,15 @@ public class PlayerWeapon : MonoBehaviour
             }
         }
     }
-    // Update is called once per frame
-    void Update()
+
+    private void ChangeNoneWeapon(InputValue v)
     {
-        
+        currentWeapon = defaultWeapon;
+        ChangeWeapon(currentWeapon.MyState);
+    }
+
+    private void OnDestroy() 
+    {
+        InputManager.RemoveKeyAction("ChangeNoneWeapon", ChangeNoneWeapon);
     }
 }

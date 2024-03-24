@@ -192,15 +192,20 @@ public class PlayerController : CommonBattle
 
         switch(curWeapon.MyState)
         {
+            case WeaponState.None:
+            weapons[0].SetActive(false);
+            weapons[1].SetActive(false);
+            myAttackPoint = weaponAttackPoints[(int)WeaponState.None];
+            break;
             case WeaponState.OneHand:
             weapons[0].SetActive(true);
             weapons[1].SetActive(false);
-            myAttackPoint = weaponAttackPoints[(int)WeaponState.OneHand - 1];
+            myAttackPoint = weaponAttackPoints[(int)WeaponState.OneHand];
             break;
             case WeaponState.TwoHand:
             weapons[0].SetActive(false);
             weapons[1].SetActive(true);
-            myAttackPoint = weaponAttackPoints[(int)WeaponState.TwoHand - 1];
+            myAttackPoint = weaponAttackPoints[(int)WeaponState.TwoHand];
             break;
         }
     }
