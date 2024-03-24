@@ -31,6 +31,17 @@ public class MonsterMain : CommonBattle
     void OnEnable()
     {
         ChangeState(State.Create);
+        GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+
+        if (myTarget != null)
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, myTarget.position);
+            if (distanceToPlayer <= mStat.monsterRange)
+            {
+                StartTracking(myTarget);
+            }
+        }
     }
 
 
@@ -88,8 +99,11 @@ public class MonsterMain : CommonBattle
                 StartCoroutine(battleState());
                 break;
             case State.Dead:
-                StopAllCoroutines();
                 myTarget = null;
+                GetComponent<Collider>().enabled = false;
+                GetComponent<Rigidbody>().isKinematic = true;
+                StopAllCoroutines();
+                
                 Invoke("destroyMosnter", 3f); //풀 릴리스 호출
                 break;
         }

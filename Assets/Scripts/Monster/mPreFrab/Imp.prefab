@@ -564,7 +564,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   monResPos: {fileID: 1045615041544015884}
-  StartspawnPos: {fileID: 0}
+  StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
+    type: 3}
   monsterAI: {fileID: 6058489181737877242}
   mStat:
     monsterRange: 2

@@ -69,7 +69,7 @@ public class MonsterSpwaner : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F1)) //생성
         {
-            var monsterImp=_Pool.Get();
+           _Pool.Get();
         }
     }
 }

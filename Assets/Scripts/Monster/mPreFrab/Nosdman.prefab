@@ -178,19 +178,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c10d4fe14ca31f44877b92135703f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mStat:
-    monsterMoveSpeed: 5
-    monsterRange: 10
-    monsterDmage: 30
-    monsterHp: 50
-    monsterMaxHp: 50
-    monsterRpm: 3
-    monsterIdleTime: 0
-    longAttack: 1
+  baseBattleStat:
+    maxHP: 0
+    attackPoint: 0
+    moveSpeed: 0
+    attackDeley: 0
+    skillCooltime: 0
+  changeHpAct:
+    m_PersistentCalls:
+      m_Calls: []
   monResPos: {fileID: 1461945773763027405}
   StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
     type: 3}
   monsterAI: {fileID: 1412696231591757307}
+  mStat:
+    monsterRange: 10
+    monsterIdleTime: 0
+    longAttack: 0
   monsterState: 0
 --- !u!54 &4553169560680537269
 Rigidbody:

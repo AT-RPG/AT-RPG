@@ -57,7 +57,7 @@ MonoBehaviour:
   changeHpAct:
     m_PersistentCalls:
       m_Calls: []
-  monResPos: {fileID: 0}
+  monResPos: {fileID: 5787713509890153670}
   StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
     type: 3}
   monsterAI: {fileID: 2704060789860980392}
