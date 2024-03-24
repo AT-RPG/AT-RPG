@@ -62,14 +62,10 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
         }
     }
 
-    public void OnAttack()
-    {
-        if (myTarget == null) return;
-        ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
-        if (cd != null)
-        {
-            cd.TakeDamage(baseBattleStat.attackPoint);
-        }
+
+    public virtual void OnAttack()
+    { 
+
     }
 
     protected virtual void OnDead()

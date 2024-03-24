@@ -67,7 +67,7 @@ public class MonsterSpwaner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) //생성
+        if (Input.GetKeyDown(KeyCode.F1)) //생성
         {
             var monsterImp=_Pool.Get();
         }
