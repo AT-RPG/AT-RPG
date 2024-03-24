@@ -5,9 +5,23 @@ using UnityEngine.Pool;
 
 public class MonsterSpwaner : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _MonsterPrefab; //생성할 프리팹을 저장
 
+    [SerializeField] private GameObject _impPrefab; //생성할 프리팹을 저장
+    [SerializeField] private GameObject _knightPrefab;
+    [SerializeField] private GameObject _monkeyPrefab;
+    [SerializeField] private GameObject _pitboyPrefab;
+    [SerializeField] private GameObject _nosdmanPrefab;
+    [SerializeField] private GameObject _spikePrefab;
+    [SerializeField] private GameObject _treestorPrefab;
+
+    private GameObject _MonsterPrefab;
+
+
+
+
+    [SerializeField] public int monnum = 0;
+
+    
     private IObjectPool<MonsterMain> _Pool;
 
     //풀을 생성하고 초기화
@@ -19,7 +33,16 @@ public class MonsterSpwaner : MonoBehaviour
     //프리팹을 복사하여 몬스터를 생성하고 반환
     private MonsterMain spawnMonster()
     {
-        MonsterMain monsterMain=Instantiate(_MonsterPrefab).GetComponent<MonsterMain>(); //인자로 스포너의 위치를전달
+        if (monnum == 0) _MonsterPrefab = _impPrefab;
+        else if (monnum == 1) _MonsterPrefab = _knightPrefab;
+        else if (monnum == 2) _MonsterPrefab = _monkeyPrefab;
+        else if (monnum == 3) _MonsterPrefab = _pitboyPrefab;
+        else if (monnum == 4) _MonsterPrefab = _nosdmanPrefab;
+        else if (monnum == 5) _MonsterPrefab = _spikePrefab;
+        else if (monnum == 6) _MonsterPrefab = _treestorPrefab;
+        else _MonsterPrefab = _impPrefab;
+
+        MonsterMain monsterMain=Instantiate(_MonsterPrefab, transform).GetComponent<MonsterMain>(); //인자로 스포너의 위치를전달
         monsterMain.setManagedPool(_Pool); 
         return monsterMain;
     }

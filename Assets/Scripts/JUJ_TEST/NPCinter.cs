@@ -9,13 +9,13 @@ public class NPCinter : MonoBehaviour
     public float playerDistance; // 플레이어 거리
     public GameObject player; // 플레이어 오브젝트
     public bool canInter = false; // 상호작용가능 여부
-    public Player playerMove; // 플레이어 참조 변수
+    public PlayerController playerMove; // 플레이어 참조 변수
     public GameObject npcInter; //상호작용 UI 변수
     public GameObject ChatInter; // NPC 대화 변수
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player"); // 태그가 플레이어인 오브젝트 찾기
-        playerMove = player.GetComponent<Player>(); // 플레이어 컴포넌트 참조
+        playerMove = player.GetComponent<PlayerController>(); // 플레이어 컴포넌트 참조
     }
 
     void Update()
