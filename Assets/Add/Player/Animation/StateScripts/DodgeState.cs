@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DodgeState : StateMachineBehaviour
 {
-    [SerializeField] string triggerName;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     // override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     // {
@@ -21,8 +20,9 @@ public class DodgeState : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("isMove", false);
-        animator.ResetTrigger(triggerName);
         animator.SetBool("isRolling", false);
+        animator.ResetTrigger("NormalAttack");
+        animator.ResetTrigger("Dodge");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

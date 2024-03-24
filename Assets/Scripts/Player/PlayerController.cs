@@ -3,7 +3,6 @@ using UnityEngine;
 using AT_RPG;
 using AT_RPG.Manager;
 
-
 public class PlayerController : CommonBattle
 {
     public LayerMask enemyMask;
@@ -11,7 +10,6 @@ public class PlayerController : CommonBattle
     [SerializeField] private Transform characterBody;
     [SerializeField] private Transform cameraArm;
     [SerializeField] private Rigidbody playerRigid;
-    [SerializeField] private float moveSpeed = 3.0f;
     [SerializeField] private int curWeaponDamage = 0;
     private bool isComboCheck = false;
     [SerializeField] private Transform[] weaponAttackPoints;
@@ -64,7 +62,7 @@ public class PlayerController : CommonBattle
             Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
 
             characterBody.forward = moveDir;
-            transform.position += moveDir * Time.deltaTime * moveSpeed;
+            transform.position += moveDir * Time.deltaTime * baseBattleStat.moveSpeed;
         }
         Debug.DrawRay(cameraArm.position, new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized, Color.red);
     }
@@ -116,7 +114,7 @@ public class PlayerController : CommonBattle
     /// </summary>
     private void Jump(InputValue value)
     {
-        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping")) return;
+        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping") || myAnim.GetBool("isAttacking")) return;
 
         myAnim.SetTrigger("Jump");
         myAnim.SetBool("isJumping", true);
@@ -177,7 +175,7 @@ public class PlayerController : CommonBattle
 
     public new void OnAttack()
     {
-        Collider[] list = Physics.OverlapSphere(myAttackPoint.position, 0.5f, enemyMask);
+        Collider[] list = Physics.OverlapSphere(myAttackPoint.position, 1.0f, enemyMask);
 
         foreach(Collider col in list)
         {
@@ -206,6 +204,27 @@ public class PlayerController : CommonBattle
             break;
         }
     }
+
+    public void DisApear()
+    {
+        StartCoroutine(DisApearing(1.0f));
+    }
+
+    IEnumerator DisApearing(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float dist = 1.0f;
+        while(dist > 0.0f)
+        {
+            float delta = 0.5f * Time.deltaTime;
+            dist -= delta;
+            transform.Rotate(Vector3.up * delta * 720.0f, Space.World);
+            yield return null;
+        }
+        myAnim.gameObject.SetActive(false);
+    }
+
     /// <summary>
     /// 지면을 감지하는 값을 받아 처리하는 함수
     /// </summary>
@@ -213,6 +232,11 @@ public class PlayerController : CommonBattle
     {
         myAnim.SetBool("isGround", isGround);
     }
+
+    // protected override void OnDead()
+    // {
+    //     base.OnDead();
+    // }
 
     /// <summary>
     /// 오브젝트 삭제시(ex:씬 이동) 추가했던 키 제거 (중복방지)
