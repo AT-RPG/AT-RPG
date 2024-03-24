@@ -9,14 +9,9 @@ namespace AT_RPG
     /// </summary>
     public class GameMenuPopup : Popup, IPopupDestroy
     {
-        [Header("하위 팝업")]
-
-        [Tooltip("게임 설정 팝업")]
+        [Header("종속된 팝업")]
         [SerializeField] private ResourceReference<GameObject>  optionPopupPrefab;
-        [SerializeField] private ResourceReference<GameObject>  mapSettingPopupPrefab;
-
-        [Tooltip("타이틀 화면 씬")]
-        [SerializeField] private SceneReference                 titleScene;
+        [SerializeField] private ResourceReference<GameObject>  worldSettingPopupPrefab;
 
         [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation            fadeAnimation;
@@ -74,7 +69,6 @@ namespace AT_RPG
         {
             if (!isEscaped && Input.GetKeyDown(KeyCode.Escape))
             {
-                isEscaped = true;
                 DestroyPopup();
             }
         }
@@ -193,6 +187,9 @@ namespace AT_RPG
 
         public void DestroyPopup()
         {
+            if (isEscaped) { return; }
+
+            isEscaped = true;
             AnimateEscapeSequence();
         }
 
