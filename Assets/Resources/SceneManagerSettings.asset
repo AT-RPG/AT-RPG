@@ -23,5 +23,5 @@ MonoBehaviour:
     sceneAsset: {fileID: 102900000, guid: 61ed4e478a6346740bba2218e248ebcd, type: 3}
   MainScene:
     SceneName: MainScene
-    sceneAsset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+    sceneAsset: {fileID: 102900000, guid: b559613fd89346b458644a79d14c7b73, type: 3}
   FakeLoadingDuration: 0.75
