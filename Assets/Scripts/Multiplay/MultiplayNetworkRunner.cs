@@ -118,12 +118,12 @@ namespace AT_RPG
 
         void INetworkRunnerCallbacks.OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
-            // Find and remove the players avatar
-            if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
-            {
-                runner.Despawn(networkObject);
-                _spawnedCharacters.Remove(player);
-            }
+            //// Find and remove the players avatar
+            //if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
+            //{
+            //    runner.Despawn(networkObject);
+            //    _spawnedCharacters.Remove(player);
+            //}
         }
 
         void INetworkRunnerCallbacks.OnInput(NetworkRunner runner, NetworkInput input) 
