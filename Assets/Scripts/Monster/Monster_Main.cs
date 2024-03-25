@@ -2,10 +2,34 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 using AT_RPG;
-
+using UnityEngine.AI;
 public class MonsterMain : CommonBattle
 {
-   
+    /*
+     * 몬스터 메인
+ -공통
+   -풀 관리/이동(네브메쉬)/추적(피격시 무조건 추적) /스킬 /데미지 계산
+    사망/아이템 드롭 
+    -근접
+      -근접공격(공격후 추적)
+    -원거리
+      -원거리 공격(공격후 플레이어가 일정범위 안이면 공격대기시간동안
+                      사거리끝쪽으로 이동)
+
+
+
+몬스터메인- void attack()/void attackdelay()를 virtual로 만든후
+ 메인을상속받는 근접/원거리 스크립트에서 override로 정의한다
+ 
+근거리는 전투중 공격-딜레이(멈춤)-공격 
+원거리는 전투중 공격-딜레이(거리판단후 이동)-공격 
+
+원거리에게만 거리를 판단할 별도의 콜라이더 필요
+ -오버랩 스피어/트리거
+거리를 벌리다가 플레이어가 추적범위를 벗어나는 경우?
+ -배틀이 시작되면 아웃트리거 발동x
+     * */
+
     private IObjectPool<MonsterMain> MonsterPool;
 
     public void setManagedPool(IObjectPool<MonsterMain> pool)
@@ -103,7 +127,6 @@ public class MonsterMain : CommonBattle
                 GetComponent<Collider>().enabled = false;
                 GetComponent<Rigidbody>().isKinematic = true;
                 StopAllCoroutines();
-                
                 Invoke("destroyMosnter", 3f); //풀 릴리스 호출
                 break;
         }
@@ -115,6 +138,7 @@ public class MonsterMain : CommonBattle
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         transform.position = transform.parent.position; //스폰위치 설정
+        base.Initialize();
         ChangeState(State.Idle);
     }
 
@@ -324,5 +348,9 @@ public class MonsterMain : CommonBattle
         ChangeState(State.Idle);
     }
 
+    private void Update()
+    {
+
+    }
 
 }

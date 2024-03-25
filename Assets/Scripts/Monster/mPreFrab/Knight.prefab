@@ -709,7 +709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1368705608415263453
 Transform:
   m_ObjectHideFlags: 0
@@ -771,7 +771,7 @@ MonoBehaviour:
   changeHpAct:
     m_PersistentCalls:
       m_Calls: []
-  monResPos: {fileID: 1368705608415263453}
+  monResPos: {fileID: 0}
   StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
     type: 3}
   monsterAI: {fileID: 2980993339573348086}
