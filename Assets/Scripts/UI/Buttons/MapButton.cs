@@ -2,21 +2,28 @@ using AT_RPG.Manager;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace AT_RPG
 {
-    public partial class MapButton : MonoBehaviour
+    public partial class MapButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         // 버튼 뷰포트
         [SerializeField] private TMP_Text mapName;
         [SerializeField] private TMP_Text lastModifiedTime;
 
-        // 맵 설정 정보
-        [SerializeField] private MapSettingData mapSettingData;
-
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
+
+        [Header("버튼 상호작용")]
+        [Space(5)]
+        [SerializeField] private UnityEvent onButtonClick;
+        [SerializeField] private UnityEvent onButtonEnter;
+        [SerializeField] private UnityEvent onButtonExit;
+
+        // 맵 설정 정보
+        private MapSettingData mapSettingData;
 
         // 맵 선택화면에서 피킹시 호출되는 이벤트
         private event Action<GameObject> onButtonClickAction;
@@ -43,6 +50,12 @@ namespace AT_RPG
         {
             onButtonClickAction?.Invoke(gameObject);
         }
+
+        public void OnPointerEnter(PointerEventData eventData) => onButtonEnter?.Invoke();
+
+        public void OnPointerExit(PointerEventData eventData) => onButtonExit?.Invoke();
+
+        public void OnPointerClick(PointerEventData eventData) => onButtonClick?.Invoke();
     }
 
     public partial class MapButton
