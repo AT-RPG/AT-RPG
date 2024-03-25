@@ -63,39 +63,39 @@ namespace AT_RPG
         private IEnumerator LoadAllSavedMapDatas()
         {
             // 모든 맵 세이브 폴더 가져오기
-            string defaultSaveFolderPath = DataManager.Setting.defaultSaveFolderPath;
+            string defaultSaveFolderPath = SaveLoadManager.Setting.defaultSaveFolderPath;
             string[] filePaths = Directory.GetDirectories(defaultSaveFolderPath);
             List<string> savedMapDataNames = filePaths.Select(path => Path.GetFileName(path)).ToList();
 
             // 맵 설정 데이터 얻기
-            List<MapSettingData> mapSettingDatas = new List<MapSettingData>();
+            List<WorldSettingData> worldSettingDatas = new List<WorldSettingData>();
             foreach (var name in savedMapDataNames)
             {
-                DataManager.LoadMapSettingDataCoroutine(defaultSaveFolderPath, name, 
+                SaveLoadManager.LoadWorldSettingDataCoroutine(defaultSaveFolderPath, name, 
                 () =>
                 {
-                    return !DataManager.IsLoading;
+                    return !SaveLoadManager.IsLoading;
                 }    
                 , 
-                mapSettingData =>
+                worldSettingData =>
                 {
-                    mapSettingDatas.Add(mapSettingData);
+                    worldSettingDatas.Add(worldSettingData);
                 });
             }
 
             // 맵 설정 데이터를 모두 불러올 때까지 대기 
-            while (mapSettingDatas.Count != savedMapDataNames.Count)
+            while (worldSettingDatas.Count != savedMapDataNames.Count)
             {
                 yield return null;
             }
 
             // 맵 버튼 생성 및 초기화
-            foreach (var mapSettingData in mapSettingDatas)
+            foreach (var worldSettingData in worldSettingDatas)
             {
                 GameObject mapButtonInstance
                     = Instantiate(worldButtonPrefab.Resource, worldButtonContents.transform);
                 MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
-                mapButton.MapSettingData = mapSettingData;
+                mapButton.WorldSettingData = worldSettingData;
                 mapButton.OnPickAction += OnPickWorld;
             }
         }
@@ -150,7 +150,7 @@ namespace AT_RPG
         /// TODO : 리펙토링
         private void InternalOnPlayWorld()
         {
-            SerializedGameObjectsList gameObjectDatas = new SerializedGameObjectsList();
+            SerializedGameObjectDataList gameObjectDatas = new SerializedGameObjectDataList();
 
             string fromScene = SceneManager.CurrentSceneName;
             string toScene = SceneManager.Setting.MainScene;
@@ -161,23 +161,23 @@ namespace AT_RPG
                 ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
                 // 로딩이 끝나면 씬을 변경합니다.
-                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !DataManager.IsLoading, () =>
+                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading, () =>
                 {
                     // 로드한 맵 설정에서 멀티플레이가 활성화 되어있다면 세션을 만듭니다.
-                    DataManager.LoadMapSettingDataCoroutine(
-                        DataManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
-                        () => !DataManager.IsLoading && !ResourceManager.IsLoading,
-                        loadedMapSettingData => DataManager.WorldSettingData = loadedMapSettingData);
+                    SaveLoadManager.LoadWorldSettingDataCoroutine(
+                        SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
+                        () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
+                        loadedWorldSettingData => SaveLoadManager.WorldSettingData = loadedWorldSettingData);
 
                     // 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.
                     // 그 후 호스트를 만들건지 정합니다.
-                    DataManager.LoadAllGameObjectsCoroutine(
-                        DataManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
-                        () => !DataManager.IsLoading && !ResourceManager.IsLoading,
+                    SaveLoadManager.LoadGameObjectDatasCoroutine(
+                        SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
+                        () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
                         loadedGameObjectDatas => 
                         {
-                            DataManager.InstantiateGameObjects(loadedGameObjectDatas);
-                            if (DataManager.WorldSettingData.isMultiplayEnabled) { MultiplayManager.ConnectToCloud(); }
+                            SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
+                            if (SaveLoadManager.WorldSettingData.isMultiplayEnabled) { MultiplayManager.ConnectToCloud(); }
                         });
                 });
             });
@@ -195,7 +195,7 @@ namespace AT_RPG
                 return;
             }
 
-            string mapSaveDataPath = Path.Combine(DataManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName);
+            string mapSaveDataPath = Path.Combine(SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName);
             Directory.Delete(mapSaveDataPath, true);
 
             Destroy(currPickedWorldButton.gameObject);
