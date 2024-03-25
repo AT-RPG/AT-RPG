@@ -25,9 +25,6 @@ namespace AT_RPG
         [SerializeField] private UnityEvent onButtonEnter;
         [SerializeField] private UnityEvent onButtonExit;
 
-        // 맵 설정 정보
-        private MapSettingData mapSettingData;
-
         // 맵 선택화면에서 피킹시 호출되는 이벤트
         private event Action<GameObject> onButtonClickAction;
 
