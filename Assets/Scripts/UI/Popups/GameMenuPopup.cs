@@ -132,7 +132,7 @@ namespace AT_RPG
         /// </summary>
         private bool IsMultiplayEnabled()
         {
-            return DataManager.WorldSettingData.isMultiplayEnabled;
+            return SaveLoadManager.WorldSettingData.isMultiplayEnabled;
         }
 
 
@@ -156,13 +156,13 @@ namespace AT_RPG
             PlayMode currentPlayMode = MultiplayManager.PlayMode;
             if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
 
-            DataManager.WorldSettingData = null;
+            SaveLoadManager.WorldSettingData = null;
 
             // 타이틀 씬으로 이동
             string fromScene = SceneManager.CurrentSceneName;
             string toScene = SceneManager.Setting.TitleScene;
             string loadingScene = SceneManager.Setting.LoadingScene;
-            SceneManager.LoadSceneCoroutine(loadingScene, () => !DataManager.IsSaving, () =>
+            SceneManager.LoadSceneCoroutine(loadingScene, () => !SaveLoadManager.IsSaving, () =>
             {
                 ResourceManager.LoadAllResourcesCoroutine(toScene);
 
@@ -170,7 +170,7 @@ namespace AT_RPG
 
                 SceneManager.LoadSceneCoroutine(
                     toScene, 
-                    () => !ResourceManager.IsLoading && !DataManager.IsSaving, 
+                    () => !ResourceManager.IsLoading && !SaveLoadManager.IsSaving, 
                     () => MultiplayManager.Disconnect());
             });
         }
@@ -211,11 +211,11 @@ namespace AT_RPG
 
         private void SaveWorld()
         {
-            DataManager.SaveWorldSettingData(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData, () => !DataManager.IsSaving);
+            SaveLoadManager.SaveWorldSettingData(
+                SaveLoadManager.Setting.defaultSaveFolderPath, SaveLoadManager.WorldSettingData, () => !SaveLoadManager.IsSaving);
 
-            DataManager.SaveWorldGameObjectDatas(
-                DataManager.Setting.defaultSaveFolderPath, DataManager.WorldSettingData.worldName, () => !DataManager.IsSaving);
+            SaveLoadManager.SaveGameObjectDatas(
+                SaveLoadManager.Setting.defaultSaveFolderPath, SaveLoadManager.WorldSettingData.worldName, () => !SaveLoadManager.IsSaving);
         }
     }
 }

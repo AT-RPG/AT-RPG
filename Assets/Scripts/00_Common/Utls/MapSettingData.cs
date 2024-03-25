@@ -6,7 +6,7 @@ namespace AT_RPG
     /// 맵 설정값을 저장하는 클래스
     /// </summary>
     [Serializable]
-    public class MapSettingData
+    public class WorldSettingData
     {
         // 생성되는 맵의 이름
         public string worldName;
@@ -17,7 +17,7 @@ namespace AT_RPG
         // 마지막으로 플레이한 시간
         public string lastModifiedTime;
 
-        public MapSettingData() { }
+        public WorldSettingData() { }
     }
 
 }
