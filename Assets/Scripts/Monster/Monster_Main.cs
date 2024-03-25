@@ -57,7 +57,7 @@ public class MonsterMain : CommonBattle
         ChangeState(State.Create);
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().isKinematic = false;
-
+        monAgent = GetComponent<NavMeshAgent>();
         if (myTarget != null)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, myTarget.position);
@@ -75,6 +75,8 @@ public class MonsterMain : CommonBattle
     Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
     Coroutine rotate = null; //몬스터의 회전을 관리
+
+    private NavMeshAgent monAgent;
 
     public MonsterAI monsterAI;
     private bool isTracking = false;
@@ -145,7 +147,7 @@ public class MonsterMain : CommonBattle
     //몬스터 대기 상태
     void idleState()
     {
-        
+        monAgent.ResetPath();
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
         mStat.monsterIdleTime = Random.Range(2, 4);
@@ -194,7 +196,7 @@ public class MonsterMain : CommonBattle
         if (dist >= runOk)
         {
             baseBattleStat.moveSpeed= 6.0f;
-               myAnim .SetBool("Move", false);
+            myAnim.SetBool("Move", false);
             myAnim.SetBool("Run", true);
         }
         else
@@ -205,8 +207,31 @@ public class MonsterMain : CommonBattle
         }
 
     }
+    IEnumerator MovingCoroutine(Vector3 target)
+    {
+        while (true)
+        {
+            float dist = Vector3.Distance(transform.position, target);
+            IsRunning(dist);
+            monAgent.SetDestination(target);
+            yield return null;
+            if (dist <= 0.1f)
+            {
+                break;
+            }
+        }
+        if (isTracking == false)
+        {
+            ChangeState(State.Idle);
+        }
+        else
+        {
+            ChangeState(State.Battle);
+        }
+    }
 
     //몬스터 이동코룬틴
+    /*
     IEnumerator MovingCoroutine(Vector3 target)
     {
         Vector3 dir = target - transform.position;
@@ -258,7 +283,7 @@ public class MonsterMain : CommonBattle
             yield return null;
         }
     }
-
+    */
 
     //몬스터 플레이어 발견
     public void StartTracking(Transform target)
@@ -272,6 +297,7 @@ public class MonsterMain : CommonBattle
     //몬스터 플레이어 놓침
     public void StopTracking()
     {
+        if(move!=null)StopCoroutine(move);
         myAnim.SetBool("IsAttack", false);
         myTarget = null;
         ChangeState(State.Idle);
@@ -294,6 +320,7 @@ public class MonsterMain : CommonBattle
             }
             else
             {
+
                 AttackPlayer();
                 yield return new WaitForSeconds(baseBattleStat.attackDeley);
             }
@@ -302,10 +329,6 @@ public class MonsterMain : CommonBattle
 
     void AttackPlayer()
     {
-        if (move != null)
-        {
-            StopCoroutine(move);
-        }
         myAnim.SetBool("Move", false);
         myAnim.SetTrigger("NormalAttack");
         if (mStat.longAttack == true)
