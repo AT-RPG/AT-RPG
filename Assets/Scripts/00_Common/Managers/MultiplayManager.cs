@@ -25,6 +25,7 @@ namespace AT_RPG.Manager
         private static PlayMode playMode = PlayMode.Single;
 
 
+
         protected override void Awake()
         {
             base.Awake();
@@ -32,7 +33,10 @@ namespace AT_RPG.Manager
             setting = Resources.Load<MultiplayManagerSetting>("MultiplayManagerSettings");
         }
 
-
+        protected void Update()
+        {
+            
+        }
 
         /// <summary>
         /// 포톤 클라우드에 연결을 시도합니다. <br/>
@@ -52,7 +56,6 @@ namespace AT_RPG.Manager
             else
             {
                 disconnected?.Invoke();
-                SetPlayMode(PlayMode.Single);
                 Disconnect();
             }
         }
@@ -76,7 +79,6 @@ namespace AT_RPG.Manager
             else
             {
                 disconnected?.Invoke();
-                SetPlayMode(PlayMode.Single);
                 Disconnect();
             }
         }
@@ -85,13 +87,13 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 세션에 연결을 종료합니다.
         /// </summary>
-        public static void Disconnect()
+        public static async void Disconnect()
         {
-            if (networkRunner) { return; }
-
-            networkRunner.Disconnect();
-            SetPlayMode(PlayMode.Single);
+            await networkRunner.Disconnect();
             networkRunner = null;
+            inviteCode = 0;
+
+            SetPlayMode(PlayMode.Single);
         }
 
 
@@ -111,7 +113,7 @@ namespace AT_RPG.Manager
         /// </summary>
         public static int CreateInviteCode()
         {
-            inviteCode = inviteCode == 0 ? UnityEngine.Random.Range(100000, 1000000) : inviteCode;
+            inviteCode = inviteCode == 0 ? Random.Range(100000, 1000000) : inviteCode;
             return inviteCode;
         }
 

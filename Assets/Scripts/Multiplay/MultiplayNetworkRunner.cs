@@ -15,7 +15,7 @@ namespace AT_RPG
     /// </summary>
     public class MultiplayNetworkRunner : MonoBehaviour, INetworkRunnerCallbacks
     {
-        private static NetworkRunner runner;
+        private NetworkRunner runner;
 
         [SerializeField] private NetworkPrefabRef _playerPrefab;
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
@@ -56,7 +56,6 @@ namespace AT_RPG
                 Scene = UnitySceneManager.GetSceneByName(SceneManager.Setting.MainScene).buildIndex,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
                 IsVisible = false,
-
             };
 
             // 설정된 세션 정보로 포톤 클라우드 서버에 세션 생성을 요청합니다.
@@ -96,9 +95,9 @@ namespace AT_RPG
         /// <summary>
         /// 세션에 연결을 종료합니다.
         /// </summary>
-        public void Disconnect()
+        public async Task Disconnect()
         {
-            runner.Shutdown();
+            await runner.Shutdown();
             Destroy(gameObject);
         }
 
