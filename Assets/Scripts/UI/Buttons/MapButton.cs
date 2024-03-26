@@ -16,9 +16,6 @@ namespace AT_RPG
         // 맵 설정 정보
         [SerializeField] private WorldSettingData worldSettingData;
 
-        [SerializeField] private FadeCanvasAnimation fadeAnimation;
-        [SerializeField] private PopupCanvasAnimation popupAnimation;
-
         [Header("버튼 상호작용")]
         [Space(5)]
         [SerializeField] private UnityEvent onButtonClick;
@@ -35,12 +32,6 @@ namespace AT_RPG
             {
                 gameObject.AddComponent<EventTrigger>();
             }
-        }
-
-        private void Start()
-        {
-            fadeAnimation.StartFade();
-            popupAnimation.StartPopup();
         }
 
         /// <summary>
