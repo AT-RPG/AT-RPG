@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class JumpState : StateMachineBehaviour
 {
-    [SerializeField] string triggerName;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
@@ -21,8 +20,9 @@ public class JumpState : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("isMove", false);
-       animator.ResetTrigger(triggerName);
-       animator.SetBool("isJumping", false);
+        animator.SetBool("isJumping", false);
+        animator.ResetTrigger("NormalAttack");
+        animator.ResetTrigger("Jump");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

@@ -48,19 +48,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c10d4fe14ca31f44877b92135703f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mStat:
-    monsterMoveSpeed: 6
-    monsterRange: 4
-    monsterDmage: 100
-    monsterHp: 400
-    monsterMaxHp: 400
-    monsterRpm: 8
-    monsterIdleTime: 0
-    longAttack: 0
+  baseBattleStat:
+    maxHP: 100
+    attackPoint: 30
+    moveSpeed: 4
+    attackDeley: 3
+    skillCooltime: 0
+  changeHpAct:
+    m_PersistentCalls:
+      m_Calls: []
   monResPos: {fileID: 5787713509890153670}
   StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
     type: 3}
   monsterAI: {fileID: 2704060789860980392}
+  mStat:
+    monsterRange: 4
+    monsterIdleTime: 0
+    longAttack: 0
   monsterState: 0
 --- !u!136 &2058972844068426460
 CapsuleCollider:

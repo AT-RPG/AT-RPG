@@ -27,7 +27,7 @@ namespace AT_RPG
 
 
         /// <summary>
-        /// DataManager가 직렬화 하기 직전에 현재 상태를 저장하고 전달
+        /// SaveLoadManager가 직렬화 하기 직전에 현재 상태를 저장하고 전달
         /// </summary>
         public GameObjectData SaveData()
         {
@@ -48,7 +48,7 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// DataManager가 불러온 data로 초기화
+        /// SaveLoadManager가 불러온 data로 초기화
         /// </summary>
         public void LoadData(GameObjectData data)
         {

@@ -49,25 +49,23 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
     public void TakeDamage(float dmg)
     {
         curHP -= dmg;
-        Debug.Log(curHP);
-        // if (curHP <= 0.0f)
-        // {
-        //     //Die
-        // }
-        // else
-        // {
-        //     //Damage
-        // }
+        if (curHP <= 0.0f)
+        {
+            //Die
+            OnDead();
+            myAnim.SetTrigger("Dead");
+        }
+        else
+        {
+            //Damage
+            myAnim.SetTrigger("Damage");
+        }
     }
 
-    public void OnAttack()
-    {
-        if (myTarget == null) return;
-        ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
-        if (cd != null)
-        {
-            cd.TakeDamage(baseBattleStat.attackPoint);
-        }
+
+    public virtual void OnAttack()
+    { 
+
     }
 
     protected virtual void OnDead()

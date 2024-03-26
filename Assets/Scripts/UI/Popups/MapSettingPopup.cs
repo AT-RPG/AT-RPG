@@ -63,14 +63,14 @@ namespace AT_RPG
             if (!IsMapSettingEnable()) { return; }
 
             // 맵 설정 데이터 초기화
-            MapSettingData mapSettingData = new MapSettingData();
-            mapSettingData.worldName = mapName.text;
-            mapSettingData.isMultiplayEnabled = isMultiplayEnabled.isOn;
-            mapSettingData.lastModifiedTime = DateTime.Now.ToString();
+            WorldSettingData worldSettingData = new WorldSettingData();
+            worldSettingData.worldName = mapName.text;
+            worldSettingData.isMultiplayEnabled = isMultiplayEnabled.isOn;
+            worldSettingData.lastModifiedTime = DateTime.Now.ToString();
 
             // 맵 설정 데이터 저장
             // 저장이 완료되면 맵 설정 팝업창을 닫고, 맵 선택 팝업창을 인스턴싱
-            DataManager.SaveWorldSettingData(DataManager.Setting.defaultSaveFolderPath, mapSettingData, null, () =>
+            SaveLoadManager.SaveWorldSettingData(SaveLoadManager.Setting.defaultSaveFolderPath, worldSettingData, null, () =>
             {
                 popupCanvas?.RemoveAllPopupInstance();
                 UIManager.InstantiatePopup(startGamePopupPrefab.Resource, PopupRenderMode.Hide);
@@ -82,12 +82,12 @@ namespace AT_RPG
             if (!IsMapSettingEnable()) { return; }
 
             // 맵 설정 데이터 초기화
-            MapSettingData mapSettingData = new MapSettingData();
-            mapSettingData.worldName = mapName.text;
-            mapSettingData.isMultiplayEnabled = isMultiplayEnabled.isOn;
-            mapSettingData.lastModifiedTime = DateTime.Now.ToString();
+            WorldSettingData worldSettingData = new WorldSettingData();
+            worldSettingData.worldName = mapName.text;
+            worldSettingData.isMultiplayEnabled = isMultiplayEnabled.isOn;
+            worldSettingData.lastModifiedTime = DateTime.Now.ToString();
 
-            DataManager.WorldSettingData = mapSettingData;
+            SaveLoadManager.WorldSettingData = worldSettingData;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace AT_RPG
             }
 
             // 이미 세이브 파일에 동일한 맵 이름이 있음?
-            if (DataManager.IsSaveDataDirectroyExist(DataManager.Setting.defaultSaveFolderPath, mapName.text))
+            if (SaveLoadManager.IsSaveDataDirectroyExist(SaveLoadManager.Setting.defaultSaveFolderPath, mapName.text))
             {
                 GameObject logPopupInstance 
                     = UIManager.InstantiatePopup(UIManager.Setting.gameMenuPopupPrefab.Resource, PopupRenderMode.Default);

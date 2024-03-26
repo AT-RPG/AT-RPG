@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace AT_RPG
 {
-    [CreateAssetMenu(fileName = "DataManagerSettings", menuName = "ScriptableObject/DataManager Setting")]
-    public partial class DataManagerSetting : ScriptableObject
+    [CreateAssetMenu(fileName = "SaveLoadManagerSettings", menuName = "ScriptableObject/SaveLoadManager Setting")]
+    public partial class SaveLoadManagerSetting : ScriptableObject
     {
         // 세이브 파일 기본 경로
         public string   defaultSaveFolderPath;
@@ -17,7 +17,7 @@ namespace AT_RPG
         public readonly string gameObjectDataFileExtension = "god";
 
         // 직렬화된 맵 설정 데이터의 확장명
-        public readonly string mapSettingDataFileExtension = "msd";
+        public readonly string worldSettingDataFileExtension = "msd";
 
         public void OnEnable()
         {
@@ -28,12 +28,12 @@ namespace AT_RPG
 
 #if UNITY_EDITOR
 
-    [CustomEditor(typeof(DataManagerSetting))]
-    public partial class DataManagerSettingEditor : Editor
+    [CustomEditor(typeof(SaveLoadManagerSetting))]
+    public partial class SaveLoadManagerSettingEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            DataManagerSetting script = (DataManagerSetting)target;
+            SaveLoadManagerSetting script = (SaveLoadManagerSetting)target;
 
             // 읽기 전용 필드 정의
             EditorGUI.BeginDisabledGroup(true);
@@ -43,7 +43,7 @@ namespace AT_RPG
                 EditorGUILayout.LabelField(
                     nameof(script.gameObjectDataFileExtension), script.gameObjectDataFileExtension);
                 EditorGUILayout.LabelField(
-                    nameof(script.mapSettingDataFileExtension), script.mapSettingDataFileExtension);
+                    nameof(script.worldSettingDataFileExtension), script.worldSettingDataFileExtension);
             }
             EditorGUI.EndDisabledGroup();
 

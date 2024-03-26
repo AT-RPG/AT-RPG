@@ -13,7 +13,7 @@ namespace AT_RPG
         [SerializeField] private TMP_Text lastModifiedTime;
 
         // 맵 설정 정보
-        [SerializeField] private MapSettingData mapSettingData;
+        [SerializeField] private WorldSettingData worldSettingData;
 
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
         [SerializeField] private PopupCanvasAnimation popupAnimation;
@@ -62,14 +62,14 @@ namespace AT_RPG
             get => onButtonClickAction;
             set => onButtonClickAction = value;
         }
-        public MapSettingData MapSettingData
+        public WorldSettingData WorldSettingData
         {
-            get => mapSettingData;
+            get => worldSettingData;
             set
             {
-                mapSettingData = value;
-                mapName.text = mapSettingData.worldName;
-                lastModifiedTime.text = mapSettingData.lastModifiedTime;
+                worldSettingData = value;
+                mapName.text = worldSettingData.worldName;
+                lastModifiedTime.text = worldSettingData.lastModifiedTime;
             }
         }
     }
