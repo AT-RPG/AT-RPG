@@ -22,6 +22,6 @@ MonoBehaviour:
     SceneName: TitleScene
     sceneAsset: {fileID: 102900000, guid: 61ed4e478a6346740bba2218e248ebcd, type: 3}
   MainScene:
-    SceneName: MainScene
-    sceneAsset: {fileID: 102900000, guid: b559613fd89346b458644a79d14c7b73, type: 3}
+    SceneName: MainScene_BJW
+    sceneAsset: {fileID: 102900000, guid: 16c8bcf627640964f8ca2c2e1fd70a6f, type: 3}
   FakeLoadingDuration: 0.75
