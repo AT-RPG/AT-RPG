@@ -35,10 +35,8 @@ namespace AT_RPG
         {
             Popup popup = null;
 
-            if (popups.Count <= 0) { return; }
-
-            while (!(popup = popups.Pop())) { }
-
+            while (popups.Count >= 1 && !(popup = popups.Pop())) { }
+            if (popup == null) { return; }
 
             // 팝업 인스턴스 삭제
             IPopupDestroy iPopupDestroy = popup as IPopupDestroy;
