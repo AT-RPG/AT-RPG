@@ -48,8 +48,6 @@ public class MonsterMain : CommonBattle
     }
     private void Awake() //초기화
     {
-        //transform.position = MonsterPool.transform.position; //스폰위치 설정
-        // transform.position = transform.parent.position ; //스폰위치 설정
         ChangeState(State.Create);
     }
     void OnEnable()
@@ -72,9 +70,9 @@ public class MonsterMain : CommonBattle
     [SerializeField] Transform monResPos;
     [SerializeField] GameObject StartspawnPos;
 
-    Coroutine move = null; //몬스터의 움직임을 관리
+    public Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
-    Coroutine rotate = null; //몬스터의 회전을 관리
+
 
     private NavMeshAgent monAgent;
 
@@ -207,7 +205,7 @@ public class MonsterMain : CommonBattle
         }
 
     }
-    IEnumerator MovingCoroutine(Vector3 target)
+    public IEnumerator MovingCoroutine(Vector3 target)
     {
         while (true)
         {
@@ -230,62 +228,7 @@ public class MonsterMain : CommonBattle
         }
     }
 
-    //몬스터 이동코룬틴
-    /*
-    IEnumerator MovingCoroutine(Vector3 target)
-    {
-        Vector3 dir = target - transform.position;
-        float dist = dir.magnitude;
-        dir.Normalize();
-
-        if (rotate != null) StopCoroutine(rotate);
-        rotate = StartCoroutine(RotatingCoroutine(dir));
-
-        while (dist > 0.1f)
-        {
-            float delta = baseBattleStat.moveSpeed * Time.deltaTime;
-            if (delta > dist) delta = dist;
-            dist -= delta;
-            IsRunning(dist);
-            transform.Translate(dir * delta, Space.World);
-            yield return null;
-        }
-        if (isTracking == false)
-        {
-            ChangeState(State.Idle);
-        }
-        else
-        {
-            ChangeState(State.Battle);
-        }
-    }
-
-    //몬스터 회전코룬틴
-    IEnumerator RotatingCoroutine(Vector3 dir)
-    {
-        float angle = Vector3.Angle(transform.forward, dir);
-        float rotDir = 1.0f;
-        //회전 방향 결정
-        if (Vector3.Dot(transform.right, dir) < 0.0f)
-        {
-            rotDir = -1.0f;
-        }
-        //회전 시작
-        while (!Mathf.Approximately(angle, 0.0f))
-        {
-            float delta = 360.0f * Time.deltaTime;
-            if (delta > angle)
-            {
-                delta = angle;
-            }
-            angle -= delta;
-            transform.Rotate(Vector3.up * rotDir * delta);
-            yield return null;
-        }
-    }
-    */
-
-    //몬스터 플레이어 발견
+    
     public void StartTracking(Transform target)
     {
         if (monsterState == State.Dead) return;
@@ -298,14 +241,12 @@ public class MonsterMain : CommonBattle
     public void StopTracking()
     {
         if(move!=null)StopCoroutine(move);
-        myAnim.SetBool("IsAttack", false);
+        StopCoroutine(battleState());
         myTarget = null;
         ChangeState(State.Idle);
     }
 
-    //몬스터 전투상태
-    private RangeAttack rangeAttack;
-    IEnumerator battleState()
+    public IEnumerator battleState()
     {
         while (myTarget != null)
         {
@@ -320,23 +261,19 @@ public class MonsterMain : CommonBattle
             }
             else
             {
-
                 AttackPlayer();
-                yield return new WaitForSeconds(baseBattleStat.attackDeley);
             }
         }
+        
     }
 
-    void AttackPlayer()
+    public virtual void AttackPlayer()
     {
-        myAnim.SetBool("Move", false);
-        myAnim.SetTrigger("NormalAttack");
-        if (mStat.longAttack == true)
-        {
-            rangeAttack.OnShoot(monResPos.transform.position, myTarget.transform.position);
-            //원거리 공격실행
-        }
     }
+    public virtual void AttackDeleay()
+    {
+    }
+
 
 
     //몬스터 사망상태

@@ -123,6 +123,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 7546d53487582c545b822dca51f66632, type: 2}
+--- !u!114 &18738497 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 682911750381399969, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+    type: 3}
+  m_PrefabInstance: {fileID: 8084337703719004713}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb6159b0629ab6840a0da25e5cf9bad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &21849868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,7 +1223,7 @@ PrefabInstance:
     - target: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3253274047600182849, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
@@ -2347,6 +2359,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 682911750381399969, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+        type: 3}
+      propertyPath: StartspawnPos
+      value: 
+      objectReference: {fileID: 1918004500}
     - target: {fileID: 1045615041544015884, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2397,21 +2414,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1603424334748643035, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+        type: 3}
+      propertyPath: deadAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1603424334748643035, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+        type: 3}
+      propertyPath: attackAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2584212705057138345, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
         type: 3}
       propertyPath: m_Name
       value: Imp
       objectReference: {fileID: 0}
-    - target: {fileID: 2584212705057138345, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+    - target: {fileID: 6058489181737877242, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: findPlayer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5390274596813312825, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+    - target: {fileID: 6058489181737877242, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
         type: 3}
-      propertyPath: StartspawnPos
+      propertyPath: findPlayer.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1918004500}
+      objectReference: {fileID: 18738497}
+    - target: {fileID: 6058489181737877242, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+        type: 3}
+      propertyPath: lostPlayer.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 18738497}
+    - target: {fileID: 6058489181737877242, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+        type: 3}
+      propertyPath: findPlayer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
