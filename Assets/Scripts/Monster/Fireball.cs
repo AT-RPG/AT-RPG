@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
+
 public class Fireball : MonoBehaviour
 {
     public IObjectPool<Fireball> firePool;
@@ -28,6 +29,7 @@ public class Fireball : MonoBehaviour
 
     private void OnEnable()
     {
+        transform.position = StartPos.position;
         mShoot();
     }
 
@@ -48,7 +50,7 @@ public class Fireball : MonoBehaviour
         {
             if (rangeattack != null) // 몬스터 메인의 인스턴스가 유효한지 확인
             {
-                    rangeattack.ballHit(); // 몬스터 메인의 TakeDamage() 함수 호출
+                    rangeattack.ballHit(); //
             }
         }
         destroyball();//릴리즈

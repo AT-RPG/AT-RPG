@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4331263144890722545}
-  - component: {fileID: 5055472182647133343}
   - component: {fileID: 2526612417394279528}
   - component: {fileID: 7269509411417208228}
+  - component: {fileID: 5538105643607614043}
+  - component: {fileID: 1411074906333276653}
   m_Layer: 9
   m_Name: Treestor
   m_TagString: Untagged
@@ -36,36 +37,6 @@ Transform:
   - {fileID: 1119954736484689179}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5055472182647133343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 37076309853231208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c10d4fe14ca31f44877b92135703f76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseBattleStat:
-    maxHP: 0
-    attackPoint: 0
-    moveSpeed: 0
-    attackDeley: 0
-    skillCooltime: 0
-  changeHpAct:
-    m_PersistentCalls:
-      m_Calls: []
-  monResPos: {fileID: 4331263144890722545}
-  StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
-    type: 3}
-  monsterAI: {fileID: 6437586279566940113}
-  mStat:
-    monsterRange: 11
-    monsterIdleTime: 0
-    longAttack: 0
-  monsterState: 0
 --- !u!54 &2526612417394279528
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -116,6 +87,60 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.3, z: 0}
+--- !u!114 &5538105643607614043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37076309853231208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e977dfba06af7694e911b7b5f2fb1064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseBattleStat:
+    maxHP: 50
+    attackPoint: 30
+    moveSpeed: 3
+    attackDeley: 5
+    skillCooltime: 0
+  changeHpAct:
+    m_PersistentCalls:
+      m_Calls: []
+  monResPos: {fileID: 4331263144890722545}
+  StartspawnPos: {fileID: 0}
+  monAgent: {fileID: 1411074906333276653}
+  monsterAI: {fileID: 6437586279566940113}
+  mStat:
+    monsterRange: 10
+    monsterIdleTime: 0
+    monsterRunSpeed: 3
+  monsterState: 0
+  FireballPrefab: {fileID: 3292462701693660853, guid: 5ed2c1c5d54091c4896a0a5f04336948,
+    type: 3}
+--- !u!195 &1411074906333276653
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37076309853231208}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &5397798458088048394
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +210,7 @@ MonoBehaviour:
   findPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5055472182647133343}
+      - m_Target: {fileID: 5538105643607614043}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
         m_MethodName: StartTracking
         m_Mode: 0
@@ -200,7 +225,7 @@ MonoBehaviour:
   lostPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5055472182647133343}
+      - m_Target: {fileID: 5538105643607614043}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
         m_MethodName: StopTracking
         m_Mode: 1
@@ -497,13 +522,13 @@ MonoBehaviour:
   attackAct:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 37076309853231208}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
+      - m_Target: {fileID: 5538105643607614043}
+        m_TargetAssemblyTypeName: RangeAttack, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -511,4 +536,31 @@ MonoBehaviour:
         m_CallState: 2
   deadAct:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5538105643607614043}
+        m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
+        m_MethodName: deadState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  attackDelay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5538105643607614043}
+        m_TargetAssemblyTypeName: RangeAttack, Assembly-CSharp
+        m_MethodName: AttackDelay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

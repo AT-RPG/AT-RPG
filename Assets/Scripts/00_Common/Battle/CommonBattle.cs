@@ -67,6 +67,10 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
     { 
 
     }
+    public virtual void AttackDelay()
+    {
+
+    }
 
     protected virtual void OnDead()
     {

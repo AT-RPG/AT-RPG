@@ -486,9 +486,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6073111375070932318}
-        m_TargetAssemblyTypeName: CommonBattle, Assembly-CSharp
-        m_MethodName: TakeDamage
-        m_Mode: 4
+        m_TargetAssemblyTypeName: MeleeAttack, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -722,7 +722,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1368705608415263453
 Transform:
   m_ObjectHideFlags: 0

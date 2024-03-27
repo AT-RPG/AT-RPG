@@ -5,31 +5,7 @@ using AT_RPG;
 using UnityEngine.AI;
 public class MonsterMain : CommonBattle
 {
-    /*
-     * 몬스터 메인
- -공통
-   -풀 관리/이동(네브메쉬)/추적(피격시 무조건 추적) /스킬 /데미지 계산
-    사망/아이템 드롭 
-    -근접
-      -근접공격(공격후 추적)
-    -원거리
-      -원거리 공격(공격후 플레이어가 일정범위 안이면 공격대기시간동안
-                      사거리끝쪽으로 이동)
-
-
-
-몬스터메인- void attack()/void attackdelay()를 virtual로 만든후
- 메인을상속받는 근접/원거리 스크립트에서 override로 정의한다
- 
-근거리는 전투중 공격-딜레이(멈춤)-공격 
-원거리는 전투중 공격-딜레이(거리판단후 이동)-공격 
-
-원거리에게만 거리를 판단할 별도의 콜라이더 필요
- -오버랩 스피어/트리거
-거리를 벌리다가 플레이어가 추적범위를 벗어나는 경우?
- -배틀이 시작되면 아웃트리거 발동x
-     * */
-
+  
     private IObjectPool<MonsterMain> MonsterPool;
 
     public void setManagedPool(IObjectPool<MonsterMain> pool)
@@ -75,7 +51,7 @@ public class MonsterMain : CommonBattle
     public Coroutine battleState = null;
 
 
-    private NavMeshAgent monAgent;
+    public NavMeshAgent monAgent;
 
     public MonsterAI monsterAI;
     private bool isTracking = false;
@@ -178,6 +154,7 @@ public class MonsterMain : CommonBattle
     //목표위치로 이동
     void MoveToPos(Vector3 target)
     {
+        myAnim.SetBool("BackWalk", false);
         if (move != null)
         {
             StopCoroutine(move);
