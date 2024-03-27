@@ -9,16 +9,17 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5787713509890153670}
-  - component: {fileID: 91742886704849289}
   - component: {fileID: 2058972844068426460}
   - component: {fileID: 2506618622669917154}
+  - component: {fileID: 5898517979603049142}
+  - component: {fileID: 7436489402087807794}
   m_Layer: 9
   m_Name: Pitboy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5787713509890153670
 Transform:
   m_ObjectHideFlags: 0
@@ -36,36 +37,6 @@ Transform:
   - {fileID: 7370894160607737432}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &91742886704849289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047288833536503914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c10d4fe14ca31f44877b92135703f76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseBattleStat:
-    maxHP: 100
-    attackPoint: 30
-    moveSpeed: 4
-    attackDeley: 3
-    skillCooltime: 0
-  changeHpAct:
-    m_PersistentCalls:
-      m_Calls: []
-  monResPos: {fileID: 0}
-  StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
-    type: 3}
-  monsterAI: {fileID: 2704060789860980392}
-  mStat:
-    monsterRange: 4
-    monsterIdleTime: 0
-    longAttack: 0
-  monsterState: 0
 --- !u!136 &2058972844068426460
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -116,6 +87,57 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!195 &5898517979603049142
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047288833536503914}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &7436489402087807794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047288833536503914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb6159b0629ab6840a0da25e5cf9bad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseBattleStat:
+    maxHP: 300
+    attackPoint: 50
+    moveSpeed: 1
+    attackDeley: 4
+    skillCooltime: 0
+  changeHpAct:
+    m_PersistentCalls:
+      m_Calls: []
+  monResPos: {fileID: 5787713509890153670}
+  StartspawnPos: {fileID: 0}
+  monsterAI: {fileID: 2704060789860980392}
+  mStat:
+    monsterRange: 2
+    monsterIdleTime: 0
+    monsterRunSpeed: 2
+  monsterState: 0
 --- !u!1 &3625626522330184428
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +207,7 @@ MonoBehaviour:
   findPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 91742886704849289}
+      - m_Target: {fileID: 7436489402087807794}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
         m_MethodName: StartTracking
         m_Mode: 0
@@ -200,7 +222,7 @@ MonoBehaviour:
   lostPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 91742886704849289}
+      - m_Target: {fileID: 7436489402087807794}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
         m_MethodName: StopTracking
         m_Mode: 1
@@ -485,8 +507,8 @@ MonoBehaviour:
   attackAct:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 91742886704849289}
-        m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
+      - m_Target: {fileID: 7436489402087807794}
+        m_TargetAssemblyTypeName: CommonBattle, Assembly-CSharp
         m_MethodName: TakeDamage
         m_Mode: 4
         m_Arguments:
@@ -499,7 +521,19 @@ MonoBehaviour:
         m_CallState: 2
   deadAct:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7436489402087807794}
+        m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
+        m_MethodName: deadState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7680841898326831816
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,11 +1,11 @@
+using AT_RPG;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class RangeAttack : MonoBehaviour
+public class RangeAttack : MonsterMain
 {
-    ///몬스터 메인에서 공격->rangeattack스크립트실행(발사체 풀 관리 스크립트)->발사
     [SerializeField]
     private GameObject FireballPrefab;
 
@@ -41,9 +41,43 @@ public class RangeAttack : MonoBehaviour
     }
 
     //발사
-    public void OnShoot(Vector3 fireballPosition, Vector3 fireballDirection)
+    public void OnShoot()
     {
-        var fireball = rangePool.Get();
-   
+       rangePool.Get();
+    }
+
+    public override void AttackPlayer()
+    {
+        if (battleState != null) StopCoroutine(battleState);
+        if (move != null) StopCoroutine(move);
+
+        myAnim.SetBool("Move", false);
+        myAnim.SetBool("Run", false);
+        myAnim.SetTrigger("NormalAttack");
+        AttackDeleay();
+    }
+    public override void AttackDeleay()
+    {
+        //
+        StartCoroutine(AttackDeleayState());
+    }
+    IEnumerator AttackDeleayState()
+    {
+        yield return new WaitForSeconds(baseBattleStat.attackDeley);
+        if (monsterState != State.Dead) battleState = StartCoroutine(BattleState());
+    }
+    public override void OnAttack()
+    {
+        if (myTarget == null) return;
+        Vector3 battletarget = myTarget.transform.position;
+        Vector3 dir = battletarget - transform.position;
+        float dist = dir.magnitude;
+        
+        OnShoot();
+    }
+    public void ballHit()
+    {
+        ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
+        cd.TakeDamage(baseBattleStat.attackPoint);
     }
 }

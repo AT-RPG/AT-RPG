@@ -72,6 +72,7 @@ public class MonsterMain : CommonBattle
 
     public Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
+    public Coroutine battleState = null;
 
 
     private NavMeshAgent monAgent;
@@ -86,7 +87,7 @@ public class MonsterMain : CommonBattle
     {
         public float monsterRange;
         public float monsterIdleTime;
-        public bool longAttack;
+        public float monsterRunSpeed;
     }
 
 
@@ -107,6 +108,7 @@ public class MonsterMain : CommonBattle
     void ChangeState(State newState)
     {
         if (monsterState == newState) return;
+        
         monsterState = newState;
         switch (monsterState)
         {
@@ -120,14 +122,9 @@ public class MonsterMain : CommonBattle
                 moveState();
                 break;
             case State.Battle:
-                StartCoroutine(battleState());
+                battleState=StartCoroutine(BattleState());
                 break;
             case State.Dead:
-                myTarget = null;
-                GetComponent<Collider>().enabled = false;
-                GetComponent<Rigidbody>().isKinematic = true;
-                StopAllCoroutines();
-                Invoke("destroyMosnter", 3f); //풀 릴리스 호출
                 break;
         }
     }
@@ -172,7 +169,7 @@ public class MonsterMain : CommonBattle
         Vector3 GetRndPos()
         {
             dir = Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0) * dir;
-            dir *= Random.Range(10.0f, 30.0f);
+            dir *= Random.Range(10.0f, 50.0f);
             return monResPos.position + dir;
         }
         MoveToPos(GetRndPos());
@@ -190,16 +187,16 @@ public class MonsterMain : CommonBattle
 
     void IsRunning(float dist)//달리기
     {
-        float runOk = 40.0f;
+        float runOk = 30.0f;
         if (dist >= runOk)
         {
-            baseBattleStat.moveSpeed= 6.0f;
+            monAgent.speed = mStat.monsterRunSpeed;
             myAnim.SetBool("Move", false);
             myAnim.SetBool("Run", true);
         }
         else
         {
-            baseBattleStat.moveSpeed = 3.0f;
+            monAgent.speed = baseBattleStat.moveSpeed;
             myAnim.SetBool("Run", false);
             myAnim.SetBool("Move", true);
         }
@@ -231,22 +228,26 @@ public class MonsterMain : CommonBattle
     
     public void StartTracking(Transform target)
     {
-        if (monsterState == State.Dead) return;
-        StopCoroutine(deleyMove);
-        myTarget = target;
-        ChangeState(State.Battle);
-            
+        if (monsterState != State.Dead)
+        {
+            StopCoroutine(deleyMove);
+            myTarget = target;
+            ChangeState(State.Battle);
+        }
     }
     //몬스터 플레이어 놓침
     public void StopTracking()
     {
-        if(move!=null)StopCoroutine(move);
-        StopCoroutine(battleState());
-        myTarget = null;
-        ChangeState(State.Idle);
+        if (monsterState != State.Dead)
+        {
+            if (move != null) StopCoroutine(move);
+            if (battleState != null) StopCoroutine(battleState);
+            myTarget = null;
+            ChangeState(State.Idle);
+        }
     }
 
-    public IEnumerator battleState()
+    public IEnumerator BattleState()
     {
         while (myTarget != null)
         {
@@ -262,6 +263,7 @@ public class MonsterMain : CommonBattle
             else
             {
                 AttackPlayer();
+                break;
             }
         }
         
@@ -279,27 +281,13 @@ public class MonsterMain : CommonBattle
     //몬스터 사망상태
     public void deadState()
     {
+        myTarget = null;
+        StopAllCoroutines();
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
         ChangeState(State.Dead);
+        Invoke("destroyMosnter", 3f); //풀 릴리스 호출
     }
-
-
-    public override void OnAttack()
-    {
-        if (myTarget == null) return;
-
-        Vector3 battletarget = myTarget.transform.position;
-        Vector3 dir = battletarget - transform.position;
-        float dist = dir.magnitude;
-        if (dist > mStat.monsterRange) return;
-
-        ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
-        if (cd != null)
-        {
-            cd.TakeDamage(baseBattleStat.attackPoint); 
-        }
-    }
-
-
 
     // Start is called before the first frame update
     void Start()

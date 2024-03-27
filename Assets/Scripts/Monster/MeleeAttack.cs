@@ -1,17 +1,30 @@
+using AT_RPG;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
+
 
 public class MeleeAttack : MonsterMain
 {
+    public override void OnAttack()
+    {
+        if (myTarget == null) return;
+
+        Vector3 battletarget = myTarget.transform.position;
+        Vector3 dir = battletarget - transform.position;
+        float dist = dir.magnitude;
+        if (dist > mStat.monsterRange) return;
+
+        ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
+        if (cd != null)
+        {
+            cd.TakeDamage(baseBattleStat.attackPoint);
+        }
+    }
     public override void AttackPlayer()
     {
-        StopCoroutine(battleState());
-        if (move != null)
-        {
-            StopCoroutine(move);
-        }
+        if(battleState!=null) StopCoroutine(battleState);
+        if (move != null)  StopCoroutine(move);
+        
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
         myAnim.SetTrigger("NormalAttack");
@@ -25,6 +38,6 @@ public class MeleeAttack : MonsterMain
     IEnumerator AttackDeleayState()
     {
         yield return new WaitForSeconds(baseBattleStat.attackDeley);
-        StartCoroutine(battleState());
+        if(monsterState !=State.Dead) battleState = StartCoroutine(BattleState());
     }
 }

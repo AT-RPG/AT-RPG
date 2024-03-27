@@ -580,7 +580,7 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 100
     attackPoint: 40
-    moveSpeed: 3
+    moveSpeed: 2
     attackDeley: 3
     skillCooltime: 0
   changeHpAct:
@@ -592,6 +592,7 @@ MonoBehaviour:
   mStat:
     monsterRange: 2
     monsterIdleTime: 0
+    monsterRunSpeed: 4
     longAttack: 0
   monsterState: 0
 --- !u!1 &2586962272329368009
