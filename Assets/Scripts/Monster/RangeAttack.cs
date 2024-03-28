@@ -57,7 +57,7 @@ public class RangeAttack : MonsterMain
         transform.LookAt(myTarget); //플레이어를 보도록 회전
         myAnim.SetTrigger("NormalAttack");
     }
-    public override void AttackDelay()
+    public override void AttackDeleay()
     {
         StartCoroutine(monBackWalk()); //뒤로이동
         StartCoroutine(AttackDelayCoroutine());//공격딜레이 계산 코룬틴

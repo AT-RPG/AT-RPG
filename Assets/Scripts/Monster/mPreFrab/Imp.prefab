@@ -587,7 +587,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   monResPos: {fileID: 4805543270355043271}
-  StartspawnPos: {fileID: 0}
+  StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
+    type: 3}
+  monAgent: {fileID: 5367530893034538486}
   monsterAI: {fileID: 6058489181737877242}
   mStat:
     monsterRange: 2
@@ -854,6 +856,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  attackDelay:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8392699502187752003
 MonoBehaviour:
   m_ObjectHideFlags: 0

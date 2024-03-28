@@ -23,12 +23,9 @@ public class MeleeAttack : MonsterMain
     public override void AttackPlayer()
     {
         if(battleState!=null) StopCoroutine(battleState);
-        if (move != null)  StopCoroutine(move);
-        
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
         myAnim.SetTrigger("NormalAttack");
-        AttackDeleay();
     }
     public override void AttackDeleay()
     {

@@ -118,7 +118,7 @@ public class MonsterMain : CommonBattle
     //몬스터 대기 상태
     void idleState()
     {
-        monAgent.ResetPath();
+        monAgent.ResetPath(); 
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
         mStat.monsterIdleTime = Random.Range(2, 4);
@@ -154,7 +154,6 @@ public class MonsterMain : CommonBattle
     //목표위치로 이동
     void MoveToPos(Vector3 target)
     {
-        myAnim.SetBool("BackWalk", false);
         if (move != null)
         {
             StopCoroutine(move);
@@ -239,6 +238,7 @@ public class MonsterMain : CommonBattle
             }
             else
             {
+                if (move != null) StopCoroutine(move);
                 AttackPlayer();
                 break;
             }
