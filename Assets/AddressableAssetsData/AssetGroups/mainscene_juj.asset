@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: mainscene_juj
+  m_EditorClassIdentifier: 
+  m_GroupName: mainscene_juj
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 281c737a6241eb04496e7bbdbe5edf8d
+  m_SerializeEntries:
+  - m_GUID: 9c5b67c92723c9847af03f10f346e79d
+    m_Address: Assets/AssetBundleResources/MainScene_JUJ/DummyMainSceneJUJResource.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ed024d09688269c478274daa967f05e0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 86bf6369e2b0807449e159eb2a8e7f13, type: 2}
+    - {fileID: 11400000, guid: ce3c8ae9d8cc4364691dd8def029ed30, type: 2}

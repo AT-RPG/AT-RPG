@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: mainscene_bjw
+  m_EditorClassIdentifier: 
+  m_GroupName: mainscene_bjw
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 258afb9d6f58825419202187e2388394
+  m_SerializeEntries:
+  - m_GUID: b86c0dcb79b078248b5d95a87bfb6f2c
+    m_Address: Assets/AssetBundleResources/MainScene_BJW/DummyMainSceneBJWAssetBundleResources.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ed024d09688269c478274daa967f05e0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 493b2eb987dd3a143900f105fbde9719, type: 2}
+    - {fileID: 11400000, guid: 457b76315b78491438e46838bdbbac19, type: 2}

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: mainscene_csh
+  m_EditorClassIdentifier: 
+  m_GroupName: mainscene_csh
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ddcd1b871cde2214d8904ad5208e50d8
+  m_SerializeEntries:
+  - m_GUID: f38684857f72b364e88af4a42590b459
+    m_Address: Assets/AssetBundleResources/MainScene_CSH/DummyMainSceneCSHResource.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ed024d09688269c478274daa967f05e0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 6af2b816c70a48340a897f1c1c447d06, type: 2}
+    - {fileID: 11400000, guid: 033be16e27bf1874b84007bb4e632867, type: 2}
