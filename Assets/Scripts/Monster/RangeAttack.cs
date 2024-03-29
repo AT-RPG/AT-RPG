@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.GraphicsBuffer;
 
 public class RangeAttack : MonsterMain
 {
@@ -102,6 +104,7 @@ public class RangeAttack : MonsterMain
             }
             myAnim.SetBool("BackWalk", false);
         }
+        yield return null;
     }
     public override void OnAttack()
     {
@@ -112,11 +115,11 @@ public class RangeAttack : MonsterMain
         
         OnShoot();
     }
-   
-
+    
     public void ballHit()
     {
         ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
         cd.TakeDamage(baseBattleStat.attackPoint);
     }
+
 }

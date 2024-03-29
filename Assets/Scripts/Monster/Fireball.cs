@@ -35,14 +35,21 @@ public class Fireball : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) // 충돌한 오브젝트의 레이어가 몬스터 레이어인지 확인
         {
-         rangeattack.ballHit(); //
+            rangeattack.ballHit(); //
         }
+        StopCoroutine(ShootLost());
         destroyball();//릴리즈  
     }
 
     public void mShoot()
     {
-        Invoke("destroyball", 6f);//충돌하지않을경우 6초후 릴리즈
+        StartCoroutine(ShootLost());
+    }
+
+    IEnumerator ShootLost()
+    {
+        yield return new WaitForSeconds(6f);
+        destroyball();
     }
 
     private void Update()
