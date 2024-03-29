@@ -217,7 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8575944251109808097}
   m_Layer: 6
-  m_Name: DeleteMapButton
+  m_Name: DeleteWorldButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

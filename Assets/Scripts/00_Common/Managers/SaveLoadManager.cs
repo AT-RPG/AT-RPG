@@ -319,14 +319,14 @@ namespace AT_RPG.Manager
             isSaving = true;
 
             // 맵 설정 파일 생성
-            SerializeMapSetting(mapSaveDataPath, worldSettingData);
+            SerializeWorldSetting(mapSaveDataPath, worldSettingData);
 
             isSaving = false;
             yield return null;
             completed?.Invoke();
         }
 
-        private static void SerializeMapSetting(string mapSaveDataPath, WorldSettingData worldSettingData)
+        private static void SerializeWorldSetting(string mapSaveDataPath, WorldSettingData worldSettingData)
         {
             string worldSettingDataFilePath = String.CreateFilePath(
                 mapSaveDataPath,
@@ -385,14 +385,14 @@ namespace AT_RPG.Manager
             isLoading = true;
 
             // 맵 설정 클래스 생성
-            WorldSettingData worldSettingData = DeserializeMapSetting(worldSettingDataFilePath);
+            WorldSettingData worldSettingData = DeserializeWorldSetting(worldSettingDataFilePath);
 
             isLoading = false;
             yield return null;
             completed?.Invoke(worldSettingData);
         }
 
-        private static WorldSettingData DeserializeMapSetting(string worldSettingDataPath)
+        private static WorldSettingData DeserializeWorldSetting(string worldSettingDataPath)
         {
             string dataFromJson;
             using (FileStream stream = new FileStream(worldSettingDataPath, FileMode.Open))

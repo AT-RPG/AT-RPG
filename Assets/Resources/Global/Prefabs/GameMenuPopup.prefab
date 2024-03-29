@@ -457,7 +457,7 @@ MonoBehaviour:
     resourceName: OptionPopup
     resourceGUID: b1eb8d0fd1390bd4685900047752bfe2
   worldSettingPopupPrefab:
-    resourceName: MapSettingPopup
+    resourceName: WorldSettingPopup
     resourceGUID: 12c6709d56b3e194e88f224d6db7105c
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}

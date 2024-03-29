@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace AT_RPG
 {
-    public partial class MapButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public partial class WorldButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         // 버튼 뷰포트
         [SerializeField] private TMP_Text mapName;
@@ -49,7 +49,7 @@ namespace AT_RPG
         public void OnPointerClick(PointerEventData eventData) => onButtonClick?.Invoke();
     }
 
-    public partial class MapButton
+    public partial class WorldButton
     {
         public string MapName
         {

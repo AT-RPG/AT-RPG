@@ -10,7 +10,7 @@ namespace AT_RPG
     /// 설명 :                                 <br/>
     /// + 맵 설정 팝업에서 사용되는 클래스       <br/>
     /// </summary>
-    public class MapSettingPopup : Popup, IPopupDestroy
+    public class WorldSettingPopup : Popup, IPopupDestroy
     {
         [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
@@ -58,9 +58,9 @@ namespace AT_RPG
         /// <summary>
         /// 현재 팝업을 닫고, 맵 설정에 따라 맵 데이터를 생성합니다.
         /// </summary>
-        public void OnCreateMapSetting()
+        public void OnCreateWorldSetting()
         {
-            if (!IsMapSettingEnable()) { return; }
+            if (!IsWorldSettingEnable()) { return; }
 
             // 맵 설정 데이터 초기화
             WorldSettingData worldSettingData = new WorldSettingData();
@@ -77,9 +77,9 @@ namespace AT_RPG
             });
         }
 
-        public void OnChangeMapSetting()
+        public void OnChangeWorldSetting()
         {
-            if (!IsMapSettingEnable()) { return; }
+            if (!IsWorldSettingEnable()) { return; }
 
             // 맵 설정 데이터 초기화
             WorldSettingData worldSettingData = new WorldSettingData();
@@ -94,7 +94,7 @@ namespace AT_RPG
         /// 맵 설정에 잘못된 부분이 없는가?
         /// </summary>
         /// <returns></returns>
-        private bool IsMapSettingEnable()
+        private bool IsWorldSettingEnable()
         {
             // 맵 이름 비어있음?
             if (mapName.text.Length <= 0)

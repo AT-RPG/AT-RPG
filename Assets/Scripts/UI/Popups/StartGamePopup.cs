@@ -33,7 +33,7 @@ namespace AT_RPG
         [SerializeField] private GameObject deleteWorldButtonInstance;
 
         // 피킹된 맵
-        private MapButton currPickedWorldButton;
+        private WorldButton currPickedWorldButton;
 
 
         private void Start()
@@ -92,11 +92,11 @@ namespace AT_RPG
             // 맵 버튼 생성 및 초기화
             foreach (var worldSettingData in worldSettingDatas)
             {
-                GameObject mapButtonInstance
+                GameObject worldButtonInstance
                     = Instantiate(worldButtonPrefab.Resource, worldButtonContents.transform);
-                MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
-                mapButton.WorldSettingData = worldSettingData;
-                mapButton.OnPickAction += OnPickWorld;
+                WorldButton worldButton = worldButtonInstance.GetComponent<WorldButton>();
+                worldButton.WorldSettingData = worldSettingData;
+                worldButton.OnPickAction += OnPickWorld;
             }
         }
 
@@ -104,17 +104,17 @@ namespace AT_RPG
         /// <summary>
         /// 버튼의 동작 대상에 대한 포커스를 선택한 월드에 둡니다.
         /// </summary>
-        private void OnPickWorld(GameObject mapButtonInstance)
+        private void OnPickWorld(GameObject worldButtonInstance)
         {
             // 맵 버튼이 맞는지?
-            MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
-            if (!mapButton)
+            WorldButton worldButton = worldButtonInstance.GetComponent<WorldButton>();
+            if (!worldButton)
             {
-                Debug.LogError($"{mapButtonInstance}는 맵 버튼이 아닙니다.");
+                Debug.LogError($"{worldButtonInstance}는 맵 버튼이 아닙니다.");
                 return;
             }
 
-            currPickedWorldButton = mapButton;
+            currPickedWorldButton = worldButton;
             playWorldButtonInstance.SetActive(true);
             deleteWorldButtonInstance.SetActive(true);
         }
@@ -123,7 +123,7 @@ namespace AT_RPG
         /// <summary>
         /// 월드를 설정 팝업을 생성합니다.
         /// </summary>
-        public void OnInstantiateMapSettingPopup()
+        public void OnInstantiateWorldSettingPopup()
         {
             UIManager.InstantiatePopup(worldSettingPopupPrefab.Resource, PopupRenderMode.Default);
         }

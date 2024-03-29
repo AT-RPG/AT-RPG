@@ -553,7 +553,7 @@ GameObject:
   - component: {fileID: 6797412477733530590}
   - component: {fileID: 2674506872442363000}
   m_Layer: 6
-  m_Name: MapButton
+  m_Name: WorldButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
