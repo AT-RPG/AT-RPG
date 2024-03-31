@@ -19,7 +19,7 @@ namespace AT_RPG
 
         [Header("하위 팝업")]
         [Tooltip("맵 선택창 팝업")]
-        [SerializeField] protected ResourceReference<GameObject> startGamePopupPrefab;
+        [SerializeField] protected AssetReferenceResource<GameObject> startGamePopupPrefab;
 
         [Header("맵 설정")]
         [SerializeField] private TMP_InputField mapName;
@@ -33,8 +33,8 @@ namespace AT_RPG
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName == SceneManager.Setting.MainScene) { createButtonInstance.SetActive(false); }
-            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { changeButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName == SceneManager.Setting.MainSceneAsset.SceneName) { createButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainSceneAsset.SceneName) { changeButtonInstance.SetActive(false); }
         }
 
 

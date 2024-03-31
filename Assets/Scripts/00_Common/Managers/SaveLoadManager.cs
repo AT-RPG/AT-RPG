@@ -8,17 +8,13 @@ using System.Collections.Generic;
 namespace AT_RPG.Manager
 {
     /// <summary>
-    /// 설명 : 현재 씬에서 GameObjectData 컴포넌트가 부착된 모든 GameObject의 데이터를 저장 <br/> <br/>
-    /// 
-    /// 주의 사항 :  <br/>
-    /// 1. 세이브 대상이 에셋 번들이나 리소스 폴더에 등록 필요  <br/>
-    /// 2. 세이브 대상에 GameObjectData 컴포넌트가 필요 <br/>
-    /// 3. GameObjectData 이외에 추가적으로 데이터를 저장하려는 경우, <br/>
+    /// 현재 씬에서 GameObjectData 컴포넌트가 부착된 모든 GameObject의 데이터를 저장
     /// </summary>
     public partial class SaveLoadManager : Singleton<SaveLoadManager>
     {
-        // 매니저 기본 설정
-        [SerializeField] private static SaveLoadManagerSetting setting;
+        // 기본 설정
+        [SerializeField] private SaveLoadManagerSetting defaultSetting;
+        private static SaveLoadManagerSetting setting;
 
         // 세이브 파일 저장중
         private static bool isSaving = false;
@@ -53,8 +49,7 @@ namespace AT_RPG.Manager
         protected override void Awake()
         {
             base.Awake();
-
-            setting = Resources.Load<SaveLoadManagerSetting>("SaveLoadManagerSettings");
+            setting = defaultSetting;
         }
 
 
@@ -256,21 +251,18 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 세이브 데이터로 인스턴스 복원
         /// </summary>
-        public static void InstantiateGameObjectFromData(
-            SerializedGameObjectDataList serializedGameObjectDataList)
+        public static void InstantiateGameObjectFromData(SerializedGameObjectDataList serializedGameObjectDataList)
         {
             foreach (var serializableDatas in serializedGameObjectDataList)
             {
                 // 에셋번들에서 인스턴스 원본을 찾기 위해 GameObjectData를 먼저 찾기
-                GameObjectRootData gameObjectData =
-                    FindGameObjectRootData(serializableDatas);
+                GameObjectRootData gameObjectData = FindGameObjectRootData(serializableDatas);
 
                 // ILoadData 인터페이스로 인스턴스를 복원
                 GameObject instanceFromSaveData = Instantiate(gameObjectData.Instance.Resource);
                 foreach (var data in serializableDatas)
                 {
-                    ILoadData saveLoad
-                        = instanceFromSaveData.GetComponent(data.ComponentTypeName) as ILoadData;
+                    ILoadData saveLoad = instanceFromSaveData.GetComponent(data.ComponentTypeName) as ILoadData;
 
                     saveLoad.LoadData(data);
                 }
@@ -283,17 +275,16 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 폴더(= 맵 이름)에 맵 설정 데이터 파일을 생성합니다.
         /// </summary>
-        public static void SaveWorldSettingData(
-            string rootPath, WorldSettingData worldSettingData, StartCondition started = null, SaveCompleted completed = null)
+        public static void SaveWorldSettingData(string rootPath, WorldSettingData worldSettingData, StartCondition started = null, SaveCompleted completed = null)
         {
+            // 아직 세이브 작업이 안끝났다면?
             if (isSaving)
             {
                 Debug.LogError("데이터를 세이브 중입니다.");
                 return;
             }
 
-            // 폴더(= 맵 이름)를 생성
-            // 폴더에 맵 설정 세이브 파일 정리
+            // 이전 월드 설정을 삭제
             string mapSaveDataPath = Path.Combine(rootPath, worldSettingData.worldName);
             if (!Directory.Exists(mapSaveDataPath))
             {
@@ -304,8 +295,8 @@ namespace AT_RPG.Manager
                 DeleteSaveDatas(rootPath, worldSettingData.worldName, setting.worldSettingDataFileExtension);
             }
 
-            Instance.StartCoroutine(
-                InternalSaveWorldSettingDataCoroutine(mapSaveDataPath, worldSettingData, started, completed));
+            // 새로운 월드 설정으로 저장
+            Instance.StartCoroutine(InternalSaveWorldSettingDataCoroutine(mapSaveDataPath, worldSettingData, started, completed));
         }
 
         private static IEnumerator InternalSaveWorldSettingDataCoroutine(

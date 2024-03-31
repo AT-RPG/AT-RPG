@@ -18,10 +18,10 @@ namespace AT_RPG
 
         [Header("하위 팝업")]
         [Tooltip("월드 설정 팝업 프리팹")]
-        [SerializeField] private ResourceReference<GameObject> worldSettingPopupPrefab;
+        [SerializeField] private AssetReferenceResource<GameObject> worldSettingPopupPrefab;
 
         [Tooltip("월드 버튼 프리팹")]
-        [SerializeField] private ResourceReference<GameObject> worldButtonPrefab;
+        [SerializeField] private AssetReferenceResource<GameObject> worldButtonPrefab;
 
         [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
@@ -92,8 +92,7 @@ namespace AT_RPG
             // 맵 버튼 생성 및 초기화
             foreach (var worldSettingData in worldSettingDatas)
             {
-                GameObject worldButtonInstance
-                    = Instantiate(worldButtonPrefab.Resource, worldButtonContents.transform);
+                GameObject worldButtonInstance = Instantiate(worldButtonPrefab.Resource, worldButtonContents.transform);
                 WorldButton worldButton = worldButtonInstance.GetComponent<WorldButton>();
                 worldButton.WorldSettingData = worldSettingData;
                 worldButton.OnPickAction += OnPickWorld;
@@ -147,18 +146,18 @@ namespace AT_RPG
         /// <summary>
         /// 월드를 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
         /// </summary>
-        /// TODO : 리펙토링
         private void InternalOnPlayWorld()
         {
             SerializedGameObjectDataList gameObjectDatas = new SerializedGameObjectDataList();
 
             string fromScene = SceneManager.CurrentSceneName;
-            string toScene = SceneManager.Setting.MainScene;
-            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
+            string toScene = SceneManager.Setting.MainSceneAsset.SceneName;
+            string loadingScene = SceneManager.Setting.LoadingSceneAsset.SceneName;
+            SceneManager.LoadScene(loadingScene, () =>
             {
                 // 리소스 로딩/언로딩 + 세이브 파일 로딩
-                ResourceManager.LoadAllResourcesCoroutine(toScene);
-                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                // ResourceManager.LoadAllResourcesCoroutine(toScene);
+                // ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
                 // 로딩이 끝나면 씬을 변경합니다.
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading, () =>

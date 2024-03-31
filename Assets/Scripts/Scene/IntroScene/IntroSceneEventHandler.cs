@@ -7,13 +7,16 @@ namespace AT_RPG
     {        
         public void LoadTitileScene()
         {
-            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
+            string fromScene = SceneManager.CurrentSceneName;
+            string toScene = SceneManager.Setting.TitleSceneAsset.SceneName;
+            string loadingScene = SceneManager.Setting.LoadingSceneAsset.SceneName;
+            SceneManager.LoadScene(loadingScene, () =>
             {
-                ResourceManager.LoadAllResourcesCoroutine(SceneManager.Setting.TitleScene);
+                // ResourceManager.LoadAllResourcesCoroutine(SceneManager.Setting.TitleSceneAsset);
 
-                ResourceManager.UnloadAllResourcesCoroutine(SceneManager.CurrentSceneName);
+                // ResourceManager.UnloadAllResourcesCoroutine(SceneManager.CurrentSceneName);
 
-                SceneManager.LoadSceneCoroutine(SceneManager.Setting.TitleScene, () => !ResourceManager.IsLoading);
+                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
             });
         }
     }

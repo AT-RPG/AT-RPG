@@ -45,7 +45,7 @@ namespace AT_RPG
             {
                 GameMode = GameMode.Host,
                 SessionName = MultiplayManager.CreateInviteCode().ToString(),
-                Scene = UnitySceneManager.GetSceneByName(SceneManager.Setting.MainScene).buildIndex,
+                Scene = UnitySceneManager.GetSceneByName(SceneManager.Setting.MainSceneAsset.SceneName).buildIndex,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
                 IsVisible = false,
 
@@ -69,7 +69,7 @@ namespace AT_RPG
             {
                 GameMode = GameMode.Client,
                 SessionName = inviteCode,
-                Scene = UnitySceneManager.GetSceneByName(SceneManager.Setting.MainScene).buildIndex,
+                Scene = UnitySceneManager.GetSceneByName(SceneManager.Setting.MainSceneAsset.SceneName).buildIndex,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
                 DisableClientSessionCreation = true
             };

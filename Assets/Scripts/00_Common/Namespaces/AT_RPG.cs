@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using static AT_RPG.Manager.ResourceManager;
 using UnityObject = UnityEngine.Object;
 
@@ -8,38 +10,30 @@ namespace AT_RPG
 {
     #region ResourceManager
 
-    // Key1 = 씬 이름,  Value1 = 씬에서 사용될 리소스 매핑s
-    public class SceneResourceMap : Dictionary<string, ResourceMap> { }
+    /// <summary>
+    /// <see cref="AssetReference.AssetGUID"/>와 로드한 리소스를 매핑하는 클래스 <br/>
+    /// Key = <see cref="AssetReference.AssetGUID"/> <br/>
+    /// Value = <see cref="AssetReference.Asset"/>
+    /// </summary>
+    public class ResourceMap : Dictionary<string, UnityObject> { }
 
-    // Key1 = 리소스 타입,  Key2 = 리소스 이름,  Key3 = 리소스에 1:1 매핑되는 GUID
-    [Serializable]
-    public class ResourceGUIDMap : Dictionary<string, Dictionary<string, Guid>>
-    {
-        public bool ContainsResourceType(string resourceTypeName)
-        {
-            return ContainsKey(resourceTypeName);
-        }
-        public bool ContainsResourceName(string resourceTypeName, string resourceName)
-        {
-            return this[resourceTypeName].ContainsKey(resourceName);
-        }
-    }
+    public class ResourceHandleList : List<AsyncOperationHandle> { }
 
-    // Key1 = 리소스의 타입,  Key2 = 리소스의 이름,  Value1 = 리소스
-    public class ResourceMap : Dictionary<string, Dictionary<string, UnityObject>> { }
+    /// <summary>
+    /// <see cref="Manager.ResourceManager"/>에서 리소스 로드 호출 시, 로드 대기열에 전달되는 데이터
+    /// </summary>
+    public struct LoadRequest { }
 
-    // Key1 = 씬 이름,  Value1 = 씬에 적용되는 리소스 번들s
-    public class AssetBundleMap : Dictionary<string, List<AssetBundle>> { }
-
-    // ResourceManager의 언로드를 호출 시, 관련 정보를 큐에 전달
-    public class UnloadRequest
+    /// <summary>
+    /// <see cref="Manager.ResourceManager"/>에서 리소스 언로드 호출 시, 언로드 대기열에 전달되는 데이터
+    /// </summary>
+    public struct UnloadRequest
     {
         public string SceneName { get; set; }
-        public StartConditionCallback StartCondition { get; set; }
-        public CompletedCallback Completed { get; set; }
+        public LoadStartCondition StartCondition { get; set; }
+        public LoadCompleted Completed { get; set; }
 
-        public UnloadRequest(
-            string sceneName, StartConditionCallback startCondition, CompletedCallback completed = null)
+        public UnloadRequest(string sceneName, LoadStartCondition startCondition, LoadCompleted completed = null)
         {
             SceneName = sceneName;
             StartCondition = startCondition;

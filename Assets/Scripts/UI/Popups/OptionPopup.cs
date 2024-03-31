@@ -15,7 +15,7 @@ namespace AT_RPG
         [SerializeField] private BlurCanvasAnimation blurAnimation;
 
         [Header("종속 팝업")]
-        [SerializeField] private ResourceReference<GameObject> mapSettingPopup;
+        [SerializeField] private AssetReferenceResource<GameObject> mapSettingPopup;
 
         [Header("옵션 메뉴 버튼")]
         [SerializeField] private GameObject continueButtonInstance;
@@ -25,7 +25,7 @@ namespace AT_RPG
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { gamesButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainSceneAsset.SceneName) { gamesButtonInstance.SetActive(false); }
         }
 
         private void Start()

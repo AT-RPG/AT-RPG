@@ -49,12 +49,13 @@ namespace AT_RPG
         private void OnConnectSuccess()
         {
             string fromScene = SceneManager.CurrentSceneName;
-            string toScene = SceneManager.Setting.MainScene;
-            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
+            string toScene = SceneManager.Setting.MainSceneAsset.SceneName;
+            string loadingScene = SceneManager.Setting.LoadingSceneAsset.SceneName;
+            SceneManager.LoadScene(loadingScene, () =>
             {
                 // 리소스 로딩/언로딩 + 세이브 파일 로딩
-                ResourceManager.LoadAllResourcesCoroutine(toScene);
-                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                // ResourceManager.LoadAllResourcesCoroutine(toScene);
+                // ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
                 // 로딩이 끝나면 씬을 변경합니다.
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);

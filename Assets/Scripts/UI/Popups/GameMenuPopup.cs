@@ -10,8 +10,8 @@ namespace AT_RPG
     public class GameMenuPopup : Popup, IPopupDestroy
     {
         [Header("종속된 팝업")]
-        [SerializeField] private ResourceReference<GameObject>  optionPopupPrefab;
-        [SerializeField] private ResourceReference<GameObject>  worldSettingPopupPrefab;
+        [SerializeField] private AssetReferenceResource<GameObject>  optionPopupPrefab;
+        [SerializeField] private AssetReferenceResource<GameObject>  worldSettingPopupPrefab;
 
         [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation            fadeAnimation;
@@ -32,7 +32,7 @@ namespace AT_RPG
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleScene) 
+            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleSceneAsset.SceneName) 
             { 
                 titleButtonInstance.SetActive(false);
                 saveButtonInstance.SetActive(false);
@@ -96,7 +96,7 @@ namespace AT_RPG
             GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
-            logPopup.Log = $"Save Completed!";
+            logPopup.Log = $"Save LoadCompleted!";
             logPopup.Duration = 3.0f;
         }
 
@@ -154,13 +154,13 @@ namespace AT_RPG
 
             // 타이틀 씬으로 이동
             string fromScene = SceneManager.CurrentSceneName;
-            string toScene = SceneManager.Setting.TitleScene;
-            string loadingScene = SceneManager.Setting.LoadingScene;
+            string toScene = SceneManager.Setting.TitleSceneAsset.SceneName;
+            string loadingScene = SceneManager.Setting.LoadingSceneAsset.SceneName;
             SceneManager.LoadSceneCoroutine(loadingScene, () => !SaveLoadManager.IsSaving, () =>
             {
-                ResourceManager.LoadAllResourcesCoroutine(toScene);
+                // ResourceManager.LoadAllResourcesCoroutine(toScene);
 
-                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                // ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
                 SceneManager.LoadSceneCoroutine(
                     toScene, 

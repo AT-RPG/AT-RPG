@@ -12,7 +12,8 @@ namespace AT_RPG.Manager
     public partial class UIManager : Singleton<UIManager>
     {
         // 매니저 기본 설정
-        [SerializeField] private static UIManagerSetting    setting;
+        [SerializeField] private UIManagerSetting defaultSetting;
+        private static UIManagerSetting    setting;
 
         // 현재 씬의 모든 Canvas를 저장
         private static List<Canvas>                         sceneCanvases = new List<Canvas>();
@@ -28,7 +29,7 @@ namespace AT_RPG.Manager
         {
             base.Awake();
 
-            setting = Resources.Load<UIManagerSetting>("UIManagerSettings");
+            setting = defaultSetting;
 
             InputManager.AddKeyAction("Setting/Undo", OnInstantiateGameMenuPopup);
 

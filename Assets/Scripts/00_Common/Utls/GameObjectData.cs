@@ -9,15 +9,6 @@ namespace AT_RPG
         // 이 데이터를 소유하고 있는 컴포넌트 이름
         [SerializeField] public string ComponentTypeName;
 
-        [Obsolete]
-        public GameObjectData()
-        {
-
-        }
-
-        public GameObjectData(Component owner)
-        {
-            ComponentTypeName = owner.GetType().Name;
-        }
+        [Obsolete] public GameObjectData() { }
     }
 }

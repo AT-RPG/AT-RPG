@@ -19,7 +19,7 @@ namespace AT_RPG.Manager
         private static ResourceManager resourceManager      = null;
         private static SceneManager sceneManager            = null;
         private static UIManager uiManager                  = null;
-        private static SaveLoadManager dataManager              = null;
+        private static SaveLoadManager dataManager          = null;
         private static InputManager inputManager            = null;
         private static MultiplayManager multiplayManager    = null;
 
@@ -65,13 +65,13 @@ namespace AT_RPG.Manager
 
             inputManager = InputManager.GetInstance();
 
-            resourceManager = ResourceManager.GetInstance();
-
             sceneManager = SceneManager.GetInstance();
 
             uiManager = UIManager.GetInstance();
 
             dataManager = SaveLoadManager.GetInstance();
+
+            resourceManager = ResourceManager.GetInstance();
         }
     }
 

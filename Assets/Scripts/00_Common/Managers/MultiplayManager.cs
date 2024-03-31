@@ -4,18 +4,16 @@ using UnityEngine;
 namespace AT_RPG.Manager
 {
     /// <summary>
-    /// 멀티플레이와 관련된 모든 기능을 관리합니다.
+    /// 멀티플레이와 관련된 모든 기능을 관리하는 클래스
     /// </summary>
     public partial class MultiplayManager : Singleton<MultiplayManager>
     {
-        private static MultiplayManagerSetting setting = null;
+        // 기본 설정
+        [SerializeField] private MultiplayManagerSetting defaultSetting;
+        private static MultiplayManagerSetting setting;
 
         // 데이터를 실제로 주고받는걸 구현하는 클래스
         private static MultiplayNetworkRunner networkRunner = null;
-
-        // 클라이언트의 고유 식별자
-        // 이 식별자를 통해, 이전 월드에 기록이 있는 경우, 데이터를 불러옵니다.
-        private static MultiplayAuthentication authentication = null;
 
         // 다른 클라이언트가 세션에 들어올 수 있도록 하는 초대코드
         // 이 코드를 생성 후, 다른 클라이언트에게 공유합니다.
@@ -29,14 +27,9 @@ namespace AT_RPG.Manager
         protected override void Awake()
         {
             base.Awake();
-
-            setting = Resources.Load<MultiplayManagerSetting>("MultiplayManagerSettings");
+            setting = defaultSetting;
         }
 
-        protected void Update()
-        {
-            
-        }
 
         /// <summary>
         /// 포톤 클라우드에 연결을 시도합니다. <br/>
@@ -98,17 +91,6 @@ namespace AT_RPG.Manager
 
 
         /// <summary>
-        /// 클라이언트의 고유 식별자를 생성합니다. <br/>
-        /// 호스트에서 이 식별자를 통해, 이전에 월드에 접속했는지 여부를 판단하게됩니다.
-        /// </summary>
-        public static MultiplayAuthentication CreateAuthentication()
-        {
-            authentication = MultiplayAuthentication.IsExist() ? MultiplayAuthentication.Load() : MultiplayAuthentication.CreateNew();
-            return authentication;
-        }
-
-
-        /// <summary>
         /// 다른 클라이언트가 호스트의 세션에 들어올 수 있도록 초대 코드를 생성합니다.
         /// </summary>
         public static int CreateInviteCode()
@@ -130,8 +112,6 @@ namespace AT_RPG.Manager
     public partial class MultiplayManager
     {
         public static MultiplayManagerSetting Setting => setting;
-
-        public static MultiplayAuthentication Authentication => authentication;
 
         public static int InviteCode => inviteCode;
 

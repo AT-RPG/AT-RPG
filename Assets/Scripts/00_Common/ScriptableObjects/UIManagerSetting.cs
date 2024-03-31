@@ -14,12 +14,12 @@ namespace AT_RPG
 
 
         [Tooltip("게임 메뉴 팝업 프리팹")]
-        public ResourceReference<GameObject>    gameMenuPopupPrefab;
+        public AssetReferenceResource<GameObject>    gameMenuPopupPrefab;
 
         [Tooltip("팝업을 관리하는 캔버스 인스턴스 프리팹")]
-        public ResourceReference<GameObject>    popupCanvasPrefab;
+        public AssetReferenceResource<GameObject>    popupCanvasPrefab;
 
         [Tooltip("로그 팝업 프리팹")]
-        public ResourceReference<GameObject>    logPopupPrefab;
+        public AssetReferenceResource<GameObject>    logPopupPrefab;
     }
 }

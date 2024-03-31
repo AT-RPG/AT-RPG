@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: titlescene
+  m_Name: TitleScene
   m_EditorClassIdentifier: 
-  m_GroupName: titlescene
+  m_GroupName: TitleScene
   m_Data:
     m_SerializedData: []
-  m_GUID: 2662b7b8b321b7447bfce3532d627a27
+  m_GUID: eeef34bee8daf0e4c80d30aba15adce5
   m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ed024d09688269c478274daa967f05e0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 8f691544e614ec84eae6f3a474794c90, type: 2}
-    - {fileID: 11400000, guid: 38ae4c2d70b34ab4aac003935b81789a, type: 2}
+    - {fileID: 11400000, guid: 64b01323c9cdad243a44eaa4df215525, type: 2}
+    - {fileID: 11400000, guid: eca10ba659c88304480d41db6607b037, type: 2}

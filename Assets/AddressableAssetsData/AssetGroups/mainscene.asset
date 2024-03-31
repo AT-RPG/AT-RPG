@@ -10,21 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: mainscene
+  m_Name: MainScene
   m_EditorClassIdentifier: 
-  m_GroupName: mainscene
+  m_GroupName: MainScene
   m_Data:
     m_SerializedData: []
-  m_GUID: eeef34bee8daf0e4c80d30aba15adce5
-  m_SerializeEntries:
-  - m_GUID: 3e0275d8233df904089c16b765d850de
-    m_Address: Assets/AssetBundleResources/MainScene/DummyMainSceneResource.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_GUID: 8092f68dc73792240b9e485be86f1d65
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ed024d09688269c478274daa967f05e0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 64b01323c9cdad243a44eaa4df215525, type: 2}
-    - {fileID: 11400000, guid: eca10ba659c88304480d41db6607b037, type: 2}
+    - {fileID: 11400000, guid: c57e20c360087674291a7e4c16090bbc, type: 2}
+    - {fileID: 11400000, guid: a3c41dfbf2ba99d4ba3210032854645e, type: 2}
