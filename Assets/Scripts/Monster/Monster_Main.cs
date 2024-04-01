@@ -14,13 +14,13 @@ public class MonsterMain : CommonBattle
     }
     public void destroyMosnter()
     {
-        //초기화 함수 추가
-    //    InitializeMonster();
+        if (myHpBar != null)
+        {
+            Destroy(myHpBar.gameObject);
+            myHpBar = null; // 체력바 참조 해제
+        }
+
         MonsterPool.Release(this); //몬스터 풀반환
-    }
-    public void InitializeMonster()
-    {
-        transform.position = StartspawnPos.transform.position; //위치 초기화
     }
     private void Awake() //초기화
     {
@@ -40,6 +40,13 @@ public class MonsterMain : CommonBattle
                 StartTracking(myTarget);
             }
         }
+        base.Initialize();
+        GameObject hpbar= Resources.Load<GameObject>("Monster/HpBar");
+        GameObject obj = Instantiate(hpbar, SceneData.Instance.hpBarsTransform);
+        myHpBar = obj.GetComponent<MonsterHpBar>();
+        myHpBar.myTarget = hpViewPos;
+        base.changeHpAct.AddListener(myHpBar.ChangeHpSlider);
+
     }
 
 
@@ -50,6 +57,8 @@ public class MonsterMain : CommonBattle
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
     public Coroutine battleState = null;
 
+    public Transform hpViewPos; //hp바의 위치 지정
+    MonsterHpBar myHpBar;
 
     public NavMeshAgent monAgent;
 
@@ -66,7 +75,7 @@ public class MonsterMain : CommonBattle
         public float monsterRunSpeed;
     }
 
-
+  
 
     //몬스터 상태
     public enum State
@@ -105,13 +114,22 @@ public class MonsterMain : CommonBattle
         }
     }
 
+    void firstDamage()
+    {
+        float MaxHp = baseBattleStat.maxHP;
+        if (MaxHp > baseBattleStat.maxHP)
+        {
+      //      StartTracking();
+        }
+    }
+
     //몬스터 생성
     void createMonster()
     {
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         transform.position = transform.parent.position; //스폰위치 설정
-        base.Initialize();
+        
         ChangeState(State.Idle);
     }
 

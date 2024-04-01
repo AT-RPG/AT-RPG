@@ -587,8 +587,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   monResPos: {fileID: 4805543270355043271}
-  StartspawnPos: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
-    type: 3}
+  StartspawnPos: {fileID: 0}
+  hpViewPos: {fileID: 2679963115219028463}
   monAgent: {fileID: 5367530893034538486}
   monsterAI: {fileID: 6058489181737877242}
   mStat:
@@ -725,6 +725,37 @@ Transform:
   - {fileID: 382050137872573542}
   m_Father: {fileID: 2724248080239966359}
   m_LocalEulerAnglesHint: {x: 6.1074257, y: 0.006439491, z: 0.8041587}
+--- !u!1 &3835690287445576671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2679963115219028463}
+  m_Layer: 9
+  m_Name: HpBarPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2679963115219028463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3835690287445576671}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.1, y: 0.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5873452253002556514}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3981811764279438572
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,7 +889,19 @@ MonoBehaviour:
         m_CallState: 2
   attackDelay:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 682911750381399969}
+        m_TargetAssemblyTypeName: MeleeAttack, Assembly-CSharp
+        m_MethodName: AttackDeleay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8392699502187752003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1027,7 +1070,8 @@ Transform:
   m_LocalPosition: {x: 0.0000016290695, y: 0.8289071, z: -0.00000053609864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2679963115219028463}
   m_Father: {fileID: 726587650468846236}
   m_LocalEulerAnglesHint: {x: -3.975695e-16, y: 2.4848011e-17, z: 5.0710417e-21}
 --- !u!1 &6679965874450633771
