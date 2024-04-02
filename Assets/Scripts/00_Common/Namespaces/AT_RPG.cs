@@ -19,26 +19,17 @@ namespace AT_RPG
 
     public class ResourceHandleList : List<AsyncOperationHandle> { }
 
-    /// <summary>
-    /// <see cref="Manager.ResourceManager"/>에서 리소스 로드 호출 시, 로드 대기열에 전달되는 데이터
-    /// </summary>
-    public struct LoadRequest { }
+    
 
     /// <summary>
-    /// <see cref="Manager.ResourceManager"/>에서 리소스 언로드 호출 시, 언로드 대기열에 전달되는 데이터
+    /// <see cref="Manager.ResourceManager"/>에서 리소스 로드/언로드 호출 시, 대기열에 전달되는 데이터
     /// </summary>
-    public struct UnloadRequest
+    public struct ResourceRequest 
     {
-        public string SceneName { get; set; }
-        public LoadStartCondition StartCondition { get; set; }
-        public LoadCompleted Completed { get; set; }
-
-        public UnloadRequest(string sceneName, LoadStartCondition startCondition, LoadCompleted completed = null)
-        {
-            SceneName = sceneName;
-            StartCondition = startCondition;
-            Completed = completed;
-        }
+        public Guid RequestId;
+        public List<string> Labels;
+        public StartCondition Started;
+        public Completion Completed;
     }
 
     #endregion
