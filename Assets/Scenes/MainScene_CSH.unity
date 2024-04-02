@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1399,25 +1399,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2851484506307652488, guid: 443b90013d715c6428739756ef438f6a,
-        type: 3}
-      propertyPath: attackDelay.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AttackDeleay
-      objectReference: {fileID: 0}
     - target: {fileID: 3348987995906302637, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
       propertyPath: StartspawnPos
       value: 
       objectReference: {fileID: 1918004500}
-    - target: {fileID: 3348987995906302637, guid: 443b90013d715c6428739756ef438f6a,
-        type: 3}
-      propertyPath: baseBattleStat.attackPoint
-      value: 300
-      objectReference: {fileID: 0}
     - target: {fileID: 7322936292352383320, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 66.7
+      value: 71.9
       objectReference: {fileID: 0}
     - target: {fileID: 7322936292352383320, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
@@ -1427,7 +1417,7 @@ PrefabInstance:
     - target: {fileID: 7322936292352383320, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 65.2
+      value: 65.9
       objectReference: {fileID: 0}
     - target: {fileID: 7322936292352383320, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
@@ -1465,8 +1455,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 3487814376035655356, guid: 443b90013d715c6428739756ef438f6a, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 443b90013d715c6428739756ef438f6a, type: 3}
@@ -1752,11 +1741,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Imp
       objectReference: {fileID: 0}
-    - target: {fileID: 2584212705057138345, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1773,7 +1757,7 @@ PrefabInstance:
     - target: {fileID: 1254170634839110470, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
       propertyPath: monnum
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1271818066010167445, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}

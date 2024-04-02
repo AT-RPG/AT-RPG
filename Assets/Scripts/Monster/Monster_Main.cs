@@ -5,7 +5,7 @@ using AT_RPG;
 using UnityEngine.AI;
 public class MonsterMain : CommonBattle
 {
-  
+
     private IObjectPool<MonsterMain> MonsterPool;
 
     public void setManagedPool(IObjectPool<MonsterMain> pool)
@@ -41,12 +41,11 @@ public class MonsterMain : CommonBattle
             }
         }
         base.Initialize();
-        GameObject hpbar= Resources.Load<GameObject>("Monster/HpBar");
+        GameObject hpbar = Resources.Load<GameObject>("Monster/HpBar");
         GameObject obj = Instantiate(hpbar, SceneData.Instance.hpBarsTransform);
         myHpBar = obj.GetComponent<MonsterHpBar>();
         myHpBar.myTarget = hpViewPos;
         base.changeHpAct.AddListener(myHpBar.ChangeHpSlider);
-
     }
 
 
@@ -64,7 +63,7 @@ public class MonsterMain : CommonBattle
 
     public MonsterAI monsterAI;
     private bool isTracking = false;
-    
+
     public MonsterStat mStat;
 
     [System.Serializable]
@@ -75,7 +74,7 @@ public class MonsterMain : CommonBattle
         public float monsterRunSpeed;
     }
 
-  
+
 
     //몬스터 상태
     public enum State
@@ -93,7 +92,7 @@ public class MonsterMain : CommonBattle
     void ChangeState(State newState)
     {
         if (monsterState == newState) return;
-        
+
         monsterState = newState;
         switch (monsterState)
         {
@@ -107,7 +106,7 @@ public class MonsterMain : CommonBattle
                 moveState();
                 break;
             case State.Battle:
-                battleState=StartCoroutine(BattleState());
+                battleState = StartCoroutine(BattleState());
                 break;
             case State.Dead:
                 break;
@@ -119,7 +118,7 @@ public class MonsterMain : CommonBattle
         float MaxHp = baseBattleStat.maxHP;
         if (MaxHp > baseBattleStat.maxHP)
         {
-      //      StartTracking();
+            //      StartTracking();
         }
     }
 
@@ -129,14 +128,14 @@ public class MonsterMain : CommonBattle
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         transform.position = transform.parent.position; //스폰위치 설정
-        
+
         ChangeState(State.Idle);
     }
 
     //몬스터 대기 상태
     void idleState()
     {
-        monAgent.ResetPath(); 
+        monAgent.ResetPath();
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
         mStat.monsterIdleTime = Random.Range(2, 4);
@@ -219,7 +218,7 @@ public class MonsterMain : CommonBattle
         }
     }
 
-    
+
     public void StartTracking(Transform target)
     {
         if (monsterState != State.Dead)
@@ -257,11 +256,12 @@ public class MonsterMain : CommonBattle
             else
             {
                 if (move != null) StopCoroutine(move);
+                monAgent.ResetPath();
                 AttackPlayer();
                 break;
             }
         }
-        
+
     }
 
     public virtual void AttackPlayer()
@@ -280,6 +280,7 @@ public class MonsterMain : CommonBattle
         StopAllCoroutines();
         GetComponent<Collider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
+        monAgent.ResetPath();
         ChangeState(State.Dead);
         Invoke("destroyMosnter", 3f); //풀 릴리스 호출
     }
