@@ -514,7 +514,19 @@ MonoBehaviour:
         m_CallState: 2
   attackDelay:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6073111375070932318}
+        m_TargetAssemblyTypeName: MeleeAttack, Assembly-CSharp
+        m_MethodName: AttackDelay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2693536543614886055
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,7 +683,8 @@ Transform:
   m_LocalPosition: {x: 0.0000015428441, y: 0.8289076, z: -0.00000039678332}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1046073179024064609}
   m_Father: {fileID: 8942232563022939299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3968485436808285576
@@ -838,6 +851,7 @@ MonoBehaviour:
       m_Calls: []
   monResPos: {fileID: 1368705608415263453}
   StartspawnPos: {fileID: 0}
+  hpViewPos: {fileID: 1046073179024064609}
   monAgent: {fileID: 7084421915046875086}
   monsterAI: {fileID: 2980993339573348086}
   mStat:
@@ -1292,6 +1306,37 @@ Transform:
   m_Children:
   - {fileID: 3328106036772660615}
   m_Father: {fileID: 6224307556687916537}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8153509889338960923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1046073179024064609}
+  m_Layer: 9
+  m_Name: HpBarPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1046073179024064609
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8153509889338960923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0000003720633, y: -0.000000119209275, z: -0.049788434, w: 0.99875987}
+  m_LocalPosition: {x: 0.0000015428441, y: 0.8289076, z: -0.00000039678332}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3045329609317803266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8340974324647028358
 GameObject:

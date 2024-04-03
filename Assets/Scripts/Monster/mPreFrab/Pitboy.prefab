@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5787713509890153670
 Transform:
   m_ObjectHideFlags: 0
@@ -132,6 +132,7 @@ MonoBehaviour:
       m_Calls: []
   monResPos: {fileID: 5787713509890153670}
   StartspawnPos: {fileID: 0}
+  hpViewPos: {fileID: 8051428131619660808}
   monAgent: {fileID: 5898517979603049142}
   monsterAI: {fileID: 2704060789860980392}
   mStat:
@@ -239,6 +240,37 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   myTarget: {fileID: 0}
+--- !u!1 &8236104029021060927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8051428131619660808}
+  m_Layer: 9
+  m_Name: HpBarPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8051428131619660808
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8236104029021060927}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000015087424, y: 0.00000038743013, z: -0.04978742, w: 0.9987598}
+  m_LocalPosition: {x: -0.01, y: 0.44, z: -0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5021794951877487647}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3947575680528509305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -470,7 +502,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -902860896334871194, guid: 33e39f2cd36e7524ab1a929da2e8fb49,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8051428131619660808}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 33e39f2cd36e7524ab1a929da2e8fb49,
         type: 3}
@@ -537,7 +573,19 @@ MonoBehaviour:
         m_CallState: 2
   attackDelay:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7436489402087807794}
+        m_TargetAssemblyTypeName: MeleeAttack, Assembly-CSharp
+        m_MethodName: AttackDelay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7680841898326831816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,3 +598,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3e9c092675e58449f2856175b0a8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &5021794951877487647 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -902860896334871194, guid: 33e39f2cd36e7524ab1a929da2e8fb49,
+    type: 3}
+  m_PrefabInstance: {fileID: 3947575680528509305}
+  m_PrefabAsset: {fileID: 0}

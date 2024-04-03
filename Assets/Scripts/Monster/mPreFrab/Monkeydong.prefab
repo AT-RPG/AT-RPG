@@ -863,7 +863,8 @@ Transform:
   m_LocalPosition: {x: -0.0000011843663, y: 0.8289076, z: -0.00000025656325}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8247222263052856161}
   m_Father: {fileID: 4906846017991687666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7446491040383114651
@@ -885,7 +886,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2584023838303255153
 Transform:
   m_ObjectHideFlags: 0
@@ -998,6 +999,8 @@ MonoBehaviour:
       m_Calls: []
   monResPos: {fileID: 2584023838303255153}
   StartspawnPos: {fileID: 0}
+  hpViewPos: {fileID: 8247222263052856161}
+  monAgent: {fileID: 1208930700751314367}
   monsterAI: {fileID: 5145294031541860992}
   mStat:
     monsterRange: 2
@@ -1239,6 +1242,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8778042878156759261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8693432753634506788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8247222263052856161}
+  m_Layer: 9
+  m_Name: HpBarPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8247222263052856161
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693432753634506788}
+  serializedVersion: 2
+  m_LocalRotation: {x: -9.3132235e-10, y: 0.000000283122, z: -0.049787406, w: 0.99875987}
+  m_LocalPosition: {x: -0.0000011843663, y: 0.8289076, z: -0.00000025656325}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1549056075935405294}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8832734409146302564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,6 +1363,21 @@ MonoBehaviour:
       - m_Target: {fileID: 8285458563447652584}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
         m_MethodName: deadState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  attackDelay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8285458563447652584}
+        m_TargetAssemblyTypeName: MeleeAttack, Assembly-CSharp
+        m_MethodName: AttackDelay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -432,6 +432,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pitboy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1047288833536503914, guid: cf1131d128f90d04b83e2bcbecaa659b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2506618622669917154, guid: cf1131d128f90d04b83e2bcbecaa659b,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5787713509890153670, guid: cf1131d128f90d04b83e2bcbecaa659b,
         type: 3}
@@ -1231,7 +1241,7 @@ PrefabInstance:
     - target: {fileID: 1254170634839110470, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
       propertyPath: monnum
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1271818066010167445, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
@@ -1371,11 +1381,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight
       objectReference: {fileID: 0}
-    - target: {fileID: 4030030701416395658, guid: 1ced28b0f11fd91458c188c63f0a3a64,
+    - target: {fileID: 6073111375070932318, guid: 1ced28b0f11fd91458c188c63f0a3a64,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: StartspawnPos
+      value: 
+      objectReference: {fileID: 1918004500}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1397,7 +1407,7 @@ PrefabInstance:
     - target: {fileID: 852305393678156617, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3348987995906302637, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
@@ -1590,10 +1600,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5768698741969644647, guid: c20a0676738ce2a499f8141289ac1d86,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7446491040383114651, guid: c20a0676738ce2a499f8141289ac1d86,
         type: 3}
       propertyPath: m_Name
       value: Monkeydong
+      objectReference: {fileID: 0}
+    - target: {fileID: 7446491040383114651, guid: c20a0676738ce2a499f8141289ac1d86,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1757,7 +1777,7 @@ PrefabInstance:
     - target: {fileID: 1254170634839110470, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
       propertyPath: monnum
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1271818066010167445, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}

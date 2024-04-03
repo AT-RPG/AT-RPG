@@ -7,15 +7,18 @@ using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// <see cref="RangeAttack"/>
+/// <see cref="RangeType"/>
 /// 원기리 몬스터 공격관리
 /// </summary>
-public class RangeAttack : MonsterMain
+public class RangeType : MonsterMain
 {
     [SerializeField]
     private GameObject FireballPrefab;
     public Transform attackPos;
     private IObjectPool<Fireball> rangePool;
+
+   public Coroutine backstep = null;
+   public Coroutine attackdelay = null;
 
     private void Awake()
     {
@@ -26,6 +29,7 @@ public class RangeAttack : MonsterMain
     private Fireball spawnball()
     {
         Fireball fireball = Instantiate(FireballPrefab, transform).GetComponent<Fireball>();
+        fireball.SetRangeAttackParent(this); // 부모 오브젝트 설정
         fireball.setManagedPool(rangePool);
         return fireball;
     }
@@ -57,13 +61,13 @@ public class RangeAttack : MonsterMain
         if (battleState != null) StopCoroutine(battleState);
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
-        transform.LookAt(myTarget); //플레이어를 보도록 회전
+      
         myAnim.SetTrigger("NormalAttack");
     }
-    public override void AttackDeleay()
+    public override void AttackDelay()
     {
-        StartCoroutine(monBackWalk()); //뒤로이동
-        StartCoroutine(AttackDelayCoroutine());//공격딜레이 계산 코룬틴
+        backwalk();  
+        attackdelay = StartCoroutine(AttackDelayCoroutine());//공격딜레이 계산 코룬틴
     }
 
     IEnumerator AttackDelayCoroutine()
@@ -78,37 +82,42 @@ public class RangeAttack : MonsterMain
 
         if (monsterState != State.Dead)
         {
-            if (monBackWalk() != null) StopCoroutine(monBackWalk());//뒤로이동중이라면 정지
+            if (backstep != null) StopCoroutine(backstep);//뒤로이동중이라면 정지
             myAnim.SetBool("BackWalk", false);
+            monAgent.ResetPath();
             battleState = StartCoroutine(BattleState());
         }
     }
 
+    void backwalk()
+    {
+        if (backstep != null) StopCoroutine(backstep);
+        backstep = StartCoroutine(monBackWalk()); //뒤로이동
+    }
     IEnumerator monBackWalk()
     {
+
         Vector3 battletarget = myTarget.transform.position;
         Vector3 dir = battletarget - transform.position;
         float dist = dir.magnitude;
 
-        if (dist < mStat.monsterRange) //플레이어와 거리가 사거리보다 짧으면 뒷걸음시작
+        while (dist < mStat.monsterRange && monsterState != State.Dead)
         {
-            while (monsterState != State.Dead && dist < mStat.monsterRange)
-            {
-                transform.LookAt(myTarget);
-                myAnim.SetBool("BackWalk", true);
-                Vector3 moveDirection = -dir.normalized;
-                monAgent.SetDestination(transform.position + moveDirection);
-                // 플레이어와의 거리를 다시 계산합니다.
-                dir = battletarget - transform.position;
-                dist = dir.magnitude;
-                yield return null;
-            }
+            transform.LookAt(myTarget);
+            myAnim.SetBool("BackWalk", true);
+            Vector3 moveDirection = -dir.normalized;
+            monAgent.SetDestination(transform.position + moveDirection);
+            yield return null;
+            dir = battletarget - transform.position;
+            dist = dir.magnitude;
             myAnim.SetBool("BackWalk", false);
         }
-        yield return null;
+        transform.LookAt(myTarget);
+        backwalk();
     }
     public override void OnAttack()
     {
+
         if (myTarget == null) return;
         OnShoot();
     }

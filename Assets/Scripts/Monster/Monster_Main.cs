@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.Pool;
 using AT_RPG;
 using UnityEngine.AI;
+
+/// <summary>
+/// 몬스터 공통부분 관리스크립트
+/// </summary>
 public class MonsterMain : CommonBattle
 {
 
@@ -266,9 +270,11 @@ public class MonsterMain : CommonBattle
 
     public virtual void AttackPlayer()
     {
+       
     }
-    public virtual void AttackDeleay()
+    public virtual void AttackDelay()
     {
+        
     }
 
 

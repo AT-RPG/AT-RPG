@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 
-public class MeleeAttack : MonsterMain
+public class MeleeType : MonsterMain
 {
     public override void OnAttack()
     {
@@ -27,7 +27,7 @@ public class MeleeAttack : MonsterMain
         myAnim.SetBool("Run", false);
         myAnim.SetTrigger("NormalAttack");
     }
-    public override void AttackDeleay()
+    public override void AttackDelay()
     {
         StartCoroutine(AttackDeleayState());
     }
