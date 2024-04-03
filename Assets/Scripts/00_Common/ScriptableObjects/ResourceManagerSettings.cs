@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace AT_RPG
 {
-    [Serializable]
     [CreateAssetMenu(fileName = "ResourceManagerSettings", menuName = "ScriptableObject/ResourceManager Setting")]
     public class ResourceManagerSettings : ScriptableObject
     {
@@ -16,10 +15,10 @@ namespace AT_RPG
         public string AssetGuidMapSavePath = Application.streamingAssetsPath;
 
         // 어드레서블 에셋 매핑 파일의 이름
-        public string AssetGuidMapFileName = nameof(AssetGuidMap);
+        public string AssetGuidMapFileName = "AssetGuidMap";
 
         // 리소스 페이크 로딩 지속 시간
-        public float FakeLoadingDuration = 0.75f;
+        public float FakeLoadingDuration;
 
 
         /// <summary>

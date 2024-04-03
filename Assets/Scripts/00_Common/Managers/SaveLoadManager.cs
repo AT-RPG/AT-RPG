@@ -13,8 +13,7 @@ namespace AT_RPG.Manager
     public partial class SaveLoadManager : Singleton<SaveLoadManager>
     {
         // 기본 설정
-        [SerializeField] private SaveLoadManagerSetting defaultSetting;
-        private static SaveLoadManagerSetting setting;
+        private static SaveLoadManagerSettings setting;
 
         // 세이브 파일 저장중
         private static bool isSaving = false;
@@ -49,7 +48,7 @@ namespace AT_RPG.Manager
         protected override void Awake()
         {
             base.Awake();
-            setting = defaultSetting;
+            setting = Resources.Load<SaveLoadManagerSettings>("SaveLoadManagerSettings");
         }
 
 
@@ -442,7 +441,7 @@ namespace AT_RPG.Manager
         public static bool IsLoading => isLoading;
 
         // 매니저 기본 설정
-        public static SaveLoadManagerSetting Setting => setting;
+        public static SaveLoadManagerSettings Setting => setting;
 
         // 인 게임에 들어오면 초기화
         public static WorldSettingData WorldSettingData

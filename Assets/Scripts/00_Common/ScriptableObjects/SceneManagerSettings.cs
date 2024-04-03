@@ -5,7 +5,7 @@ using UnityEngine;
 namespace AT_RPG
 {
     [CreateAssetMenu(fileName = "SceneManagerSettings", menuName = "ScriptableObject/SceneManager Setting")]
-    public class SceneManagerSetting : ScriptableObject
+    public class SceneManagerSettings : ScriptableObject
     {
         public AssetReferenceScene IntroSceneAsset;
         public AssetReferenceScene LoadingSceneAsset;
@@ -13,7 +13,7 @@ namespace AT_RPG
         public AssetReferenceScene MainSceneAsset;
 
         // 리소스 페이크 로딩 지속 시간
-        public float FakeLoadingDuration = 0.75f;
+        public float FakeLoadingDuration;
 
         // 씬에서 사용하는 에셋 번들 라벨을 각 씬에 매핑합니다.
         public List<string> IntroSceneAssetBundleLabelMap = new List<string>();
@@ -23,7 +23,7 @@ namespace AT_RPG
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(SceneManagerSetting))]
+    [CustomEditor(typeof(SceneManagerSettings))]
     public class SceneManagerSettingEditor : Editor
     {
         public void OnEnable()
@@ -33,7 +33,7 @@ namespace AT_RPG
 
         public override void OnInspectorGUI()
         {
-            SceneManagerSetting script = (SceneManagerSetting)target;
+            SceneManagerSettings script = (SceneManagerSettings)target;
             serializedObject.Update();
 
             // 수정 가능 필드 정의

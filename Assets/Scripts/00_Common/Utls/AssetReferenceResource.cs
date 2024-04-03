@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using AT_RPG.Manager;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace AT_RPG
 {
@@ -17,5 +18,15 @@ namespace AT_RPG
 
         public AssetReferenceResource(string guid) : base(guid) { }
         public AssetReferenceResource(AssetReference assetReference) : base(assetReference.AssetGUID) { }
+
+        //public override AsyncOperationHandle<TObject> LoadAssetAsync<TObject>()
+        //{
+        //    ResourceManager.LoadAssetAsync(m_AssetGUID);
+        //}
+
+        //public override AsyncOperationHandle<GameObject> InstantiateAsync(Transform parent = null, bool instantiateInWorldSpace = false)
+        //{
+        //    return base.InstantiateAsync(parent, instantiateInWorldSpace);
+        //}
     }
 }

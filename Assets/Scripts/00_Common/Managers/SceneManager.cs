@@ -12,8 +12,7 @@ namespace AT_RPG.Manager
     public partial class SceneManager : Singleton<SceneManager>
     {
         // 매니저 기본 설정
-        [SerializeField] private SceneManagerSetting defaultSetting;
-        private static SceneManagerSetting setting;
+        private static SceneManagerSettings setting;
 
         // 씬 로드 후 호출되는 이벤트
         private static event Action afterSceneLoadAction;
@@ -31,7 +30,7 @@ namespace AT_RPG.Manager
         protected override void Awake()
         {
             base.Awake();
-            setting = defaultSetting;
+            setting = Resources.Load<SceneManagerSettings>("SceneManagerSettings");
         }
 
 
@@ -159,7 +158,7 @@ namespace AT_RPG.Manager
     public partial class SceneManager
     {
         // 매니저 기본 설정
-        public static SceneManagerSetting Setting => setting;
+        public static SceneManagerSettings Setting => setting;
 
         // 씬 로드 후 호출되는 이벤트
         public static Action AfterSceneLoadAction

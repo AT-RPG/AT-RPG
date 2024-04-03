@@ -93,7 +93,7 @@ namespace AT_RPG
             PlayMode currentPlayMode = MultiplayManager.PlayMode;
             if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
 
-            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
             logPopup.Log = $"Save LoadCompleted!";
@@ -109,7 +109,7 @@ namespace AT_RPG
         {
             IsMultiplayEnabled();
 
-            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
             logPopup.Log = IsMultiplayEnabled() ?

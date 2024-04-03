@@ -5,13 +5,13 @@ using UnityEngine;
 namespace AT_RPG
 {
     [CreateAssetMenu(fileName = "SaveLoadManagerSettings", menuName = "ScriptableObject/SaveLoadManager Setting")]
-    public partial class SaveLoadManagerSetting : ScriptableObject
+    public partial class SaveLoadManagerSettings : ScriptableObject
     {
         // 세이브 파일 기본 경로
         public string   defaultSaveFolderPath;
 
         // 세이브 파일 페이크 로딩 지속 시간
-        public float    fakeLoadingDuration = 0.75f;
+        public float    fakeLoadingDuration;
 
         // 직렬화된 게임 오브젝트 데이터의 확장명
         public readonly string gameObjectDataFileExtension = "god";
@@ -28,12 +28,12 @@ namespace AT_RPG
 
 #if UNITY_EDITOR
 
-    [CustomEditor(typeof(SaveLoadManagerSetting))]
+    [CustomEditor(typeof(SaveLoadManagerSettings))]
     public partial class SaveLoadManagerSettingEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            SaveLoadManagerSetting script = (SaveLoadManagerSetting)target;
+            SaveLoadManagerSettings script = (SaveLoadManagerSettings)target;
 
             // 읽기 전용 필드 정의
             EditorGUI.BeginDisabledGroup(true);

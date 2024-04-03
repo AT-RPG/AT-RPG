@@ -1,9 +1,12 @@
 using AT_RPG.Manager;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
+#endif
 
 namespace AT_RPG
 {

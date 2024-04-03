@@ -67,7 +67,7 @@ namespace AT_RPG
         /// </summary>
         private void OnConnectFail()
         {
-            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default);
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
             logPopup.Log = $"Join failed. Invite code mismatch.";

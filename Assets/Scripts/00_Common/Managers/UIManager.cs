@@ -12,16 +12,15 @@ namespace AT_RPG.Manager
     public partial class UIManager : Singleton<UIManager>
     {
         // 매니저 기본 설정
-        [SerializeField] private UIManagerSetting defaultSetting;
-        private static UIManagerSetting    setting;
+        private static UIManagerSettings setting;
 
         // 현재 씬의 모든 Canvas를 저장
-        private static List<Canvas>                         sceneCanvases = new List<Canvas>();
+        private static List<Canvas> sceneCanvases = new List<Canvas>();
 
         // 현재 씬의 팝업UI를 관리
-        private static PopupCanvas                          popupCanvas;
+        private static PopupCanvas popupCanvas;
 
-        private static GameObject                           gameMenuPopupInstance;
+        private static GameObject gameMenuPopupInstance;
 
 
 
@@ -29,7 +28,7 @@ namespace AT_RPG.Manager
         {
             base.Awake();
 
-            setting = defaultSetting;
+            setting = Resources.Load<UIManagerSettings>("UIManagerSettings");
 
             InputManager.AddKeyAction("Setting/Undo", OnInstantiateGameMenuPopup);
 
@@ -53,7 +52,7 @@ namespace AT_RPG.Manager
 
             if (!gameMenuPopupInstance)
             {
-                gameMenuPopupInstance = InstantiatePopup(setting.gameMenuPopupPrefab.Resource, PopupRenderMode.Hide, false);
+                gameMenuPopupInstance = InstantiatePopup(setting.gameMenuPopupPrefab, PopupRenderMode.Hide, false);
             }
         }
 
@@ -92,7 +91,7 @@ namespace AT_RPG.Manager
         /// </summary>
         private static void OnCreatePopupCanvas()
         {
-            GameObject popupCanvasInstance = Instantiate(setting.popupCanvasPrefab.Resource);
+            GameObject popupCanvasInstance = Instantiate(setting.popupCanvasPrefab);
             PopupCanvas = popupCanvasInstance.GetComponent<PopupCanvas>();
             sceneCanvases.Add(popupCanvasInstance.GetComponent<Canvas>());
         }
@@ -151,7 +150,7 @@ namespace AT_RPG.Manager
     public partial class UIManager
     {
         // UI매니저 기본 설정
-        public static UIManagerSetting Setting => setting;
+        public static UIManagerSettings Setting => setting;
 
         // 현재 씬의 팝업UI를 관리
         public static PopupCanvas PopupCanvas

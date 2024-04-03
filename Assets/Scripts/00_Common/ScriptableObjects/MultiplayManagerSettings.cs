@@ -3,9 +3,9 @@ using UnityEngine;
 namespace AT_RPG
 {
     [CreateAssetMenu(fileName = "MultiplayManagerSettings", menuName = "ScriptableObject/MultiplayManager Setting")]
-    public partial class MultiplayManagerSetting : ScriptableObject
+    public partial class MultiplayManagerSettings : ScriptableObject
     {
         [Tooltip("포톤 API 랩핑 인스턴스")]
-        public AssetReferenceResource<GameObject> MultiplayNetworkRunnerPrefab;
+        public GameObject MultiplayNetworkRunnerPrefab;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace AT_RPG
 {
     [CreateAssetMenu(fileName = "UIManagerSettings", menuName = "ScriptableObject/UIManager Setting")]
-    public class UIManagerSetting : ScriptableObject
+    public class UIManagerSettings : ScriptableObject
     {
         [Tooltip("캔버스 스칼라 설정")]
         public CanvasScaler                     canvasScalerSetting;
@@ -14,12 +14,12 @@ namespace AT_RPG
 
 
         [Tooltip("게임 메뉴 팝업 프리팹")]
-        public AssetReferenceResource<GameObject>    gameMenuPopupPrefab;
+        public GameObject gameMenuPopupPrefab;
 
         [Tooltip("팝업을 관리하는 캔버스 인스턴스 프리팹")]
-        public AssetReferenceResource<GameObject>    popupCanvasPrefab;
+        public GameObject popupCanvasPrefab;
 
         [Tooltip("로그 팝업 프리팹")]
-        public AssetReferenceResource<GameObject>    logPopupPrefab;
+        public GameObject logPopupPrefab;
     }
 }

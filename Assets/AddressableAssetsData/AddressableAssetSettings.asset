@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 1a25546282d9e594dac7445360ba1f45
   m_currentHash:
     serializedVersion: 2
-    Hash: a52e658ab27c82026f1b9cfc4c084753
+    Hash: 354db3d48787a46ac7e3f1f3f74d47c5
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -46,9 +46,9 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: a180f67bb4916a2449d20504f2665240, type: 2}
   - {fileID: 11400000, guid: 7afb710a0253ea74d863ebb49a1cbbde, type: 2}
-  - {fileID: 11400000, guid: 06ba5aead72a8744a9ef1fe7e432753f, type: 2}
-  - {fileID: 11400000, guid: a8782d65c909b3743b6afe9e0441d904, type: 2}
   - {fileID: 11400000, guid: 867d7ab3bda9f3042afb7dd598d8d686, type: 2}
+  - {fileID: 11400000, guid: 218a27cfcf60a4d48a4491920defd858, type: 2}
+  - {fileID: 11400000, guid: 8f95ba0d1f5a6c448a701886ae51fcd3, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -91,6 +91,7 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - Scene
+    - Test
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 8330b1e63f2036c469f2d65e2f176348, type: 2}

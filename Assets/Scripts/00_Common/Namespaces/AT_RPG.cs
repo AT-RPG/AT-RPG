@@ -11,25 +11,31 @@ namespace AT_RPG
     #region ResourceManager
 
     /// <summary>
-    /// <see cref="AssetReference.AssetGUID"/>와 로드한 리소스를 매핑하는 클래스 <br/>
-    /// Key = <see cref="AssetReference.AssetGUID"/> <br/>
-    /// Value = <see cref="AssetReference.Asset"/>
+    /// 리소스 매니저에서 현재 캐시된 어드레서블 리소스를 담아두는 클래스                                                                                          <br/>
+    /// Key1 = <see cref="AsyncOperationHandle"/>을 불러오는데 사용된 <see cref="AssetReference.AssetGUID"/>또는 <see cref="AssetLabelReference.labelString"/>     <br/>
+    /// Key2 = 어드레서블 에셋에 부여된 <see cref="AssetReference.AssetGUID"/>                                                                                     <br/>
+    /// Value1 = <see cref="AssetReference.Asset"/>                                                                                                                <br/>
     /// </summary>
-    public class ResourceMap : Dictionary<string, UnityObject> { }
-
-    public class ResourceHandleList : List<AsyncOperationHandle> { }
-
-    
+    public class ResourceMap : Dictionary<string, Dictionary<string, UnityObject>> { }
 
     /// <summary>
-    /// <see cref="Manager.ResourceManager"/>에서 리소스 로드/언로드 호출 시, 대기열에 전달되는 데이터
+    /// <see cref="Manager.ResourceManager"/>에서 어드레서블을 로드한 리소스를 래퍼런싱하는 핸들을 담아두는 클래스                                                 <br/>
+    /// Key1 = <see cref="AsyncOperationHandle"/>을 불러오는데 사용된 <see cref="AssetReference.AssetGUID"/>또는 <see cref="AssetLabelReference.labelString"/>     <br/>
+    /// Key2 = Key1을 통해 리턴된 핸들                                                                                                                             <br/>
+    /// </summary>
+    public class ResourceHandleMap : Dictionary<string, AsyncOperationHandle> { }
+
+    /// <summary>
+    /// <see cref="Manager.ResourceManager"/>에서 리소스 로드/언로드 호출 시, 대기열에 전달되는 데이터 <br/>
+    /// 현재 동작중인 로딩들을 관리하는데 사용됩니다.
     /// </summary>
     public struct ResourceRequest 
     {
+        // 요청마다 고유 식별자를 부여합니다.
         public Guid RequestId;
-        public List<string> Labels;
-        public StartCondition Started;
-        public Completion Completed;
+
+        /// 키는 <see cref="AssetLabelReference.labelString"/>또는 <see cref="AssetReference.RuntimeKey"/> 입니다.
+        public string Key;
     }
 
     #endregion

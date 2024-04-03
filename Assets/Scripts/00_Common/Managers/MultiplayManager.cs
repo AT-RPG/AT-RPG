@@ -8,12 +8,10 @@ namespace AT_RPG.Manager
     /// </summary>
     public partial class MultiplayManager : Singleton<MultiplayManager>
     {
-        // 기본 설정
-        [SerializeField] private MultiplayManagerSetting defaultSetting;
-        private static MultiplayManagerSetting setting;
+        private static MultiplayManagerSettings setting;
 
         // 데이터를 실제로 주고받는걸 구현하는 클래스
-        private static MultiplayNetworkRunner networkRunner = null;
+        private static MultiplayNetworkRunner networkRunner;
 
         // 다른 클라이언트가 세션에 들어올 수 있도록 하는 초대코드
         // 이 코드를 생성 후, 다른 클라이언트에게 공유합니다.
@@ -27,7 +25,7 @@ namespace AT_RPG.Manager
         protected override void Awake()
         {
             base.Awake();
-            setting = defaultSetting;
+            setting = Resources.Load<MultiplayManagerSettings>("MultiplayManagerSettings");
         }
 
 
@@ -39,7 +37,7 @@ namespace AT_RPG.Manager
         {
             if (networkRunner) { return; }
 
-            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource).GetComponent<MultiplayNetworkRunner>();
+            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab).GetComponent<MultiplayNetworkRunner>();
             StartGameResult connectionResult = await networkRunner.ConnectToCloud();
             if (connectionResult.Ok)
             {
@@ -62,7 +60,7 @@ namespace AT_RPG.Manager
         {
             if (networkRunner) { return; }
 
-            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource).GetComponent<MultiplayNetworkRunner>();
+            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab).GetComponent<MultiplayNetworkRunner>();
             StartGameResult connectionResult = await networkRunner.ConnectToPlayer(inviteCode);
             if (connectionResult.Ok)
             {
@@ -111,7 +109,7 @@ namespace AT_RPG.Manager
 
     public partial class MultiplayManager
     {
-        public static MultiplayManagerSetting Setting => setting;
+        public static MultiplayManagerSettings Setting => setting;
 
         public static int InviteCode => inviteCode;
 

@@ -99,7 +99,7 @@ namespace AT_RPG
             // 맵 이름 비어있음?
             if (mapName.text.Length <= 0)
             {
-                GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default);
+                GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default);
                 LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
                 logPopup.Log = "Can't be map name empty!";
@@ -110,7 +110,7 @@ namespace AT_RPG
             // 이미 세이브 파일에 동일한 맵 이름이 있음?
             if (SaveLoadManager.IsSaveDataDirectroyExist(SaveLoadManager.Setting.defaultSaveFolderPath, mapName.text))
             {
-                GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default);
+                GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default);
                 LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
                 logPopup.Log = $"{mapName.text} already exist!";

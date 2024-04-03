@@ -1,4 +1,6 @@
+using AT_RPG.Manager;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace AT_RPG
 {
@@ -11,8 +13,16 @@ namespace AT_RPG
 
         private void Start()
         {
-            // 리소스 매니저에 바인딩된 어드레서블 리소스가 프리-캐시되어있다면, 리소스를 반환합니다.
-            Instantiate(testAssetBundleResource.Resource);
+
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                var handle = ResourceManager.LoadAssetsAsync("Test");
+                handle.Completed += handle => { if (handle.Status == AsyncOperationStatus.Succeeded) { Instantiate(handle.Result[0]); } };
+            }
         }
     }
 }   

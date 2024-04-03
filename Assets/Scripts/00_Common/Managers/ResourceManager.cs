@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 
 using UnityObject = UnityEngine.Object;
 
@@ -20,33 +18,22 @@ namespace AT_RPG.Manager
         // 기본 설정
         private static ResourceManagerSettings setting;
 
-        // 어드레서블에서 로드한 리소스를 어드레서블 Guid와 매핑하는 클래스
-        private static Dictionary<string, UnityObject> resources = new();
+        // 현재 캐시된 어드레서블 리소스
+        private static ResourceMap resources = new();
 
-        // 어드레서블에서 로드한 리소스 래퍼런스를 소유하는 핸들
-        private static List<AsyncOperationHandle> resourceHandles = new();
+        // 어드레서블에서 로드한 리소스를 래퍼런싱하는 핸들
+        private static ResourceHandleMap resourceHandles = new();
 
-        /// 동작중인 리소스 로드
-        /// 로드 시, <see cref="LoadAsync(string, StartCondition, Completion)"/>를 Add
+        // 동작중인 리소스 로딩
         private static List<ResourceRequest> loadOperations = new();
-
-        /// 동작중인 리소스 언로드
-        /// 언로드 시, <see cref="UnloadAsync(string, StartCondition, Completion)"/>를 Remove
-        private static List<ResourceRequest> unloadOperations = new();
-
-        // 리소스 로드를 성공하면, 이 바인딩이 호출됩니다.
-        public delegate void Completion();
-
-        // 리소스 로드를 시작할려면, 이 바인딩이 True가 되야합니다.
-        public delegate bool StartCondition();
 
 
 
         protected override void Awake()
         {
             base.Awake();
+            setting = Resources.Load<ResourceManagerSettings>("ResourceManagerSettings");
 
-            setting = Resources.Load<ResourceManagerSettings>($"{nameof(ResourceManagerSettings)}");
         }
 
 
@@ -59,73 +46,91 @@ namespace AT_RPG.Manager
 
 
         /// <summary>
-        /// 
+        /// 어드레서블 리소스를 매니저에 캐싱합니다. <br/>
         /// </summary>
-        /// <param name="label">로드할 <see cref="AssetLabelReference.labelString"/></param>
-        /// <param name="started">로드 시작조건</param>
+        /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetLabelReference.labelString"/> 입니다.</param>
+        /// <param name="started">로드 시작조건, 이 조건이 True가 되면 로드를 시작합니다.</param>
         /// <param name="completed">로드 종료 시, 콜백</param>
-        public static void LoadAsync(List<string> labels, StartCondition started = null, Completion completed = null)
+        public static AsyncOperationHandle<IList<UnityObject>> LoadAssetsAsync(string key)
         {
-            // 현재 로딩에 고유 식별자를 부여
-            // 이 식별자로 현재 동작중인 로딩들을 관리
             ResourceRequest newRequest = new()
             {
                 RequestId = Guid.NewGuid(),
-                Labels = labels,
-                Started = started,
-                Completed = completed
+                Key = key,
             };
 
-            Instance.StartCoroutine(LoadAsyncImpl(newRequest));
+            return LoadAssetsAsyncImpl(newRequest).Result;
         }
 
-        private static IEnumerator LoadAsyncImpl(ResourceRequest request)
+        /// <summary>
+        /// 어드레서블 리소스를 매니저에 캐싱하는 동작을 구현합니다. <see cref="LoadAssetsAsync"/>에서 생성된 <see cref="ResourceRequest"/>에 맞춰 동작합니다.
+        /// </summary>
+        private static async Task<AsyncOperationHandle<IList<UnityObject>>> LoadAssetsAsyncImpl(ResourceRequest request)
         {
             loadOperations.Add(request);
 
-            // 시작조건 콜백
-            while (request.Started?.Invoke() ?? true) { yield return null; }
-
             // 라벨이 붙은 모든 어드레서블 에셋의 위치 로드
-            var locationHandle = Addressables.LoadResourceLocationsAsync(request.Labels, Addressables.MergeMode.Union);
-            yield return locationHandle;
+            var locationHandle = Addressables.LoadResourceLocationsAsync(request.Key, Addressables.MergeMode.Union);
+            await locationHandle.Task;
             if (locationHandle.Status != AsyncOperationStatus.Succeeded)
             {
-                Debug.Log($"{request.Labels}에서 어드레서블 에셋의 위치 로드 실패.");
-                yield break;
+                Debug.Log($"{request.Key}를 사용하는 어드레서블 에셋의 위치 로드 실패.");
+                return default;
             }
 
             // 로드한 어드레서블 리소스들을 매핑
             int locationIndex = 0;
+            resources[request.Key] = new();
             var resourceHandle = Addressables.LoadAssetsAsync<UnityObject>(locationHandle.Result, resource => 
             {
-                resources.Add(AssetGuidMap.Map[locationHandle.Result[locationIndex].PrimaryKey], resource);
+                resources[request.Key][AssetGuidMap.Map[locationHandle.Result[locationIndex].PrimaryKey]]= resource;
                 locationIndex++;
             });
-            yield return resourceHandle;
+            await resourceHandle.Task;
             if (resourceHandle.Status != AsyncOperationStatus.Succeeded)
             {
-                Debug.Log($"{request.Labels}에서 어드레서블 리소스 로드 실패.");
-                yield break;
+                Debug.Log($"{request.Key}에서 어드레서블 리소스 로드 실패.");
+                return default;
             }
 
-            // 완료 콜백
-            request.Completed?.Invoke();
-
+            // 리소스 매니저는 'AssetReference.AssetGUID'를 사용하기 때문에 필요없어진 'locationHandle'은 릴리즈
+            // 후에 언로드할 수 있도록 'resourceHandles'를 캐싱
+            Addressables.Release(locationHandle);
+            resourceHandles.Add(request.Key, resourceHandle);
             loadOperations.Remove(request);
+
+            return resourceHandle;
         }
 
 
 
-        //public static async Task UnloadAsync(string label, StartCondition started, Completion completed)
-        //{
-            
-        //}
+        /// <summary>
+        /// 매니저에 캐싱된 어드레서블 리소스를 언로드합니다. <br/>
+        /// </summary>
+        /// <param name="key">로드 시 사용했던 key</param>
+        /// <param name="started">언로드 시작조건, 이 조건이 True가 되면 언로드를 시작합니다.</param>
+        /// <param name="completed">로드 종료 시, 콜백</param>
+        public static void Unload(string key)
+        {
+            ResourceRequest newRequest = new()
+            {
+                RequestId = Guid.NewGuid(),
+                Key = key,
+            };
 
-        //private static async Task UnloadAsyncImpl(string label, StartCondition started, Completion completed)
-        //{
+            UnloadImpl(newRequest);
+        }
 
-        //}
+        private static void UnloadImpl(ResourceRequest request)
+        {
+            // 핸들 언로드를 통해 래퍼런스를 제거
+            Addressables.Release(resourceHandles[request.Key]);
+            resourceHandles.Remove(request.Key);
+
+            // 리소스를 언로드합니다
+            Resources.UnloadUnusedAssets();
+            resources.Remove(request.Key);
+        }
 
 
 
@@ -147,8 +152,5 @@ namespace AT_RPG.Manager
 
         // 리소스 로딩중
         public static bool IsLoading => loadOperations.Count > 0;
-
-        // 리소스 언로딩중
-        public static bool IsUnloading => unloadOperations.Count > 0;
     }
 }
