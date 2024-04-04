@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425001467535157}
   - component: {fileID: 6489425001467535156}
-  - component: {fileID: 6254580483899218550}
+  - component: {fileID: 7154091792325775552}
   m_Layer: 0
   m_Name: Point Light (7)
   m_TagString: Untagged
@@ -95,7 +95,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &6254580483899218550
+--- !u!114 &7154091792325775552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425001735740901}
   - component: {fileID: 6489425001735740902}
-  - component: {fileID: 8495806947554283149}
+  - component: {fileID: 4154954600726882457}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -398,7 +398,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &8495806947554283149
+--- !u!114 &4154954600726882457
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -431,7 +431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425001837818041}
   - component: {fileID: 6489425001837818040}
-  - component: {fileID: 6571979608701702835}
+  - component: {fileID: 8784993879672190900}
   m_Layer: 0
   m_Name: Point Light (6)
   m_TagString: Untagged
@@ -516,7 +516,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &6571979608701702835
+--- !u!114 &8784993879672190900
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -549,7 +549,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425001895919718}
   - component: {fileID: 6489425001895919717}
-  - component: {fileID: 2328322132720193812}
+  - component: {fileID: 7624981925991534832}
   m_Layer: 0
   m_Name: Point Light (8)
   m_TagString: Untagged
@@ -634,7 +634,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &2328322132720193812
+--- !u!114 &7624981925991534832
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -667,7 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425001927361247}
   - component: {fileID: 6489425001927361246}
-  - component: {fileID: 8740934532760155951}
+  - component: {fileID: 6095907220267140643}
   m_Layer: 0
   m_Name: Point Light (5)
   m_TagString: Untagged
@@ -752,7 +752,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &8740934532760155951
+--- !u!114 &6095907220267140643
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -959,7 +959,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425002222373639}
   - component: {fileID: 6489425002222373638}
-  - component: {fileID: 8451316677595366356}
+  - component: {fileID: 7842270361447957160}
   m_Layer: 0
   m_Name: Point Light (4)
   m_TagString: Untagged
@@ -1044,7 +1044,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &8451316677595366356
+--- !u!114 &7842270361447957160
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1190,7 +1190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425002796611677}
   - component: {fileID: 6489425002796611678}
-  - component: {fileID: 236290746539677207}
+  - component: {fileID: 5409130709224660460}
   m_Layer: 0
   m_Name: Point Light (1)
   m_TagString: Untagged
@@ -1275,7 +1275,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &236290746539677207
+--- !u!114 &5409130709224660460
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1308,7 +1308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425002959697396}
   - component: {fileID: 6489425002959697397}
-  - component: {fileID: 6324507452744574678}
+  - component: {fileID: 5894512950326806860}
   m_Layer: 0
   m_Name: Point Light (2)
   m_TagString: Untagged
@@ -1393,7 +1393,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &6324507452744574678
+--- !u!114 &5894512950326806860
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1497,7 +1497,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6489425003394243625}
   - component: {fileID: 6489425003394243626}
-  - component: {fileID: 4364024825503714782}
+  - component: {fileID: 271405813800064719}
   m_Layer: 0
   m_Name: Point Light (3)
   m_TagString: Untagged
@@ -1582,7 +1582,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &4364024825503714782
+--- !u!114 &271405813800064719
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
