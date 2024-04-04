@@ -125,7 +125,7 @@ namespace AT_RPG
         /// </summary>
         public void OnInstantiateMapSettingPopup()
         {
-            UIManager.InstantiatePopup(worldSettingPopupPrefab.Resource, PopupRenderMode.Hide);
+            UIManager.InstantiatePopup(worldSettingPopupPrefab.Resource, PopupRenderMode.Default);
         }
 
 
