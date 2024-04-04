@@ -37,10 +37,5 @@ public class Player : MonoBehaviour
             Debug.Log("1");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
-
-        float mouseX = Input.GetAxis("Mouse X") * camerarotationSpeed;
-
-        // 카메라의 회전을 적용
-        mainCamera.Rotate(Vector3.up, mouseX);
     }
 }
