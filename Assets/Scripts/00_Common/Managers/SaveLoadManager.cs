@@ -15,10 +15,10 @@ namespace AT_RPG.Manager
     /// 2. 세이브 대상에 GameObjectData 컴포넌트가 필요 <br/>
     /// 3. GameObjectData 이외에 추가적으로 데이터를 저장하려는 경우, <br/>
     /// </summary>
-    public partial class DataManager : Singleton<DataManager>
+    public partial class SaveLoadManager : Singleton<SaveLoadManager>
     {
         // 매니저 기본 설정
-        [SerializeField] private static DataManagerSetting setting;
+        [SerializeField] private static SaveLoadManagerSetting setting;
 
         // 세이브 파일 저장중
         private static bool isSaving = false;
@@ -27,7 +27,7 @@ namespace AT_RPG.Manager
         private static bool isLoading = false;
 
         // 인 게임에 들어오면 초기화
-        private static MapSettingData mapSettingData = null;
+        private static WorldSettingData worldSettingData = null;
 
         // 시작 조건 콜백
         public delegate bool StartCondition();
@@ -39,13 +39,13 @@ namespace AT_RPG.Manager
         /// 로드 성공 시 콜백  <br/>
         /// </summary>
         /// <param name="serializedGameObjects">로드 성공 시 전달되는 게임 오브젝트 직렬화 데이터 배열</param>
-        public delegate void LoadGameObjectDatasCompleted(SerializedGameObjectsList serializedGameObjects);
+        public delegate void LoadGameObjectDatasCompleted(SerializedGameObjectDataList serializedGameObjects);
 
         /// <summary>
         /// 로드 성공 시 콜백
         /// </summary>
-        /// <param name="mapSettingData">로드 성공 시 전달되는 맵 설정 데이터</param>
-        public delegate void LoadMapSettingDataCompleted(MapSettingData mapSettingData);
+        /// <param name="worldSettingData">로드 성공 시 전달되는 맵 설정 데이터</param>
+        public delegate void LoadWorldSettingDataCompleted(WorldSettingData worldSettingData);
 
 
 
@@ -54,7 +54,7 @@ namespace AT_RPG.Manager
         {
             base.Awake();
 
-            setting = Resources.Load<DataManagerSetting>("DataManagerSettings");
+            setting = Resources.Load<SaveLoadManagerSetting>("SaveLoadManagerSettings");
         }
 
 
@@ -63,7 +63,7 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 폴더(= 맵 이름)에 현재 씬에 있는 모든 세이브 대상(GameObjectDataController.cs를 가진 게임 오브젝트) 세이브 파일을 생성합니다.
         /// </summary>
-        public static void SaveWorldGameObjectDatas(
+        public static void SaveGameObjectDatas(
             string rootPath, string mapName, StartCondition started = null, SaveCompleted completed = null)
         {
             if (isSaving)
@@ -86,13 +86,13 @@ namespace AT_RPG.Manager
 
             // 게임 오브젝트 세이브 파일 생성
             Instance.StartCoroutine(
-                InternalSaveAllGameObjectsCoroutine(mapSaveDataPath, started, completed));
+                InternalGameObjectDatasCoroutine(mapSaveDataPath, started, completed));
         }
 
         /// <summary>
         /// SaveAllGameObjectsCoroutine 구현
         /// </summary>
-        private static IEnumerator InternalSaveAllGameObjectsCoroutine(
+        private static IEnumerator InternalGameObjectDatasCoroutine(
             string mapSaveDataPath, StartCondition started = null, SaveCompleted completed = null)
         {
             // 시작 조건
@@ -170,7 +170,7 @@ namespace AT_RPG.Manager
         /// 폴더(= 맵 이름)에 게임 오브젝트 세이브 파일을 읽어서 데이터 컨테이너를 생성합니다.      <br/>
         /// CAUTION : ResourceManager가 씬의 리소스들을 먼저 로딩해야합니다.                     <br/>
         /// </summary>
-        public static void LoadAllGameObjectsCoroutine(
+        public static void LoadGameObjectDatasCoroutine(
             string rootPath, string dirNameToLoad, StartCondition started = null, LoadGameObjectDatasCompleted completed = null)
         {
             if (isLoading)
@@ -209,7 +209,7 @@ namespace AT_RPG.Manager
             isLoading = true;
 
             // 파일 경로는 각각 GameObject 정보를 가짐
-            SerializedGameObjectsList serializedGameObjects = new SerializedGameObjectsList();
+            SerializedGameObjectDataList serializedGameObjects = new SerializedGameObjectDataList();
             foreach (var filePath in filePaths)
             {
                 // 세이브 데이터로 인스턴스 복원
@@ -256,10 +256,10 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 세이브 데이터로 인스턴스 복원
         /// </summary>
-        public static void InstantiateGameObjects(
-            SerializedGameObjectsList serializedGameObjectsList)
+        public static void InstantiateGameObjectFromData(
+            SerializedGameObjectDataList serializedGameObjectDataList)
         {
-            foreach (var serializableDatas in serializedGameObjectsList)
+            foreach (var serializableDatas in serializedGameObjectDataList)
             {
                 // 에셋번들에서 인스턴스 원본을 찾기 위해 GameObjectData를 먼저 찾기
                 GameObjectRootData gameObjectData =
@@ -284,7 +284,7 @@ namespace AT_RPG.Manager
         /// 폴더(= 맵 이름)에 맵 설정 데이터 파일을 생성합니다.
         /// </summary>
         public static void SaveWorldSettingData(
-            string rootPath, MapSettingData mapSettingData, StartCondition started = null, SaveCompleted completed = null)
+            string rootPath, WorldSettingData worldSettingData, StartCondition started = null, SaveCompleted completed = null)
         {
             if (isSaving)
             {
@@ -294,22 +294,22 @@ namespace AT_RPG.Manager
 
             // 폴더(= 맵 이름)를 생성
             // 폴더에 맵 설정 세이브 파일 정리
-            string mapSaveDataPath = Path.Combine(rootPath, mapSettingData.worldName);
+            string mapSaveDataPath = Path.Combine(rootPath, worldSettingData.worldName);
             if (!Directory.Exists(mapSaveDataPath))
             {
-                CreateSaveDataDirectroy(rootPath, mapSettingData.worldName);
+                CreateSaveDataDirectroy(rootPath, worldSettingData.worldName);
             }
             else
             {
-                DeleteSaveDatas(rootPath, mapSettingData.worldName, setting.mapSettingDataFileExtension);
+                DeleteSaveDatas(rootPath, worldSettingData.worldName, setting.worldSettingDataFileExtension);
             }
 
             Instance.StartCoroutine(
-                InternalSaveMapSettingDataCoroutine(mapSaveDataPath, mapSettingData, started, completed));
+                InternalSaveWorldSettingDataCoroutine(mapSaveDataPath, worldSettingData, started, completed));
         }
 
-        private static IEnumerator InternalSaveMapSettingDataCoroutine(
-            string mapSaveDataPath, MapSettingData mapSettingData, StartCondition started = null, SaveCompleted completed = null)
+        private static IEnumerator InternalSaveWorldSettingDataCoroutine(
+            string mapSaveDataPath, WorldSettingData worldSettingData, StartCondition started = null, SaveCompleted completed = null)
         {
             // 시작 조건
             while (started != null && !started.Invoke())
@@ -319,24 +319,24 @@ namespace AT_RPG.Manager
             isSaving = true;
 
             // 맵 설정 파일 생성
-            SerializeMapSetting(mapSaveDataPath, mapSettingData);
+            SerializeMapSetting(mapSaveDataPath, worldSettingData);
 
             isSaving = false;
             yield return null;
             completed?.Invoke();
         }
 
-        private static void SerializeMapSetting(string mapSaveDataPath, MapSettingData mapSettingData)
+        private static void SerializeMapSetting(string mapSaveDataPath, WorldSettingData worldSettingData)
         {
-            string mapSettingDataFilePath = String.CreateFilePath(
+            string worldSettingDataFilePath = String.CreateFilePath(
                 mapSaveDataPath,
-                mapSettingData.worldName,
-                setting.mapSettingDataFileExtension);   
+                worldSettingData.worldName,
+                setting.worldSettingDataFileExtension);   
 
-            using (FileStream stream = new FileStream(mapSettingDataFilePath, FileMode.Create))
+            using (FileStream stream = new FileStream(worldSettingDataFilePath, FileMode.Create))
             using (StreamWriter writer = new StreamWriter(stream))
             {
-                string datasToJson = JsonSerialization.ToJson(mapSettingData);
+                string datasToJson = JsonSerialization.ToJson(worldSettingData);
                 writer.WriteLine(datasToJson);
             }
         }
@@ -344,10 +344,10 @@ namespace AT_RPG.Manager
 
 
         /// <summary>
-        /// 폴더(= 맵 이름)에 맵 설정 파일을 읽어서 MapSettingData 클래스를 생성합니다.      <br/>
+        /// 폴더(= 맵 이름)에 맵 설정 파일을 읽어서 WorldSettingData 클래스를 생성합니다.      <br/>
         /// </summary>
-        public static void LoadMapSettingDataCoroutine(
-            string rootPath, string mapName, StartCondition started = null, LoadMapSettingDataCompleted completed = null)
+        public static void LoadWorldSettingDataCoroutine(
+            string rootPath, string mapName, StartCondition started = null, LoadWorldSettingDataCompleted completed = null)
         {
             if (isLoading)
             {
@@ -357,7 +357,7 @@ namespace AT_RPG.Manager
 
             // 맵 설정 세이브 파일 불러오기
             string mapSaveDataPath = Path.Combine(rootPath, mapName);
-            string mapSettingDataFilePath;
+            string worldSettingDataFilePath;
             if (!Directory.Exists(mapSaveDataPath))
             {
                 Debug.LogError("디렉토리 찾을 수 없음 : " + mapSaveDataPath);
@@ -365,17 +365,17 @@ namespace AT_RPG.Manager
             }
             else
             {
-                mapSettingDataFilePath
-                    = Directory.GetFiles(mapSaveDataPath, "*." + setting.mapSettingDataFileExtension)[0];
+                worldSettingDataFilePath
+                    = Directory.GetFiles(mapSaveDataPath, "*." + setting.worldSettingDataFileExtension)[0];
             }
 
             // 맵 설정 세이브 파일 생성
             Instance.StartCoroutine(
-                InternalLoadMapSettingDataCoroutine(mapSettingDataFilePath, started, completed));
+                InternalLoadWorldSettingDataCoroutine(worldSettingDataFilePath, started, completed));
         }
 
-        private static IEnumerator InternalLoadMapSettingDataCoroutine(
-            string mapSettingDataFilePath, StartCondition started = null, LoadMapSettingDataCompleted completed = null)
+        private static IEnumerator InternalLoadWorldSettingDataCoroutine(
+            string worldSettingDataFilePath, StartCondition started = null, LoadWorldSettingDataCompleted completed = null)
         {
             // 시작 조건
             while (started != null && !started.Invoke())
@@ -385,23 +385,23 @@ namespace AT_RPG.Manager
             isLoading = true;
 
             // 맵 설정 클래스 생성
-            MapSettingData mapSettingData = DeserializeMapSetting(mapSettingDataFilePath);
+            WorldSettingData worldSettingData = DeserializeMapSetting(worldSettingDataFilePath);
 
             isLoading = false;
             yield return null;
-            completed?.Invoke(mapSettingData);
+            completed?.Invoke(worldSettingData);
         }
 
-        private static MapSettingData DeserializeMapSetting(string mapSettingDataPath)
+        private static WorldSettingData DeserializeMapSetting(string worldSettingDataPath)
         {
             string dataFromJson;
-            using (FileStream stream = new FileStream(mapSettingDataPath, FileMode.Open))
+            using (FileStream stream = new FileStream(worldSettingDataPath, FileMode.Open))
             using (StreamReader reader = new StreamReader(stream))
             {
                 dataFromJson = reader.ReadToEnd();
             }
 
-            return JsonSerialization.FromJson<MapSettingData>(dataFromJson);
+            return JsonSerialization.FromJson<WorldSettingData>(dataFromJson);
         }
 
 
@@ -442,7 +442,7 @@ namespace AT_RPG.Manager
         }
     }
 
-    public partial class DataManager
+    public partial class SaveLoadManager
     {
         // 세이브 파일 저장중
         public static bool IsSaving => isSaving;
@@ -451,13 +451,13 @@ namespace AT_RPG.Manager
         public static bool IsLoading => isLoading;
 
         // 매니저 기본 설정
-        public static DataManagerSetting Setting => setting;
+        public static SaveLoadManagerSetting Setting => setting;
 
         // 인 게임에 들어오면 초기화
-        public static MapSettingData WorldSettingData
+        public static WorldSettingData WorldSettingData
         {
-            get => mapSettingData;
-            set => mapSettingData = value;
+            get => worldSettingData;
+            set => worldSettingData = value;
         }
     }
 }

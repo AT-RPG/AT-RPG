@@ -9,6 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13013b632a426ee4e8864b4013d008c5, type: 3}
-  m_Name: DataManagerSettings
+  m_Script: {fileID: 11500000, guid: ed431d26f2ffb7b46ba20960919b304e, type: 3}
+  m_Name: NoneWeaponDataSetting
   m_EditorClassIdentifier: 
+  weaponName: None
+  damage: 5
+  myState: 0
+  weaponPrefab: {fileID: 0}
+  animatorOverride: {fileID: 22100000, guid: 543a0dd05a9b91940a0dd4a8e1327db3, type: 2}

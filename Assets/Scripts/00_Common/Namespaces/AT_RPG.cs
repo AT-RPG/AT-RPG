@@ -202,12 +202,12 @@ namespace AT_RPG
 
     #endregion
 
-    #region DataManager
+    #region SaveLoadManager
 
     /// <summary>
     /// 직렬화 데이터를 포함하는 게임 오브젝트 리스트
     /// </summary>
-    public class SerializedGameObjectsList : List<List<GameObjectData>> { }
+    public class SerializedGameObjectDataList : List<List<GameObjectData>> { }
     #endregion
 
     #region MultiplayManager

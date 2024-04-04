@@ -14,15 +14,13 @@ namespace AT_RPG
         [SerializeField] private PopupCanvasAnimation popupAnimation;
         [SerializeField] private BlurCanvasAnimation blurAnimation;
 
-        [Header("하위 팝업")]
+        [Header("종속 팝업")]
         [SerializeField] private ResourceReference<GameObject> mapSettingPopup;
 
         [Header("옵션 메뉴 버튼")]
-        [Tooltip("그래픽 설정 버튼")]
+        [SerializeField] private GameObject continueButtonInstance;
         [SerializeField] private GameObject graphicButtonInstance;
-        [Tooltip("조작키 설정 버튼")]
         [SerializeField] private GameObject controlButtonInstance;
-        [Tooltip("인게임 설정 버튼")]
         [SerializeField] private GameObject gamesButtonInstance;
 
         private void Awake()
