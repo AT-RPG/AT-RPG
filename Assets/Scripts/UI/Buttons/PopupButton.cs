@@ -8,7 +8,6 @@ namespace AT_RPG
     /// 등록된 팝업을 생성하는 클래스입니다. <br/>
     /// NOTE :  인스펙터의 '<see cref="Button.onClick"/>'에 '<see cref="OnInstantiatePopup"/>'를 연결해서 사용해주세요.
     /// </summary>
-    [RequireComponent(typeof(Button))]
     public class PopupButton : MonoBehaviour
     {
         [Tooltip("인스턴싱할 팝업 프리팹")]
