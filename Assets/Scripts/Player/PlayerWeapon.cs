@@ -1,66 +1,68 @@
-using AT_RPG;
 using UnityEngine;
 using UnityEngine.Events;
 using AT_RPG.Manager;
 
-
-public enum WeaponState
+namespace AT_RPG
 {
-    None, OneHand, TwoHand
-}
-
-public class PlayerWeapon : MonoBehaviour
-{
-    public UnityEvent<WeaponData> weaponChangeAct;
-    [SerializeField] WeaponState myState;
-    [SerializeField] WeaponData defaultWeapon;
-    [SerializeField] WeaponData currentWeapon;
-
-    private void Awake() 
+    public enum WeaponState
     {
-        InputManager.AddKeyAction("ChangeNoneWeapon", ChangeNoneWeapon);
+        None, OneHand, TwoHand
     }
 
-    private void ChangeWeapon(WeaponState s)
+    public class PlayerWeapon : MonoBehaviour
     {
-        if (myState == s) return;
-        myState = s;
-        switch (myState)
+        public UnityEvent<WeaponData> weaponChangeAct;
+        [SerializeField] WeaponState myState;
+        [SerializeField] WeaponData defaultWeapon;
+        [SerializeField] WeaponData currentWeapon;
+
+        private void Awake() 
         {
-            case WeaponState.None:
-            case WeaponState.OneHand:
-            case WeaponState.TwoHand:
-            weaponChangeAct?.Invoke(currentWeapon);
-            break;
+            InputManager.AddKeyAction("ChangeNoneWeapon", ChangeNoneWeapon);
         }
-    }
-    private void Start()
-    {
-        currentWeapon = defaultWeapon;
-        ChangeWeapon(currentWeapon.MyState);
-    }
 
-    private void OnTriggerEnter(Collider other) 
-    {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Weapon"))
+        private void ChangeWeapon(WeaponState s)
         {
-            Weapon newWeapon = other.GetComponent<Weapon>();
-            if(newWeapon != null)
+            if (myState == s) return;
+            myState = s;
+            switch (myState)
             {
-                currentWeapon = newWeapon.weaponData;
-                ChangeWeapon(currentWeapon.MyState);
+                case WeaponState.None:
+                case WeaponState.OneHand:
+                case WeaponState.TwoHand:
+                weaponChangeAct?.Invoke(currentWeapon);
+                break;
             }
         }
-    }
+        private void Start()
+        {
+            currentWeapon = defaultWeapon;
+            ChangeWeapon(currentWeapon.MyState);
+        }
 
-    private void ChangeNoneWeapon(InputValue v)
-    {
-        currentWeapon = defaultWeapon;
-        ChangeWeapon(currentWeapon.MyState);
-    }
+        private void OnTriggerEnter(Collider other) 
+        {
+            if(other.gameObject.layer == LayerMask.NameToLayer("Weapon"))
+            {
+                Weapon newWeapon = other.GetComponent<Weapon>();
+                if(newWeapon != null)
+                {
+                    currentWeapon = newWeapon.weaponData;
+                    ChangeWeapon(currentWeapon.MyState);
+                }
+            }
+        }
 
-    private void OnDestroy() 
-    {
-        InputManager.RemoveKeyAction("ChangeNoneWeapon", ChangeNoneWeapon);
+        private void ChangeNoneWeapon(InputValue v)
+        {
+            currentWeapon = defaultWeapon;
+            ChangeWeapon(currentWeapon.MyState);
+        }
+
+        private void OnDestroy() 
+        {
+            InputManager.RemoveKeyAction("ChangeNoneWeapon", ChangeNoneWeapon);
+        }
     }
 }
+

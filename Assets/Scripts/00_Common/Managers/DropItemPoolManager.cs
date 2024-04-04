@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,9 +10,14 @@ namespace AT_RPG
     {
         public static DropItemPoolManager Instance;
         [SerializeField] private DropItemData dropItemData;
-        public System.Random random = new();
+
+        [Header("Pool되어질 프리팹")]
         public GameObject[] prefabs;
+        
+        private System.Random random = new();
         private List<GameObject>[] pools;
+
+
         void Awake() 
         {
             Instance = this;

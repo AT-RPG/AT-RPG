@@ -31499,7 +31499,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   myState: 0
-  defaultWeapon: {fileID: 11400000, guid: 57f6c8d710d85b8438399d7bb9fa057c, type: 2}
+  defaultWeapon: {fileID: 11400000, guid: ba4e3d4b8ac30ce44b7c9f1f1cb21e6a, type: 2}
   currentWeapon: {fileID: 0}
 --- !u!4 &1445455169248877187
 Transform:

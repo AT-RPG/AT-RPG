@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace AT_RPG
 {
+    /// <summary>
+    /// 드랍된 아이템의 정보를 가지고 있는 클래스
+    /// </summary>
     public class DropItemInfo : MonoBehaviour
     {
         [SerializeField] private int itemCount = 0;
@@ -17,10 +20,6 @@ namespace AT_RPG
         {
             RandomItemCount();
             SetItemInfo();
-            Debug.Log($"itemIndex ^^^^^^^^^ {itemIndex}");
-            Debug.Log($"itemName ^^^^^^^^^ {itemName}");
-            Debug.Log($"itemPriceBuy ^^^^^^^^^ {itemPriceBuy}");
-            Debug.Log($"itemPriceSell ^^^^^^^^^ {itemPriceSell}");
         }
 
         // 랜덤으로 아이템의 개수를 정하여 정해둠
