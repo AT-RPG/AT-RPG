@@ -1,6 +1,5 @@
 using AT_RPG.Manager;
 using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace AT_RPG
 {
@@ -11,17 +10,27 @@ namespace AT_RPG
     {
         [SerializeField] AssetReferenceResource<GameObject> testAssetBundleResource;
 
-        private void Start()
-        {
-
-        }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                var handle = ResourceManager.LoadAssetsAsync("Test");
-                handle.Completed += handle => { if (handle.Status == AsyncOperationStatus.Succeeded) { Instantiate(handle.Result[0]); } };
+                ResourceManager.LoadAssetAsync<GameObject>(testAssetBundleResource.AssetGUID);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F2))
+            {
+                ResourceManager.LoadAssetsAsync("Test");
+            }
+
+            if (Input.GetKeyDown(KeyCode.F3))
+            {
+                Instantiate(testAssetBundleResource);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F4))
+            {
+                ResourceManager.Unload(testAssetBundleResource.AssetGUID);
             }
         }
     }

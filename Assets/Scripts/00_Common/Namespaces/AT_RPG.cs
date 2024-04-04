@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Unity.Serialization.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using static AT_RPG.Manager.ResourceManager;
 using UnityObject = UnityEngine.Object;
 
 namespace AT_RPG
@@ -11,12 +12,61 @@ namespace AT_RPG
     #region ResourceManager
 
     /// <summary>
+    /// '<see cref="AddressableAssetEntry.address"/>'와 런타임'<see cref="AssetReference.AssetGUID"/>'매핑을 관리하는 클래스 <br/>
+    ///                                                                                                                      <br/>
+    /// Key1 = <see cref="AddressableAssetEntry.address"/>                                                                   <br/>
+    /// Value1 = <see cref="AssetReference.AssetGUID"/>
+    /// </summary>
+    [System.Serializable]
+    public class AssetGuidMap : Dictionary<string, string>
+    {
+        /// <summary>
+        /// 매핑 파일을 불러옵니다.                                                  <br/>
+        ///                                                                          <br/>
+        /// 경로 : <see cref="ResourceManagerSettings.GetAssetGuidMapFilePath"/>     <br/>
+        /// </summary>
+        public static AssetGuidMap Load()
+        {
+            // 파일 저장 경로를 가져오기 위해 설정을 로드
+            ResourceManagerSettings setting = Resources.Load<ResourceManagerSettings>($"{nameof(ResourceManagerSettings)}");
+            if (!setting)
+            {
+                Debug.Log($"{nameof(ResourceManagerSettings)}이 {nameof(Resources)}에 없습니다.");
+            }
+
+            // Json파일의 Guid 매핑을 역직렬화
+            AssetGuidMap map = new();
+            using (FileStream stream = new FileStream(setting.GetAssetGuidMapFilePath(), FileMode.Open))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string mapFromJson = reader.ReadToEnd();
+                map = JsonSerialization.FromJson<AssetGuidMap>(mapFromJson);
+            }
+            Debug.Log($"{nameof(AssetGuidMap)} 불러오기 완료.");
+
+            // 파일 저장 경로를 가져오기 위해 사용했던 설정을 언로드
+            Resources.UnloadAsset(setting);
+
+            return map;
+        }
+
+        public Type SerializedType => typeof(AssetGuidMap).BaseType;
+    }
+
+    /// <summary>
     /// 리소스 매니저에서 현재 캐시된 어드레서블 리소스를 담아두는 클래스                                                                                          <br/>
-    /// Key1 = <see cref="AsyncOperationHandle"/>을 불러오는데 사용된 <see cref="AssetReference.AssetGUID"/>또는 <see cref="AssetLabelReference.labelString"/>     <br/>
-    /// Key2 = 어드레서블 에셋에 부여된 <see cref="AssetReference.AssetGUID"/>                                                                                     <br/>
+    /// Key1 = 어드레서블 에셋에 부여된 <see cref="AssetReference.AssetGUID"/>                                                                                     <br/>
+    /// Key2 = <see cref="AsyncOperationHandle"/>을 불러오는데 사용된 <see cref="AssetReference.AssetGUID"/>또는 <see cref="AssetLabelReference.labelString"/>     <br/>
     /// Value1 = <see cref="AssetReference.Asset"/>                                                                                                                <br/>
     /// </summary>
-    public class ResourceMap : Dictionary<string, Dictionary<string, UnityObject>> { }
+    public class ResourceMap : Dictionary<string, KeyValuePair<string, UnityObject>> 
+    {
+        public void Add(string key1, string key2, UnityObject value1)
+        {
+            if (!ContainsKey(key1)) { Add(key1, new()); }
+            this[key1] = new (key2, value1);
+        }
+    }
 
     /// <summary>
     /// <see cref="Manager.ResourceManager"/>에서 어드레서블을 로드한 리소스를 래퍼런싱하는 핸들을 담아두는 클래스                                                 <br/>
@@ -36,6 +86,12 @@ namespace AT_RPG
 
         /// 키는 <see cref="AssetLabelReference.labelString"/>또는 <see cref="AssetReference.RuntimeKey"/> 입니다.
         public string Key;
+
+        public ResourceRequest(string key)
+        {
+            Key = key;
+            RequestId = Guid.NewGuid();
+        }
     }
 
     #endregion
