@@ -2,17 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestMon : CommonBattle
+namespace AT_RPG
 {
-    // Start is called before the first frame update
-    void Start()
+    public class TestMon : CommonBattle
     {
-        base.Initialize();
-    }
+        // Start is called before the first frame update
+        void Start()
+        {
+            base.Initialize();
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Update is called once per frame
+        void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.O))
+            {
+                Destroy(gameObject);
+            }
+        }
+        private void OnDestroy() 
+        {
+            DropItemPoolManager.Instance.Get(DropType.Monster, transform);
+        }
     }
 }
+

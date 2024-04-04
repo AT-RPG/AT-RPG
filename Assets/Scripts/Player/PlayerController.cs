@@ -3,6 +3,9 @@ using UnityEngine;
 using AT_RPG;
 using AT_RPG.Manager;
 
+/// <summary>
+/// MainPlayer의 State를 조절해주는 클래스
+/// </summary>
 public class PlayerController : CommonBattle
 {
     public LayerMask enemyMask;
@@ -173,6 +176,9 @@ public class PlayerController : CommonBattle
         }
     }
 
+    /// <summary>
+    /// 공격 시 지정해둔 AttackPoitn에서 Overlap하여 Monster Collider 검출 후 검출 된 Monster에게 대미지 전달
+    /// </summary>
     public new void OnAttack()
     {
         Collider[] list = Physics.OverlapSphere(myAttackPoint.position, 1.0f, enemyMask);
@@ -184,6 +190,10 @@ public class PlayerController : CommonBattle
         }
     }
 
+    /// <summary>
+    /// WeaponData변경시 카메라의 보이는 무기오브젝트 변경, 무기에 따라 AttackPoint 위치 변경
+    /// </summary>
+    /// <param name="curWeapon">변경되는 무기타입</param>
     public void ChangeWeaponInfo(WeaponData curWeapon)
     {
         myAnim.runtimeAnimatorController = curWeapon.AnimatorOverride;
@@ -210,10 +220,18 @@ public class PlayerController : CommonBattle
         }
     }
 
+    /// <summary>
+    /// 플레이어 사망시 사망효과 실행해줌
+    /// </summary>
     public void DisApear()
     {
         StartCoroutine(DisApearing(1.0f));
     }
+
+    /// <summary>
+    /// 플레이어 사망 시 처리되는 효과를 작동시키는 코루틴
+    /// </summary>
+    /// <param name="delay">사망 후 대기시간</param>
 
     IEnumerator DisApearing(float delay)
     {
@@ -241,6 +259,14 @@ public class PlayerController : CommonBattle
     // protected override void OnDead()
     // {
     //     base.OnDead();
+    // }
+
+    /// <summary>
+    /// HealPotion을 사용했을 경우 체력은 채워주고 아이템의 개수는 줄여줌
+    /// </summary>
+    // public void UseHealPotion()
+    // {
+        
     // }
 
     /// <summary>
