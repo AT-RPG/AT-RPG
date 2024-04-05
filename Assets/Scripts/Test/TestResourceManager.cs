@@ -15,22 +15,45 @@ namespace AT_RPG
         {
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                ResourceManager.LoadAssetAsync<GameObject>(testAssetBundleResource.AssetGUID);
+                ResourceManager.LoadAssetAsync<GameObject>(testAssetBundleResource);
+                Debug.Log("f1");
             }
 
             if (Input.GetKeyDown(KeyCode.F2))
             {
-                ResourceManager.LoadAssetsAsync("Test");
+                Instantiate(testAssetBundleResource);
+                Debug.Log("f2");
+
             }
 
             if (Input.GetKeyDown(KeyCode.F3))
             {
-                Instantiate(testAssetBundleResource);
+                ResourceManager.Unload(testAssetBundleResource);
+                Debug.Log("f3");
+
             }
 
-            if (Input.GetKeyDown(KeyCode.F4))
+
+
+
+            if (Input.GetKeyDown(KeyCode.F5))
             {
-                ResourceManager.Unload(testAssetBundleResource.AssetGUID);
+                ResourceManager.LoadAssetsAsync("Test");
+                Debug.Log("f5");
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.F6))
+            {
+                Instantiate(testAssetBundleResource);
+                Debug.Log("f6");
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.F7))
+            {
+                ResourceManager.Unload("Test");
+                Debug.Log("f7");
             }
         }
     }

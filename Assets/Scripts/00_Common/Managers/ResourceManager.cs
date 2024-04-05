@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityObject = UnityEngine.Object;
 
 
@@ -77,17 +79,19 @@ namespace AT_RPG.Manager
             // 에셋의 위치(IResourceLocation)로 어드레서블 에셋을 로드
             // 로드된 에셋을 리소스 매니저에 캐싱
             var resourceHandle = Addressables.LoadAssetAsync<TObject>(locationHandle.Result[0]);
-            resourceHandle.Completed += handle =>
-            {
-                resources.Add(request.Key, request.Key, resourceHandle.Result);
-                resourceHandles.Add(request.Key, resourceHandle);
-            };
+            resourceHandle.Completed += handle => CacheResource(request.Key, resourceHandle);
             yield return resourceHandle;
             if (resourceHandle.Status != AsyncOperationStatus.Succeeded) { Debug.LogError($"{request.Key}를 사용하는 어드레서블 리소스 로드 실패."); yield break; }
 
             Addressables.Release(locationHandle);
             loadOperations.Remove(request);
             completed?.Invoke(resourceHandle.Result);
+        }
+
+        private static void CacheResource<TObject>(string key, AsyncOperationHandle<TObject> resourceHandle) where TObject : UnityObject
+        {
+            resources.Add(key, key, resourceHandle.Result);
+            resourceHandles.Add(key, resourceHandle);
         }
 
 
@@ -116,19 +120,23 @@ namespace AT_RPG.Manager
 
             // 에셋의 위치(IResourceLocation)로 어드레서블 에셋을 로드
             // 로드된 에셋을 리소스 매니저에 캐싱
-            int locationHandleIndex = 0;
-            var resourceHandle = Addressables.LoadAssetsAsync<UnityObject>(locationHandle.Result, resource =>
-            {
-                resources.Add(assetGuidMap[locationHandle.Result[locationHandleIndex].PrimaryKey], request.Key, resource);
-                locationHandleIndex++;
-            });
-            resourceHandle.Completed += handle => resourceHandles.Add(request.Key, resourceHandle);
+            var resourceHandle = Addressables.LoadAssetsAsync<UnityObject>(locationHandle.Result, null);
+            resourceHandle.Completed += handle => CacheResources(request.Key, locationHandle, resourceHandle);
             yield return resourceHandle;
             if (resourceHandle.Status != AsyncOperationStatus.Succeeded) { Debug.LogError($"{request.Key}를 사용하는 어드레서블 리소스 로드 실패."); yield break; }
 
             Addressables.Release(locationHandle);
             loadOperations.Remove(request);
             completed?.Invoke(resourceHandle.Result.ToList());
+        }
+
+        private static void CacheResources(string key, AsyncOperationHandle<IList<IResourceLocation>> locationHandle, AsyncOperationHandle<IList<UnityObject>> resourceHandle)
+        {
+            var resources = resourceHandle.Result.ToList();
+            var locations = locationHandle.Result.ToList();
+
+            for (int i = 0; i < resources.Count; i++) { ResourceManager.resources.Add(assetGuidMap[locations[i].InternalId], new(key, resources[i])); }
+            resourceHandles.Add(key, resourceHandle);
         }
 
 
@@ -143,9 +151,11 @@ namespace AT_RPG.Manager
             Addressables.Release(resourceHandles[key]);
             resourceHandles.Remove(key);
 
-            // 리소스를 언로드합니다
+            // 리소스가 key에 의해 생성된 리소스면 언로드
+            List<string> keysToRemove = new();
+            foreach (var resource in resources) { if (resource.Value.Key == key) { keysToRemove.Add(resource.Key); } }
+            foreach (var keyToRemove in keysToRemove) { resources.Remove(keyToRemove); }
             Resources.UnloadUnusedAssets();
-            foreach (var handle in resourceHandles) { if (handle.Key == key) { resourceHandles.Remove(handle.Key); } }
         }
 
 

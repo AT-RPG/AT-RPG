@@ -47,14 +47,14 @@ namespace AT_RPG
             {
                 List<AddressableAssetEntry> assetEntries = new();
                 group.GatherAllAssets(assetEntries, true, true, true);
-                assetEntries.ForEach(entry => map.Add(entry.address, entry.guid));
+                assetEntries.ForEach(entry => map.Add(entry.AssetPath, entry.guid));
             });
 
             // 데이터를 Json파일 직렬화
             using (FileStream stream = new FileStream(setting.GetAssetGuidMapFilePath(), FileMode.Create))
             using (StreamWriter writer = new StreamWriter(stream))
             {
-                string mapToJson = JsonSerialization.ToJson(map, new() { SerializedType = map.SerializedType });
+                string mapToJson = JsonSerialization.ToJson(map);
                 writer.WriteLine(mapToJson);
             }
             Debug.Log($"{nameof(AssetGuidMap)}파일 생성 완료. 경로 : {setting.GetAssetGuidMapFilePath()}");

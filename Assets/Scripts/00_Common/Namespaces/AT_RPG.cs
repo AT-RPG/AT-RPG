@@ -14,12 +14,14 @@ namespace AT_RPG
     /// <summary>
     /// '<see cref="AddressableAssetEntry.address"/>'와 런타임'<see cref="AssetReference.AssetGUID"/>'매핑을 관리하는 클래스 <br/>
     ///                                                                                                                      <br/>
-    /// Key1 = <see cref="AddressableAssetEntry.address"/>                                                                   <br/>
-    /// Value1 = <see cref="AssetReference.AssetGUID"/>
+    /// key1 = <see cref="AddressableAssetEntry.address"/>                                                                   <br/>
+    /// value1 = <see cref="AssetReference.AssetGUID"/>
     /// </summary>
     [System.Serializable]
-    public class AssetGuidMap : Dictionary<string, string>
+    public class AssetGuidMap
     {
+        [SerializeField] private Dictionary<string, string> map = new();
+
         /// <summary>
         /// 매핑 파일을 불러옵니다.                                                  <br/>
         ///                                                                          <br/>
@@ -42,7 +44,6 @@ namespace AT_RPG
                 string mapFromJson = reader.ReadToEnd();
                 map = JsonSerialization.FromJson<AssetGuidMap>(mapFromJson);
             }
-            Debug.Log($"{nameof(AssetGuidMap)} 불러오기 완료.");
 
             // 파일 저장 경로를 가져오기 위해 사용했던 설정을 언로드
             Resources.UnloadAsset(setting);
@@ -50,14 +51,22 @@ namespace AT_RPG
             return map;
         }
 
-        public Type SerializedType => typeof(AssetGuidMap).BaseType;
+        public void Add(string key1, string value1) => map.Add(key1, value1);
+
+        public void Remove(string key1) => map.Remove(key1);
+
+        public string this[string key1]
+        {
+            get => map[key1];
+            set => map[key1] = value;
+        }
     }
 
     /// <summary>
-    /// 리소스 매니저에서 현재 캐시된 어드레서블 리소스를 담아두는 클래스                                                                                          <br/>
-    /// Key1 = 어드레서블 에셋에 부여된 <see cref="AssetReference.AssetGUID"/>                                                                                     <br/>
-    /// Key2 = <see cref="AsyncOperationHandle"/>을 불러오는데 사용된 <see cref="AssetReference.AssetGUID"/>또는 <see cref="AssetLabelReference.labelString"/>     <br/>
-    /// Value1 = <see cref="AssetReference.Asset"/>                                                                                                                <br/>
+    /// 리소스 매니저에서 현재 캐시된 어드레서블 리소스를 담아두는 클래스                      <br/>
+    /// key1 = 어드레서블 에셋에 부여된 <see cref="AssetReference.AssetGUID"/>                 <br/>
+    /// key2 = <see cref="Manager.ResourceManager.LoadAssetAsync"/>을 불러오는데 사용된 key    <br/>
+    /// value1 = <see cref="AssetReference.Asset"/>                                            <br/>
     /// </summary>
     public class ResourceMap : Dictionary<string, KeyValuePair<string, UnityObject>> 
     {
@@ -76,7 +85,7 @@ namespace AT_RPG
     public class ResourceHandleMap : Dictionary<string, AsyncOperationHandle> { }
 
     /// <summary>
-    /// <see cref="Manager.ResourceManager"/>에서 리소스 로드/언로드 호출 시, 대기열에 전달되는 데이터 <br/>
+    /// <see cref="Manager.ResourceManager"/>에서 리소스 로드/언로드 호출 시, 프로세스열에 전달되는 데이터 <br/>
     /// 현재 동작중인 로딩들을 관리하는데 사용됩니다.
     /// </summary>
     public struct ResourceRequest 
