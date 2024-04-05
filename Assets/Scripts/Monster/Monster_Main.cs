@@ -34,7 +34,7 @@ public class MonsterMain : CommonBattle
     {
         ChangeState(State.Create);
         GetComponent<Collider>().enabled = true;
-        GetComponent<Rigidbody>().isKinematic = false;
+    //    GetComponent<Rigidbody>().isKinematic = false;
         monAgent = GetComponent<NavMeshAgent>();
         if (myTarget != null)
         {
