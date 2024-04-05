@@ -1,5 +1,6 @@
 {
     "map": {
+        "Assets/NuGet/Resources/defaultIcon.png": "eec19781926cd2248b7c9abfde8db555",
         "Assets/Photon/Fusion/Resources/ConfigAssetsFolder.txt": "65cf5f43e8c20f941b0bb130b392ec89",
         "Assets/Photon/Fusion/Resources/FusionGraphShader.shader": "191d95ce624abaa4ba0294fc7baa2845",
         "Assets/Photon/Fusion/Resources/NetworkProjectConfig.fusion": "9051a442c8e46614485a1018839e3027",

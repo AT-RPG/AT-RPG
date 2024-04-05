@@ -1,18 +1,14 @@
 #if UNITY_EDITOR
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 using Microsoft.CodeAnalysis;
-using System.Text;
 
 namespace AT_RPG
 {
     /// <summary>
     /// '<see cref="UnityEngine.SceneManagement"/>' 빌드 설정이 수정되는 경우 호출하는 이벤트를 관리하는 클래스
     /// </summary>
-    [InitializeOnLoad]
+    [InitializeOnLoad, Generator]
     public static class SceneManagerSettingsGenerator
     {
         static SceneManagerSettingsGenerator()
