@@ -32,6 +32,9 @@ namespace AT_RPG.Manager
         // 동작중인 리소스 로딩
         private static List<ResourceRequest> loadOperations = new();
 
+        // 동작중인 리소스 언로딩
+        private static List<ResourceRequest> unloadOperations = new();
+
 
 
         protected override void Awake()
@@ -105,7 +108,6 @@ namespace AT_RPG.Manager
         public static void LoadAssetsAsync(string key, Action<List<UnityObject>> completed = null)
         {
             Instance.StartCoroutine(LoadAssetsAsyncImpl(new ResourceRequest(key), completed));
-
         }
 
         private static IEnumerator LoadAssetsAsyncImpl(ResourceRequest request, Action<List<UnityObject>> completed)
@@ -145,17 +147,27 @@ namespace AT_RPG.Manager
         /// 매니저에 캐싱된 어드레서블 리소스를 언로드합니다. <br/>
         /// </summary>
         /// <param name="key">로드 시 사용했던 key</param>
-        public static void Unload(string key)
+        public static void UnloadAssetsAsync(string key, Action completed = null)
         {
+            Instance.StartCoroutine(UnloadAssetsAsyncImpl(new ResourceRequest(key), completed));
+        }
+
+        private static IEnumerator UnloadAssetsAsyncImpl(ResourceRequest request, Action completed)
+        {
+            unloadOperations.Add(request);
+
             // 핸들 언로드를 통해 래퍼런스를 제거
-            Addressables.Release(resourceHandles[key]);
-            resourceHandles.Remove(key);
+            Addressables.Release(resourceHandles[request.Key]);
+            resourceHandles.Remove(request.Key);
 
             // 리소스가 key에 의해 생성된 리소스면 언로드
             List<string> keysToRemove = new();
-            foreach (var resource in resources) { if (resource.Value.Key == key) { keysToRemove.Add(resource.Key); } }
+            foreach (var resource in resources) { if (resource.Value.Key == request.Key) { keysToRemove.Add(resource.Key); } }
             foreach (var keyToRemove in keysToRemove) { resources.Remove(keyToRemove); }
-            Resources.UnloadUnusedAssets();
+            yield return Resources.UnloadUnusedAssets();
+
+            loadOperations.Remove(request);
+            completed?.Invoke();
         }
 
 

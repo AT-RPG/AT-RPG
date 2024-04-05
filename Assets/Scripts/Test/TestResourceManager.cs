@@ -28,7 +28,7 @@ namespace AT_RPG
 
             if (Input.GetKeyDown(KeyCode.F3))
             {
-                ResourceManager.Unload(testAssetBundleResource);
+                ResourceManager.UnloadAssetsAsync(testAssetBundleResource);
                 Debug.Log("f3");
 
             }
@@ -52,7 +52,7 @@ namespace AT_RPG
 
             if (Input.GetKeyDown(KeyCode.F7))
             {
-                ResourceManager.Unload("Test");
+                ResourceManager.UnloadAssetsAsync("Test");
                 Debug.Log("f7");
             }
         }
