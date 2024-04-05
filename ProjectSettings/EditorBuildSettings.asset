@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MainScene.unity
     guid: b559613fd89346b458644a79d14c7b73
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene_BJW.unity
     guid: 16c8bcf627640964f8ca2c2e1fd70a6f
   - enabled: 0
