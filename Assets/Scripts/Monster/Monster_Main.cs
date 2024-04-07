@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using AT_RPG;
 using UnityEngine.AI;
+using System.IO;
 
 /// <summary>
 /// 몬스터 공통부분 관리스크립트
@@ -28,6 +29,7 @@ public class MonsterMain : CommonBattle
     }
     private void Awake() //초기화
     {
+        LoadMonsterStatsFromCSV("Monster/JJappalWorld - MonsterInfoData.csv"); 
         ChangeState(State.Create);
     }
     void OnEnable()
@@ -68,16 +70,59 @@ public class MonsterMain : CommonBattle
     public MonsterAI monsterAI;
     private bool isTracking = false;
 
+    //스탯처리
+    public int MonsterIndex;
+    private float monsterIdleTime;
+
     public MonsterStat mStat;
 
-    [System.Serializable]
     public struct MonsterStat
     {
+        public string monsterName;
         public float monsterRange;
-        public float monsterIdleTime;
         public float monsterRunSpeed;
+        public string monsterType;
     }
 
+    void LoadMonsterStatsFromCSV(string filePath) //csv 파일에서 스탯가져오기
+    {
+        StreamReader reader = new StreamReader(filePath); //파일 읽기
+        string line;
+
+        // 첫 번째 줄은 스탯의 이름을 작성했으므로 넘긴다
+        reader.ReadLine();
+
+        while ((line = reader.ReadLine()) != null)
+        {
+            // 쉼표로 구분된 데이터를 파싱하여 배열로 저장
+            string[] data = line.Split(',');
+            float monsterIndex = float.Parse(data[0]);
+            string monsterName = data[1];
+            string monsterType = data[2];
+            int maxHP = int.Parse(data[3]);
+            int attackPoint = int.Parse(data[4]);
+            float attackDeley = float.Parse(data[5]);
+            float skillCooltime = float.Parse(data[6]);
+            float monsterRange = float.Parse(data[7]);
+            float moveSpeed = float.Parse(data[8]);
+            float monsterRunSpeed = float.Parse(data[9]);
+
+            if (monsterIndex == MonsterIndex) //해당줄의 인덱스랑 현재몬스터의 인덱스가 일치하면 스탯부여
+            {
+                // 추출한 스탯을 mStat에 할당
+                mStat = new MonsterStat();
+                baseBattleStat = new BaseBattleStat();
+                mStat.monsterName = monsterName;
+                mStat.monsterType = monsterType;
+                mStat.monsterRange = monsterRange;
+                mStat.monsterRunSpeed = monsterRunSpeed;
+                baseBattleStat.maxHP = maxHP;
+                baseBattleStat.attackPoint = attackPoint;
+                baseBattleStat.skillCooltime = skillCooltime;
+                baseBattleStat.attackDeley = attackDeley;
+            }
+        }
+    }
 
 
     //몬스터 상태
@@ -142,8 +187,8 @@ public class MonsterMain : CommonBattle
         monAgent.ResetPath();
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
-        mStat.monsterIdleTime = Random.Range(2, 4);
-        deleyMove = StartCoroutine(DelayChangeState(State.Move, mStat.monsterIdleTime));
+        monsterIdleTime = Random.Range(2, 4);
+        deleyMove = StartCoroutine(DelayChangeState(State.Move, monsterIdleTime));
     }
     //일정시간후 상태변경
     IEnumerator DelayChangeState(State newState, float m_delaytime)
