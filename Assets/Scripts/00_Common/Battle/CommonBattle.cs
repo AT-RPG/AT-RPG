@@ -67,9 +67,10 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
     { 
 
     }
+   
 
     protected virtual void OnDead()
     {
-        deathAlarm?.Invoke();
+       deathAlarm?.Invoke();
     }
 }

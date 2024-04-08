@@ -2,10 +2,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 using AT_RPG;
+using UnityEngine.AI;
 
+/// <summary>
+/// 몬스터 공통부분 관리스크립트
+/// </summary>
 public class MonsterMain : CommonBattle
 {
-   
+
     private IObjectPool<MonsterMain> MonsterPool;
 
     public void setManagedPool(IObjectPool<MonsterMain> pool)
@@ -14,18 +18,16 @@ public class MonsterMain : CommonBattle
     }
     public void destroyMosnter()
     {
-        //초기화 함수 추가
-    //    InitializeMonster();
+        if (myHpBar != null)
+        {
+            Destroy(myHpBar.gameObject);
+            myHpBar = null; // 체력바 참조 해제
+        }
+
         MonsterPool.Release(this); //몬스터 풀반환
-    }
-    public void InitializeMonster()
-    {
-        transform.position = StartspawnPos.transform.position; //위치 초기화
     }
     private void Awake() //초기화
     {
-        //transform.position = MonsterPool.transform.position; //스폰위치 설정
-        // transform.position = transform.parent.position ; //스폰위치 설정
         ChangeState(State.Create);
     }
     void OnEnable()
@@ -33,7 +35,7 @@ public class MonsterMain : CommonBattle
         ChangeState(State.Create);
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().isKinematic = false;
-
+        monAgent = GetComponent<NavMeshAgent>();
         if (myTarget != null)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, myTarget.position);
@@ -42,19 +44,30 @@ public class MonsterMain : CommonBattle
                 StartTracking(myTarget);
             }
         }
+        base.Initialize();
+        GameObject hpbar = Resources.Load<GameObject>("Monster/HpBar");
+        GameObject obj = Instantiate(hpbar, SceneData.Instance.hpBarsTransform);
+        myHpBar = obj.GetComponent<MonsterHpBar>();
+        myHpBar.myTarget = hpViewPos;
+        base.changeHpAct.AddListener(myHpBar.ChangeHpSlider);
     }
 
 
     [SerializeField] Transform monResPos;
     [SerializeField] GameObject StartspawnPos;
 
-    Coroutine move = null; //몬스터의 움직임을 관리
+    public Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
-    Coroutine rotate = null; //몬스터의 회전을 관리
+    public Coroutine battleState = null;
+
+    public Transform hpViewPos; //hp바의 위치 지정
+    MonsterHpBar myHpBar;
+
+    public NavMeshAgent monAgent;
 
     public MonsterAI monsterAI;
     private bool isTracking = false;
-    
+
     public MonsterStat mStat;
 
     [System.Serializable]
@@ -62,7 +75,7 @@ public class MonsterMain : CommonBattle
     {
         public float monsterRange;
         public float monsterIdleTime;
-        public bool longAttack;
+        public float monsterRunSpeed;
     }
 
 
@@ -83,6 +96,7 @@ public class MonsterMain : CommonBattle
     void ChangeState(State newState)
     {
         if (monsterState == newState) return;
+
         monsterState = newState;
         switch (monsterState)
         {
@@ -96,16 +110,19 @@ public class MonsterMain : CommonBattle
                 moveState();
                 break;
             case State.Battle:
-                StartCoroutine(battleState());
+                battleState = StartCoroutine(BattleState());
                 break;
             case State.Dead:
-                myTarget = null;
-                GetComponent<Collider>().enabled = false;
-                GetComponent<Rigidbody>().isKinematic = true;
-                StopAllCoroutines();
-                
-                Invoke("destroyMosnter", 3f); //풀 릴리스 호출
                 break;
+        }
+    }
+
+    void firstDamage()
+    {
+        float MaxHp = baseBattleStat.maxHP;
+        if (MaxHp > baseBattleStat.maxHP)
+        {
+            //      StartTracking();
         }
     }
 
@@ -115,13 +132,14 @@ public class MonsterMain : CommonBattle
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         transform.position = transform.parent.position; //스폰위치 설정
+
         ChangeState(State.Idle);
     }
 
     //몬스터 대기 상태
     void idleState()
     {
-        
+        monAgent.ResetPath();
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
         mStat.monsterIdleTime = Random.Range(2, 4);
@@ -148,7 +166,7 @@ public class MonsterMain : CommonBattle
         Vector3 GetRndPos()
         {
             dir = Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0) * dir;
-            dir *= Random.Range(10.0f, 30.0f);
+            dir *= Random.Range(10.0f, 50.0f);
             return monResPos.position + dir;
         }
         MoveToPos(GetRndPos());
@@ -166,40 +184,33 @@ public class MonsterMain : CommonBattle
 
     void IsRunning(float dist)//달리기
     {
-        float runOk = 40.0f;
+        float runOk = 30.0f;
         if (dist >= runOk)
         {
-            baseBattleStat.moveSpeed= 6.0f;
-               myAnim .SetBool("Move", false);
+            monAgent.speed = mStat.monsterRunSpeed;
+            myAnim.SetBool("Move", false);
             myAnim.SetBool("Run", true);
         }
         else
         {
-            baseBattleStat.moveSpeed = 3.0f;
+            monAgent.speed = baseBattleStat.moveSpeed;
             myAnim.SetBool("Run", false);
             myAnim.SetBool("Move", true);
         }
 
     }
-
-    //몬스터 이동코룬틴
-    IEnumerator MovingCoroutine(Vector3 target)
+    public IEnumerator MovingCoroutine(Vector3 target)
     {
-        Vector3 dir = target - transform.position;
-        float dist = dir.magnitude;
-        dir.Normalize();
-
-        if (rotate != null) StopCoroutine(rotate);
-        rotate = StartCoroutine(RotatingCoroutine(dir));
-
-        while (dist > 0.1f)
+        while (true)
         {
-            float delta = baseBattleStat.moveSpeed * Time.deltaTime;
-            if (delta > dist) delta = dist;
-            dist -= delta;
+            float dist = Vector3.Distance(transform.position, target);
             IsRunning(dist);
-            transform.Translate(dir * delta, Space.World);
+            monAgent.SetDestination(target);
             yield return null;
+            if (dist <= 0.1f)
+            {
+                break;
+            }
         }
         if (isTracking == false)
         {
@@ -211,51 +222,29 @@ public class MonsterMain : CommonBattle
         }
     }
 
-    //몬스터 회전코룬틴
-    IEnumerator RotatingCoroutine(Vector3 dir)
-    {
-        float angle = Vector3.Angle(transform.forward, dir);
-        float rotDir = 1.0f;
-        //회전 방향 결정
-        if (Vector3.Dot(transform.right, dir) < 0.0f)
-        {
-            rotDir = -1.0f;
-        }
-        //회전 시작
-        while (!Mathf.Approximately(angle, 0.0f))
-        {
-            float delta = 360.0f * Time.deltaTime;
-            if (delta > angle)
-            {
-                delta = angle;
-            }
-            angle -= delta;
-            transform.Rotate(Vector3.up * rotDir * delta);
-            yield return null;
-        }
-    }
 
-
-    //몬스터 플레이어 발견
     public void StartTracking(Transform target)
     {
-        if (monsterState == State.Dead) return;
-        StopCoroutine(deleyMove);
-        myTarget = target;
-        ChangeState(State.Battle);
-            
+        if (monsterState != State.Dead)
+        {
+            StopCoroutine(deleyMove);
+            myTarget = target;
+            ChangeState(State.Battle);
+        }
     }
     //몬스터 플레이어 놓침
     public void StopTracking()
     {
-        myAnim.SetBool("IsAttack", false);
-        myTarget = null;
-        ChangeState(State.Idle);
+        if (monsterState != State.Dead)
+        {
+            if (move != null) StopCoroutine(move);
+            if (battleState != null) StopCoroutine(battleState);
+            myTarget = null;
+            ChangeState(State.Idle);
+        }
     }
 
-    //몬스터 전투상태
-    private RangeAttack rangeAttack;
-    IEnumerator battleState()
+    public IEnumerator BattleState()
     {
         while (myTarget != null)
         {
@@ -270,52 +259,37 @@ public class MonsterMain : CommonBattle
             }
             else
             {
+                if (move != null) StopCoroutine(move);
+                monAgent.ResetPath();
                 AttackPlayer();
-                yield return new WaitForSeconds(baseBattleStat.attackDeley);
+                break;
             }
         }
+
     }
 
-    void AttackPlayer()
+    public virtual void AttackPlayer()
     {
-        if (move != null)
-        {
-            StopCoroutine(move);
-        }
-        myAnim.SetBool("Move", false);
-        myAnim.SetTrigger("NormalAttack");
-        if (mStat.longAttack == true)
-        {
-            rangeAttack.OnShoot(monResPos.transform.position, myTarget.transform.position);
-            //원거리 공격실행
-        }
+       
     }
+    public virtual void AttackDelay()
+    {
+        
+    }
+
 
 
     //몬스터 사망상태
     public void deadState()
     {
+        myTarget = null;
+        StopAllCoroutines();
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        monAgent.ResetPath();
         ChangeState(State.Dead);
+        Invoke("destroyMosnter", 3f); //풀 릴리스 호출
     }
-
-
-    public override void OnAttack()
-    {
-        if (myTarget == null) return;
-
-        Vector3 battletarget = myTarget.transform.position;
-        Vector3 dir = battletarget - transform.position;
-        float dist = dir.magnitude;
-        if (dist > mStat.monsterRange) return;
-
-        ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
-        if (cd != null)
-        {
-            cd.TakeDamage(baseBattleStat.attackPoint); 
-        }
-    }
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -324,5 +298,9 @@ public class MonsterMain : CommonBattle
         ChangeState(State.Idle);
     }
 
+    private void Update()
+    {
+
+    }
 
 }

@@ -1,0 +1,6 @@
+index,itemName,priceBuy,priceSell,MaxAmount,dropRate
+10000,Gold,0,0,100000,100
+10001,HealPotion,20,5,20,5
+10002,MonsterPiece,0,10,100,20
+10003,Rock,10,3,100,30
+10004,Wood,10,3,100,30
