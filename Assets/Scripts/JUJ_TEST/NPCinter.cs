@@ -11,26 +11,30 @@ public class NPCinter : MonoBehaviour
     public Camera zoomCamera;
     public float newFov;
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if (((1 << other.gameObject.layer) & layer) != 0)
         {
-            npcInter.SetActive(true); // 대화하기 UI 활성화
-            Debug.Log("플레이어 들어옴");
-            if (Input.GetKey(KeyCode.F))
+            if (!chatInter.activeSelf)
             {
-                Debug.Log("버튼 눌림");
+                npcInter.SetActive(true); // 대화하기 UI 활성화
+            }
+            if (canInter == false && Input.GetKeyDown(KeyCode.F))
+            {
                 StartInteraction();
                 ZoomCam();
             }
             // 상호작용 중일 때 상호작용 중지
-            else if (Input.GetKey(KeyCode.F) || Input.GetKey(KeyCode.Escape))
+            else if (canInter == true && Input.GetKeyDown(KeyCode.F))
             {
                 EndInteraction();
                 ReturnCam();
             }
-
         }
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        npcInter.SetActive(false);
     }
     // 상호작용 시작
     public void StartInteraction()
