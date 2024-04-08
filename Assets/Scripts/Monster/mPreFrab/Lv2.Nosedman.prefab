@@ -166,13 +166,9 @@ MonoBehaviour:
   hpViewPos: {fileID: 350938993189423974}
   monAgent: {fileID: 6498667941969402153}
   monsterAI: {fileID: 3443407430569095817}
-  mStat:
-    monsterRange: 7
-    monsterIdleTime: 0
-    monsterRunSpeed: 5
+  MonsterIndex: 30013
   monsterState: 0
-  FireballPrefab: {fileID: 3292462701693660853, guid: 5ed2c1c5d54091c4896a0a5f04336948,
-    type: 3}
+  shootManager: {fileID: 0}
   attackPos: {fileID: 1958797569470233781}
 --- !u!1 &6131199285845275317
 GameObject:

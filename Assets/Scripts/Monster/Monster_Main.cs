@@ -4,6 +4,7 @@ using UnityEngine.Pool;
 using AT_RPG;
 using UnityEngine.AI;
 using System.IO;
+using static UnityEngine.GraphicsBuffer;
 
 /// <summary>
 /// 몬스터 공통부분 관리스크립트
@@ -29,11 +30,17 @@ public class MonsterMain : CommonBattle
     }
     private void Awake() //초기화
     {
-        LoadMonsterStatsFromCSV("Monster/JJappalWorld - MonsterInfoData.csv"); 
         ChangeState(State.Create);
     }
     void OnEnable()
     {
+        TextAsset csvFile = Resources.Load<TextAsset>("Monster/JJappalWorld/MonsterInfoData");
+        if (csvFile != null)
+        {
+            string fileContent = csvFile.text;
+            LoadMonsterStatsFromCSV(fileContent);
+        }
+
         ChangeState(State.Create);
         GetComponent<Collider>().enabled = true;
     //    GetComponent<Rigidbody>().isKinematic = false;
@@ -61,6 +68,7 @@ public class MonsterMain : CommonBattle
     public Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
     public Coroutine battleState = null;
+    public Coroutine trackPlayerOnDamage=null;
 
     public Transform hpViewPos; //hp바의 위치 지정
     MonsterHpBar myHpBar;
@@ -162,12 +170,25 @@ public class MonsterMain : CommonBattle
         }
     }
 
-    void firstDamage()
+
+    public IEnumerator TrackPlayerOnDamage() //피해를 입으면 즉시 플레이어를 추적
     {
         float MaxHp = baseBattleStat.maxHP;
-        if (MaxHp > baseBattleStat.maxHP)
+        while (true)
         {
-            //      StartTracking();
+            yield return new WaitForSeconds(1f);
+
+            if (MaxHp > baseBattleStat.maxHP)
+            {
+                string playerTag = "Player";
+                GameObject playerObject = GameObject.FindGameObjectWithTag(playerTag);
+                if (playerObject != null)
+                {
+                    Transform playerTransform = playerObject.transform;
+                    StartTracking(playerTransform);
+                }
+                break;
+            }
         }
     }
 
@@ -177,13 +198,17 @@ public class MonsterMain : CommonBattle
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         transform.position = transform.parent.position; //스폰위치 설정
-
+        trackPlayerOnDamage = StartCoroutine(TrackPlayerOnDamage()); //피해감지 코룬틴 시작
         ChangeState(State.Idle);
     }
 
     //몬스터 대기 상태
     void idleState()
     {
+        if(trackPlayerOnDamage == null) //전투상태로 들어가서 꺼진상태라면
+        {
+            trackPlayerOnDamage = StartCoroutine(TrackPlayerOnDamage()); //피해감지 코룬틴 시작
+        }
         monAgent.ResetPath();
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
@@ -291,6 +316,7 @@ public class MonsterMain : CommonBattle
 
     public IEnumerator BattleState()
     {
+        StopCoroutine(trackPlayerOnDamage);//피해감지 코룬틴 정지
         while (myTarget != null)
         {
             Vector3 battletarget = myTarget.transform.position;

@@ -63,10 +63,7 @@ MonoBehaviour:
   hpViewPos: {fileID: 7255584767215341616}
   monAgent: {fileID: 7547331383263652408}
   monsterAI: {fileID: 5106393768590384668}
-  mStat:
-    monsterRange: 2
-    monsterIdleTime: 0
-    monsterRunSpeed: 4
+  MonsterIndex: 30007
   monsterState: 0
 --- !u!136 &264148843263841659
 CapsuleCollider:

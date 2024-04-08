@@ -135,10 +135,7 @@ MonoBehaviour:
   hpViewPos: {fileID: 8423892169128802122}
   monAgent: {fileID: 1881470274986425965}
   monsterAI: {fileID: 531957308331538698}
-  mStat:
-    monsterRange: 2
-    monsterIdleTime: 0
-    monsterRunSpeed: 6
+  MonsterIndex: 30005
   monsterState: 0
 --- !u!1 &4029389004239713802
 GameObject:

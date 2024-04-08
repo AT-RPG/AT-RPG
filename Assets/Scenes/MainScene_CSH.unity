@@ -233,6 +233,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Lv2.TestSpwaner '
       objectReference: {fileID: 0}
+    - target: {fileID: 2120643510527296754, guid: 6949f4d67d0233a46b8d14a7802733ea,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3253274047600182849, guid: 6949f4d67d0233a46b8d14a7802733ea,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -893,7 +898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &968135660
 Transform:
   m_ObjectHideFlags: 0
@@ -1748,11 +1753,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lv1.Knight
       objectReference: {fileID: 0}
-    - target: {fileID: 6073111375070932318, guid: 1ced28b0f11fd91458c188c63f0a3a64,
-        type: 3}
-      propertyPath: StartspawnPos
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2383,26 +2383,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lv1.Spike
       objectReference: {fileID: 0}
-    - target: {fileID: 852305393678156617, guid: 443b90013d715c6428739756ef438f6a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2456689997857777253, guid: 443b90013d715c6428739756ef438f6a,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3348987995906302637, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
       propertyPath: shootManager
       value: 
       objectReference: {fileID: 1412390362}
-    - target: {fileID: 3348987995906302637, guid: 443b90013d715c6428739756ef438f6a,
-        type: 3}
-      propertyPath: StartspawnPos
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7322936292352383320, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2629,6 +2614,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Lv3.TestSpwaner '
       objectReference: {fileID: 0}
+    - target: {fileID: 2120643510527296754, guid: f8c1ae739fd429b4db6b0d9c9a7fdede,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3253274047600182849, guid: f8c1ae739fd429b4db6b0d9c9a7fdede,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2765,11 +2755,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lv1.Treestor
       objectReference: {fileID: 0}
-    - target: {fileID: 37076309853231208, guid: c0517368f3e93e24abc78504652353cf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4331263144890722545, guid: c0517368f3e93e24abc78504652353cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2839,11 +2824,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 968135660}
     m_Modifications:
-    - target: {fileID: 682911750381399969, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
-        type: 3}
-      propertyPath: StartspawnPos
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1045615041544015884, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2894,25 +2874,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2369730751244314370, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
-        type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2369730751244314370, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2584212705057138345, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
         type: 3}
       propertyPath: m_Name
       value: LV1.Imp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2584212705057138345, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -16,7 +16,7 @@ public class MonsterAnim : MonoBehaviour
 
     public void DeadAct()
     {
-        deadAct?.Invoke();
+        deadAct?.Invoke();  
     }
     public void AttackDelay()
     {
