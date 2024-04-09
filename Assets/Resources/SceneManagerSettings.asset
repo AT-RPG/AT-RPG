@@ -12,28 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899e2d0033f9b0a4dadee9916857760f, type: 3}
   m_Name: SceneManagerSettings
   m_EditorClassIdentifier: 
-  IntroSceneAsset:
-    m_AssetGUID: 3a7eac6d3fab9d847a41c160d6356e38
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  LoadingSceneAsset:
-    m_AssetGUID: 5bcf9e72a42436043a287b1e41cc62ee
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  TitleSceneAsset:
-    m_AssetGUID: 61ed4e478a6346740bba2218e248ebcd
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  MainSceneAsset:
-    m_AssetGUID: b559613fd89346b458644a79d14c7b73
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
   FakeLoadingDuration: 0.75
-  IntroSceneAssetBundleLabelMap: []
-  LoadingSceneAssetBundleLabelMap: []
-  TitleSceneAssetBundleLabelMap: []
-  MainSceneAssetBundleLabelMap: []
+  IntroScene: 
+  IntroSceneAddressableLabelMap: []
+  LoadingScene: 
+  LoadingSceneAddressableLabelMap: []
+  TitleScene: 
+  TitleSceneAddressableLabelMap: []
+  MainScene: 
+  MainSceneAddressableLabelMap: []
+  MainScene_BJW: 
+  MainScene_BJWAddressableLabelMap: []
+  MainScene_CSH: 
+  MainScene_CSHAddressableLabelMap: []
+  MainScene_IJH: 
+  MainScene_IJHAddressableLabelMap: []
+  MainScene_JUJ: 
+  MainScene_JUJAddressableLabelMap: []

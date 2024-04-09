@@ -33,8 +33,8 @@ namespace AT_RPG
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName == SceneManager.Setting.MainSceneAsset.SceneName) { createButtonInstance.SetActive(false); }
-            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainSceneAsset.SceneName) { changeButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName == SceneManager.Setting.MainScene) { createButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { changeButtonInstance.SetActive(false); }
         }
 
 

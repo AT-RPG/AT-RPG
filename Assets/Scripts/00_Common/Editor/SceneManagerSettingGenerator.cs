@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEngine.AddressableAssets;
 
 namespace AT_RPG
 {
@@ -24,6 +25,7 @@ namespace AT_RPG
                 var sourceBuilder = new StringBuilder();
                 sourceBuilder.AppendLine("using System.Collections.Generic;");
                 sourceBuilder.AppendLine("using UnityEngine;");
+                sourceBuilder.AppendLine("using UnityEngine.AddressableAssets;");
                 sourceBuilder.AppendLine();
                 sourceBuilder.AppendLine("namespace AT_RPG");
                 sourceBuilder.AppendLine("{");
@@ -35,8 +37,8 @@ namespace AT_RPG
                 {
                     string sceneName = Path.GetFileNameWithoutExtension(scene.path);
                     sourceBuilder.AppendLine($"        [Space(10)]");
-                    sourceBuilder.AppendLine($"        public {nameof(AssetReferenceScene)} {sceneName}Asset;");
-                    sourceBuilder.AppendLine($"        public List<string> {sceneName}AddressableLabelMap = new List<string>();");
+                    sourceBuilder.AppendLine($"        public readonly string {sceneName} = \"{sceneName}\";");
+                    sourceBuilder.AppendLine($"        public List<{nameof(AssetLabelReference)}> {sceneName}AddressableLabelMap = new List<{nameof(AssetLabelReference)}>();");
                     sourceBuilder.AppendLine();
                 }
 

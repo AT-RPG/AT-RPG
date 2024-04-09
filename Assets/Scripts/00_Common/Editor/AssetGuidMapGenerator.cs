@@ -43,12 +43,12 @@ namespace AT_RPG
 
             // 모든 어드레서블의 에셋을 매핑
             AssetGuidMap map = new();
-            AddressableAssetSettingsDefaultObject.Settings.groups.ForEach(group =>
+            foreach (var group in AddressableAssetSettingsDefaultObject.Settings.groups)
             {
                 List<AddressableAssetEntry> assetEntries = new();
                 group.GatherAllAssets(assetEntries, true, true, true);
-                assetEntries.ForEach(entry => map.Add(entry.AssetPath, entry.guid));
-            });
+                assetEntries.ForEach(entry => { if (entry.AssetPath != "" || entry.guid != "" ) { map[entry.AssetPath] = entry.guid; } });
+            }
 
             // 데이터를 Json파일 직렬화
             using (FileStream stream = new FileStream(setting.GetAssetGuidMapFilePath(), FileMode.Create))

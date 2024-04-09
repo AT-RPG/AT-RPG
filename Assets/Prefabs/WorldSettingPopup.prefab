@@ -1656,8 +1656,10 @@ MonoBehaviour:
   popupAnimation: {fileID: 1970067337627839868}
   blurAnimation: {fileID: 6763834106052360070}
   startGamePopupPrefab:
-    resourceName: StartGamePopup
-    resourceGUID: 2f6cc14bf8b3e634299f92cff87f5a57
+    m_AssetGUID: 2f6cc14bf8b3e634299f92cff87f5a57
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   mapName: {fileID: 1283224406103290350}
   isMultiplayEnabled: {fileID: 7577103347939362531}
   createButtonInstance: {fileID: 6184194793479981536}

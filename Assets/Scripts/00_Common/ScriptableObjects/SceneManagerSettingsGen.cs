@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace AT_RPG
 {
@@ -7,36 +8,36 @@ namespace AT_RPG
     {
         [Space(20)]
         [Space(10)]
-        public AssetReferenceScene IntroSceneAsset;
-        public List<string> IntroSceneAddressableLabelMap = new List<string>();
+        public readonly string IntroScene = "IntroScene";
+        public List<AssetLabelReference> IntroSceneAddressableLabelMap = new List<AssetLabelReference>();
 
         [Space(10)]
-        public AssetReferenceScene LoadingSceneAsset;
-        public List<string> LoadingSceneAddressableLabelMap = new List<string>();
+        public readonly string LoadingScene = "LoadingScene";
+        public List<AssetLabelReference> LoadingSceneAddressableLabelMap = new List<AssetLabelReference>();
 
         [Space(10)]
-        public AssetReferenceScene TitleSceneAsset;
-        public List<string> TitleSceneAddressableLabelMap = new List<string>();
+        public readonly string TitleScene = "TitleScene";
+        public List<AssetLabelReference> TitleSceneAddressableLabelMap = new List<AssetLabelReference>();
 
         [Space(10)]
-        public AssetReferenceScene MainSceneAsset;
-        public List<string> MainSceneAddressableLabelMap = new List<string>();
+        public readonly string MainScene = "MainScene";
+        public List<AssetLabelReference> MainSceneAddressableLabelMap = new List<AssetLabelReference>();
 
         [Space(10)]
-        public AssetReferenceScene MainScene_BJWAsset;
-        public List<string> MainScene_BJWAddressableLabelMap = new List<string>();
+        public readonly string MainScene_BJW = "MainScene_BJW";
+        public List<AssetLabelReference> MainScene_BJWAddressableLabelMap = new List<AssetLabelReference>();
 
         [Space(10)]
-        public AssetReferenceScene MainScene_CSHAsset;
-        public List<string> MainScene_CSHAddressableLabelMap = new List<string>();
+        public readonly string MainScene_CSH = "MainScene_CSH";
+        public List<AssetLabelReference> MainScene_CSHAddressableLabelMap = new List<AssetLabelReference>();
 
         [Space(10)]
-        public AssetReferenceScene MainScene_IJHAsset;
-        public List<string> MainScene_IJHAddressableLabelMap = new List<string>();
+        public readonly string MainScene_IJH = "MainScene_IJH";
+        public List<AssetLabelReference> MainScene_IJHAddressableLabelMap = new List<AssetLabelReference>();
 
         [Space(10)]
-        public AssetReferenceScene MainScene_JUJAsset;
-        public List<string> MainScene_JUJAddressableLabelMap = new List<string>();
+        public readonly string MainScene_JUJ = "MainScene_JUJ";
+        public List<AssetLabelReference> MainScene_JUJAddressableLabelMap = new List<AssetLabelReference>();
 
     }
 }

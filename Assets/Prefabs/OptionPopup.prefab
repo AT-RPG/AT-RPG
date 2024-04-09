@@ -592,8 +592,10 @@ MonoBehaviour:
   popupAnimation: {fileID: 1970067337627839868}
   blurAnimation: {fileID: 6763834106052360070}
   mapSettingPopup:
-    resourceName: MapSettingPopup
-    resourceGUID: 12c6709d56b3e194e88f224d6db7105c
+    m_AssetGUID: 12c6709d56b3e194e88f224d6db7105c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   continueButtonInstance: {fileID: 6903098932775743224}
   graphicButtonInstance: {fileID: 3493564836341732112}
   controlButtonInstance: {fileID: 770918464112969352}

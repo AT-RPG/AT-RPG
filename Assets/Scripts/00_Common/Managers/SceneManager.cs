@@ -87,8 +87,7 @@ namespace AT_RPG.Manager
         /// </summary>
         /// <param name="sceneName">다음 씬 이름</param>
         /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
-        private static IEnumerator InternalLoadSceneCoroutine(
-            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
+        private static IEnumerator InternalLoadSceneCoroutine(string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
         {
             isLoading = true;
 

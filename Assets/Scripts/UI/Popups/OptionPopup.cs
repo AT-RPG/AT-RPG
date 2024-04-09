@@ -25,7 +25,7 @@ namespace AT_RPG
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainSceneAsset.SceneName) { gamesButtonInstance.SetActive(false); }
+            if (SceneManager.CurrentSceneName != SceneManager.Setting.MainScene) { gamesButtonInstance.SetActive(false); }
         }
 
         private void Start()

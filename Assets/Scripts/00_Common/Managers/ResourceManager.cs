@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -65,12 +64,18 @@ namespace AT_RPG.Manager
         /// </summary>
         /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetReference.AssetGUID"/></param>
         /// <param name="completed">로드 성공시 콜백</param>
-        public static void LoadAssetAsync<TObject>(string key, Action<TObject> completed = null) where TObject : UnityObject
+        public static void LoadAssetAsync<TObject>(string key, Action<TObject> completed = null, bool enableFakeLoading = false) where TObject : UnityObject
         {
-            Instance.StartCoroutine(LoadAssetAsyncImpl(new ResourceRequest(key), completed));
+            if (resourceHandles.ContainsKey(key))
+            {
+                Debug.LogWarning($"'{key}'는 이미 로드되어있습니다.");
+                return;
+            }
+
+            Instance.StartCoroutine(LoadAssetAsyncImpl(new ResourceRequest(key), completed, enableFakeLoading));
         }
 
-        private static IEnumerator LoadAssetAsyncImpl<TObject>(ResourceRequest request, Action<TObject> completed) where TObject : UnityObject
+        private static IEnumerator LoadAssetAsyncImpl<TObject>(ResourceRequest request, Action<TObject> completed, bool enableFakeLoading) where TObject : UnityObject
         {
             loadOperations.Add(request);
 
@@ -85,6 +90,8 @@ namespace AT_RPG.Manager
             resourceHandle.Completed += handle => CacheResource(request.Key, resourceHandle);
             yield return resourceHandle;
             if (resourceHandle.Status != AsyncOperationStatus.Succeeded) { Debug.LogError($"{request.Key}를 사용하는 어드레서블 리소스 로드 실패."); yield break; }
+
+            if (enableFakeLoading) { yield return new WaitForSeconds(setting.FakeLoadingDuration); }
 
             Addressables.Release(locationHandle);
             loadOperations.Remove(request);
@@ -105,12 +112,18 @@ namespace AT_RPG.Manager
         /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetLabelReference.labelString"/></param>
         /// <param name="completed">로드 성공시 콜백</param>
 
-        public static void LoadAssetsAsync(string key, Action<List<UnityObject>> completed = null)
+        public static void LoadAssetsAsync(string key, Action<List<UnityObject>> completed = null, bool enableFakeLoading = false)
         {
-            Instance.StartCoroutine(LoadAssetsAsyncImpl(new ResourceRequest(key), completed));
+            if (resourceHandles.ContainsKey(key))
+            {
+                Debug.LogWarning($"'{key}'는 이미 로드되어있습니다.");
+                return;
+            }
+
+            Instance.StartCoroutine(LoadAssetsAsyncImpl(new ResourceRequest(key), completed, enableFakeLoading));
         }
 
-        private static IEnumerator LoadAssetsAsyncImpl(ResourceRequest request, Action<List<UnityObject>> completed)
+        private static IEnumerator LoadAssetsAsyncImpl(ResourceRequest request, Action<List<UnityObject>> completed, bool enableFakeLoading)
         {
             loadOperations.Add(request);
 
@@ -126,6 +139,8 @@ namespace AT_RPG.Manager
             resourceHandle.Completed += handle => CacheResources(request.Key, locationHandle, resourceHandle);
             yield return resourceHandle;
             if (resourceHandle.Status != AsyncOperationStatus.Succeeded) { Debug.LogError($"{request.Key}를 사용하는 어드레서블 리소스 로드 실패."); yield break; }
+
+            if (enableFakeLoading) { yield return new WaitForSeconds(setting.FakeLoadingDuration); }
 
             Addressables.Release(locationHandle);
             loadOperations.Remove(request);
@@ -149,6 +164,8 @@ namespace AT_RPG.Manager
         /// <param name="key">로드 시 사용했던 key</param>
         public static void UnloadAssetsAsync(string key, Action completed = null)
         {
+            if (!resourceHandles.ContainsKey(key)) { return; }
+
             Instance.StartCoroutine(UnloadAssetsAsyncImpl(new ResourceRequest(key), completed));
         }
 

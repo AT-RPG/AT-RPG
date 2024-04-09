@@ -8,13 +8,12 @@ namespace AT_RPG
         public void LoadTitileScene()
         {
             string fromScene = SceneManager.CurrentSceneName;
-            string toScene = SceneManager.Setting.TitleSceneAsset.SceneName;
-            string loadingScene = SceneManager.Setting.LoadingSceneAsset.SceneName;
+            string toScene = SceneManager.Setting.TitleScene;
+            string loadingScene = SceneManager.Setting.LoadingScene;
             SceneManager.LoadScene(loadingScene, () =>
             {
-                // ResourceManager.LoadAllResourcesCoroutine(SceneManager.Setting.TitleSceneAsset);
-
-                // ResourceManager.UnloadAllResourcesCoroutine(SceneManager.CurrentSceneName);
+                foreach (var label in SceneManager.Setting.TitleSceneAddressableLabelMap) { ResourceManager.LoadAssetsAsync(label.labelString, objects => Debug.Log($"{label.labelString} 로드 완료"), true); }
+                foreach (var label in SceneManager.Setting.IntroSceneAddressableLabelMap) { ResourceManager.UnloadAssetsAsync(label.labelString, () => Debug.Log($"{label.labelString} 언로드 완료")); }
 
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
             });

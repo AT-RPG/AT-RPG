@@ -49,8 +49,8 @@ namespace AT_RPG
         private void OnConnectSuccess()
         {
             string fromScene = SceneManager.CurrentSceneName;
-            string toScene = SceneManager.Setting.MainSceneAsset.SceneName;
-            string loadingScene = SceneManager.Setting.LoadingSceneAsset.SceneName;
+            string toScene = SceneManager.Setting.MainScene;
+            string loadingScene = SceneManager.Setting.LoadingScene;
             SceneManager.LoadScene(loadingScene, () =>
             {
                 // 리소스 로딩/언로딩 + 세이브 파일 로딩

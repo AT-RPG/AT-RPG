@@ -14,7 +14,7 @@ namespace AT_RPG
         private void Start()
         {
             // SceneManagerSetting(스크립터블 오브젝트)에서 씬을 등록하시면 SceneManager.Setting에서 전역 접근이 가능합니다.
-            string LoadingSceneName = SceneManager.Setting.LoadingSceneAsset.SceneName;
+            string LoadingSceneName = SceneManager.Setting.LoadingScene;
         }
 
         void Update()
@@ -26,7 +26,7 @@ namespace AT_RPG
                 // 람다식에서 LoadScene() 종료시 실행할 콜백을 설정합니다.
                 string fromScene = SceneManager.CurrentSceneName;
                 string toScene = testSceneReferenceAsset.SceneName;
-                string loadingScene = SceneManager.Setting.LoadingSceneAsset.SceneName;
+                string loadingScene = SceneManager.Setting.LoadingScene;
                 SceneManager.LoadScene(loadingScene, () =>
                 {
                     // LoadCompleted 콜백이므로, 현재 씬은 로딩씬.

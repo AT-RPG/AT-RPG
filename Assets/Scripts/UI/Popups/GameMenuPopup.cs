@@ -32,7 +32,7 @@ namespace AT_RPG
 
         private void Awake()
         {
-            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleSceneAsset.SceneName) 
+            if (SceneManager.CurrentSceneName == SceneManager.Setting.TitleScene) 
             { 
                 titleButtonInstance.SetActive(false);
                 saveButtonInstance.SetActive(false);
@@ -154,8 +154,8 @@ namespace AT_RPG
 
             // 타이틀 씬으로 이동
             string fromScene = SceneManager.CurrentSceneName;
-            string toScene = SceneManager.Setting.TitleSceneAsset.SceneName;
-            string loadingScene = SceneManager.Setting.LoadingSceneAsset.SceneName;
+            string toScene = SceneManager.Setting.TitleScene;
+            string loadingScene = SceneManager.Setting.LoadingScene;
             SceneManager.LoadSceneCoroutine(loadingScene, () => !SaveLoadManager.IsSaving, () =>
             {
                 // ResourceManager.LoadAllResourcesCoroutine(toScene);

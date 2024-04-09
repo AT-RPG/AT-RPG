@@ -1248,11 +1248,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldButtonContents: {fileID: 183465478690320766}
   worldSettingPopupPrefab:
-    resourceName: WorldSettingPopup
-    resourceGUID: 12c6709d56b3e194e88f224d6db7105c
+    m_AssetGUID: 12c6709d56b3e194e88f224d6db7105c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   worldButtonPrefab:
-    resourceName: WorldButton
-    resourceGUID: 180c1adda0e607441b40e1438da282b8
+    m_AssetGUID: 180c1adda0e607441b40e1438da282b8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}
   blurAnimation: {fileID: 6763834106052360070}

@@ -9,6 +9,8 @@ namespace AT_RPG.Manager
     /// </summary>
     public partial class GameManager : Singleton<GameManager>
     {
+        private static GameManagerSettings setting;
+
         // LoadAllResourcesFromResourcesFolder()에서 실행
         private static event Action beforeFirstSceneLoadAction;
 
@@ -24,10 +26,11 @@ namespace AT_RPG.Manager
         private static MultiplayManager multiplayManager    = null;
 
 
-
         protected override void Awake()
         {
             base.Awake();
+
+            setting = Resources.Load<GameManagerSettings>("GameManagerSettings");
         }
 
 
@@ -41,16 +44,9 @@ namespace AT_RPG.Manager
             Init();
             DOTween.Init();
 
-            beforeFirstSceneLoadAction?.Invoke();
-        }
+            PreloadResource();
 
-        /// <summary>
-        /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되고 난 후 실행
-        /// </summary>
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void OnAfterFirstSceneLoad()
-        {
-            afterFirstSceneLoadAction?.Invoke();
+            beforeFirstSceneLoadAction?.Invoke();
         }
 
         /// <summary>
@@ -72,6 +68,28 @@ namespace AT_RPG.Manager
             dataManager = SaveLoadManager.GetInstance();
 
             resourceManager = ResourceManager.GetInstance();
+        }
+
+        /// <summary>
+        /// <see cref="GameManager.setting"/>에 등록된 어드레서블 라벨을 로드
+        /// </summary>
+        private static void PreloadResource()
+        {
+            foreach (var label in setting.PreloadAddressableLabelMap)
+            {
+                ResourceManager.LoadAssetsAsync(label.labelString, objects => Debug.Log($"{label.labelString} 로드 성공"), false);
+            }
+        }
+
+
+
+        /// <summary>
+        /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되고 난 후 실행
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void OnAfterFirstSceneLoad()
+        {
+            afterFirstSceneLoadAction?.Invoke();
         }
     }
 
