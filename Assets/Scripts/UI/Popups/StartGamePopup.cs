@@ -45,7 +45,6 @@ namespace AT_RPG
             deleteWorldButtonInstance.SetActive(false);
         }
 
-
         /// <summary>
         /// 시작 애니메이션을 실행합니다.
         /// </summary>
@@ -55,7 +54,6 @@ namespace AT_RPG
             popupAnimation.StartPopup();
             blurAnimation.StartFade();
         }
-
 
         /// <summary>
         /// 저장된 모든 월드 정보를 불러옵니다.
@@ -71,16 +69,7 @@ namespace AT_RPG
             List<WorldSettingData> worldSettingDatas = new List<WorldSettingData>();
             foreach (var name in savedMapDataNames)
             {
-                SaveLoadManager.LoadWorldSettingDataCoroutine(defaultSaveFolderPath, name, 
-                () =>
-                {
-                    return !SaveLoadManager.IsLoading;
-                }    
-                , 
-                worldSettingData =>
-                {
-                    worldSettingDatas.Add(worldSettingData);
-                });
+                SaveLoadManager.LoadWorldSettingDataCoroutine(defaultSaveFolderPath, name, () => !SaveLoadManager.IsLoading, worldSettingData => worldSettingDatas.Add(worldSettingData));
             }
 
             // 맵 설정 데이터를 모두 불러올 때까지 대기 
@@ -98,6 +87,7 @@ namespace AT_RPG
                 worldButton.OnPickAction += OnPickWorld;
             }
         }
+
 
 
         /// <summary>
@@ -119,6 +109,7 @@ namespace AT_RPG
         }
 
 
+
         /// <summary>
         /// 월드를 설정 팝업을 생성합니다.
         /// </summary>
@@ -126,6 +117,7 @@ namespace AT_RPG
         {
             UIManager.InstantiatePopup(worldSettingPopupPrefab.Resource, PopupRenderMode.Default);
         }
+
 
 
         /// <summary>
@@ -142,7 +134,6 @@ namespace AT_RPG
             InternalOnPlayWorld();
         }
 
-
         /// <summary>
         /// 월드를 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
         /// </summary>
@@ -153,11 +144,17 @@ namespace AT_RPG
             string fromScene = SceneManager.CurrentSceneName;
             string toScene = SceneManager.Setting.MainScene;
             string loadingScene = SceneManager.Setting.LoadingScene;
-            SceneManager.LoadScene(loadingScene, () =>
+            SceneManager.LoadSceneCoroutine(loadingScene, null, () =>
             {
                 // 리소스 로딩/언로딩 + 세이브 파일 로딩
-                // ResourceManager.LoadAllResourcesCoroutine(toScene);
-                // ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                foreach (var label in SceneManager.Setting.MainSceneAddressableLabelMap)
+                {
+                    ResourceManager.LoadAssetsAsync(label.labelString, null, true);
+                }
+                foreach (var label in SceneManager.Setting.TitleSceneAddressableLabelMap)
+                {
+                    ResourceManager.UnloadAssetsAsync(label.labelString);
+                }
 
                 // 로딩이 끝나면 씬을 변경합니다.
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading, () =>
@@ -169,18 +166,14 @@ namespace AT_RPG
                         loadedWorldSettingData => SaveLoadManager.WorldSettingData = loadedWorldSettingData);
 
                     // 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.
-                    // 그 후 호스트를 만들건지 정합니다.
                     SaveLoadManager.LoadGameObjectDatasCoroutine(
                         SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
                         () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
-                        loadedGameObjectDatas => 
-                        {
-                            SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
-                            if (SaveLoadManager.WorldSettingData.isMultiplayEnabled) { MultiplayManager.ConnectToCloud(); }
-                        });
+                        loadedGameObjectDatas => SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas));
                 });
             });
         }
+
 
 
         /// <summary>
@@ -203,6 +196,7 @@ namespace AT_RPG
         }
 
 
+
         /// <summary>
         /// 종료 애니메이션과 함께, 현재 팝업을 삭제합니다.
         /// </summary>
@@ -215,6 +209,7 @@ namespace AT_RPG
             });
             blurAnimation.EndFade();
         }
+
 
 
         public void DestroyPopup()

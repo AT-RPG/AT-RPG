@@ -1,4 +1,3 @@
-using AT_RPG.Manager;
 using System;
 using TMPro;
 using UnityEngine;
