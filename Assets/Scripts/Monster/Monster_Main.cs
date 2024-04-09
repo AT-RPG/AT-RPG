@@ -5,6 +5,7 @@ using AT_RPG;
 using UnityEngine.AI;
 using System.IO;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UI;
 
 /// <summary>
 /// 몬스터 공통부분 관리스크립트
@@ -34,16 +35,15 @@ public class MonsterMain : CommonBattle
     }
     void OnEnable()
     {
-        TextAsset csvFile = Resources.Load<TextAsset>("Monster/JJappalWorld/MonsterInfoData");
-        if (csvFile != null)
-        {
-            string fileContent = csvFile.text;
-            LoadMonsterStatsFromCSV(fileContent);
-        }
+        
+
+        string path = Application.dataPath + "/Resources/Monster/JJappalWorld_MonsterInfoData.csv";
+            LoadMonsterStatsFromCSV(path);
+
 
         ChangeState(State.Create);
         GetComponent<Collider>().enabled = true;
-    //    GetComponent<Rigidbody>().isKinematic = false;
+    
         monAgent = GetComponent<NavMeshAgent>();
         if (myTarget != null)
         {
@@ -82,7 +82,10 @@ public class MonsterMain : CommonBattle
     public int MonsterIndex;
     private float monsterIdleTime;
 
-    public MonsterStat mStat;
+    [SerializeField]
+    protected MonsterStat mStat;
+
+    public GameObject deathVFX; //생성할 이펙트를 등록 합니다. 
 
     public struct MonsterStat
     {
@@ -92,9 +95,9 @@ public class MonsterMain : CommonBattle
         public string monsterType;
     }
 
-    void LoadMonsterStatsFromCSV(string filePath) //csv 파일에서 스탯가져오기
+    void LoadMonsterStatsFromCSV(string fileContent) //csv 파일에서 스탯가져오기
     {
-        StreamReader reader = new StreamReader(filePath); //파일 읽기
+        StreamReader reader = new StreamReader(fileContent); //파일 읽기
         string line;
 
         // 첫 번째 줄은 스탯의 이름을 작성했으므로 넘긴다
@@ -117,17 +120,20 @@ public class MonsterMain : CommonBattle
 
             if (monsterIndex == MonsterIndex) //해당줄의 인덱스랑 현재몬스터의 인덱스가 일치하면 스탯부여
             {
-                // 추출한 스탯을 mStat에 할당
+                // 추출한 스탯을 mStat만 현재 값이 안들어가는 상황
                 mStat = new MonsterStat();
                 baseBattleStat = new BaseBattleStat();
                 mStat.monsterName = monsterName;
                 mStat.monsterType = monsterType;
                 mStat.monsterRange = monsterRange;
                 mStat.monsterRunSpeed = monsterRunSpeed;
+
+                baseBattleStat.moveSpeed = moveSpeed;
                 baseBattleStat.maxHP = maxHP;
                 baseBattleStat.attackPoint = attackPoint;
                 baseBattleStat.skillCooltime = skillCooltime;
                 baseBattleStat.attackDeley = attackDeley;
+                break;
             }
         }
     }
@@ -198,7 +204,7 @@ public class MonsterMain : CommonBattle
         monsterAI.findPlayer.AddListener(StartTracking); //몬스터AI 스크립트의 findPlayer가 발생할경우 StartTracking 메서드를 호출
         monsterAI.lostPlayer.AddListener(StopTracking);  //플레이어를 놓쳣을경우 상태변경
         transform.position = transform.parent.position; //스폰위치 설정
-        trackPlayerOnDamage = StartCoroutine(TrackPlayerOnDamage()); //피해감지 코룬틴 시작
+      //  trackPlayerOnDamage = StartCoroutine(TrackPlayerOnDamage()); //피해감지 코룬틴 시작
         ChangeState(State.Idle);
     }
 
@@ -316,7 +322,7 @@ public class MonsterMain : CommonBattle
 
     public IEnumerator BattleState()
     {
-        StopCoroutine(trackPlayerOnDamage);//피해감지 코룬틴 정지
+       // StopCoroutine(trackPlayerOnDamage);//피해감지 코룬틴 정지
         while (myTarget != null)
         {
             Vector3 battletarget = myTarget.transform.position;
@@ -359,8 +365,20 @@ public class MonsterMain : CommonBattle
         GetComponent<Rigidbody>().isKinematic = true;
         monAgent.ResetPath();
         ChangeState(State.Dead);
+
         Invoke("destroyMosnter", 3f); //풀 릴리스 호출
     }
+
+
+    IEnumerator deadAnimation()
+    {
+        GameObject myVfx = Instantiate(deathVFX);  // 이펙트 게임오브젝트를 생성 합니다. 
+        myVfx.transform.position = this.gameObject.transform.position;  // 이펙트 포지션
+        myVfx.transform.rotation = Quaternion.identity;  // 이펙트 로테이션
+        yield return new WaitForSeconds(2.0f);  // 2초 기다립니다.
+        destroyMosnter(); 
+    }
+
 
     // Start is called before the first frame update
     void Start()
