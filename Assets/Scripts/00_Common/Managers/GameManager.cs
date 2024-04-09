@@ -19,17 +19,21 @@ namespace AT_RPG.Manager
         private static ResourceManager resourceManager      = null;
         private static SceneManager sceneManager            = null;
         private static UIManager uiManager                  = null;
-        private static SaveLoadManager dataManager              = null;
+        private static SaveLoadManager dataManager          = null;
         private static InputManager inputManager            = null;
         private static MultiplayManager multiplayManager    = null;
 
-
-
+        // 매니저 안에서 사용되는 playerData 변수
+        private PlayerData player;
+        
+        // 매니저를 통해 PlayerData로 접근할 프로퍼티 변수
+        public PlayerData Player { get => player; }
+        
         protected override void Awake()
         {
             base.Awake();
+            player = new PlayerData();
         }
-
 
 
         /// <summary>
