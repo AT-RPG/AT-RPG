@@ -1,10 +1,12 @@
 using AT_RPG;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class CommonBattle : CharacterProperty, ICharacterDamage
 {
-    [SerializeField] protected BaseBattleStat baseBattleStat;
+    [SerializeField]
+    protected BaseBattleStat baseBattleStat;
     public UnityEvent<float> changeHpAct;
     public event UnityAction deathAlarm;
     float _curHP = 0.0f;
@@ -67,9 +69,10 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
     { 
 
     }
+   
 
     protected virtual void OnDead()
     {
-        deathAlarm?.Invoke();
+       deathAlarm?.Invoke();
     }
 }

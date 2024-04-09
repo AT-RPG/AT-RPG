@@ -7,6 +7,7 @@ public class MonsterAnim : MonoBehaviour
 {
     public UnityEvent attackAct;
     public UnityEvent deadAct;
+    public UnityEvent attackDelay;
 
     public void OnAttack()
     {
@@ -15,7 +16,11 @@ public class MonsterAnim : MonoBehaviour
 
     public void DeadAct()
     {
-        deadAct?.Invoke();
+        deadAct?.Invoke();  
+    }
+    public void AttackDelay()
+    {
+        attackDelay?.Invoke();
     }
 
 
