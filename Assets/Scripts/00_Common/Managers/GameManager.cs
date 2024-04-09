@@ -26,13 +26,6 @@ namespace AT_RPG.Manager
         private static MultiplayManager multiplayManager    = null;
 
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            setting = Resources.Load<GameManagerSettings>("GameManagerSettings");
-        }
-        
         // 매니저 안에서 사용되는 playerData 변수
         private PlayerData player;
         
@@ -42,6 +35,8 @@ namespace AT_RPG.Manager
         protected override void Awake()
         {
             base.Awake();
+            setting = Resources.Load<GameManagerSettings>("GameManagerSettings");
+
             player = new PlayerData();
         }
 
