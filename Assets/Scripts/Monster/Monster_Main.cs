@@ -365,8 +365,8 @@ public class MonsterMain : CommonBattle
         GetComponent<Rigidbody>().isKinematic = true;
         monAgent.ResetPath();
         ChangeState(State.Dead);
-
-        Invoke("destroyMosnter", 3f); //풀 릴리스 호출
+        StartCoroutine(deadAnimation());
+       // Invoke("destroyMosnter", 3f); //풀 릴리스 호출
     }
 
 
@@ -376,6 +376,7 @@ public class MonsterMain : CommonBattle
         myVfx.transform.position = this.gameObject.transform.position;  // 이펙트 포지션
         myVfx.transform.rotation = Quaternion.identity;  // 이펙트 로테이션
         yield return new WaitForSeconds(2.0f);  // 2초 기다립니다.
+        Destroy(myVfx);
         destroyMosnter(); 
     }
 
