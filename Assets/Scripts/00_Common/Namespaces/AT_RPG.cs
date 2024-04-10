@@ -134,35 +134,39 @@ namespace AT_RPG
     {
         public InputKeyCode         KeyCode;    
         public InputOption          KeyOption;
+        public UpdateOption         UpdateOption;
         public Action<InputValue>   KeyAction;
 
         /// <summary>
         /// 키보드 입력 액션 생성
         /// </summary>
-        public InputMappingContext(KeyCode keyboardCode, InputOption option, Action<InputValue> keyAction = null)
+        public InputMappingContext(KeyCode keyboardCode, InputOption keyOption, UpdateOption updateOption = UpdateOption.Default, Action<InputValue> keyAction = null)
         {
             KeyCode = keyboardCode;
-            KeyOption = option;
+            KeyOption = keyOption;
+            UpdateOption = updateOption;
             KeyAction = keyAction;
         }
 
         /// <summary>
         /// 마우스 입력 액션 생성
         /// </summary>
-        public InputMappingContext(MouseKeyCode mouseCode, InputOption option, Action<InputValue> keyAction = null)
+        public InputMappingContext(MouseKeyCode mouseCode, InputOption keyOption, UpdateOption updateOption = UpdateOption.Default, Action<InputValue> keyAction = null)
         {
             KeyCode = mouseCode;
-            KeyOption = option;
+            KeyOption = keyOption;
+            UpdateOption = updateOption;
             KeyAction = keyAction;
         }
 
         /// <summary>
         /// 키 복사 + 입력 액션 생성
         /// </summary>
-        public InputMappingContext(InputKeyCode keyCode, InputOption option, Action<InputValue> keyAction = null)
+        public InputMappingContext(InputKeyCode keyCode, InputOption keyOption, UpdateOption updateOption = UpdateOption.Default, Action<InputValue> keyAction = null)
         {
             KeyCode = keyCode;
-            KeyOption = option;
+            KeyOption = keyOption;
+            UpdateOption = updateOption;
             KeyAction = keyAction;
         }
     }
@@ -175,6 +179,9 @@ namespace AT_RPG
         MouseX = 2,
     }
 
+    /// <summary>
+    /// 키의 입력방식을 설정합니다.
+    /// </summary>
     public enum InputOption
     {
         GetKeyDown,               // 키를 눌렀을 때 반응
@@ -182,6 +189,21 @@ namespace AT_RPG
         GetKey,                   // 키를 누르고 있을 때 반응
         GetAxisRaw,               // 마우스 입력값이 -1 ~ 1 사이로 반응
         GetAxis,                  // 마우스 입력값이 -1, 0, 1로 반응
+    }
+
+    /// <summary>
+    /// 키 이벤트가 실질적으로 언제 실행되는지 설정합니다.
+    /// </summary>
+    public enum UpdateOption
+    {
+        // Update()
+        Default,
+
+        // FixedUpdate()
+        Fixed,
+
+        // LateUpdate()
+        Late
     }
 
     public struct InputKeyCode
