@@ -8,6 +8,7 @@ public class NPCinter : MonoBehaviour
     public bool canInter = false; // 상호작용가능 여부
     public GameObject npcInter; //상호작용 UI 변수
     public GameObject chatInter; // NPC 대화 변수
+    public GameObject buyPanel;
     public Camera zoomCamera;
     public float newFov;
 
@@ -40,9 +41,11 @@ public class NPCinter : MonoBehaviour
     public void StartInteraction()
     {
         canInter = true;
+        Debug.Log("NPC와 상호작용 시작");
         npcInter.SetActive(false);
         chatInter.SetActive(true);
-        Debug.Log("NPC와 상호작용 시작");
+        buyPanel.SetActive(true);
+
         // 여기에 상호작용 UI 표시 등의 코드 추가
     }
 
@@ -53,6 +56,7 @@ public class NPCinter : MonoBehaviour
         npcInter.SetActive(true);
         chatInter.SetActive(false);
         Debug.Log("NPC와 상호작용 종료");
+        buyPanel.SetActive(false);
         // 여기에 상호작용 UI 숨기기 등의 코드 추가
     }
     public void ZoomCam()
