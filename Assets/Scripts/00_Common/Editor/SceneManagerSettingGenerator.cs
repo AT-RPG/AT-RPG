@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -5,6 +7,7 @@ using UnityEngine.AddressableAssets;
 
 namespace AT_RPG
 {
+    [InitializeOnLoad]
     public static class SceneManagerSettingsGenerator
     {
         static SceneManagerSettingsGenerator()
@@ -51,3 +54,5 @@ namespace AT_RPG
     }
 
 }
+
+#endif

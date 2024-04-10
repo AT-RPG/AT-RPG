@@ -1,5 +1,6 @@
 using AT_RPG.Manager;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace AT_RPG
 {
@@ -9,6 +10,11 @@ namespace AT_RPG
     public class TestResourceManager : MonoBehaviour
     {
         [SerializeField] AssetReferenceResource<GameObject> testAssetBundleResource;
+
+        private void Start()
+        {
+            Debug.Log(Addressables.ResolveInternalId(testAssetBundleResource.AssetGUID));
+        }
 
 
         private void Update()

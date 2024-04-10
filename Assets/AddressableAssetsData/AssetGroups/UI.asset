@@ -21,79 +21,79 @@ MonoBehaviour:
     m_Address: Assets/Prefabs/GameMenuPopup.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7fec57ba84b8d2844ab1a26125fbeba9
     m_Address: Assets/Prefabs/LogPopup.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 390bfcd211fc6304c870476032ea4f32
     m_Address: Assets/Prefabs/MultiplayerGamePopup.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b1eb8d0fd1390bd4685900047752bfe2
     m_Address: Assets/Prefabs/OptionPopup.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b6ef8d6169b10b44cbdd53c5819729b3
     m_Address: Assets/Prefabs/PopupCanvas.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 45221a7409eff0f4e8071404ec4886ec
     m_Address: Assets/Prefabs/QuitGamePopup.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2f6cc14bf8b3e634299f92cff87f5a57
     m_Address: Assets/Prefabs/StartGamePopup.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 12c6709d56b3e194e88f224d6db7105c
     m_Address: Assets/Prefabs/WorldSettingPopup.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 04ad7c560b7e2dc498d62c05a0e69d8b
     m_Address: Assets/Prefabs/Button.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5521c5a9b68f1b4ea98c2431918531a
     m_Address: Assets/Prefabs/CanvasScalerSettingReference.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c37797d01ae76b1488c341da5afd986f
     m_Address: Assets/Prefabs/DeleteWorldButton.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 55b6d14c70a796e4997cc647f14422a6
     m_Address: Assets/Prefabs/PlayWorldButton.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 180c1adda0e607441b40e1438da282b8
     m_Address: Assets/Prefabs/WorldButton.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - ui
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ed024d09688269c478274daa967f05e0, type: 2}

@@ -591,7 +591,7 @@ MonoBehaviour:
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}
   blurAnimation: {fileID: 6763834106052360070}
-  mapSettingPopup:
+  worldSettingPopup:
     m_AssetGUID: 12c6709d56b3e194e88f224d6db7105c
     m_SubObjectName: 
     m_SubObjectType: 

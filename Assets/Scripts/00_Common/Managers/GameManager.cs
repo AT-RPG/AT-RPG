@@ -25,66 +25,33 @@ namespace AT_RPG.Manager
         private static InputManager inputManager            = null;
         private static MultiplayManager multiplayManager    = null;
 
-
         // 매니저 안에서 사용되는 playerData 변수
         private PlayerData player;
         
         // 매니저를 통해 PlayerData로 접근할 프로퍼티 변수
         public PlayerData Player { get => player; }
         
+
+
         protected override void Awake()
         {
             base.Awake();
             setting = Resources.Load<GameManagerSettings>("GameManagerSettings");
-
             player = new PlayerData();
         }
 
 
+
         /// <summary>
         /// 첫 Scene이 로드되고, Hierarchy에 있는 GameObject들 Awake()가 호출되기 전에 실행
-        /// </summary>
+        // </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeFirstSceneLoad()
         {
             Init();
             DOTween.Init();
 
-            PreloadResource();
-
             beforeFirstSceneLoadAction?.Invoke();
-        }
-
-        /// <summary>
-        /// 모든 매니저 초기화 <br/>
-        /// NOTE : 초기화 순서 중요
-        /// </summary>
-        private static void Init()
-        {
-            GameManager gameManager = GetInstance();
-
-            multiplayManager = MultiplayManager.GetInstance();
-
-            inputManager = InputManager.GetInstance();
-
-            sceneManager = SceneManager.GetInstance();
-
-            uiManager = UIManager.GetInstance();
-
-            dataManager = SaveLoadManager.GetInstance();
-
-            resourceManager = ResourceManager.GetInstance();
-        }
-
-        /// <summary>
-        /// <see cref="GameManager.setting"/>에 등록된 어드레서블 라벨을 로드
-        /// </summary>
-        private static void PreloadResource()
-        {
-            foreach (var label in setting.PreloadAddressableLabelMap)
-            {
-                ResourceManager.LoadAssetsAsync(label.labelString, objects => Debug.Log($"{label.labelString} 로드 성공"), false);
-            }
         }
 
 
@@ -96,6 +63,31 @@ namespace AT_RPG.Manager
         private static void OnAfterFirstSceneLoad()
         {
             afterFirstSceneLoadAction?.Invoke();
+        }
+
+
+
+        /// <summary>
+        /// 모든 매니저 초기화
+        /// </summary>
+        /// <remarks>
+        /// NOTE : 초기화 순서 중요
+        /// </remarks>
+        private static void Init()
+        {
+            GameManager gameManager = GetInstance();
+
+            multiplayManager = MultiplayManager.GetInstance();
+
+            inputManager = InputManager.GetInstance();
+
+            resourceManager = ResourceManager.GetInstance();
+
+            sceneManager = SceneManager.GetInstance();
+
+            uiManager = UIManager.GetInstance();
+
+            dataManager = SaveLoadManager.GetInstance();
         }
     }
 

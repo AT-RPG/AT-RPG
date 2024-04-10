@@ -454,11 +454,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   optionPopupPrefab:
-    resourceName: OptionPopup
-    resourceGUID: b1eb8d0fd1390bd4685900047752bfe2
+    m_AssetGUID: b1eb8d0fd1390bd4685900047752bfe2
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   worldSettingPopupPrefab:
-    resourceName: WorldSettingPopup
-    resourceGUID: 12c6709d56b3e194e88f224d6db7105c
+    m_AssetGUID: 12c6709d56b3e194e88f224d6db7105c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   fadeAnimation: {fileID: 2242849026916850878}
   popupAnimation: {fileID: 1970067337627839868}
   blurAnimation: {fileID: 6763834106052360070}

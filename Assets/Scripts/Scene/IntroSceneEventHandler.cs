@@ -1,10 +1,11 @@
 using AT_RPG.Manager;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace AT_RPG
 {
     public class IntroSceneEventHandler : MonoBehaviour
-    {        
+    {
         public void LoadTitileScene()
         {
             string fromScene = SceneManager.CurrentSceneName;
@@ -12,9 +13,8 @@ namespace AT_RPG
             string loadingScene = SceneManager.Setting.LoadingScene;
             SceneManager.LoadScene(loadingScene, () =>
             {
-                foreach (var label in SceneManager.Setting.TitleSceneAddressableLabelMap) { ResourceManager.LoadAssetsAsync(label.labelString, objects => Debug.Log($"{label.labelString} 로드 완료"), true); }
-                foreach (var label in SceneManager.Setting.IntroSceneAddressableLabelMap) { ResourceManager.UnloadAssetsAsync(label.labelString, () => Debug.Log($"{label.labelString} 언로드 완료")); }
-
+                foreach (var label in SceneManager.Setting.TitleSceneAddressableLabelMap) { ResourceManager.LoadAssetsAsync(label.labelString, null, true); }
+                foreach (var label in SceneManager.Setting.IntroSceneAddressableLabelMap) { ResourceManager.UnloadAssetsAsync(label.labelString); }
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
             });
         }

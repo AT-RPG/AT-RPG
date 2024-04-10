@@ -13,19 +13,14 @@ MonoBehaviour:
   m_Name: SceneManagerSettings
   m_EditorClassIdentifier: 
   FakeLoadingDuration: 0.75
-  IntroScene: 
+  InitAddressableLabelMap:
+  - m_LabelString: Global
+  - m_LabelString: UI
   IntroSceneAddressableLabelMap: []
-  LoadingScene: 
   LoadingSceneAddressableLabelMap: []
-  TitleScene: 
   TitleSceneAddressableLabelMap: []
-  MainScene: 
   MainSceneAddressableLabelMap: []
-  MainScene_BJW: 
   MainScene_BJWAddressableLabelMap: []
-  MainScene_CSH: 
   MainScene_CSHAddressableLabelMap: []
-  MainScene_IJH: 
   MainScene_IJHAddressableLabelMap: []
-  MainScene_JUJ: 
   MainScene_JUJAddressableLabelMap: []

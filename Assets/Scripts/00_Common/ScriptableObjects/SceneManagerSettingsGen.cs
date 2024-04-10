@@ -8,6 +8,10 @@ namespace AT_RPG
     {
         [Space(20)]
         [Space(10)]
+        public readonly string Init = "Init";
+        public List<AssetLabelReference> InitAddressableLabelMap = new List<AssetLabelReference>();
+
+        [Space(10)]
         public readonly string IntroScene = "IntroScene";
         public List<AssetLabelReference> IntroSceneAddressableLabelMap = new List<AssetLabelReference>();
 

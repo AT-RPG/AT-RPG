@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor;
+using System.Linq;
 
 namespace AT_RPG
 {
@@ -43,12 +44,9 @@ namespace AT_RPG
 
             // 모든 어드레서블의 에셋을 매핑
             AssetGuidMap map = new();
-            foreach (var group in AddressableAssetSettingsDefaultObject.Settings.groups)
-            {
-                List<AddressableAssetEntry> assetEntries = new();
-                group.GatherAllAssets(assetEntries, true, true, true);
-                assetEntries.ForEach(entry => { if (entry.AssetPath != "" || entry.guid != "" ) { map[entry.AssetPath] = entry.guid; } });
-            }
+            List<AddressableAssetGroup> groups = AddressableAssetSettingsDefaultObject.Settings.groups.Where(group => group.name != "Built In Data").ToList();
+            List<AddressableAssetEntry> assetEntries = groups.SelectMany(group => GetAddressableAssetEntries(group)).ToList();
+            assetEntries.ForEach(entry => map[entry.AssetPath] = entry.guid);
 
             // 데이터를 Json파일 직렬화
             using (FileStream stream = new FileStream(setting.GetAssetGuidMapFilePath(), FileMode.Create))
@@ -61,6 +59,52 @@ namespace AT_RPG
 
             // 파일 저장 경로를 가져오기 위해 사용했던 설정을 언로드
             Resources.UnloadAsset(setting);
+        }
+
+        /// <summary>
+        /// 그룹내의 단일 어드레서블 에셋 엔트리들을 반환합니다.
+        /// </summary>
+        private static List<AddressableAssetEntry> GetAddressableAssetEntries(AddressableAssetGroup group)
+        {
+            List<AddressableAssetEntry> returnEntries = new();
+
+            List<AddressableAssetEntry> tempEntries = group.entries.ToList();
+            foreach (var entry in tempEntries)
+            {
+                if (entry.IsFolder)
+                {
+                    returnEntries.AddRange(GetAddressableAssetEntries(entry));
+                }
+                else
+                {
+                    returnEntries.Add(entry);
+                }
+            }
+
+            return returnEntries;
+        }
+
+        /// <summary>
+        /// 어드레서블 에셋 엔트리가 폴더인 경우, 폴더 내부의 단일 어드레서블 엔트리들을 반환합니다.
+        /// </summary>
+        private static List<AddressableAssetEntry> GetAddressableAssetEntries(AddressableAssetEntry entry)
+        {
+            if (!entry.IsFolder) { return new(); }
+
+            List<AddressableAssetEntry> returnEntries = new();
+            foreach (var subEntry in entry.SubAssets) 
+            { 
+                if (subEntry.IsFolder)
+                {
+                    returnEntries.AddRange(GetAddressableAssetEntries(subEntry));
+                }
+                else
+                {
+                    returnEntries.Add(subEntry);
+                }
+            }
+
+            return returnEntries;
         }
     }
 }
