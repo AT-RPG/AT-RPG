@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4331263144890722545
 Transform:
   m_ObjectHideFlags: 0
@@ -60,7 +60,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -113,13 +113,9 @@ MonoBehaviour:
   hpViewPos: {fileID: 1636343240021236764}
   monAgent: {fileID: 1411074906333276653}
   monsterAI: {fileID: 6437586279566940113}
-  mStat:
-    monsterRange: 10
-    monsterIdleTime: 0
-    monsterRunSpeed: 3
+  MonsterIndex: 30019
   monsterState: 0
-  FireballPrefab: {fileID: 3292462701693660853, guid: 5ed2c1c5d54091c4896a0a5f04336948,
-    type: 3}
+  shootManager: {fileID: 0}
   attackPos: {fileID: 8497155199093584959}
 --- !u!195 &1411074906333276653
 NavMeshAgent:

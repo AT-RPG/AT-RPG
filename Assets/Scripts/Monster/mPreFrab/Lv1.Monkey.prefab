@@ -949,8 +949,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
+  m_UseGravity: 1
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -1002,10 +1002,7 @@ MonoBehaviour:
   hpViewPos: {fileID: 8247222263052856161}
   monAgent: {fileID: 1208930700751314367}
   monsterAI: {fileID: 5145294031541860992}
-  mStat:
-    monsterRange: 2
-    monsterIdleTime: 0
-    monsterRunSpeed: 6
+  MonsterIndex: 30006
   monsterState: 0
 --- !u!1 &7479694648622857589
 GameObject:

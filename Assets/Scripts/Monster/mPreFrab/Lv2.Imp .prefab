@@ -1291,10 +1291,7 @@ MonoBehaviour:
   hpViewPos: {fileID: 4855846286244858442}
   monAgent: {fileID: 2212816720016506339}
   monsterAI: {fileID: 1469455956258466178}
-  mStat:
-    monsterRange: 2
-    monsterIdleTime: 0
-    monsterRunSpeed: 5
+  MonsterIndex: 30001
   monsterState: 0
 --- !u!136 &3742086354410228065
 CapsuleCollider:
@@ -1342,7 +1339,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0

@@ -475,7 +475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1045615041544015884
 Transform:
   m_ObjectHideFlags: 0
@@ -539,7 +539,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -577,12 +577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6159b0629ab6840a0da25e5cf9bad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseBattleStat:
-    maxHP: 100
-    attackPoint: 40
-    moveSpeed: 2
-    attackDeley: 3
-    skillCooltime: 0
   changeHpAct:
     m_PersistentCalls:
       m_Calls: []
@@ -591,10 +585,9 @@ MonoBehaviour:
   hpViewPos: {fileID: 2679963115219028463}
   monAgent: {fileID: 5367530893034538486}
   monsterAI: {fileID: 6058489181737877242}
-  mStat:
-    monsterRange: 2
-    monsterIdleTime: 0
-    monsterRunSpeed: 4
+  MonsterIndex: 30000
+  deadEffect: {fileID: 6598082010220072226, guid: b3cc544c0b54df54e8d6edfaffa45a23,
+    type: 3}
   monsterState: 0
 --- !u!1 &2586962272329368009
 GameObject:

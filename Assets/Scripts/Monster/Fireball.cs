@@ -14,15 +14,16 @@ public class Fireball : MonoBehaviour
     [SerializeField]
     private float ballSpeed;
 
+    private MonsterShootManager monsterShootManager;
     private RangeType rangeType;
 
-    public void SetRangeAttackParent(RangeType parent)
+    public void SetRangeAttackParent(MonsterShootManager parent)
     {
-        rangeType = parent;
+        monsterShootManager = parent;
     }
-    public void setMonsterMainInstance(RangeType instance) // 몬스터 메인의 인스턴스 설정
+    public void setMonsterMainInstance(MonsterShootManager instance) // 몬스터 메인의 인스턴스 설정
     {
-        rangeType = instance;
+        monsterShootManager = instance;
     }
 
     public void setManagedPool(IObjectPool<Fireball> pool) //풀설정
@@ -36,8 +37,6 @@ public class Fireball : MonoBehaviour
 
     private void OnEnable()
     {
-        if (rangeType != null && rangeType.attackPos != null)
-            transform.position = rangeType.attackPos.position;
         stop = StartCoroutine(ShootLost());
     }
 
@@ -45,7 +44,7 @@ public class Fireball : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) // 충돌한 오브젝트의 레이어가 몬스터 레이어인지 확인
         {
-            rangeType.ballHit();
+           rangeType.ballHit();
         }
         StopCoroutine(stop);
         destroyball();//릴리즈  

@@ -83,10 +83,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &3348987995906302637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,13 +113,9 @@ MonoBehaviour:
   hpViewPos: {fileID: 5713884932960440510}
   monAgent: {fileID: 4993959310669904830}
   monsterAI: {fileID: 6546474076330227832}
-  mStat:
-    monsterRange: 7
-    monsterIdleTime: 0
-    monsterRunSpeed: 4
+  MonsterIndex: 30015
   monsterState: 0
-  FireballPrefab: {fileID: 3292462701693660853, guid: 5ed2c1c5d54091c4896a0a5f04336948,
-    type: 3}
+  shootManager: {fileID: 0}
   attackPos: {fileID: 5620115513225880005}
 --- !u!195 &4993959310669904830
 NavMeshAgent:

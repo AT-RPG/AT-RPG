@@ -12,50 +12,21 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class RangeType : MonsterMain
 {
-    [SerializeField]
-    private GameObject FireballPrefab;
-    public Transform attackPos;
-    private IObjectPool<Fireball> rangePool;
 
    public Coroutine backstep = null;
    public Coroutine attackdelay = null;
+    public MonsterShootManager shootManager;
 
-    private void Awake()
-    {
-        rangePool = new ObjectPool<Fireball>(spawnball, OnGetball, OnReleaseball, OnDestroyball, defaultCapacity: 5, maxSize: 5);
-    }
+    public Transform attackPos;
 
-    //프리팹을 복사하여 파이어볼 생성
-    private Fireball spawnball()
+    public void OnEnable()
     {
-        Fireball fireball = Instantiate(FireballPrefab, transform).GetComponent<Fireball>();
-        fireball.SetRangeAttackParent(this); // 부모 오브젝트 설정
-        fireball.setManagedPool(rangePool);
-        return fireball;
+        GameObject managerObject = GameObject.Find("MonsterShootManager");
+        if (managerObject != null)
+        {
+            shootManager = managerObject.GetComponent<MonsterShootManager>();
+        }
     }
-
-    //풀에서 가져올때 호출
-    private void OnGetball(Fireball fireball)
-    {
-        fireball.gameObject.SetActive(true);
-    }
-    //풀에 반환할때 호출
-    private void OnReleaseball(Fireball fireball)
-    {
-        fireball.gameObject.SetActive(false);
-    }
-    //파괴(스택초과)될때 호출
-    private void OnDestroyball(Fireball fireball)
-    {
-        Destroy(fireball.gameObject);
-    }
-
-    //발사
-    public void OnShoot()
-    {
-        rangePool.Get();
-    }
-
     public override void AttackPlayer()
     {
         if (battleState != null) StopCoroutine(battleState);
@@ -117,9 +88,8 @@ public class RangeType : MonsterMain
     }
     public override void OnAttack()
     {
-
         if (myTarget == null) return;
-        OnShoot();
+        shootManager.OnShoot(attackPos);
     }
 
     public void ballHit()
