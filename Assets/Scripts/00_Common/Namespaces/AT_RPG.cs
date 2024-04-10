@@ -1,49 +1,105 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Unity.Serialization.Json;
 using UnityEngine;
-using static AT_RPG.Manager.ResourceManager;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityObject = UnityEngine.Object;
 
 namespace AT_RPG
 {
     #region ResourceManager
 
-    // Key1 = 씬 이름,  Value1 = 씬에서 사용될 리소스 매핑s
-    public class SceneResourceMap : Dictionary<string, ResourceMap> { }
-
-    // Key1 = 리소스 타입,  Key2 = 리소스 이름,  Key3 = 리소스에 1:1 매핑되는 GUID
-    [Serializable]
-    public class ResourceGUIDMap : Dictionary<string, Dictionary<string, Guid>>
+    /// <summary>
+    /// '<see cref="AddressableAssetEntry.address"/>'와 런타임'<see cref="AssetReference.AssetGUID"/>'매핑을 관리하는 클래스 <br/>
+    ///                                                                                                                      <br/>
+    /// key1 = <see cref="AddressableAssetEntry.address"/>                                                                   <br/>
+    /// value1 = <see cref="AssetReference.AssetGUID"/>
+    /// </summary>
+    [System.Serializable]
+    public class AssetGuidMap
     {
-        public bool ContainsResourceType(string resourceTypeName)
+        [SerializeField] private Dictionary<string, string> map = new();
+
+        /// <summary>
+        /// 매핑 파일을 불러옵니다.                                                  <br/>
+        ///                                                                          <br/>
+        /// 경로 : <see cref="ResourceManagerSettings.GetAssetGuidMapFilePath"/>     <br/>
+        /// </summary>
+        public static AssetGuidMap Load()
         {
-            return ContainsKey(resourceTypeName);
+            // 파일 저장 경로를 가져오기 위해 설정을 로드
+            ResourceManagerSettings setting = Resources.Load<ResourceManagerSettings>($"{nameof(ResourceManagerSettings)}");
+            if (!setting)
+            {
+                Debug.Log($"{nameof(ResourceManagerSettings)}이 {nameof(Resources)}에 없습니다.");
+            }
+
+            // Json파일의 Guid 매핑을 역직렬화
+            AssetGuidMap map = new();
+            using (FileStream stream = new FileStream(setting.GetAssetGuidMapFilePath(), FileMode.Open))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string mapFromJson = reader.ReadToEnd();
+                map = JsonSerialization.FromJson<AssetGuidMap>(mapFromJson);
+            }
+
+            // 파일 저장 경로를 가져오기 위해 사용했던 설정을 언로드
+            Resources.UnloadAsset(setting);
+
+            return map;
         }
-        public bool ContainsResourceName(string resourceTypeName, string resourceName)
+
+        public void Add(string key1, string value1) => map.Add(key1, value1);
+
+        public void Remove(string key1) => map.Remove(key1);
+
+        public string this[string key1]
         {
-            return this[resourceTypeName].ContainsKey(resourceName);
+            get => map[key1];
+            set => map[key1] = value;
         }
     }
 
-    // Key1 = 리소스의 타입,  Key2 = 리소스의 이름,  Value1 = 리소스
-    public class ResourceMap : Dictionary<string, Dictionary<string, UnityObject>> { }
-
-    // Key1 = 씬 이름,  Value1 = 씬에 적용되는 리소스 번들s
-    public class AssetBundleMap : Dictionary<string, List<AssetBundle>> { }
-
-    // ResourceManager의 언로드를 호출 시, 관련 정보를 큐에 전달
-    public class UnloadRequest
+    /// <summary>
+    /// 리소스 매니저에서 현재 캐시된 어드레서블 리소스를 담아두는 클래스                      <br/>
+    /// key1 = 어드레서블 에셋에 부여된 <see cref="AssetReference.AssetGUID"/>                 <br/>
+    /// key2 = <see cref="Manager.ResourceManager.LoadAssetAsync"/>을 불러오는데 사용된 key    <br/>
+    /// value1 = <see cref="AssetReference.Asset"/>                                            <br/>
+    /// </summary>
+    public class ResourceMap : Dictionary<string, KeyValuePair<string, UnityObject>> 
     {
-        public string SceneName { get; set; }
-        public StartConditionCallback StartCondition { get; set; }
-        public CompletedCallback Completed { get; set; }
-
-        public UnloadRequest(
-            string sceneName, StartConditionCallback startCondition, CompletedCallback completed = null)
+        public void Add(string key1, string key2, UnityObject value1)
         {
-            SceneName = sceneName;
-            StartCondition = startCondition;
-            Completed = completed;
+            if (!ContainsKey(key1)) { Add(key1, new()); }
+            this[key1] = new (key2, value1);
+        }
+    }
+
+    /// <summary>
+    /// <see cref="Manager.ResourceManager"/>에서 어드레서블을 로드한 리소스를 래퍼런싱하는 핸들을 담아두는 클래스                                                 <br/>
+    /// Key1 = <see cref="AsyncOperationHandle"/>을 불러오는데 사용된 <see cref="AssetReference.AssetGUID"/>또는 <see cref="AssetLabelReference.labelString"/>     <br/>
+    /// Key2 = Key1을 통해 리턴된 핸들                                                                                                                             <br/>
+    /// </summary>
+    public class ResourceHandleMap : Dictionary<string, AsyncOperationHandle> { }
+
+    /// <summary>
+    /// <see cref="Manager.ResourceManager"/>에서 리소스 로드/언로드 호출 시, 프로세스열에 전달되는 데이터 <br/>
+    /// 현재 동작중인 로딩들을 관리하는데 사용됩니다.
+    /// </summary>
+    public struct ResourceRequest 
+    {
+        // 요청마다 고유 식별자를 부여합니다.
+        public Guid RequestId;
+
+        /// 키는 <see cref="AssetLabelReference.labelString"/>또는 <see cref="AssetReference.RuntimeKey"/> 입니다.
+        public string Key;
+
+        public ResourceRequest(string key)
+        {
+            Key = key;
+            RequestId = Guid.NewGuid();
         }
     }
 

@@ -11,7 +11,7 @@ namespace AT_RPG
     public class PopupButton : MonoBehaviour
     {
         [Tooltip("인스턴싱할 팝업 프리팹")]
-        [SerializeField] protected ResourceReference<GameObject> popupPrefab;
+        [SerializeField] protected AssetReferenceResource<GameObject> popupPrefab;
 
         [Tooltip("팝업 랜더링 옵션")]
         [SerializeField] protected PopupRenderMode popupRenderMode;

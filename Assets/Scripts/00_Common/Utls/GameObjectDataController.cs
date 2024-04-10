@@ -1,5 +1,6 @@
 using AT_RPG;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace AT_RPG
 {
@@ -16,14 +17,10 @@ namespace AT_RPG
     /// </summary>
     public class GameObjectDataController : MonoBehaviour, ISaveLoadData
     {
+        [SerializeField] private AssetReferenceT<GameObject> self;
+
         // 게임 오브젝트의 기본 정보를 저장
         private GameObjectRootData gameObjectData;
-
-        private void Awake()
-        {
-            gameObjectData = new GameObjectRootData(this);
-        }
-
 
 
         /// <summary>
@@ -32,6 +29,7 @@ namespace AT_RPG
         public GameObjectData SaveData()
         {
             // GameObject 기본 정보 저장
+            gameObjectData.Instance = new AssetReferenceResource<GameObject>(self);
             gameObjectData.InstanceName = gameObject.name;
             gameObjectData.InstanceLayer = gameObject.layer;
             gameObjectData.InstanceTag = gameObject.tag;

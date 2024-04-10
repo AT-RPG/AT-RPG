@@ -33,7 +33,7 @@ public static class FusionScalableIMGUI
   }
 
   /// <summary>
-  /// Get the custom scalable skin, already resized to the current screen. Provides the height, width, padding and margin used.
+  /// Resource the custom scalable skin, already resized to the current screen. Provides the height, width, padding and margin used.
   /// </summary>
   /// <returns></returns>
   public static GUISkin GetScaledSkin(GUISkin baseSkin, out float height, out float width, out int padding, out int margin, out float boxLeft) {
