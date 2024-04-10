@@ -63,6 +63,27 @@ namespace AT_RPG.Manager
         /// 어드레서블 리소스를 매니저에 캐싱합니다.<br/>
         /// </summary>
         /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetReference.AssetGUID"/></param>
+        public static void LoadAsset<TObject>(string key) where TObject : UnityObject
+        {
+            if (resourceHandles.ContainsKey(key))
+            {
+                Debug.LogWarning($"'{key}'는 이미 로드되어있습니다.");
+                return;
+            }
+
+            AsyncOperationHandle<IList<IResourceLocation>> locationHandle = Addressables.LoadResourceLocationsAsync(key);
+            locationHandle.WaitForCompletion();
+
+            AsyncOperationHandle<TObject> resourceHandle = Addressables.LoadAssetAsync<TObject>(locationHandle.Result[0]);
+            resourceHandle.WaitForCompletion();
+
+            CacheResource(key, resourceHandle);
+        }
+
+        /// <summary>
+        /// 어드레서블 리소스를 매니저에 캐싱합니다.<br/>
+        /// </summary>
+        /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetReference.AssetGUID"/></param>
         /// <param name="completed">로드 성공시 콜백</param>
         public static void LoadAssetAsync<TObject>(string key, Action<TObject> completed = null, bool enableFakeLoading = false) where TObject : UnityObject
         {
@@ -110,8 +131,28 @@ namespace AT_RPG.Manager
         /// 어드레서블 리소스를 매니저에 캐싱합니다.<br/>
         /// </summary>
         /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetLabelReference.labelString"/></param>
-        /// <param name="completed">로드 성공시 콜백</param>
+        public static void LoadAssets(string key)
+        {
+            if (resourceHandles.ContainsKey(key))
+            {
+                Debug.LogWarning($"'{key}'는 이미 로드되어있습니다.");
+                return;
+            }
 
+            AsyncOperationHandle<IList<IResourceLocation>> locationHandle = Addressables.LoadResourceLocationsAsync(key);
+            locationHandle.WaitForCompletion();
+
+            AsyncOperationHandle<IList<UnityObject>> resourceHandle = Addressables.LoadAssetsAsync<UnityObject>(locationHandle.Result, null);
+            resourceHandle.WaitForCompletion();
+
+            CacheResources(key, locationHandle, resourceHandle);
+        }
+
+        /// <summary>
+        /// 어드레서블 리소스를 매니저에 캐싱합니다.<br/>
+        /// </summary>
+        /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetLabelReference.labelString"/></param>
+        /// <param name="completed">로드 성공시 콜백</param>
         public static void LoadAssetsAsync(string key, Action<List<UnityObject>> completed = null, bool enableFakeLoading = false)
         {
             if (resourceHandles.ContainsKey(key))
@@ -152,7 +193,7 @@ namespace AT_RPG.Manager
             var resources = resourceHandle.Result.ToList();
             var locations = locationHandle.Result.ToList();
 
-            for (int i = 0; i < resources.Count; i++) { ResourceManager.resources.Add(assetGuidMap[locations[i].InternalId], new(key, resources[i])); }
+            for (int i = 0; i < resources.Count; i++) { ResourceManager.resources[assetGuidMap[locations[i].InternalId]] = new(key, resources[i]); }
             resourceHandles.Add(key, resourceHandle);
         }
 

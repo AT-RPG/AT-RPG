@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GameManagerSettings
   m_EditorClassIdentifier: 
   PreloadAddressableLabelMap:
-  - m_LabelString: default
-  - m_LabelString: ui
+  - m_LabelString: Global
+  - m_LabelString: UI

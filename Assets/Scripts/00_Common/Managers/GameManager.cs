@@ -51,7 +51,17 @@ namespace AT_RPG.Manager
             Init();
             DOTween.Init();
 
+            PreloadResources();
+
             beforeFirstSceneLoadAction?.Invoke();
+        }
+
+        /// <summary>
+        /// 게임시작전에 로드할 어드레서블 라벨입니다.
+        /// </summary>
+        private static void PreloadResources()
+        {
+            foreach (var label in setting.PreloadAddressableLabelMap) { ResourceManager.LoadAssets(label.labelString); }
         }
 
 
