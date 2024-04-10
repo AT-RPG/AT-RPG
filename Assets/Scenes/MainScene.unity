@@ -32120,7 +32120,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 16788
+  m_ColorTemperature: 4645
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -32269,6 +32269,7 @@ MonoBehaviour:
   canInter: 0
   npcInter: {fileID: 1528990959}
   chatInter: {fileID: 1964204913}
+  buyPanel: {fileID: 0}
   zoomCamera: {fileID: 0}
   newFov: 0
 --- !u!1001 &1134514284
