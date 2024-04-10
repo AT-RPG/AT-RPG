@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0dabad5f6142942add8a6aa10d2a81, type: 3}
   m_Name: ResourceManagerSettings
   m_EditorClassIdentifier: 
+  AssetBundlesSavePath: D:/Devs/Github/AT-RPG/Assets/StreamingAssets
   FakeLoadingDuration: 0.75

@@ -37,11 +37,20 @@ namespace AT_RPG.Manager
             base.Awake();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            InvokeKeyActions();
+            InvokeKeyActions(UpdateOption.Fixed);
         }
 
+        private void Update()
+        {
+            InvokeKeyActions(UpdateOption.Default);
+        }
+
+        private void LateUpdate()
+        {
+            InvokeKeyActions(UpdateOption.Late);
+        }
 
 
         /// <summary>
@@ -103,16 +112,20 @@ namespace AT_RPG.Manager
             keyActionsMap[keyName] = inputMappingContext;
         }
 
-
-
         /// <summary>
         /// 키 이름에 바인딩 된 액션들을 실행합니다.
         /// </summary>
-        private static void InvokeKeyActions()
+        private static void InvokeKeyActions(UpdateOption option)
         {
             foreach (var keyAction in keyActionsMap)
             {
                 InputMappingContext inputMappingContext = keyAction.Value;
+                
+                // 현재 업데이트에서 사용되는 액션인지?
+                if (inputMappingContext.UpdateOption != option)
+                {
+                    continue;
+                }
 
                 // 키보드 키가 매핑되어있는지?
                 if (inputMappingContext.KeyCode.KeyboardCode != KeyCode.None)

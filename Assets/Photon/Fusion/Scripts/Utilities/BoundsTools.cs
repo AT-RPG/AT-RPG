@@ -125,7 +125,7 @@ namespace Fusion.Editor {
         return new Bounds();
       }
 
-      // Get a starting bounds. We need this because the default of centered 0,0,0 will break things if the map is
+      // Resource a starting bounds. We need this because the default of centered 0,0,0 will break things if the map is
       // offset and doesn't encapsulate the world origin.
       Bounds compositeBounds;
 

@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/New Terrain 3.asset.meta
 guid: a0f1e6f088ffbc547a1d46d6594db56d
 NativeFormatImporter:
+========
+guid: 4c081d1650a1ff3408e1ca749cb77fc1
+DefaultImporter:
+>>>>>>>> test:Assets/Scripts/00_Common/Editor/AssetGuidMapGenerator.cs.meta
   externalObjects: {}
   mainObjectFileID: 15600000
   userData: 

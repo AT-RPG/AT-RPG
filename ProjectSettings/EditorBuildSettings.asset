@@ -16,17 +16,19 @@ EditorBuildSettings:
     guid: 61ed4e478a6346740bba2218e248ebcd
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
-    guid: b559613fd89346b458644a79d14c7b73
-  - enabled: 1
+    guid: f3567a1bafe2f3c4cb866b64f9300f6b
+  - enabled: 0
     path: Assets/Scenes/MainScene_BJW.unity
     guid: 16c8bcf627640964f8ca2c2e1fd70a6f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene_CSH.unity
     guid: 08c71666b7546a4469d98250405c707a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene_IJH.unity
     guid: 9693d1bc19db30544ad5a35db2a0baaf
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene_JUJ.unity
     guid: 37807f36bdacf604ca95ea6947d70c36
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 1d7cdf27786b39047b3512681de81710,
+      type: 2}

@@ -4,18 +4,14 @@ using UnityEngine;
 namespace AT_RPG.Manager
 {
     /// <summary>
-    /// 멀티플레이와 관련된 모든 기능을 관리합니다.
+    /// 멀티플레이와 관련된 모든 기능을 관리하는 클래스
     /// </summary>
     public partial class MultiplayManager : Singleton<MultiplayManager>
     {
-        private static MultiplayManagerSetting setting = null;
+        private static MultiplayManagerSettings setting;
 
         // 데이터를 실제로 주고받는걸 구현하는 클래스
-        private static MultiplayNetworkRunner networkRunner = null;
-
-        // 클라이언트의 고유 식별자
-        // 이 식별자를 통해, 이전 월드에 기록이 있는 경우, 데이터를 불러옵니다.
-        private static MultiplayAuthentication authentication = null;
+        private static MultiplayNetworkRunner networkRunner;
 
         // 다른 클라이언트가 세션에 들어올 수 있도록 하는 초대코드
         // 이 코드를 생성 후, 다른 클라이언트에게 공유합니다.
@@ -25,13 +21,12 @@ namespace AT_RPG.Manager
         private static PlayMode playMode = PlayMode.Single;
 
 
+
         protected override void Awake()
         {
             base.Awake();
-
-            setting = Resources.Load<MultiplayManagerSetting>("MultiplayManagerSettings");
+            setting = Resources.Load<MultiplayManagerSettings>("MultiplayManagerSettings");
         }
-
 
 
         /// <summary>
@@ -42,7 +37,7 @@ namespace AT_RPG.Manager
         {
             if (networkRunner) { return; }
 
-            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource).GetComponent<MultiplayNetworkRunner>();
+            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab).GetComponent<MultiplayNetworkRunner>();
             StartGameResult connectionResult = await networkRunner.ConnectToCloud();
             if (connectionResult.Ok)
             {
@@ -52,7 +47,6 @@ namespace AT_RPG.Manager
             else
             {
                 disconnected?.Invoke();
-                SetPlayMode(PlayMode.Single);
                 Disconnect();
             }
         }
@@ -66,7 +60,7 @@ namespace AT_RPG.Manager
         {
             if (networkRunner) { return; }
 
-            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab.Resource).GetComponent<MultiplayNetworkRunner>();
+            networkRunner = Instantiate(setting.MultiplayNetworkRunnerPrefab).GetComponent<MultiplayNetworkRunner>();
             StartGameResult connectionResult = await networkRunner.ConnectToPlayer(inviteCode);
             if (connectionResult.Ok)
             {
@@ -76,7 +70,6 @@ namespace AT_RPG.Manager
             else
             {
                 disconnected?.Invoke();
-                SetPlayMode(PlayMode.Single);
                 Disconnect();
             }
         }
@@ -85,24 +78,13 @@ namespace AT_RPG.Manager
         /// <summary>
         /// 세션에 연결을 종료합니다.
         /// </summary>
-        public static void Disconnect()
+        public static async void Disconnect()
         {
-            if (networkRunner) { return; }
-
-            networkRunner.Disconnect();
-            SetPlayMode(PlayMode.Single);
+            await networkRunner.Disconnect();
             networkRunner = null;
-        }
+            inviteCode = 0;
 
-
-        /// <summary>
-        /// 클라이언트의 고유 식별자를 생성합니다. <br/>
-        /// 호스트에서 이 식별자를 통해, 이전에 월드에 접속했는지 여부를 판단하게됩니다.
-        /// </summary>
-        public static MultiplayAuthentication CreateAuthentication()
-        {
-            authentication = MultiplayAuthentication.IsExist() ? MultiplayAuthentication.Load() : MultiplayAuthentication.CreateNew();
-            return authentication;
+            SetPlayMode(PlayMode.Single);
         }
 
 
@@ -111,7 +93,7 @@ namespace AT_RPG.Manager
         /// </summary>
         public static int CreateInviteCode()
         {
-            inviteCode = inviteCode == 0 ? UnityEngine.Random.Range(100000, 1000000) : inviteCode;
+            inviteCode = inviteCode == 0 ? Random.Range(100000, 1000000) : inviteCode;
             return inviteCode;
         }
 
@@ -127,9 +109,7 @@ namespace AT_RPG.Manager
 
     public partial class MultiplayManager
     {
-        public static MultiplayManagerSetting Setting => setting;
-
-        public static MultiplayAuthentication Authentication => authentication;
+        public static MultiplayManagerSettings Setting => setting;
 
         public static int InviteCode => inviteCode;
 

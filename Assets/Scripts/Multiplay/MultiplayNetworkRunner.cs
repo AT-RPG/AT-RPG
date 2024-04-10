@@ -15,13 +15,11 @@ namespace AT_RPG
     /// </summary>
     public class MultiplayNetworkRunner : MonoBehaviour, INetworkRunnerCallbacks
     {
-        private static NetworkRunner runner;
+        private NetworkRunner runner;
 
-        [SerializeField] private NetworkPrefabRef _playerPrefab;
-        private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+        [SerializeField] private NetworkPrefabRef playerPrefab;
+        private Dictionary<PlayerRef, NetworkObject> spawnedGameObject = new Dictionary<PlayerRef, NetworkObject>();
 
-        private bool _mouseButton0;
-        private bool _mouseButton1;
 
         private void Awake()
         {
@@ -35,18 +33,12 @@ namespace AT_RPG
         }
 
 
-        private void Update()
-        {
-            _mouseButton0 = _mouseButton0 || Input.GetMouseButton(0);
-            _mouseButton1 = _mouseButton1 || Input.GetMouseButton(1);
-        }
-
 
         /// <summary>
         /// 포톤 클라우드에 연결을 시도합니다. <br/>
         /// 클라우드에 연결되면, 다른 클라이언트가 초대코드로 접근할 수 있는 세션을 생성합니다.
         /// </summary>
-        public async Task<StartGameResult> ConnectToCloud()
+        public Task<StartGameResult> ConnectToCloud()
         {
             // 세션 정보를 새로 만듭니다.
             var sessionStartOption = new StartGameArgs()
@@ -62,9 +54,7 @@ namespace AT_RPG
             // 설정된 세션 정보로 포톤 클라우드 서버에 세션 생성을 요청합니다.
             runner = gameObject.AddComponent<NetworkRunner>();
             runner.ProvideInput = true;
-            StartGameResult connectionResult = await runner.StartGame(sessionStartOption);
-
-            return connectionResult;
+            return runner.StartGame(sessionStartOption);
         }
 
 
@@ -72,7 +62,7 @@ namespace AT_RPG
         /// 다른 클라이언트가 만든 세션에 연결을 시도합니다. <br/>
         /// 세션에 연결되면, 게임을 시작합니다.
         /// </summary>
-        public async Task<StartGameResult> ConnectToPlayer(string inviteCode)
+        public Task<StartGameResult> ConnectToPlayer(string inviteCode)
         {
             // 세션 정보를 새로 만듭니다.
             var sessionStartOption = new StartGameArgs()
@@ -87,19 +77,16 @@ namespace AT_RPG
             // 설정된 세션 정보로 다른 클라이언트의 세션 연결을 요청합니다.
             runner = gameObject.AddComponent<NetworkRunner>();
             runner.ProvideInput = true;
-            StartGameResult connectionResult = await runner.StartGame(sessionStartOption);
-
-            return connectionResult;
+            return runner.StartGame(sessionStartOption);
         }
 
 
         /// <summary>
         /// 세션에 연결을 종료합니다.
         /// </summary>
-        public void Disconnect()
+        public Task Disconnect()
         {
-            runner.Shutdown();
-            Destroy(gameObject);
+            return runner.Shutdown();
         }
 
 
@@ -108,21 +95,18 @@ namespace AT_RPG
         {
             if (runner.IsServer)
             {
-                // Create a unique position for the player
                 Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1, 0);
-                NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
-                // Keep track of the player avatars so we can remove it when they disconnect
-                _spawnedCharacters.Add(player, networkPlayerObject);
+                NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
+                spawnedGameObject.Add(player, networkPlayerObject);
             }
         }
 
         void INetworkRunnerCallbacks.OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
-            // Find and remove the players avatar
-            if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
+            if (spawnedGameObject.TryGetValue(player, out NetworkObject networkObject))
             {
                 runner.Despawn(networkObject);
-                _spawnedCharacters.Remove(player);
+                spawnedGameObject.Remove(player);
             }
         }
 
@@ -141,15 +125,6 @@ namespace AT_RPG
 
             if (Input.GetKey(KeyCode.D))
                 data.direction += Vector3.right;
-
-            if (_mouseButton0)
-                data.buttons |= NetworkInputData.MOUSEBUTTON1;
-
-            if (_mouseButton1)
-                data.buttons |= NetworkInputData.MOUSEBUTTON2;
-
-            _mouseButton0 = false;
-            _mouseButton1 = false;
 
             input.Set(data);
         }

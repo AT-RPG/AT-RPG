@@ -50,11 +50,12 @@ namespace AT_RPG
         {
             string fromScene = SceneManager.CurrentSceneName;
             string toScene = SceneManager.Setting.MainScene;
-            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
+            string loadingScene = SceneManager.Setting.LoadingScene;
+            SceneManager.LoadScene(loadingScene, () =>
             {
                 // 리소스 로딩/언로딩 + 세이브 파일 로딩
-                ResourceManager.LoadAllResourcesCoroutine(toScene);
-                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                // ResourceManager.LoadAllResourcesCoroutine(toScene);
+                // ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
                 // 로딩이 끝나면 씬을 변경합니다.
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
@@ -66,7 +67,7 @@ namespace AT_RPG
         /// </summary>
         private void OnConnectFail()
         {
-            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default);
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
             logPopup.Log = $"Join failed. Invite code mismatch.";
