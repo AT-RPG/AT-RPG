@@ -35,11 +35,13 @@ public class PlayerController : CommonBattle
         InputManager.AddKeyAction("Move Left/Move Right", Move);
         InputManager.AddKeyAction("Aim", LookAround);
         InputManager.AddKeyAction("Attack/Fire", Attack);
+        InputManager.AddKeyAction("UsePotion", UseHealPotion);
     }
     // Start is called before the first frame update
     void Start()
     {
         base.Initialize();
+        Debug.Log(curHP);
         // camDist = targetDist = Mathf.Abs(myCam.localPosition.z);
     }
 
@@ -48,12 +50,21 @@ public class PlayerController : CommonBattle
     {
     }
 
+    // protected override void InitStat()
+    // {
+        // Debug.Log($"baseBattleStat.maxHP {baseBattleStat.maxHP}");
+        // Debug.Log($"baseBattleStat.attackPoint {baseBattleStat.attackPoint}");
+        // Debug.Log($"baseBattleStat.attackDeley {baseBattleStat.attackDeley}");
+        // Debug.Log($"baseBattleStat.moveSpeed {baseBattleStat.moveSpeed}");
+        // Debug.Log($"baseBattleStat.skillCooltime {baseBattleStat.skillCooltime}");
+    // }
+
     /// <summary>
     /// 플레이어의 이동
     /// </summary>
     private void Move(InputValue value)
     {
-        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isAttacking")) return;
+        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isAttacking") || myAnim.GetBool("isUsingPotion")) return;
 
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         bool isMove = moveInput.magnitude != 0;
@@ -117,7 +128,7 @@ public class PlayerController : CommonBattle
     /// </summary>
     private void Jump(InputValue value)
     {
-        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping") || myAnim.GetBool("isAttacking")) return;
+        if(myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping") || myAnim.GetBool("isAttacking") || myAnim.GetBool("isUsingPotion")) return;
 
         myAnim.SetTrigger("Jump");
         myAnim.SetBool("isJumping", true);
@@ -264,10 +275,22 @@ public class PlayerController : CommonBattle
     /// <summary>
     /// HealPotion을 사용했을 경우 체력은 채워주고 아이템의 개수는 줄여줌
     /// </summary>
-    // public void UseHealPotion()
-    // {
-        
-    // }
+    public void UseHealPotion(InputValue value)
+    {
+        if(!myAnim.GetBool("isGround") || myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping") 
+        || myAnim.GetBool("isAttacking") || myAnim.GetBool("isUsingPotion")) return;
+
+        if(GameManager.Player.PlayerHealPotion <= 0)
+        {
+            Debug.Log("물약이 없습니다");
+        }
+        else
+        {
+            myAnim.SetBool("isUsingPotion",true);
+            curHP += 40.0f;
+            GameManager.Player.AddPlayerHealPotion(-1);
+        }
+    }
 
     /// <summary>
     /// 오브젝트 삭제시(ex:씬 이동) 추가했던 키 제거 (중복방지)
@@ -280,6 +303,7 @@ public class PlayerController : CommonBattle
         InputManager.RemoveKeyAction("Move Left/Move Right", Move);
         InputManager.RemoveKeyAction("Aim", LookAround);
         InputManager.RemoveKeyAction("Attack/Fire", Attack);
+        InputManager.AddKeyAction("UsePotion", UseHealPotion);
     }
 }
 

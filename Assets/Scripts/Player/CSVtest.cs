@@ -36,7 +36,7 @@ public class CSVtest : MonoBehaviour
         for(int i = 1; i < dropItemDatas.Length; i++)
         {
             string[] datas = dropItemDatas[i].Split(',');
-            if( datas[0].Contains(_index.ToString()) )
+            if(datas[0].Contains(_index.ToString()) )
                 return datas;
         }
         return null;

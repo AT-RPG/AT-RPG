@@ -85,13 +85,13 @@ namespace AT_RPG
                 switch(itemType)
                 {
                     case DropItem.Gold:
-                    GameManager.Instance.Player.AddPlayerCoin(itemCount);
+                    GameManager.Player.AddPlayerCoin(itemCount);
                     break;
                     case DropItem.HealPotion:
-                    GameManager.Instance.Player.AddPlayerHealPotion(itemCount);
+                    GameManager.Player.AddPlayerHealPotion(itemCount);
                     break;
                     case DropItem.MonsterPiece:
-                    GameManager.Instance.Player.AddPlayerMonsterPiece(itemCount);
+                    GameManager.Player.AddPlayerMonsterPiece(itemCount);
                     break;
                 }
             }

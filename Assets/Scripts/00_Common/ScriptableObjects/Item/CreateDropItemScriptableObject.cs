@@ -1,16 +1,15 @@
 using UnityEngine;
 using UnityEditor;
-using System.IO;
+using AT_RPG.Manager;
 
 namespace AT_RPG
 {
     public class CSVtoSO
     {
-        public static readonly string path = Application.dataPath + "/Resources/CSVData/";
         [MenuItem("Generators/DropItem")]
         public static void GenerateDropItem()
         {
-            string[] csvText = File.ReadAllLines(path + "JJappalWorld - DropItemData.csv");
+            string[] csvText = GameManager.LoadCSVData.DropItemDatas;
             DropItemData dropItemData = ScriptableObject.CreateInstance<DropItemData>();
 
             for(int i = 1; i < csvText.Length; i++)
@@ -29,21 +28,7 @@ namespace AT_RPG
 
                 dropItemData.dropItemStat.Add(dropItem);
             }
-
-            // foreach(var text in csvText)
-            // {
-            //     string[] stats = text.Split(',');
-
-            //     DropItemStat dropItem = new()
-            //     {
-            //         index = int.Parse(stats[0]),
-            //         itemName = stats[1],
-            //         priceBuy = int.Parse(stats[2]),
-            //         priceSell = int.Parse(stats[3]),
-            //         maxAmount = int.Parse(stats[4]),
-            //         dropRate = int.Parse(stats[5])
-            //     };
-            // }
+            
             AssetDatabase.CreateAsset(dropItemData, "Assets/Scripts/00_Common/ScriptableObjects/Item/DropItem.asset");
             AssetDatabase.SaveAssets();
         }
