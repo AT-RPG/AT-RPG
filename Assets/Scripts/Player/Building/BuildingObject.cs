@@ -1,0 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace AT_RPG
+{
+    /// <summary>
+    /// 플레이어의 건설 기능(<see cref="PlayerBuilding"/>)에서 사용되는 건설 오브젝트의 정보를 저장하는 클래스
+    /// </summary>
+    [RequireComponent(typeof(MeshFilter))]
+    [RequireComponent(typeof(MeshRenderer))]
+    [RequireComponent(typeof(Animator))]
+    public class BuildingObject : MonoBehaviour, ICharacterDamage
+    {
+        [SerializeField] private BuildingObjectData data;
+        private MeshRenderer meshRenderer;
+        private Animator animator;
+        private float hp;
+        private void Awake()
+        {
+            hp = data.maxHP;
+
+            meshRenderer = GetComponent<MeshRenderer>();
+            animator = GetComponent<Animator>();
+        }
+        public void TakeDamage(float dmg)
+        {
+            // hp -= dmg;
+
+            //animator.SetTrigger("Hit");
+            //if (hp < 0f) { animator.SetTrigger("Destroy"); }
+
+            Debug.Log("hit");
+        }
+    }
+
+}
