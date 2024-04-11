@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using AT_RPG;
 using AT_RPG.Manager;
+using System.Linq;
 
 /// <summary>
 /// MainPlayer의 State를 조절해주는 클래스
@@ -192,11 +194,12 @@ public class PlayerController : CommonBattle
     /// </summary>
     public new void OnAttack()
     {
-        Collider[] list = Physics.OverlapSphere(myAttackPoint.position, 1.0f, enemyMask);
+        List<Collider> targetColliders = Physics.OverlapSphere(myAttackPoint.position, 1.0f).ToList();
+        targetColliders = targetColliders.Where(collider => collider.gameObject.layer != LayerMask.NameToLayer("Player")).ToList();
 
-        foreach(Collider col in list)
+        foreach (Collider collider in targetColliders)
         {
-            ICharacterDamage cd = col.GetComponent<ICharacterDamage>();
+            ICharacterDamage cd = collider.GetComponent<ICharacterDamage>();
             cd?.TakeDamage(baseBattleStat.attackPoint + curWeaponDamage);
         }
     }
