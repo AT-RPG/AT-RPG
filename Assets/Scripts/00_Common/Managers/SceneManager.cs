@@ -10,9 +10,9 @@ namespace AT_RPG.Manager
     /// 씬에서 씬으로 이동하는데 사용되는 클래스입니다.
     /// </summary>
     public partial class SceneManager : Singleton<SceneManager>
-    { 
+    {
         // 매니저 기본 설정
-        [SerializeField] private static SceneManagerSetting setting;
+        private static SceneManagerSettings setting;
 
         // 씬 로드 후 호출되는 이벤트
         private static event Action afterSceneLoadAction;
@@ -30,7 +30,7 @@ namespace AT_RPG.Manager
         protected override void Awake()
         {
             base.Awake();
-            setting = Resources.Load<SceneManagerSetting>("SceneManagerSettings");
+            setting = Resources.Load<SceneManagerSettings>("SceneManagerSettings");
         }
 
 
@@ -87,8 +87,7 @@ namespace AT_RPG.Manager
         /// </summary>
         /// <param name="sceneName">다음 씬 이름</param>
         /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
-        private static IEnumerator InternalLoadSceneCoroutine(
-            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
+        private static IEnumerator InternalLoadSceneCoroutine(string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
         {
             isLoading = true;
 
@@ -158,7 +157,7 @@ namespace AT_RPG.Manager
     public partial class SceneManager
     {
         // 매니저 기본 설정
-        public static SceneManagerSetting Setting => setting;
+        public static SceneManagerSettings Setting => setting;
 
         // 씬 로드 후 호출되는 이벤트
         public static Action AfterSceneLoadAction

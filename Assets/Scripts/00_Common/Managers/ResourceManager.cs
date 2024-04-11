@@ -1,438 +1,248 @@
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityObject = UnityEngine.Object;
 
 
 namespace AT_RPG.Manager
 {
     /// <summary>
-    /// 설명 : 에셋 번들에 등록된 리소스들을 씬의 이름을 통해서 메모리에 로드하는 클래스 <br/> <br/>
-    /// 
-    /// 주의 사항 : <br/>
-    /// 1. 에셋 번들의 라벨이 씬 이름과 동일해야함 <br/>
+    /// 어드레서블 에셋을 미리 로드하는 클래스
     /// </summary>
     public partial class ResourceManager : Singleton<ResourceManager>
     {
-        // 매니저 기본 설정
-        [SerializeField] private static ResourceManagerSetting setting;
+        // 기본 설정
+        private static ResourceManagerSettings setting;
 
-        // 리소스 해쉬맵
-        private static SceneResourceMap resources = new SceneResourceMap();
+        // 매핑을 통해 캐싱된 리소스에 접근
+        private static AssetGuidMap assetGuidMap = new();
 
-        // 에셋 번들 해쉬맵
-        private static AssetBundleMap bundles = new AssetBundleMap();
+        // 현재 캐시된 어드레서블 리소스
+        private static ResourceMap resources = new();
 
-        // 리소스 언로드 대기열
-        private static Queue<UnloadRequest> unloadQueue = new Queue<UnloadRequest>();
+        // 어드레서블에서 로드한 리소스를 래퍼런싱하는 핸들
+        private static ResourceHandleMap resourceHandles = new();
 
-        // 리소스 로딩중
-        private static bool isLoading = false;
+        // 동작중인 리소스 로딩
+        private static List<ResourceRequest> loadOperations = new();
 
-        // 리소스 성공 시 콜백
-        public delegate void CompletedCallback();
-
-        // 시작 조건 콜백 true->로딩 시작, false->로딩 대기
-        public delegate bool StartConditionCallback();
+        // 동작중인 리소스 언로딩
+        private static List<ResourceRequest> unloadOperations = new();
 
 
 
         protected override void Awake()
         {
             base.Awake();
-
-            setting = Resources.Load<ResourceManagerSetting>("ResourceManagerSettings");
-
-            GameManager.BeforeFirstSceneLoadAction += LoadAllResourcesFromResourcesFolder;
-            GameManager.BeforeFirstSceneLoadAction += LoadAllResourcesFromAssetBundleGlobal;
-            GameManager.BeforeFirstSceneLoadAction += LoadAllResourcesFromAssetBundleFirstScene;
+            setting = Resources.Load<ResourceManagerSettings>("ResourceManagerSettings");
+            assetGuidMap = AssetGuidMap.Load();
         }
+
+
 
         private void Update()
         {
-            ProcessUnloadQueue();
-        }
-
-
-
-        /// <summary>
-        /// 씬에서 사용되는 모든 리소스를 비동기적으로 로드
-        /// </summary>
-        /// <param name="sceneName">리소스가 사용되는 씬 이름</param>
-        /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
-        public static void LoadAllResourcesCoroutine(
-            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
-        {
-            if (isLoading)
-            {
-                Debug.LogError("리소스가 로딩중입니다.");
-                return;
-            }
-
-            Instance.StartCoroutine(InternalLoadAllResourcesCoroutine(sceneName, started, completed));
-        }
-
-        /// <summary>
-        /// 씬에서 사용되는 모든 리소스를 동기적으로 로드
-        /// </summary>
-        /// <param name="sceneName">리소스가 사용되는 씬 이름</param>
-        /// <param name="completed">로딩이 끝나고 호출되는 델리게이트</param>
-        public static void LoadAllResources(string sceneName, CompletedCallback completed = null)
-        {
-            if (isLoading)
-            {
-                Debug.LogError("리소스가 로딩중입니다.");
-                return;    
-            }
-
-            InternalLoadAllResources(sceneName, completed);
-        }
-
-        /// <summary>
-        /// 씬에 모든 리소스를 비동기적으로 언로드하는 요청을 보냅니다.
-        /// </summary>
-        public static void UnloadAllResourcesCoroutine(
-            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
-        {
-            unloadQueue.Enqueue(new UnloadRequest(sceneName, started, completed));
-        }
-
-        /// <summary>
-        /// 씬에 모든 리소스를 동기적으로 즉시 언로드합니다.
-        /// </summary>
-        public static void UnloadAllResources(string sceneName, CompletedCallback completed = null)
-        {
-            InternalUnloadAllResources(sceneName, completed);
-        }
-
-        /// <summary>
-        /// 현재 씬에 로드된 리소스를 획득                       <br/>
-        /// NOTE : SceneManager의 CurrentSceneName을 사용      <br/>
-        /// </summary>
-        /// <param name="resourceName">찾을 리소스 이름</param>
-        public static T Get<T>(string resourceName) where T : UnityObject
-        {
-            T resource = null;
-            string typeName = typeof(T).Name;
-            string currSceneName = SceneManager.CurrentSceneName;
-            string globalBundleName = setting.GlobalAssetBundleName;
-
-
-            // 현재 씬에 리소스가 등록되었는지?
-            if (resources.ContainsKey(currSceneName) &&
-                resources[currSceneName].ContainsKey(typeName) &&
-                resources[currSceneName][typeName].ContainsKey(resourceName))
-            {
-                // 타입 형변환이 가능한지?
-                resource = resources[currSceneName][typeName][resourceName] as T;
-                if (resource)
-                {
-                    return resource;
-                }
-            }
-
-            // 글로벌 리소스에 등록되었는지?
-            if (resources.ContainsKey(globalBundleName) &&
-                resources[globalBundleName].ContainsKey(typeName) &&
-                resources[globalBundleName][typeName].ContainsKey(resourceName))
-            {
-                // 타입 형변환이 가능한지?
-                resource = resources[globalBundleName][typeName][resourceName] as T;
-                if (resource)
-                {
-                    return resource;
-                }
-            }
-
-            // 리소스 폴더에 등록되었는지?
-            if (resources.ContainsKey("Resources") &&
-                resources["Resources"].ContainsKey(typeName) &&
-                resources["Resources"][typeName].ContainsKey(resourceName))
-            {
-                // 타입 형변환이 가능한지?
-                resource = resources["Resources"][typeName][resourceName] as T;
-                if (resource)
-                {
-                    return resource;
-                }
-            }
-
-            Debug.LogError($"{nameof(ResourceManager)}.cs에서 {resourceName}을 로드할 수 없습니다. 하단의 로그를 확인해주세요. \n" +
-                           $"1. {resourceName}를 {typeName}로 형변환 할 수 없습니다. \n" +
-                           $"2. {resourceName}가 리소스 폴더나 에셋번들의 리소스가 아닙니다. 에셋 번들 재빌드나 리소스 GUID 재빌드를 하셨나요? \n");
             
-            return resource;
         }
 
-        /// <summary>
-        /// 씬에 로드된 모든 리소스를 획득
-        /// </summary>
-        public static UnityObject[] GetAll(string sceneName)
+
+
+        private void OnDestroy()
         {
-            List<UnityObject> sceneResources = new List<UnityObject>();
-
-            var sceneResourceMap = resources[sceneName].Values;
-            foreach (var resourceType in sceneResourceMap)
-            {
-                foreach (var resource in resourceType)
-                {
-                    sceneResources.Add(resource.Value);
-                }
-            }
-
-            return sceneResources.ToArray();
+            Resources.UnloadAsset(setting);
         }
 
 
 
         /// <summary>
-        /// 언로드 요청을 수락합니다.
+        /// 어드레서블 리소스를 매니저에 캐싱합니다.<br/>
         /// </summary>
-        private static void ProcessUnloadQueue()
+        /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetReference.AssetGUID"/></param>
+        public static void LoadAsset<TObject>(string key) where TObject : UnityObject
         {
-            // 언로드 요청이 있음?
-            if (unloadQueue.Count <= 0)
+            if (resourceHandles.ContainsKey(key))
             {
+                Debug.LogWarning($"'{key}'는 이미 로드되어있습니다.");
                 return;
             }
 
-            // 언로드 요청 수락
-            var unloadRequest = unloadQueue.Dequeue();
-            Instance.StartCoroutine(InternalUnloadAllResourcesCoroutine(
-                unloadRequest.SceneName, unloadRequest.StartCondition, unloadRequest.Completed));
+            AsyncOperationHandle<IList<IResourceLocation>> locationHandle = Addressables.LoadResourceLocationsAsync(key);
+            locationHandle.WaitForCompletion();
+
+            AsyncOperationHandle<TObject> resourceHandle = Addressables.LoadAssetAsync<TObject>(locationHandle.Result[0]);
+            resourceHandle.WaitForCompletion();
+
+            CacheResource(key, resourceHandle);
         }
 
         /// <summary>
-        /// 씬의 리소스 비동기 로딩
+        /// 어드레서블 리소스를 매니저에 캐싱합니다.<br/>
         /// </summary>
-        private static IEnumerator InternalLoadAllResourcesCoroutine(
-            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
+        /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetReference.AssetGUID"/></param>
+        /// <param name="completed">로드 성공시 콜백</param>
+        public static void LoadAssetAsync<TObject>(string key, Action<TObject> completed = null, bool enableFakeLoading = false) where TObject : UnityObject
         {
-            isLoading = true;
-
-            // 시작 조건
-            if (started != null)
+            if (resourceHandles.ContainsKey(key))
             {
-                while (!started.Invoke())
-                {
-                    yield return null;
-                }
-            }
-
-            // 에셋 번들 로드
-            string assetBundlePath = Path.Combine(setting.AssetBundlesSavePath, sceneName);
-            AssetBundleCreateRequest assetBundleRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
-            yield return new WaitUntil(() => assetBundleRequest.isDone);
-
-            // 로드한 에셋 번들 유효한가?
-            AssetBundle loadedAssetBundle = assetBundleRequest.assetBundle;
-            if (loadedAssetBundle == null)
-            {
-                Debug.LogWarning($"씬에 사용되는 에셋 번들이 없습니다. 필요 에셋 번들 : {sceneName}");
-                isLoading = false;
-                yield break;
-            }
-
-            // 에셋 번들의 리소스 로드
-            AssetBundleRequest assetRequest = loadedAssetBundle.LoadAllAssetsAsync<UnityObject>();
-            yield return new WaitUntil(() => assetRequest.isDone);
-
-            // 현재 씬에 리소스, 에셋 번들을 매핑
-            MapAssetBundlesAtScene(sceneName, loadedAssetBundle);
-            MapResourcesAtScene(sceneName, assetRequest.allAssets);
-
-            // 페이크 로딩
-            yield return LoadFakeDuration();
-
-            isLoading = false;
-            yield return null;
-            completed?.Invoke();
-        }
-
-        /// <summary>
-        /// 씬의 리소스 동기 로딩
-        /// </summary>
-        private static void InternalLoadAllResources(string sceneName, CompletedCallback completed)
-        {
-            isLoading = true;
-
-            // 에셋 번들 로드
-            string assetBundlePath = Path.Combine(setting.AssetBundlesSavePath, sceneName);
-            AssetBundle loadedAssetBundle = AssetBundle.LoadFromFile(assetBundlePath);
-            if (loadedAssetBundle == null)
-            {
-                Debug.LogWarning($"씬에 사용되는 에셋 번들이 없습니다. 필요 에셋 번들 : {sceneName}");
-                isLoading = false;
+                Debug.LogWarning($"'{key}'는 이미 로드되어있습니다.");
                 return;
             }
 
-            // 에셋 번들의 리소스 로드
-            Object[] loadedResources = loadedAssetBundle.LoadAllAssets<UnityObject>();
-
-            // 현재 씬에 리소스, 에셋 번들을 매핑
-            MapAssetBundlesAtScene(sceneName, loadedAssetBundle);
-            MapResourcesAtScene(sceneName, loadedResources);
-
-            isLoading = false;
-            completed?.Invoke();
+            Instance.StartCoroutine(LoadAssetAsyncImpl(new ResourceRequest(key), completed, enableFakeLoading));
         }
 
-        /// <summary>
-        /// 씬의 리소스 비동기 언로딩
-        /// </summary>
-        private static IEnumerator InternalUnloadAllResourcesCoroutine(
-            string sceneName, StartConditionCallback started = null, CompletedCallback completed = null)
+        private static IEnumerator LoadAssetAsyncImpl<TObject>(ResourceRequest request, Action<TObject> completed, bool enableFakeLoading) where TObject : UnityObject
         {
-            // 시작 조건
-            if (started != null)
-            {
-                while (!started.Invoke())
-                {
-                    yield return null;
-                }
-            }
+            loadOperations.Add(request);
 
-            // 현재 씬에 에셋 번들이 있음?
-            if (!bundles.ContainsKey(sceneName) || bundles[sceneName] == null)
-            {
-                yield break;
-            }
+            // 어드레서블 에셋을 로드하기 위해, 에셋의 위치를 로드
+            var locationHandle = Addressables.LoadResourceLocationsAsync(request.Key);
+            yield return locationHandle;
+            if (locationHandle.Status != AsyncOperationStatus.Succeeded) { Debug.LogError($"{request.Key}를 사용하는 어드레서블 에셋의 위치 로드 실패."); yield break; }
 
-            // 에셋 번들 + 에셋 번들의 리소스 언로드
-            foreach (var bundle in bundles[sceneName])
-            {
-                if (bundle == null)
-                {
-                    continue;
-                }
+            // 에셋의 위치(IResourceLocation)로 어드레서블 에셋을 로드
+            // 로드된 에셋을 리소스 매니저에 캐싱
+            var resourceHandle = Addressables.LoadAssetAsync<TObject>(locationHandle.Result[0]);
+            resourceHandle.Completed += handle => CacheResource(request.Key, resourceHandle);
+            yield return resourceHandle;
+            if (resourceHandle.Status != AsyncOperationStatus.Succeeded) { Debug.LogError($"{request.Key}를 사용하는 어드레서블 리소스 로드 실패."); yield break; }
 
-                AsyncOperation unloadOperation = bundle.UnloadAsync(true);
-                while (!unloadOperation.isDone)
-                {
-                    yield return null;
-                }
-            }
+            if (enableFakeLoading) { yield return new WaitForSeconds(setting.FakeLoadingDuration); }
 
-            // 매핑 해제
-            bundles[sceneName] = null;
-            resources[sceneName] = null;
-
-            completed?.Invoke();
+            Addressables.Release(locationHandle);
+            loadOperations.Remove(request);
+            completed?.Invoke(resourceHandle.Result);
         }
 
-        /// <summary>
-        /// 씬의 리소스 동기 언로딩
-        /// </summary>
-        private static void InternalUnloadAllResources(string sceneName, CompletedCallback completed = null)
+        private static void CacheResource<TObject>(string key, AsyncOperationHandle<TObject> resourceHandle) where TObject : UnityObject
         {
-            // 현재 씬에 매핑된 에셋 번들이 있음?
-            if (!bundles.ContainsKey(sceneName) || bundles[sceneName] == null)
+            resources.Add(key, key, resourceHandle.Result);
+            resourceHandles.Add(key, resourceHandle);
+        }
+
+
+
+        /// <summary>
+        /// 어드레서블 리소스를 매니저에 캐싱합니다.<br/>
+        /// </summary>
+        /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetLabelReference.labelString"/></param>
+        public static void LoadAssets(string key)
+        {
+            if (resourceHandles.ContainsKey(key))
             {
+                Debug.LogWarning($"'{key}'는 이미 로드되어있습니다.");
                 return;
             }
 
-            // 에셋 번들 + 에셋 번들의 리소스 언로드
-            foreach (var bundle in bundles[sceneName])
-            {
-                if (bundle == null)
-                {
-                    continue;
-                }
+            AsyncOperationHandle<IList<IResourceLocation>> locationHandle = Addressables.LoadResourceLocationsAsync(key);
+            locationHandle.WaitForCompletion();
 
-                bundle.Unload(true);
+            AsyncOperationHandle<IList<UnityObject>> resourceHandle = Addressables.LoadAssetsAsync<UnityObject>(locationHandle.Result, null);
+            resourceHandle.WaitForCompletion();
+
+            CacheResources(key, locationHandle, resourceHandle);
+        }
+
+        /// <summary>
+        /// 어드레서블 리소스를 매니저에 캐싱합니다.<br/>
+        /// </summary>
+        /// <param name="key">로드할 어드레서블 에셋의 <see cref="AssetLabelReference.labelString"/></param>
+        /// <param name="completed">로드 성공시 콜백</param>
+        public static void LoadAssetsAsync(string key, Action<List<UnityObject>> completed = null, bool enableFakeLoading = false)
+        {
+            if (resourceHandles.ContainsKey(key))
+            {
+                Debug.LogWarning($"'{key}'는 이미 로드되어있습니다.");
+                return;
             }
 
-            // 매핑 해제
-            bundles[sceneName] = null;
-            resources[sceneName] = null;
+            Instance.StartCoroutine(LoadAssetsAsyncImpl(new ResourceRequest(key), completed, enableFakeLoading));
+        }
 
+        private static IEnumerator LoadAssetsAsyncImpl(ResourceRequest request, Action<List<UnityObject>> completed, bool enableFakeLoading)
+        {
+            loadOperations.Add(request);
+
+            // 어드레서블 에셋을 로드하기 위해, 에셋의 위치를 로드
+            var locationHandle = Addressables.LoadResourceLocationsAsync(request.Key);
+            yield return locationHandle;
+            if (locationHandle.Status != AsyncOperationStatus.Succeeded) { Debug.LogError($"{request.Key}를 사용하는 어드레서블 에셋의 위치 로드 실패."); yield break; }
+
+
+            // 에셋의 위치(IResourceLocation)로 어드레서블 에셋을 로드
+            // 로드된 에셋을 리소스 매니저에 캐싱
+            var resourceHandle = Addressables.LoadAssetsAsync<UnityObject>(locationHandle.Result, null);
+            resourceHandle.Completed += handle => CacheResources(request.Key, locationHandle, resourceHandle);
+            yield return resourceHandle;
+            if (resourceHandle.Status != AsyncOperationStatus.Succeeded) { Debug.LogError($"{request.Key}를 사용하는 어드레서블 리소스 로드 실패."); yield break; }
+
+            if (enableFakeLoading) { yield return new WaitForSeconds(setting.FakeLoadingDuration); }
+
+            Addressables.Release(locationHandle);
+            loadOperations.Remove(request);
+            completed?.Invoke(resourceHandle.Result.ToList());
+        }
+
+        private static void CacheResources(string key, AsyncOperationHandle<IList<IResourceLocation>> locationHandle, AsyncOperationHandle<IList<UnityObject>> resourceHandle)
+        {
+            var resources = resourceHandle.Result.ToList();
+            var locations = locationHandle.Result.ToList();
+
+            for (int i = 0; i < resources.Count; i++) { ResourceManager.resources[assetGuidMap[locations[i].InternalId]] = new(key, resources[i]); }
+            resourceHandles.Add(key, resourceHandle);
+        }
+
+
+
+        /// <summary>
+        /// 매니저에 캐싱된 어드레서블 리소스를 언로드합니다. <br/>
+        /// </summary>
+        /// <param name="key">로드 시 사용했던 key</param>
+        public static void UnloadAssetsAsync(string key, Action completed = null)
+        {
+            if (!resourceHandles.ContainsKey(key)) { return; }
+
+            Instance.StartCoroutine(UnloadAssetsAsyncImpl(new ResourceRequest(key), completed));
+        }
+
+        private static IEnumerator UnloadAssetsAsyncImpl(ResourceRequest request, Action completed)
+        {
+            unloadOperations.Add(request);
+
+            // 핸들 언로드를 통해 래퍼런스를 제거
+            Addressables.Release(resourceHandles[request.Key]);
+            resourceHandles.Remove(request.Key);
+
+            // 리소스가 key에 의해 생성된 리소스면 언로드
+            List<string> keysToRemove = new();
+            foreach (var resource in resources) { if (resource.Value.Key == request.Key) { keysToRemove.Add(resource.Key); } }
+            foreach (var keyToRemove in keysToRemove) { resources.Remove(keyToRemove); }
+            yield return Resources.UnloadUnusedAssets();
+
+            loadOperations.Remove(request);
             completed?.Invoke();
         }
 
-        /// <summary>
-        /// 씬에 에셋 번들을 매핑
-        /// </summary>
-        private static void MapAssetBundlesAtScene(string sceneName, AssetBundle loadedAssetBundle)
-        {
-            // 씬에 에셋 번들 매핑이 처음?
-            if (!bundles.ContainsKey(sceneName) || bundles[sceneName] == null)
-            {
-                bundles[sceneName] = new List<AssetBundle>();
-            }
 
-            // 로드한 에셋 번들 씬에 매핑
-            bundles[sceneName].Add(loadedAssetBundle);
-        }
 
         /// <summary>
-        /// 씬에 에셋 번들에서 나온 리소스들을 매핑
+        /// 사전 로드된 어드레서블 리소스를 가져옵니다.
         /// </summary>
-        private static void MapResourcesAtScene(string sceneName, UnityObject[] loadedResources)
-        {
-            // 씬에 리소스 매핑이 처음?
-            if (!resources.ContainsKey(sceneName) || resources[sceneName] == null)
-            {
-                resources[sceneName] = new ResourceMap();
-            }
-
-            // 로드한 리소스들 씬에 전부 매핑
-            foreach (var resource in loadedResources)
-            {
-                // 이 리소스의 자료형 매핑이 처음?
-                string resourceTypeName = resource.GetType().Name;
-                if (!resources[sceneName].ContainsKey(resourceTypeName))
-                {
-                    resources[sceneName][resourceTypeName] = new Dictionary<string, UnityObject>();
-                }
-
-                resources[sceneName][resourceTypeName][resource.name] = resource;
-            }
-        }
-
-        /// <summary>
-        /// 페이크 로딩
-        /// </summary>
-        private static IEnumerator LoadFakeDuration()
-        {
-            float fakeLoadingElapsedTime = 0f;
-            float fakeLoadingDuration = setting.FakeLoadingDuration;
-            while (fakeLoadingElapsedTime <= fakeLoadingDuration)
-            {
-                fakeLoadingElapsedTime += Time.deltaTime;
-                yield return null;
-            }
-        }
-
-        private static void LoadAllResourcesFromAssetBundleFirstScene()
-        {
-            LoadAllResources(SceneManager.CurrentSceneName);
-        }
-
-        /// <summary>
-        /// 게임시작 시, 리소스 폴더의 리소스 로드
-        /// </summary>
-        private static void LoadAllResourcesFromResourcesFolder()
-        {
-            UnityObject[] loadedResources = Resources.LoadAll("");
-            MapResourcesAtScene("Resources", loadedResources);
-        }
-
-        /// <summary>
-        /// 게임시작 시, 글로벌 에셋 번들의 리소스 로드
-        /// </summary>
-        private static void LoadAllResourcesFromAssetBundleGlobal()
-        {
-            LoadAllResources(setting.GlobalAssetBundleName);
-        }
+        /// <param name="key">'<see cref="AssetReference.AssetGUID"/>'</param>
+        public static T Get<T>(string key) where T : UnityObject => resources[key].Value as T;
     }
 
     public partial class ResourceManager
     {
-        // 매니저 기본 설정
-        public static ResourceManagerSetting Setting => setting;
+        // 기본 설정
+        public static ResourceManagerSettings Setting => setting;
 
         // 리소스 로딩중
-        public static bool IsLoading => isLoading;
+        public static bool IsLoading => loadOperations.Count > 0;
     }
 }

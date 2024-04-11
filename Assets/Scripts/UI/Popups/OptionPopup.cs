@@ -15,7 +15,7 @@ namespace AT_RPG
         [SerializeField] private BlurCanvasAnimation blurAnimation;
 
         [Header("종속 팝업")]
-        [SerializeField] private ResourceReference<GameObject> mapSettingPopup;
+        [SerializeField] private AssetReferenceResource<GameObject> worldSettingPopup;
 
         [Header("옵션 메뉴 버튼")]
         [SerializeField] private GameObject continueButtonInstance;

@@ -44,7 +44,7 @@ namespace Fusion.Assistants {
       NetworkProjectConfig.Global.PhysicsEngine = NetworkProjectConfig.PhysicsEngines.Physics3D;
       NetworkProjectConfigUtilities.SaveGlobalConfig();
 
-      // Get scene and mark scene as dirty.
+      // Resource scene and mark scene as dirty.
       DirtyAndSaveScene(nds.gameObject.scene);
     }
 
@@ -83,7 +83,7 @@ namespace Fusion.Assistants {
       NetworkProjectConfig.Global.PhysicsEngine = NetworkProjectConfig.PhysicsEngines.Physics2D;
       NetworkProjectConfigUtilities.SaveGlobalConfig();
 
-      // Get scene and mark scene as dirty.
+      // Resource scene and mark scene as dirty.
       DirtyAndSaveScene(nds.gameObject.scene);
     }
 
@@ -93,7 +93,7 @@ namespace Fusion.Assistants {
       (NetworkDebugStart nds, NetworkRunner nr) n = AddNetworkStartup();
       n.nr.gameObject.EnsureComponentExists<NetworkEvents>();
 
-      // Get scene and mark scene as dirty.
+      // Resource scene and mark scene as dirty.
       DirtyAndSaveScene(n.nds.gameObject.scene);
     }
 

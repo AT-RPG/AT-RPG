@@ -18,10 +18,10 @@ namespace AT_RPG
 
         [Header("하위 팝업")]
         [Tooltip("월드 설정 팝업 프리팹")]
-        [SerializeField] private ResourceReference<GameObject> worldSettingPopupPrefab;
+        [SerializeField] private AssetReferenceResource<GameObject> worldSettingPopupPrefab;
 
         [Tooltip("월드 버튼 프리팹")]
-        [SerializeField] private ResourceReference<GameObject> worldButtonPrefab;
+        [SerializeField] private AssetReferenceResource<GameObject> worldButtonPrefab;
 
         [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
@@ -33,7 +33,7 @@ namespace AT_RPG
         [SerializeField] private GameObject deleteWorldButtonInstance;
 
         // 피킹된 맵
-        private MapButton currPickedWorldButton;
+        private WorldButton currPickedWorldButton;
 
 
         private void Start()
@@ -45,7 +45,6 @@ namespace AT_RPG
             deleteWorldButtonInstance.SetActive(false);
         }
 
-
         /// <summary>
         /// 시작 애니메이션을 실행합니다.
         /// </summary>
@@ -55,7 +54,6 @@ namespace AT_RPG
             popupAnimation.StartPopup();
             blurAnimation.StartFade();
         }
-
 
         /// <summary>
         /// 저장된 모든 월드 정보를 불러옵니다.
@@ -71,16 +69,7 @@ namespace AT_RPG
             List<WorldSettingData> worldSettingDatas = new List<WorldSettingData>();
             foreach (var name in savedMapDataNames)
             {
-                SaveLoadManager.LoadWorldSettingDataCoroutine(defaultSaveFolderPath, name, 
-                () =>
-                {
-                    return !SaveLoadManager.IsLoading;
-                }    
-                , 
-                worldSettingData =>
-                {
-                    worldSettingDatas.Add(worldSettingData);
-                });
+                SaveLoadManager.LoadWorldSettingDataCoroutine(defaultSaveFolderPath, name, () => !SaveLoadManager.IsLoading, worldSettingData => worldSettingDatas.Add(worldSettingData));
             }
 
             // 맵 설정 데이터를 모두 불러올 때까지 대기 
@@ -92,41 +81,43 @@ namespace AT_RPG
             // 맵 버튼 생성 및 초기화
             foreach (var worldSettingData in worldSettingDatas)
             {
-                GameObject mapButtonInstance
-                    = Instantiate(worldButtonPrefab.Resource, worldButtonContents.transform);
-                MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
-                mapButton.WorldSettingData = worldSettingData;
-                mapButton.OnPickAction += OnPickWorld;
+                GameObject worldButtonInstance = Instantiate(worldButtonPrefab.Resource, worldButtonContents.transform);
+                WorldButton worldButton = worldButtonInstance.GetComponent<WorldButton>();
+                worldButton.WorldSettingData = worldSettingData;
+                worldButton.OnPickAction += OnPickWorld;
             }
         }
+
 
 
         /// <summary>
         /// 버튼의 동작 대상에 대한 포커스를 선택한 월드에 둡니다.
         /// </summary>
-        private void OnPickWorld(GameObject mapButtonInstance)
+        private void OnPickWorld(GameObject worldButtonInstance)
         {
             // 맵 버튼이 맞는지?
-            MapButton mapButton = mapButtonInstance.GetComponent<MapButton>();
-            if (!mapButton)
+            WorldButton worldButton = worldButtonInstance.GetComponent<WorldButton>();
+            if (!worldButton)
             {
-                Debug.LogError($"{mapButtonInstance}는 맵 버튼이 아닙니다.");
+                Debug.LogError($"{worldButtonInstance}는 맵 버튼이 아닙니다.");
                 return;
             }
 
-            currPickedWorldButton = mapButton;
+            currPickedWorldButton = worldButton;
             playWorldButtonInstance.SetActive(true);
             deleteWorldButtonInstance.SetActive(true);
         }
 
 
+
         /// <summary>
         /// 월드를 설정 팝업을 생성합니다.
         /// </summary>
-        public void OnInstantiateMapSettingPopup()
+        public void OnInstantiateWorldSettingPopup()
         {
             UIManager.InstantiatePopup(worldSettingPopupPrefab.Resource, PopupRenderMode.Default);
         }
+
 
 
         /// <summary>
@@ -143,22 +134,27 @@ namespace AT_RPG
             InternalOnPlayWorld();
         }
 
-
         /// <summary>
         /// 월드를 플레이하기 전에 필요한 백앤드 작업을 수행합니다.
         /// </summary>
-        /// TODO : 리펙토링
         private void InternalOnPlayWorld()
         {
             SerializedGameObjectDataList gameObjectDatas = new SerializedGameObjectDataList();
 
             string fromScene = SceneManager.CurrentSceneName;
             string toScene = SceneManager.Setting.MainScene;
-            SceneManager.LoadScene(SceneManager.Setting.LoadingScene, () =>
+            string loadingScene = SceneManager.Setting.LoadingScene;
+            SceneManager.LoadSceneCoroutine(loadingScene, null, () =>
             {
                 // 리소스 로딩/언로딩 + 세이브 파일 로딩
-                ResourceManager.LoadAllResourcesCoroutine(toScene);
-                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                foreach (var label in SceneManager.Setting.MainSceneAddressableLabelMap)
+                {
+                    ResourceManager.LoadAssetsAsync(label.labelString, null, true);
+                }
+                foreach (var label in SceneManager.Setting.TitleSceneAddressableLabelMap)
+                {
+                    ResourceManager.UnloadAssetsAsync(label.labelString);
+                }
 
                 // 로딩이 끝나면 씬을 변경합니다.
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading, () =>
@@ -170,18 +166,14 @@ namespace AT_RPG
                         loadedWorldSettingData => SaveLoadManager.WorldSettingData = loadedWorldSettingData);
 
                     // 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.
-                    // 그 후 호스트를 만들건지 정합니다.
                     SaveLoadManager.LoadGameObjectDatasCoroutine(
                         SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
                         () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
-                        loadedGameObjectDatas => 
-                        {
-                            SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
-                            if (SaveLoadManager.WorldSettingData.isMultiplayEnabled) { MultiplayManager.ConnectToCloud(); }
-                        });
+                        loadedGameObjectDatas => SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas));
                 });
             });
         }
+
 
 
         /// <summary>
@@ -204,6 +196,7 @@ namespace AT_RPG
         }
 
 
+
         /// <summary>
         /// 종료 애니메이션과 함께, 현재 팝업을 삭제합니다.
         /// </summary>
@@ -216,6 +209,7 @@ namespace AT_RPG
             });
             blurAnimation.EndFade();
         }
+
 
 
         public void DestroyPopup()

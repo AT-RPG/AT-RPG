@@ -10,8 +10,8 @@ namespace AT_RPG
     public class GameMenuPopup : Popup, IPopupDestroy
     {
         [Header("종속된 팝업")]
-        [SerializeField] private ResourceReference<GameObject>  optionPopupPrefab;
-        [SerializeField] private ResourceReference<GameObject>  worldSettingPopupPrefab;
+        [SerializeField] private AssetReferenceResource<GameObject>  optionPopupPrefab;
+        [SerializeField] private AssetReferenceResource<GameObject>  worldSettingPopupPrefab;
 
         [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation            fadeAnimation;
@@ -93,10 +93,10 @@ namespace AT_RPG
             PlayMode currentPlayMode = MultiplayManager.PlayMode;
             if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
 
-            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
-            logPopup.Log = $"Save Completed!";
+            logPopup.Log = $"Save LoadCompleted!";
             logPopup.Duration = 3.0f;
         }
 
@@ -109,7 +109,7 @@ namespace AT_RPG
         {
             IsMultiplayEnabled();
 
-            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab.Resource, PopupRenderMode.Default, false);
+            GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
             logPopup.Log = IsMultiplayEnabled() ?
@@ -158,9 +158,9 @@ namespace AT_RPG
             string loadingScene = SceneManager.Setting.LoadingScene;
             SceneManager.LoadSceneCoroutine(loadingScene, () => !SaveLoadManager.IsSaving, () =>
             {
-                ResourceManager.LoadAllResourcesCoroutine(toScene);
+                // ResourceManager.LoadAllResourcesCoroutine(toScene);
 
-                ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                // ResourceManager.UnloadAllResourcesCoroutine(fromScene);
 
                 SceneManager.LoadSceneCoroutine(
                     toScene, 

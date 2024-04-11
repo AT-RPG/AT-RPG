@@ -9,8 +9,8 @@ namespace AT_RPG
     [Serializable]
     public class GameObjectRootData : GameObjectData
     {
-        // 자신의 GameObject를 래퍼런스
-        [SerializeField] public ResourceReference<GameObject> Instance;
+        // GameObject 자기 자신 프리팹 래퍼런스
+        [SerializeField] public AssetReferenceResource<GameObject> Instance;
 
         // GameObject 기본 정보
         [SerializeField] public string      InstanceName = "";
@@ -25,15 +25,6 @@ namespace AT_RPG
         [SerializeField] public Quaternion  LocalRotation = Quaternion.identity;
         [SerializeField] public Vector3     LocalScale = Vector3.zero;
 
-        [Obsolete] public GameObjectRootData()
-        {
-
-        }
-
-        public GameObjectRootData(Component owner)
-            : base(owner)
-        {
-            Instance = new ResourceReference<GameObject>(owner.gameObject);
-        }
+        [Obsolete] public GameObjectRootData() { }
     }
 }
