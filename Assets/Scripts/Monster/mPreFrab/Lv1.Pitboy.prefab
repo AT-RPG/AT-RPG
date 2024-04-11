@@ -136,6 +136,8 @@ MonoBehaviour:
   monAgent: {fileID: 5898517979603049142}
   monsterAI: {fileID: 2704060789860980392}
   MonsterIndex: 30009
+  deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
+    type: 3}
   monsterState: 0
 --- !u!1 &3625626522330184428
 GameObject:

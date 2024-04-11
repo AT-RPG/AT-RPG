@@ -14,6 +14,7 @@ public class MonsterMain : CommonBattle
 {
 
     private IObjectPool<MonsterMain> MonsterPool;
+    protected Transform monAiTarget;
 
     public void setManagedPool(IObjectPool<MonsterMain> pool)
     {
@@ -40,11 +41,12 @@ public class MonsterMain : CommonBattle
         string path = Application.dataPath + "/Resources/Monster/JJappalWorld_MonsterInfoData.csv";
             LoadMonsterStatsFromCSV(path);
 
-
         ChangeState(State.Create);
         GetComponent<Collider>().enabled = true;
-    
         monAgent = GetComponent<NavMeshAgent>();
+        monAgent.enabled = true;
+        monAgent.ResetPath();
+    
         if (myTarget != null)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, myTarget.position);
@@ -120,7 +122,7 @@ public class MonsterMain : CommonBattle
 
             if (monsterIndex == MonsterIndex) //해당줄의 인덱스랑 현재몬스터의 인덱스가 일치하면 스탯부여
             {
-                // 추출한 스탯을 mStat만 현재 값이 안들어가는 상황
+               
                 mStat = new MonsterStat();
                 baseBattleStat = new BaseBattleStat();
                 mStat.monsterName = monsterName;
@@ -359,7 +361,7 @@ public class MonsterMain : CommonBattle
     //몬스터 사망상태
     public void deadState()
     {
-        myTarget = null;
+        
         StopAllCoroutines();
         GetComponent<Collider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
