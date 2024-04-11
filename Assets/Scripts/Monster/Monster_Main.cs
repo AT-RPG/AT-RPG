@@ -65,7 +65,6 @@ public class MonsterMain : CommonBattle
 
 
     [SerializeField] Transform monResPos;
-    [SerializeField] GameObject StartspawnPos;
 
     public Coroutine move = null; //몬스터의 움직임을 관리
     Coroutine deleyMove = null; //몬스터의 움직임을 관리
@@ -325,6 +324,7 @@ public class MonsterMain : CommonBattle
     public IEnumerator BattleState()
     {
        // StopCoroutine(trackPlayerOnDamage);//피해감지 코룬틴 정지
+       
         while (myTarget != null)
         {
             Vector3 battletarget = myTarget.transform.position;

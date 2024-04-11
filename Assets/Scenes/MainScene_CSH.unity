@@ -898,7 +898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &968135660
 Transform:
   m_ObjectHideFlags: 0
@@ -1177,53 +1177,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: 3363e8edfa984af45b839daaba7ee744, type: 2}
---- !u!1 &1412390360
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1412390361}
-  - component: {fileID: 1412390362}
-  m_Layer: 0
-  m_Name: MonsterShootManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1412390361
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1412390360}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1412390362
+--- !u!114 &1412390362 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 427257018236851546, guid: 193eb2c6fb6ca9d419b206633be69e52,
+    type: 3}
+  m_PrefabInstance: {fileID: 698830026562909044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1412390360}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d986b4a7f60a32945aeb9d355855ebba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FireballPrefab: {fileID: 3292462701693660853, guid: 5ed2c1c5d54091c4896a0a5f04336948,
-    type: 3}
-  attackPos: {fileID: 0}
 --- !u!4 &1464709352 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3161009114975988756, guid: 28e5aec7bb2bb6a4bafff938f4bcd7c9,
@@ -1626,6 +1591,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf36966b1ba7eb94b9b4e326c0832eab, type: 3}
+--- !u!1001 &698830026562909044
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1869692064049395084, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_Name
+      value: MonsterShootManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015368885907856218, guid: 193eb2c6fb6ca9d419b206633be69e52,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 193eb2c6fb6ca9d419b206633be69e52, type: 3}
 --- !u!1001 &1599803981017387487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2393,6 +2426,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lv1.Spike
       objectReference: {fileID: 0}
+    - target: {fileID: 852305393678156617, guid: 443b90013d715c6428739756ef438f6a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3348987995906302637, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
       propertyPath: shootManager
@@ -2894,6 +2932,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LV1.Imp
       objectReference: {fileID: 0}
+    - target: {fileID: 2584212705057138345, guid: 5db5e7f926cc20c42b564d9dd56dc33d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2921,7 +2964,7 @@ PrefabInstance:
     - target: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2579838484060732829, guid: b3cc544c0b54df54e8d6edfaffa45a23,
         type: 3}
@@ -3065,4 +3108,4 @@ SceneRoots:
   - {fileID: 66663187}
   - {fileID: 7644379169486260715}
   - {fileID: 8647447909536320630}
-  - {fileID: 1412390361}
+  - {fileID: 698830026562909044}
