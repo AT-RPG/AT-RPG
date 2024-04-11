@@ -63,7 +63,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 250b91e7cb561644a821b73364f24798, type: 2}
   - {fileID: 2100000, guid: 8027609fa4e9ebd49abb0ed1d6a37bf8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -119,3 +118,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed9f3a2801214743a0df0e1fdca8284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectRange: 7.5
+  rotationSpeed: 90
+  collisionLayer:
+  - serializedVersion: 2
+    m_Bits: 1024
+  - serializedVersion: 2
+    m_Bits: 33554432

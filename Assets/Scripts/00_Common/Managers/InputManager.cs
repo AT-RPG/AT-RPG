@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 namespace AT_RPG.Manager
 {
@@ -29,8 +30,12 @@ namespace AT_RPG.Manager
             {"Dodge", new InputMappingContext(KeyCode.LeftControl, InputOption.GetKeyDown)},
             {"ChangeNoneWeapon", new InputMappingContext(KeyCode.V, InputOption.GetKeyDown)},
             {"UsePotion", new InputMappingContext(KeyCode.R, InputOption.GetKeyDown)},
+
+            // 플레이어 건설관련
             {"BuildMode", new InputMappingContext(KeyCode.T, InputOption.GetKeyDown)},
-            {"BuildOption_Snap", new InputMappingContext(KeyCode.Q, InputOption.GetKeyDown)}
+            {"BuildOption_Snap", new InputMappingContext(KeyCode.Y, InputOption.GetKeyDown)},
+            {"RotateBuildingPositionL", new InputMappingContext(KeyCode.Q, InputOption.GetKey, UpdateOption.Fixed)},
+            {"RotateBuildingPositionR", new InputMappingContext(KeyCode.E, InputOption.GetKey, UpdateOption.Fixed)},
         };
 
 
@@ -54,6 +59,7 @@ namespace AT_RPG.Manager
         {
             InvokeKeyActions(UpdateOption.Late);
         }
+
 
 
         /// <summary>
@@ -157,12 +163,12 @@ namespace AT_RPG.Manager
             bool isMovingActionsTriggered = false;
             float horizontalInputValue = 0f;
             float verticalInputValue = 0f;
-            if ((keyInputOption == InputOption.GetKeyDown)  && Input.GetKeyDown(keyboardCode))
+            if ((keyInputOption == InputOption.GetKeyDown) && Input.GetKeyDown(keyboardCode))
             {
                 isActionsTriggered = true;
             }
             else
-            if ((keyInputOption == InputOption.GetKeyUp)  && Input.GetKeyUp(keyboardCode))
+            if ((keyInputOption == InputOption.GetKeyUp) && Input.GetKeyUp(keyboardCode))
             {
                 isActionsTriggered = true;
             }
@@ -187,8 +193,7 @@ namespace AT_RPG.Manager
             else
             if (isMovingActionsTriggered)
             {
-                inputMappingContext.KeyAction?.Invoke(new Vector2(
-                    horizontalInputValue, verticalInputValue));
+                inputMappingContext.KeyAction?.Invoke(new Vector2(horizontalInputValue, verticalInputValue));
             }
         }
 

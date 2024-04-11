@@ -89,7 +89,7 @@ namespace SickscoreGames.HUDNavigationSystem
 		public float indicatorHideDistance = 3f;
 		[Tooltip("Enable, if you want to use an offscreen indicator, when the element is not on screen.")]
 		public bool useOffscreenIndicators = true;
-		[Tooltip("Increase this value to move the indicators further away from the screen borders.")]
+		[Tooltip("Increase this value to Move the indicators further away from the screen borders.")]
 		public float indicatorOffscreenBorder = .075f;
 		[Tooltip("Enable, if you want to scale the indicator by distance and within defined radius.")]
 		public bool useIndicatorScaling = true;

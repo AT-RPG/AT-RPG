@@ -124,7 +124,7 @@ namespace Fusion {
       Runner.MultiplePeerUnityScene = loadedScene;
       if (tempScene.IsValid()) {
         if (tempSceneSpawnedPrefabs.Length > 0) {
-          LogTrace($"Temp scene has {tempSceneSpawnedPrefabs.Length} spawned prefabs, need to move them to the loaded scene.");
+          LogTrace($"Temp scene has {tempSceneSpawnedPrefabs.Length} spawned prefabs, need to Move them to the loaded scene.");
           foreach (var go in tempSceneSpawnedPrefabs) {
             Assert.Check(go.GetComponent<NetworkObject>(), $"Expected {nameof(NetworkObject)} on a GameObject spawned on the temp scene {tempScene.name}");
             SceneManager.MoveGameObjectToScene(go, loadedScene);

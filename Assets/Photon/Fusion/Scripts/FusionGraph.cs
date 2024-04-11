@@ -303,7 +303,7 @@ public class FusionGraph : FusionGraphBase {
 
     var visualization = _graphVisualization == FusionGraphVisualization.Auto ? _statsBuffer.DefaultVisualization : _graphVisualization;
 
-    // TODO: move initialization of this to TryConnect?
+    // TODO: Move initialization of this to TryConnect?
     if (_values == null) {
       int size =
         visualization == FusionGraphVisualization.ContinuousTick ? statsBuffer.Capacity :

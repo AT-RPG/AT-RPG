@@ -104,7 +104,7 @@ public class Demo_FreeCam : MonoBehaviour
             move += Vector3.right * mouseMoveX * -moveSpeed;
         }
 
-        //Rotate the camera when anchored
+        //RotateLeft the camera when anchored
         if (Input.GetKey(anchoredRotateKey))
         {
             transform.RotateAround(transform.position, transform.right, mouseMoveY * -rotationSpeed);

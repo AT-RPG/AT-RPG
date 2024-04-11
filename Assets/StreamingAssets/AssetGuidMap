@@ -13,6 +13,7 @@
         "Assets/Prefabs/DeleteWorldButton.prefab": "c37797d01ae76b1488c341da5afd986f",
         "Assets/Prefabs/PlayWorldButton.prefab": "55b6d14c70a796e4997cc647f14422a6",
         "Assets/Prefabs/WorldButton.prefab": "180c1adda0e607441b40e1438da282b8",
-        "Assets/Prefabs/Building_Wall.prefab": "06c0f7484f446564c98db35e67346630"
+        "Assets/Prefabs/Building_Wall.prefab": "06c0f7484f446564c98db35e67346630",
+        "Assets/Prefabs/Building_Indicator.prefab": "86b3e2ffd2c42494c91c3769b6d5eecb"
     }
 }

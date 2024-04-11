@@ -122,7 +122,7 @@ namespace Fusion {
       var gameObjects = scene.GetRootGameObjects();
       var result = new List<NetworkObject>();
 
-      // get all root gameobjects and move them to this runners scene
+      // get all root gameobjects and Move them to this runners scene
       foreach (var go in gameObjects) {
         networkObjects.Clear();
         go.GetComponentsInChildren(true, networkObjects);

@@ -25,38 +25,21 @@ namespace AT_RPG
         // 건설모드 활성/비활성
         private bool isBuildModeEnabled = false;
 
-        // 건설모드에서 스냅 활성/비활성
-        private bool isSnapEnabled = false;
-
 
 
         private void Awake()
         {
             InputManager.AddKeyAction("BuildMode", OnEnableBuildingMode);
             InputManager.AddKeyAction("Attack/Fire", OnBuild);
-            InputManager.AddKeyAction("BuildOption_Snap", OnEnableSnap);
         }
 
         private void OnDestroy()
         {
             InputManager.RemoveKeyAction("BuildMode", OnEnableBuildingMode);
             InputManager.RemoveKeyAction("Attack/Fire", OnBuild);
-            InputManager.RemoveKeyAction("BuildOption_Snap", OnEnableSnap);
         }
 
 
-
-        /// <summary>
-        /// 건설모드에서 건물이 다른 건물에 맞춰서 건설될 수 있도록합니다.
-        /// </summary>
-        private void OnEnableSnap(InputValue value)
-        {
-            // 토글
-            if (isBuildModeEnabled)
-            {
-                isSnapEnabled = isSnapEnabled ? false : true;
-            }
-        }
 
         /// <summary>
         /// 건설 인디케이터가 화면에 나오도록 건설모드를 활성/비활성합니다.
@@ -81,7 +64,12 @@ namespace AT_RPG
         /// </summary>
         private void OnBuild(InputValue value)
         {
-            Instantiate(buildingPrefab, buildingIndicator.gameObject.transform, true);
+            if (!isBuildModeEnabled) { return; }
+
+            if (buildingIndicator.Status == IndicatorStatus.Approved)
+            {
+                Instantiate(buildingPrefab, buildingIndicator.transform.position, buildingIndicator.transform.rotation);
+            }
         }
     }
 }
