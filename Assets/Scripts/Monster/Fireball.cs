@@ -42,6 +42,8 @@ public class Fireball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) //적에게 히트
     {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Monster")) return;
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) // 충돌한 오브젝트의 레이어가 몬스터 레이어인지 확인
         {
            rangeType.ballHit();

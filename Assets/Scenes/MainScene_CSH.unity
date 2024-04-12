@@ -978,7 +978,7 @@ PrefabInstance:
     - target: {fileID: 1254170634839110470, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
       propertyPath: monnum
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2120643510527296754, guid: 542a026ee413ac744961a9296ff4311a,
         type: 3}
@@ -1722,6 +1722,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Lv2.Imp '
       objectReference: {fileID: 0}
+    - target: {fileID: 8562442405831718168, guid: c9df2a45328e961489964b442631c9c1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2136,6 +2141,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lv2.Pitboy
       objectReference: {fileID: 0}
+    - target: {fileID: 8907970243843729486, guid: 6a6cfc0536a62934699cb67c50fd1f61,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2272,6 +2282,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lv2.Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 5260789259610901401, guid: 28e5aec7bb2bb6a4bafff938f4bcd7c9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2358,6 +2373,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lv2.Monkey
       objectReference: {fileID: 0}
+    - target: {fileID: 1234630087756847674, guid: 935c84c2202fc8b47b0e985ce24beb6d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1361845879507774794, guid: 935c84c2202fc8b47b0e985ce24beb6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2429,7 +2449,7 @@ PrefabInstance:
     - target: {fileID: 852305393678156617, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3348987995906302637, guid: 443b90013d715c6428739756ef438f6a,
         type: 3}
@@ -2509,6 +2529,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Lv1.Nosdman
+      objectReference: {fileID: 0}
+    - target: {fileID: 1171734178534584790, guid: 9960e583e0c3adc4bb42d5f35fc30ad4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1461945773763027405, guid: 9960e583e0c3adc4bb42d5f35fc30ad4,
         type: 3}
@@ -2964,7 +2989,7 @@ PrefabInstance:
     - target: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2579838484060732829, guid: b3cc544c0b54df54e8d6edfaffa45a23,
         type: 3}

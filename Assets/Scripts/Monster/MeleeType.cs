@@ -36,17 +36,22 @@ public class MeleeType : MonsterMain
 
     IEnumerator AttackDeleayState()
     {
-        Vector3 battletarget = myTarget.transform.position;
-        Vector3 dir = battletarget - transform.position;
-        float dist = dir.magnitude;
-        // 목표 회전 각도를 계산합니다.
-        Quaternion lookRotation = Quaternion.LookRotation(dir);
+        float timer=0.0f;
+        while (true) 
+        {
+            Vector3 battletarget = myTarget.transform.position;
+            Vector3 dir = battletarget - transform.position;
+            float dist = dir.magnitude;
+            // 목표 회전 각도를 계산합니다.
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
 
-        // 천천히 회전하기 위해 Quaternion.Lerp()를 사용합니다.
-        float rotationSpeed = 20f; // 회전 속도를 조절합니다.
-        transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-
-        yield return new WaitForSeconds(baseBattleStat.attackDeley);
+            // 천천히 회전하기 위해 Quaternion.Lerp()를 사용합니다.
+            float rotationSpeed = 20f; // 회전 속도를 조절합니다.
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+            timer += Time.deltaTime;
+            if (timer >= baseBattleStat.attackDeley) break;
+            yield return null;
+        }
         if(monsterState !=State.Dead) battleState = StartCoroutine(BattleState());
     }
 }

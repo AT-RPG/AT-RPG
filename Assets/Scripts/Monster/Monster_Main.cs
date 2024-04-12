@@ -30,11 +30,11 @@ public class MonsterMain : CommonBattle
 
         MonsterPool.Release(this); //몬스터 풀반환
     }
-    private void Awake() //초기화
+    public virtual void Awake() //초기화
     {
         ChangeState(State.Create);
     }
-    void OnEnable()
+    public virtual void OnEnable()
     {
         
 
@@ -44,17 +44,9 @@ public class MonsterMain : CommonBattle
         ChangeState(State.Create);
         GetComponent<Collider>().enabled = true;
         monAgent = GetComponent<NavMeshAgent>();
-        monAgent.enabled = true;
+     
         monAgent.ResetPath();
-    
-        if (myTarget != null)
-        {
-            float distanceToPlayer = Vector3.Distance(transform.position, myTarget.position);
-            if (distanceToPlayer <= mStat.monsterRange)
-            {
-                StartTracking(myTarget);
-            }
-        }
+  
         base.Initialize();
         GameObject hpbar = Resources.Load<GameObject>("Monster/HpBar");
         GameObject obj = Instantiate(hpbar, SceneData.Instance.hpBarsTransform);
@@ -94,11 +86,13 @@ public class MonsterMain : CommonBattle
         public float monsterRange;
         public float monsterRunSpeed;
         public string monsterType;
+        public int monsterLevel;
+        public int monsterPhase;
     }
 
-    void LoadMonsterStatsFromCSV(string fileContent) //csv 파일에서 스탯가져오기
+    void LoadMonsterStatsFromCSV(string path) //csv 파일에서 스탯가져오기
     {
-        StreamReader reader = new StreamReader(fileContent); //파일 읽기
+        StreamReader reader = new StreamReader(path); //파일 읽기
         string line;
 
         // 첫 번째 줄은 스탯의 이름을 작성했으므로 넘긴다
@@ -111,13 +105,15 @@ public class MonsterMain : CommonBattle
             float monsterIndex = float.Parse(data[0]);
             string monsterName = data[1];
             string monsterType = data[2];
-            int maxHP = int.Parse(data[3]);
-            int attackPoint = int.Parse(data[4]);
-            float attackDeley = float.Parse(data[5]);
-            float skillCooltime = float.Parse(data[6]);
-            float monsterRange = float.Parse(data[7]);
-            float moveSpeed = float.Parse(data[8]);
-            float monsterRunSpeed = float.Parse(data[9]);
+            int monsterLevel= int.Parse(data[3]);
+            int maxHP = int.Parse(data[4]);
+            int attackPoint = int.Parse(data[5]);
+            float attackDeley = float.Parse(data[6]);
+            float skillCooltime = float.Parse(data[7]);
+            float monsterRange = float.Parse(data[8]);
+            float moveSpeed = float.Parse(data[9]);
+            float monsterRunSpeed = float.Parse(data[10]);
+            int monsterPhase = int.Parse(data[11]);
 
             if (monsterIndex == MonsterIndex) //해당줄의 인덱스랑 현재몬스터의 인덱스가 일치하면 스탯부여
             {
@@ -128,7 +124,23 @@ public class MonsterMain : CommonBattle
                 mStat.monsterType = monsterType;
                 mStat.monsterRange = monsterRange;
                 mStat.monsterRunSpeed = monsterRunSpeed;
-
+                mStat.monsterPhase = monsterPhase;
+                if (mStat.monsterPhase == 0)
+                {
+                    mStat.monsterLevel = Random.Range(1, 11);
+                }
+                else if(mStat.monsterPhase == 1)
+                {
+                    mStat.monsterLevel = Random.Range(11, 21);
+                }
+                else if(mStat.monsterPhase== 2)
+                {
+                    mStat.monsterLevel = Random.Range(21, 31);
+                }
+                else
+                {
+                    mStat.monsterLevel = monsterLevel;
+                }
                 baseBattleStat.moveSpeed = moveSpeed;
                 baseBattleStat.maxHP = maxHP;
                 baseBattleStat.attackPoint = attackPoint;

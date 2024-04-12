@@ -19,8 +19,9 @@ public class RangeType : MonsterMain
 
     public Transform attackPos;
 
-    public void OnEnable()
-    {
+    public override void OnEnable()
+    { 
+        base.OnEnable();
         GameObject managerObject = GameObject.Find("MonsterShootManager");
         if (managerObject != null)
         {
@@ -30,9 +31,9 @@ public class RangeType : MonsterMain
     public override void AttackPlayer()
     {
         if (battleState != null) StopCoroutine(battleState);
+        monAgent.ResetPath();
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
-      
         myAnim.SetTrigger("NormalAttack");
     }
     public override void AttackDelay()

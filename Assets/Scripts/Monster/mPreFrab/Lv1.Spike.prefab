@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7322936292352383320
 Transform:
   m_ObjectHideFlags: 0
@@ -108,8 +108,17 @@ MonoBehaviour:
   changeHpAct:
     m_PersistentCalls:
       m_Calls: []
+  Hpbar:
+    m_AssetGUID: 17b4793608188c04d8230f12bf49ce86
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  textasset:
+    m_AssetGUID: dfb704ae2c1531b4c9b423e5942727be
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   monResPos: {fileID: 7322936292352383320}
-  StartspawnPos: {fileID: 0}
   hpViewPos: {fileID: 5713884932960440510}
   monAgent: {fileID: 4993959310669904830}
   monsterAI: {fileID: 6546474076330227832}
