@@ -1,5 +1,6 @@
 using AT_RPG.Manager;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace AT_RPG
@@ -29,17 +30,16 @@ namespace AT_RPG
         // 건설위치 회전속도
         [SerializeField, Range(1, 360f)] private float rotationSpeed;
 
-        // 건설위치 충돌 레이어
+        // 이 레이어에 건설 표시기가 충돌되어, 충돌체 위에 건설위치가 표시됩니다.
         [SerializeField] private List<LayerMask> collisionLayer = new();
-
-        // 건설가능 여부
-        private IndicatorStatus status = IndicatorStatus.Approved;
 
         // 건설모드에서 스냅 활성/비활성
         private bool isSnapEnabled = false;
 
+        // 건설 시, 건물의 모양 표시에 사용
         private MeshFilter filter = null;
 
+        // 건설 시, 건물의 위치 표시에 사용
         private MeshRenderer meshRenderer = null;
 
 
@@ -74,12 +74,26 @@ namespace AT_RPG
 
         private void OnTriggerEnter(Collider other)
         {
-            RejectBuildObject();
+            // 건물이 발판인가? 땅에 심을 수 있음
+            if (other.gameObject.layer == LayerMask.GetMask("Ground"))
+            {
+                if ((Building.Data.Attribute & BuildingAttribute.Platform) == 0)
+                {
+                    RejectBuildObject();
+                }
+            }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            RejectBuildObject();
+            // 건물이 발판인가? 땅에 심을 수 있음
+            if (other.gameObject.layer == LayerMask.GetMask("Ground"))
+            {
+                if ((Building.Data.Attribute & BuildingAttribute.Platform) == 0)
+                {
+                    RejectBuildObject();
+                }
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -107,15 +121,9 @@ namespace AT_RPG
             LayerMask targetLayer = 0;
             collisionLayer.ForEach(layer => targetLayer |= layer.value);
 
-            if (Physics.Raycast(ray, out hit, detectRange, targetLayer))
-            {
-                transform.position = hit.point;
-            }
-            // 건설 사정거리가 벗어나면, 최대 사정거리로 업데이트합니다.
-            else
-            {
+            if (!Physics.Raycast(ray, out hit, detectRange, targetLayer)) { return; }
 
-            }
+            transform.position = hit.point;
         }
 
         /// <summary>
@@ -139,7 +147,7 @@ namespace AT_RPG
         /// </summary>
         private void ApproveBulidObject()
         {
-            status = IndicatorStatus.Approved;
+            Status = IndicatorStatus.Approved;
             meshRenderer.material.SetColor("_Color", Color.green);
         }
 
@@ -148,13 +156,17 @@ namespace AT_RPG
         /// </summary>
         private void RejectBuildObject()
         {
-            status = IndicatorStatus.Rejected;
+            Status = IndicatorStatus.Rejected;
             meshRenderer.material.SetColor("_Color", Color.red);
         }
     }
 
     public partial class BuildingIndicator
     {
-        public IndicatorStatus Status => status;
+        // 건설가능 여부
+        public IndicatorStatus Status { get; set; }
+        
+        // 건설을 할 건물
+        public BuildingObject Building { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace AT_RPG
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(Animator))]
-    public class BuildingObject : MonoBehaviour, ICharacterDamage
+    public partial class BuildingObject : MonoBehaviour, ICharacterDamage
     {
         [SerializeField] private BuildingObjectData data;
         private MeshRenderer meshRenderer;
@@ -18,20 +18,21 @@ namespace AT_RPG
         private float hp;
         private void Awake()
         {
-            hp = data.maxHP;
+            hp = data.MaxHP;
 
             meshRenderer = GetComponent<MeshRenderer>();
             animator = GetComponent<Animator>();
         }
         public void TakeDamage(float dmg)
         {
-            // hp -= dmg;
+            hp -= dmg;
 
-            //animator.SetTrigger("Hit");
-            //if (hp < 0f) { animator.SetTrigger("Destroy"); }
-
-            Debug.Log("hit");
+            if (hp < 0f) { animator.SetTrigger("Destroy"); }
         }
     }
 
+    public partial class BuildingObject
+    {
+        public BuildingObjectData Data => data;
+    }
 }

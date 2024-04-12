@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c867b9ed9ed8bb47a1c4cddb89cd73f, type: 3}
-  m_Name: BuildingObjectData
+  m_Name: Building_Platform
   m_EditorClassIdentifier: 
   maxHP: 50

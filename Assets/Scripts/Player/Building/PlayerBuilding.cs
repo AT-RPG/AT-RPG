@@ -14,10 +14,10 @@ namespace AT_RPG
     public class PlayerBuilding : MonoBehaviour
     {
         // 건설할 프리팹
-        [SerializeField] private GameObject buildingPrefab = null;
+        [SerializeField] private AssetReferenceResource<GameObject> buildingPrefab = null;
 
         // 건설 인디케이터 프리팹
-        [SerializeField] private GameObject buildingIndicatorPrefab = null;
+        [SerializeField] private AssetReferenceResource<GameObject> buildingIndicatorPrefab = null;
 
         // 건설 인디케이터 인스턴스
         private BuildingIndicator buildingIndicator = null;
@@ -51,7 +51,7 @@ namespace AT_RPG
 
             if (isBuildModeEnabled) 
             {
-                buildingIndicator = Instantiate(buildingIndicatorPrefab, transform).GetComponent<BuildingIndicator>();
+                buildingIndicator = Instantiate<GameObject>(buildingIndicatorPrefab, transform).GetComponent<BuildingIndicator>();
             }
             else
             {

@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 8218188475078018268}
   - component: {fileID: 7440362272274335646}
   - component: {fileID: 5426407938185399829}
-  - component: {fileID: -4561149284289453930}
   - component: {fileID: -4616377665272847185}
+  - component: {fileID: -4561149284289453930}
   m_Layer: 25
-  m_Name: Building_Wall
+  m_Name: Building_Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,19 +107,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-4561149284289453930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6269892692167171113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6359ea784968a9f49a32d134ed1057ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 4a05126226b7c9442bc1bf470d362fc7, type: 2}
 --- !u!95 &-4616377665272847185
 Animator:
   serializedVersion: 5
@@ -141,3 +128,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-4561149284289453930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6269892692167171113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6359ea784968a9f49a32d134ed1057ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 4a05126226b7c9442bc1bf470d362fc7, type: 2}

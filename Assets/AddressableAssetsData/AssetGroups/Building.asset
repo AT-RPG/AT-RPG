@@ -17,12 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: a6ad99593197686429ca3d4b89ed9fd3
   m_SerializeEntries:
-  - m_GUID: 06c0f7484f446564c98db35e67346630
-    m_Address: Assets/Prefabs/Building_Wall.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Building
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 86b3e2ffd2c42494c91c3769b6d5eecb
     m_Address: Assets/Prefabs/BuildingIndicator.prefab
     m_ReadOnly: 0

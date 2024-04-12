@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec126a7d53a1a864384163f24a1bb9f6, type: 3}
-  m_Name: GameManagerSettings
+  m_Script: {fileID: 11500000, guid: 2c867b9ed9ed8bb47a1c4cddb89cd73f, type: 3}
+  m_Name: Building_Wall
   m_EditorClassIdentifier: 
-  PreloadAddressableLabelMap:
-  - m_LabelString: Global
-  - m_LabelString: UI
-  - m_LabelString: Building
+  maxHP: 50
