@@ -1,37 +1,40 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class PlayerHPBar : MonoBehaviour
 {
     [SerializeField] private Slider mySlider;
     [SerializeField] private Image fillImage;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    private bool isTweening = false;
+    
     public void ChangeBar(float v)
     {
-        mySlider.value = v;
+        if (!isTweening)
+        {
+            isTweening = true;
+            float currentValue = mySlider.value;
+            DOTween.To(() => currentValue, x => currentValue = x, v, 0.5f)
+                .OnUpdate(() => {
+                    mySlider.value = currentValue;
+                    UpdateFillColor(currentValue);
+                })
+                .OnComplete(() => { isTweening = false; });
+        }
+    }
 
-        if(mySlider.value >= 0.7f)
+    private void UpdateFillColor(float value)
+    {
+        if(value >= 0.7f)
         {
             fillImage.color = Color.green;
         }
-        else if(mySlider.value >= 0.4f && mySlider.value < 0.7f)
+        else if(value >= 0.4f && value < 0.7f)
         {
             fillImage.color = Color.yellow;
         }
-        else if(mySlider.value >= 0.0f && mySlider.value < 0.4f)
+        else if(value >= 0.0f && value < 0.4f)
         {
             fillImage.color = Color.red;
         }

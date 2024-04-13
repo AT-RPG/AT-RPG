@@ -25,11 +25,19 @@ namespace AT_RPG.Manager
         private static InputManager inputManager            = null;
         private static MultiplayManager multiplayManager    = null;
 
+        // 매니저 안에서 사용되는 eventManager변수
+        private EventManager eventManager                   = null;
         // 매니저 안에서 사용되는 playerData 변수
-        private PlayerData player;
-        
+        private PlayerData player                           = null;
+        // 매니저 안에서 사용되는 loadCSVDataManager변수
+        private LoadCSVDataManager loadCSVDataManager       = null;
+
         // 매니저를 통해 PlayerData로 접근할 프로퍼티 변수
-        public PlayerData Player { get => player; }
+        public static PlayerData Player { get => Instance.player; }
+        // Action변수들을 관리하는 EventManager로 접근할 수 있는 변수
+        public static EventManager Event { get => Instance.eventManager; }
+        // CSV 초기 데이터를 불러와 저장해두고 사용할 수 있게 만든 클래스로 접근할 수 있는 변수
+        public static LoadCSVDataManager LoadCSVData { get => Instance.loadCSVDataManager; }
         
 
 
@@ -37,7 +45,9 @@ namespace AT_RPG.Manager
         {
             base.Awake();
             setting = Resources.Load<GameManagerSettings>("GameManagerSettings");
-            player = new PlayerData();
+            loadCSVDataManager = new();
+            eventManager = new();
+            player = new();
         }
 
 
