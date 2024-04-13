@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Store : MonoBehaviour
 {
-    public GameObject buyPanel;
-    public GameObject sellPanel;
+    public GameObject buyPanel; // 구매 패널
+    public GameObject sellPanel; // 판매 패널
 
     // Start is called before the first frame update
     void Start()
@@ -18,19 +18,18 @@ public class Store : MonoBehaviour
     {
         
     }
-    public void ToggleBuyPanel()
+    public void ToggleBuyPanel() // 구매 버튼 클릭 시
     {
-        // 패널이 활성화되어 있는지 확인하고, 상태에 따라 반대로 설정
         buyPanel.SetActive(true);
         sellPanel.SetActive(false);
     }
-    public void ToggleSellPanel()
+    public void ToggleSellPanel() // 판매 버튼 클릭시 
     {
-        // 패널이 활성화되어 있는지 확인하고, 상태에 따라 반대로 설정
+        
         buyPanel.SetActive(false);
         sellPanel.SetActive(true);
     }
-    public void ExitButton()
+    public void ExitButton() // 닫기 버튼 함수
     {
         buyPanel.SetActive(false);
         sellPanel.SetActive(false);
