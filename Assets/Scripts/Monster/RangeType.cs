@@ -30,6 +30,7 @@ public class RangeType : MonsterMain
     }
     public override void AttackPlayer()
     {
+        attackOK = false;
         if (battleState != null) StopCoroutine(battleState);
         monAgent.ResetPath();
         myAnim.SetBool("Move", false);
@@ -57,6 +58,7 @@ public class RangeType : MonsterMain
             if (backstep != null) StopCoroutine(backstep);//뒤로이동중이라면 정지
             myAnim.SetBool("BackWalk", false);
             monAgent.ResetPath();
+            attackOK= true;
             battleState = StartCoroutine(BattleState());
         }
     }
@@ -90,7 +92,7 @@ public class RangeType : MonsterMain
     public override void OnAttack()
     {
         if (myTarget == null) return;
-        shootManager.OnShoot(attackPos);
+        shootManager.OnShoot(attackPos,baseBattleStat.attackPoint);
     }
 
     public void ballHit()

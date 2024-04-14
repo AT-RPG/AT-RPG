@@ -1,21 +1,27 @@
+using AT_RPG;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using static UnityEngine.GraphicsBuffer;
 
 /// <summary>
 /// 파이어볼-투사체 관리스크립트
 /// </summary>
-public class Fireball : MonoBehaviour
+public class Fireball : MonoBehaviour//, ICharacterDamage
 {
    
     public IObjectPool<Fireball> firePool;
     Coroutine stop = null;
     [SerializeField]
     private float ballSpeed;
+    private float damage;
 
     private MonsterShootManager monsterShootManager;
-    private RangeType rangeType;
+    public void SetDamage(float damageValue)
+    {
+        damage = damageValue;
+    }
 
     public void SetRangeAttackParent(MonsterShootManager parent)
     {
@@ -46,7 +52,8 @@ public class Fireball : MonoBehaviour
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) // 충돌한 오브젝트의 레이어가 몬스터 레이어인지 확인
         {
-           rangeType.ballHit();
+           // ICharacterDamage cd = other.GetComponent<ICharacterDamage>();
+           // cd.TakeDamage(damage);
         }
         StopCoroutine(stop);
         destroyball();//릴리즈  
@@ -66,6 +73,8 @@ public class Fireball : MonoBehaviour
         transform.Translate(Vector3.forward * Time.deltaTime * ballSpeed); //발사
     }
 
-
-
+   // public void TakeDamage(float dmg)
+    //{
+   //     throw new System.NotImplementedException();
+   // }
 }

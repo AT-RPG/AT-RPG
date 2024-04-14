@@ -68,10 +68,14 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
         {
             //Damage
             myAnim.SetTrigger("Damage");
+            SetDamageEffect();
         }
     }
 
+    public virtual void SetDamageEffect()
+    {
 
+    }
     public virtual void OnAttack()
     { 
 

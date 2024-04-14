@@ -7,17 +7,25 @@ public class MeleeType : MonsterMain
 {
     public override void OnAttack()
     {
+        attackOK = false;
         if (myTarget == null) return;
-
         Vector3 battletarget = myTarget.transform.position;
         Vector3 dir = battletarget - transform.position;
         float dist = dir.magnitude;
         if (dist > mStat.monsterRange) return;
+        Vector3 monsterForward = transform.forward;
+        Vector3 playerDirection = dir.normalized;
+        // 두 벡터 사이의 각도 계산
+        float angle = Vector3.Angle(monsterForward, playerDirection);
 
-        ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
-        if (cd != null)
+
+        if (angle < 90.0f)//양옆으로 90도씩 정면180도가 범위
         {
-            cd.TakeDamage(baseBattleStat.attackPoint);
+            ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
+            if (cd != null)
+            {
+                cd.TakeDamage(baseBattleStat.attackPoint);
+            }
         }
     }
     public override void AttackPlayer()
@@ -52,6 +60,7 @@ public class MeleeType : MonsterMain
             if (timer >= baseBattleStat.attackDeley) break;
             yield return null;
         }
+        attackOK = true;
         if(monsterState !=State.Dead) battleState = StartCoroutine(BattleState());
     }
 }

@@ -45,10 +45,11 @@ public class MonsterShootManager : MonoBehaviour
     }
 
     //발사
-    public void OnShoot(Transform startPos)
+    public void OnShoot(Transform startPos,float damage)
     {
       
         Fireball fireball = rangePool.Get();
+        fireball.SetDamage(damage);
         fireball.transform.position = startPos.position;
         fireball.transform.rotation = startPos.rotation;
         fireball.gameObject.SetActive(true);

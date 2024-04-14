@@ -68,9 +68,10 @@ public class MonsterMain : CommonBattle
 
     public NavMeshAgent monAgent;
 
+
     public MonsterAI monsterAI;
     private bool isTracking = false;
-
+    public bool attackOK = false;
     //스탯처리
     public int MonsterIndex;
     private float monsterIdleTime;
@@ -226,7 +227,7 @@ public class MonsterMain : CommonBattle
     {
         if(trackPlayerOnDamage == null) //전투상태로 들어가서 꺼진상태라면
         {
-            trackPlayerOnDamage = StartCoroutine(TrackPlayerOnDamage()); //피해감지 코룬틴 시작
+       //     trackPlayerOnDamage = StartCoroutine(TrackPlayerOnDamage()); //피해감지 코룬틴 시작
         }
         monAgent.ResetPath();
         myAnim.SetBool("Run", false);
@@ -352,12 +353,52 @@ public class MonsterMain : CommonBattle
             {
                 if (move != null) StopCoroutine(move);
                 monAgent.ResetPath();
-                AttackPlayer();
+                if (attackOK == true)
+                {
+                    AttackPlayer();
+                }
                 break;
             }
         }
 
     }
+
+
+    public override void SetDamageEffect()  //피격이펙트
+    {
+        //StartCoroutine(DamagingEffect(Color.red));
+    }
+
+
+    /* 
+    Renderer[] _allRenderer;
+    public Renderer[] allRenderer
+    {
+        get
+        {
+            if (_allRenderer == null)
+            {
+                _allRenderer = GetComponentsInChildren<Renderer>();
+            }
+            return _allRenderer;
+        }
+    }
+    IEnumerator DamagingEffect(Color effColor)
+    {
+        foreach (Renderer renderer in allRenderer)
+        {
+            renderer.material.color = effColor;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        foreach (Renderer renderer in allRenderer)
+        {
+            //renderer.material.color = Color.white;
+            renderer.material.SetColor("_Color", Color.white);
+        }
+    }
+    */
 
     public virtual void AttackPlayer()
     {
