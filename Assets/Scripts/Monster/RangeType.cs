@@ -30,13 +30,55 @@ public class RangeType : MonsterMain
     }
     public override void AttackPlayer()
     {
-        attackOK = false;
+        SetAttackOK(false);
         if (battleState != null) StopCoroutine(battleState);
         monAgent.ResetPath();
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
         myAnim.SetTrigger("NormalAttack");
     }
+    public override void SkillUse()
+    {
+        SetSkillOk(false);
+        if (battleState != null) StopCoroutine(battleState);
+        myAnim.SetBool("Move", false);
+        myAnim.SetBool("Run", false);
+        myAnim.SetTrigger("NormalAttack");
+        myAnim.SetBool("Skill", true);
+        StartCoroutine(Rage());
+    }
+    IEnumerator Rage()
+    {
+        myAnim.SetBool("Skill", false);
+        float buffTimer = 0.0f;
+        while (true)
+        {
+            baseBattleStat.attackPoint += 10;
+            buffTimer += Time.deltaTime;
+            if (buffTimer > 30.0f) break;
+            yield return null;
+        }
+        baseBattleStat.attackPoint -= 10;
+        if (monsterState != State.Dead)
+        {
+            StartCoroutine(skillCoolTimer());
+            battleState = StartCoroutine(BattleState());
+        }
+    }
+    IEnumerator skillCoolTimer()
+    {
+        float skillcoll = 0.0f;
+        while (true)
+        {
+            skillcoll += Time.deltaTime;
+            if (skillcoll >= baseBattleStat.skillCooltime) break;
+            yield return null;
+        }
+        SetSkillOk(true);
+    }
+
+
+
     public override void AttackDelay()
     {
         backwalk();  
@@ -58,7 +100,7 @@ public class RangeType : MonsterMain
             if (backstep != null) StopCoroutine(backstep);//뒤로이동중이라면 정지
             myAnim.SetBool("BackWalk", false);
             monAgent.ResetPath();
-            attackOK= true;
+            SetAttackOK(true);
             battleState = StartCoroutine(BattleState());
         }
     }

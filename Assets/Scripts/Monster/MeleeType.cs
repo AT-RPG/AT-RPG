@@ -7,7 +7,6 @@ public class MeleeType : MonsterMain
 {
     public override void OnAttack()
     {
-        attackOK = false;
         if (myTarget == null) return;
         Vector3 battletarget = myTarget.transform.position;
         Vector3 dir = battletarget - transform.position;
@@ -28,9 +27,61 @@ public class MeleeType : MonsterMain
             }
         }
     }
+
+    public override void SkillUse()
+    {
+        SetSkillOk(false);
+        if (battleState != null) StopCoroutine(battleState);
+        myAnim.SetBool("Move", false);
+        myAnim.SetBool("Run", false);
+        myAnim.SetTrigger("NormalAttack");
+        myAnim.SetBool("Skill", true);
+        StartCoroutine(guardSkill());
+    }
+
+    IEnumerator guardSkill()
+    {
+       float skillTimer = 0.0f;
+        while (true)
+        {
+            Vector3 battletarget = myTarget.transform.position;
+            Vector3 dir = battletarget - transform.position;
+            Vector3 monsterForward = transform.forward;
+            Vector3 playerDirection = dir.normalized;
+            float angle = Vector3.Angle(monsterForward, playerDirection);
+            if (angle < 90.0f)//양옆으로 90도씩 정면180도가 범위
+            {
+                //피해감소 스크립트 추가
+            }
+            skillTimer += Time.deltaTime;
+            if (skillTimer >=4.0f) break;
+            yield return null;
+        }
+        myAnim.SetBool("Skill", false);
+
+        if (monsterState != State.Dead)
+        {
+            StartCoroutine(skillCoolTimer());
+            battleState = StartCoroutine(BattleState()); 
+        }
+    }
+
+    IEnumerator skillCoolTimer()
+    {
+        float skillcoll = 0.0f;
+        while (true)
+        {
+            skillcoll += Time.deltaTime;
+            if (skillcoll >= baseBattleStat.skillCooltime) break;
+            yield return null;
+        }
+        SetSkillOk(true);
+    }
+
     public override void AttackPlayer()
     {
-        if(battleState!=null) StopCoroutine(battleState);   
+        SetAttackOK(false);
+        if (battleState!=null) StopCoroutine(battleState);   
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
 
@@ -60,7 +111,7 @@ public class MeleeType : MonsterMain
             if (timer >= baseBattleStat.attackDeley) break;
             yield return null;
         }
-        attackOK = true;
-        if(monsterState !=State.Dead) battleState = StartCoroutine(BattleState());
+        SetAttackOK(true);
+        if (monsterState !=State.Dead) battleState = StartCoroutine(BattleState());
     }
 }
