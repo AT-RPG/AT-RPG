@@ -1,8 +1,5 @@
 using AT_RPG.Manager;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace AT_RPG
 {
@@ -20,7 +17,7 @@ namespace AT_RPG
         [SerializeField] private AssetReferenceResource<GameObject> buildingIndicatorPrefab = null;
 
         // 건설 인디케이터 인스턴스
-        private BuildingIndicator buildingIndicator = null;
+        private BuildingIndicator buildingIndicatorInstance = null;
 
         // 건설모드 활성/비활성
         private bool isBuildModeEnabled = false;
@@ -51,11 +48,12 @@ namespace AT_RPG
 
             if (isBuildModeEnabled) 
             {
-                buildingIndicator = Instantiate<GameObject>(buildingIndicatorPrefab, transform).GetComponent<BuildingIndicator>();
+                buildingIndicatorInstance = Instantiate<GameObject>(buildingIndicatorPrefab, transform).GetComponent<BuildingIndicator>();
+                buildingIndicatorInstance.SetBuilding(buildingPrefab);
             }
             else
             {
-                Destroy(buildingIndicator.gameObject);
+                Destroy(buildingIndicatorInstance.gameObject);
             }
         }
 
@@ -66,10 +64,9 @@ namespace AT_RPG
         {
             if (!isBuildModeEnabled) { return; }
 
-            if (buildingIndicator.Status == IndicatorStatus.Approved)
-            {
-                Instantiate(buildingPrefab, buildingIndicator.transform.position, buildingIndicator.transform.rotation);
-            }
+            if (buildingIndicatorInstance.Status != IndicatorStatus.Approved) { return; }
+
+            Instantiate(buildingPrefab, buildingIndicatorInstance.transform.position, buildingIndicatorInstance.transform.rotation);
         }
     }
 }

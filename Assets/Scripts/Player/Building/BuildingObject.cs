@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AT_RPG
@@ -13,16 +11,22 @@ namespace AT_RPG
     public partial class BuildingObject : MonoBehaviour, ICharacterDamage
     {
         [SerializeField] private BuildingObjectData data;
-        private MeshRenderer meshRenderer;
+
         private Animator animator;
+
         private float hp;
+
+
+
         private void Awake()
         {
             hp = data.MaxHP;
 
-            meshRenderer = GetComponent<MeshRenderer>();
             animator = GetComponent<Animator>();
         }
+
+
+
         public void TakeDamage(float dmg)
         {
             hp -= dmg;

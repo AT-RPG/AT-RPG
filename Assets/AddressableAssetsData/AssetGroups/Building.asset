@@ -17,8 +17,20 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: a6ad99593197686429ca3d4b89ed9fd3
   m_SerializeEntries:
-  - m_GUID: 86b3e2ffd2c42494c91c3769b6d5eecb
-    m_Address: Assets/Prefabs/BuildingIndicator.prefab
+  - m_GUID: 3bce29658b90a1a408fa4a1849a3d6d8
+    m_Address: Assets/Prefabs/Building_Platform.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Building
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06c0f7484f446564c98db35e67346630
+    m_Address: Assets/Prefabs/Building_Wall.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Building
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60f9c01beb778ec4c86a47a96b0ff019
+    m_Address: Assets/Prefabs/Building_Indicator.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - Building
