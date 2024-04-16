@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c867b9ed9ed8bb47a1c4cddb89cd73f, type: 3}
   m_Name: Building_Wall
   m_EditorClassIdentifier: 
-  MaxHP: 0
+  MaxHP: 100
   BuildingLayer:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 0

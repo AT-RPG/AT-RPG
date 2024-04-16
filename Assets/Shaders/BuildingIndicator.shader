@@ -1,20 +1,24 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "AT_RPG/Building/Building_Indicator"
 {
     Properties
     {
-        _Alpha ("Alpha", Range(0, 1)) = 0.5
-        _Color ("Color", color) = (0, 0, 0, 0)
-        _MainTex ("Texture", 2D) = "white" {}
+        _BuildingAlpha ("BuildingAlpha", Range(0, 1)) = 0.5
+        _BuildingStatusColor ("BuildingStatusColor", color) = (0, 0, 0, 0)
+        _BuildingTex ("BuildingTex", 2D) = "white" {}
     }
     SubShader
     {
         Tags { "RenderType"="Transparent" }
         LOD 100
-        Blend SrcAlpha OneMinusSrcAlpha
-        Cull Off
 
+        // 건물
         Pass
         {
+            Cull Off
+            Blend SrcAlpha OneMinusSrcAlpha
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -33,24 +37,23 @@ Shader "AT_RPG/Building/Building_Indicator"
                 float4 vertex : SV_POSITION;
             };
 
-            float _Alpha;
-            float4 _Color;
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            float _BuildingAlpha;
+            float4 _BuildingStatusColor;
+            sampler2D _BuildingTex;
+            float4 _BuildingTex_ST;
 
-            v2f vert (appdata v)
+            v2f vert(appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = v.uv;
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag(v2f i) : SV_Target
             {
-                // sample the texture
-                float4 color = tex2D(_MainTex, i.uv) + _Color;
-                color.w = _Alpha;
+                float4 color = _BuildingStatusColor;
+                color.w = _BuildingAlpha;
 
                 return color;
             }

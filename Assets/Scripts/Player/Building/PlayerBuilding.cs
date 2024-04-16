@@ -49,7 +49,7 @@ namespace AT_RPG
             if (isBuildModeEnabled) 
             {
                 buildingIndicatorInstance = Instantiate<GameObject>(buildingIndicatorPrefab, transform).GetComponent<BuildingIndicator>();
-                buildingIndicatorInstance.SetBuilding(buildingPrefab);
+                buildingIndicatorInstance.SetBuildingInstance(buildingPrefab);
             }
             else
             {
