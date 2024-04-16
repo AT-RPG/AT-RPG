@@ -13,6 +13,7 @@ public class MonsterShootManager : MonoBehaviour
     private GameObject FireballPrefab;
     public Transform attackPos;
     private IObjectPool<Fireball> rangePool;
+    
 
     private void Awake()
     {

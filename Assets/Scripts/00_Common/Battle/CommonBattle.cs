@@ -57,7 +57,7 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
 
     public void TakeDamage(float dmg)
     {
-        curHP -= dmg;
+        curHP -= dmg - baseBattleStat.defendPoint;
         if (curHP <= 0.0f)
         {
             //Die

@@ -41,7 +41,7 @@ public class MeleeType : MonsterMain
 
     IEnumerator guardSkill()
     {
-       float skillTimer = 0.0f;
+        float skillTimer = 0.0f;
         while (true)
         {
             Vector3 battletarget = myTarget.transform.position;
@@ -49,20 +49,18 @@ public class MeleeType : MonsterMain
             Vector3 monsterForward = transform.forward;
             Vector3 playerDirection = dir.normalized;
             float angle = Vector3.Angle(monsterForward, playerDirection);
-            if (angle < 90.0f)//양옆으로 90도씩 정면180도가 범위
-            {
-                //피해감소 스크립트 추가
-            }
+            baseBattleStat.defendPoint += 100;
             skillTimer += Time.deltaTime;
-            if (skillTimer >=4.0f) break;
+            if (skillTimer >= 4.0f) break;
             yield return null;
         }
+        baseBattleStat.defendPoint = 0;
         myAnim.SetBool("Skill", false);
 
         if (monsterState != State.Dead)
         {
             StartCoroutine(skillCoolTimer());
-            battleState = StartCoroutine(BattleState()); 
+            battleState = StartCoroutine(BattleState());
         }
     }
 
@@ -81,7 +79,7 @@ public class MeleeType : MonsterMain
     public override void AttackPlayer()
     {
         SetAttackOK(false);
-        if (battleState!=null) StopCoroutine(battleState);   
+        if (battleState != null) StopCoroutine(battleState);
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
 
@@ -95,8 +93,8 @@ public class MeleeType : MonsterMain
 
     IEnumerator AttackDeleayState()
     {
-        float timer=0.0f;
-        while (true) 
+        float timer = 0.0f;
+        while (true)
         {
             Vector3 battletarget = myTarget.transform.position;
             Vector3 dir = battletarget - transform.position;
@@ -112,6 +110,6 @@ public class MeleeType : MonsterMain
             yield return null;
         }
         SetAttackOK(true);
-        if (monsterState !=State.Dead) battleState = StartCoroutine(BattleState());
+        if (monsterState != State.Dead) battleState = StartCoroutine(BattleState());
     }
 }

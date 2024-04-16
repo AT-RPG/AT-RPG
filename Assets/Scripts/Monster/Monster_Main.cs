@@ -114,6 +114,7 @@ public class MonsterMain : CommonBattle
             float moveSpeed = float.Parse(data[9]);
             float monsterRunSpeed = float.Parse(data[10]);
             int monsterPhase = int.Parse(data[11]);
+            int monsterDefend = int.Parse(data[12]);
 
             if (monsterIndex == MonsterIndex) //해당줄의 인덱스랑 현재몬스터의 인덱스가 일치하면 스탯부여
             {
@@ -146,6 +147,7 @@ public class MonsterMain : CommonBattle
                 baseBattleStat.attackPoint = attackPoint;
                 baseBattleStat.skillCooltime = skillCooltime;
                 baseBattleStat.attackDeley = attackDeley;
+                baseBattleStat.defendPoint = monsterDefend;
                 break;
             }
         }
@@ -394,7 +396,6 @@ public class MonsterMain : CommonBattle
                 else
                 {
                     AttackPlayer();
-
                 }
                 break;
             }
@@ -405,11 +406,11 @@ public class MonsterMain : CommonBattle
 
     public override void SetDamageEffect()  //피격이펙트
     {
-        //StartCoroutine(DamagingEffect(Color.red));
+        StartCoroutine(DamagingEffect(Color.red));
     }
 
 
-    /* 
+    
     Renderer[] _allRenderer;
     public Renderer[] allRenderer
     {
@@ -433,11 +434,10 @@ public class MonsterMain : CommonBattle
 
         foreach (Renderer renderer in allRenderer)
         {
-            //renderer.material.color = Color.white;
-            renderer.material.SetColor("_Color", Color.white);
+            renderer.material.color = Color.white;
         }
     }
-    */
+    
 
     public virtual void AttackPlayer()
     {

@@ -1,10 +1,6 @@
 using AT_RPG;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
-using UnityEngine.AI;
-using UnityEngine.EventSystems;
 
 /// <summary>
 /// <see cref="RangeType"/>
@@ -13,14 +9,15 @@ using UnityEngine.EventSystems;
 public class RangeType : MonsterMain
 {
 
-   public Coroutine backstep = null;
-   public Coroutine attackdelay = null;
+    public Coroutine backstep = null;
+    public Coroutine attackdelay = null;
     public MonsterShootManager shootManager;
+
 
     public Transform attackPos;
 
     public override void OnEnable()
-    { 
+    {
         base.OnEnable();
         GameObject managerObject = GameObject.Find("MonsterShootManager");
         if (managerObject != null)
@@ -81,7 +78,7 @@ public class RangeType : MonsterMain
 
     public override void AttackDelay()
     {
-        backwalk();  
+        backwalk();
         attackdelay = StartCoroutine(AttackDelayCoroutine());//공격딜레이 계산 코룬틴
     }
 
@@ -112,29 +109,34 @@ public class RangeType : MonsterMain
     }
     IEnumerator monBackWalk()
     {
-
-        Vector3 battletarget = myTarget.transform.position;
-        Vector3 dir = battletarget - transform.position;
-        float dist = dir.magnitude;
-
-        while (dist < mStat.monsterRange && monsterState != State.Dead)
+        while (true)
         {
+            if (myTarget == null || monsterState == State.Dead)
+                yield break;
+
+            Vector3 battletarget = myTarget.transform.position;
+            Vector3 dir = battletarget - transform.position;
+            float dist = dir.magnitude;
             transform.LookAt(myTarget);
-            myAnim.SetBool("BackWalk", true);
-            Vector3 moveDirection = -dir.normalized;
-            monAgent.SetDestination(transform.position + moveDirection);
+            if (dist < mStat.monsterRange && monsterState != State.Dead)
+            {
+                transform.LookAt(myTarget);
+                myAnim.SetBool("BackWalk", true);
+                Vector3 moveDirection = -dir.normalized;
+                monAgent.SetDestination(transform.position + moveDirection);
+            }
+            else
+            {
+                myAnim.SetBool("BackWalk", false);
+                break;
+            }
             yield return null;
-            dir = battletarget - transform.position;
-            dist = dir.magnitude;
-            myAnim.SetBool("BackWalk", false);
         }
-        transform.LookAt(myTarget);
-        backwalk();
     }
     public override void OnAttack()
     {
         if (myTarget == null) return;
-        shootManager.OnShoot(attackPos,baseBattleStat.attackPoint);
+        shootManager.OnShoot(attackPos, baseBattleStat.attackPoint);
     }
 
     public void ballHit()
