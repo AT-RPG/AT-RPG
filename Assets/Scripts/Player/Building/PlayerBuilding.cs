@@ -66,7 +66,11 @@ namespace AT_RPG
 
             if (buildingIndicatorInstance.Status != IndicatorStatus.Approved) { return; }
 
-            Instantiate(buildingPrefab, buildingIndicatorInstance.transform.position, buildingIndicatorInstance.transform.rotation);
+            GameObject building = Instantiate<GameObject>(buildingPrefab, buildingIndicatorInstance.transform.position, buildingIndicatorInstance.transform.rotation);
+            if (buildingIndicatorInstance.IsSnapEnable)
+            {
+                buildingIndicatorInstance.SetSnapBuildingInstance(building);
+            }
         }
     }
 }

@@ -62,6 +62,7 @@ namespace AT_RPG
             InputManager.RemoveKeyAction("RotateBuildingPositionR", RotateRight);
             InputManager.RemoveKeyAction("BuildOption_Snap", OnEnableSnap);
 
+            SetSnapBuildingInstance(null);
         }
 
         private void Start()
@@ -99,7 +100,7 @@ namespace AT_RPG
 
             // 건설 표시기의 충돌 이벤트 적용
             // 건설 가능/불가능 위치를 판단하는 로직을 추가
-            var buildingIndicatorObjectInstance = indicatorBuildingInstance.gameObject.AddComponent<BuildingIndicatorObject>();
+            var buildingIndicatorObjectInstance = indicatorBuildingInstance.gameObject.AddComponent<BuildingIndicatorCollisionHandler>();
             buildingIndicatorObjectInstance.OnTriggerEnterAction += other => OnRejectBuildObject(other);
             buildingIndicatorObjectInstance.OnTriggerEnterAction += other => OnApproveBulidObject(other);
             buildingIndicatorObjectInstance.OnTriggerStayAction += other => OnRejectBuildObject(other);
@@ -107,7 +108,38 @@ namespace AT_RPG
             buildingIndicatorObjectInstance.OnTriggerExitAction += other => OnApproveBulidObject(other);
         }
 
+        /// <summary>
+        /// 스냅을 지정할 건물을 선택합니다.
+        /// </summary>
+        /// <param name="building">지정할 건물의 gameObject, null인 경우, 초기화합니다.</param>
+        /// <remarks><paramref name="building"/>은 <see cref="BuildingObject"/>를 가지고 있어야합니다.</remarks>
+        public void SetSnapBuildingInstance(GameObject building)
+        {
+            // 이전에 달아줬던 외각선 쉐이더를 지워줍니다.
+            if (snapbuildingInstance)
+            {
+                var oldRenderer = snapbuildingInstance.GetComponent<MeshRenderer>();
+                var oldMaterials = oldRenderer.materials.ToList();
+                oldMaterials.Remove(oldMaterials[oldMaterials.Count - 1]);
+                oldRenderer.SetMaterials(oldMaterials);
 
+                snapbuildingInstance = null;
+            }
+
+            if (building)
+            {
+                // 스냅이 지정된 건물인지 알 수 있도록, 외각선 쉐이더를 달아줍니다.
+                var newRenderer = building.GetComponent<MeshRenderer>();
+                var newMaterials = newRenderer.materials.ToList();
+                newMaterials.Add(outliner);
+                newRenderer.SetMaterials(newMaterials);
+
+                // 스냅한 건물을 건물 표시기에 등록합니다.
+                snapbuildingInstance = building.GetComponent<BuildingObject>();
+
+                transform.rotation = snapbuildingInstance.transform.rotation;
+            }
+        }
 
         /// <summary>
         /// 건설모드에서 건물이 다른 건물에 맞춰서 건설될 수 있도록합니다.
@@ -143,47 +175,113 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// 스냅을 지정할 건물을 선택합니다.
-        /// </summary>
-        /// <param name="building">지정할 건물의 gameObject, null인 경우, 초기화합니다.</param>
-        /// <remarks><paramref name="building"/>은 <see cref="BuildingObject"/>를 가지고 있어야합니다.</remarks>
-        private void SetSnapBuildingInstance(GameObject building)
-        {
-            // 초기화임?
-            if (!building && snapbuildingInstance)
-            {
-                // 이전에 달아줬던 외각선 쉐이더를 달아줍니다.
-                var renderer = snapbuildingInstance.GetComponent<MeshRenderer>();
-                var materials = renderer.materials.ToList();
-                materials.Remove(materials[materials.Count - 1]);
-                renderer.SetMaterials(materials);
-
-                snapbuildingInstance = null;
-            }
-            // 등록임?
-            else
-            {
-                // 스냅이 지정된 건물인지 알 수 있도록, 외각선 쉐이더를 달아줍니다.
-                var renderer = building.GetComponent<MeshRenderer>();
-                var materials = renderer.materials.ToList();
-                materials.Add(outliner);
-                renderer.SetMaterials(materials);
-
-                // 스냅한 건물을 건물 표시기에 등록합니다.
-                snapbuildingInstance = building.GetComponent<BuildingObject>();
-            }
-        }
-
-        /// <summary>
         /// 건설위치를 조준점(<see cref="Camera.ScreenPointToRay(Vector3)"/>)이 가리키는 위치로 업데이트합니다.
         /// </summary>
         private void Move()
         {
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
-            RaycastHit hit;
-            if (!Physics.Raycast(ray, out hit, detectRange, collisionLayer)) { return; }
+            // 스냅이 꺼져있음?
+            // 크로스헤어에 들어온 오브젝트 위에 건설 위치를 이동시킵니다.
+            if (!isSnapEnabled)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
+                RaycastHit hit;
+                if (!Physics.Raycast(ray, out hit, detectRange, collisionLayer)) { return; }
 
-            transform.position = hit.point;
+                transform.position = hit.point;
+            }
+            else
+            // 스냅이 켜져있음?
+            // 크로스헤어에 들어온 스냅 오브젝트를 기반으로한 그리드에 건설 위치를 이동시킵니다.
+            {
+                Vector3 gridPosition = snapbuildingInstance.transform.position;
+                Plane plane = new Plane(Vector3.up, gridPosition);
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
+                if (!plane.Raycast(ray, out float enter)) { return; }
+                if (enter > detectRange) { return; }
+
+                MoveBySnapPoint(ray.GetPoint(enter));
+            }
+        }
+
+        /// <summary>
+        /// <see cref="snapbuildingInstance"/>를 기준으로한 그리드 단위로 건설 위치를 이동시킵니다.
+        /// </summary>
+        /// <param name="rayPoint">플레이어의 크로스헤어가 충돌한 그리드 포인트</param>
+        private void MoveBySnapPoint(Vector3 rayPoint)
+        {
+            Vector3 snapPoint = snapbuildingInstance.transform.position;
+            Vector3 snapExtents = snapbuildingInstance.GetComponent<Collider>().bounds.extents;
+
+            // x축 계산
+            float pointX = snapPoint.x;
+            int ix = 0;
+            while (true)
+            {
+                float tempPointX;
+
+                // 오른쪽 그리드
+                tempPointX = pointX;
+                tempPointX += snapExtents.x * ix;
+                if (tempPointX - snapExtents.x <= rayPoint.x && rayPoint.x <= tempPointX + snapExtents.x)
+                {
+                    pointX = tempPointX * (ix + 1) / (ix + 3);
+                    pointX = tempPointX;
+                    break;
+                }
+
+                // 왼쪽 그리드
+                tempPointX = pointX;
+                tempPointX -= snapExtents.x * ix;
+                if (tempPointX - snapExtents.x <= rayPoint.x && rayPoint.x <= tempPointX + snapExtents.x)
+                {
+                    pointX = tempPointX;
+                    break;
+                }
+
+                // 그리드 얻기 실패
+                if (ix > 50)
+                {
+                    break;
+                }
+
+                ix++;
+            }
+
+            // z축 계산
+            float pointZ = snapPoint.z;
+            int iz = 0;
+            while (true)
+            {
+                float tempPointZ;
+
+                // 오른쪽 그리드
+                tempPointZ = pointZ;
+                tempPointZ += snapExtents.z * iz;
+                if (tempPointZ - snapExtents.z <= rayPoint.z && rayPoint.z <= tempPointZ + snapExtents.z)
+                {
+                    pointZ = tempPointZ;
+                    break;
+                }
+
+                // 왼쪽 그리드
+                tempPointZ = pointZ;
+                tempPointZ -= snapExtents.z * iz;
+                if (tempPointZ - snapExtents.z <= rayPoint.z && rayPoint.z <= tempPointZ + snapExtents.z)
+                {
+                    pointZ = tempPointZ;
+                    break;
+                }
+
+                // 그리드 얻기 실패
+                if (iz > 50)
+                {
+                    break;
+                }
+
+                iz++;
+            }
+
+            transform.position = new Vector3(pointX, snapPoint.y, pointZ);
         }
 
         /// <summary>
@@ -203,7 +301,7 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// <see cref="BuildingIndicatorObject"/>의 충돌 이벤트에서 트리거됩니다.
+        /// <see cref="BuildingIndicatorCollisionHandler"/>의 충돌 이벤트에서 트리거됩니다.
         /// </summary>
         private void OnApproveBulidObject(Collider other)
         {
@@ -211,7 +309,7 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// <see cref="BuildingIndicatorObject"/>의 충돌 이벤트에서 트리거됩니다.
+        /// <see cref="BuildingIndicatorCollisionHandler"/>의 충돌 이벤트에서 트리거됩니다.
         /// </summary>
         private void OnRejectBuildObject(Collider other)
         {
@@ -244,5 +342,8 @@ namespace AT_RPG
     {
         // 건설가능 여부
         public IndicatorStatus Status => status;
+
+        // 건설모드에서 스냅 활성/비활성
+        public bool IsSnapEnable => isSnapEnabled;
     }
 }
