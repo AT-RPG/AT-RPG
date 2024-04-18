@@ -1,6 +1,7 @@
 using AT_RPG;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
 using static UnityEngine.GraphicsBuffer;
@@ -16,12 +17,19 @@ public class Fireball : MonoBehaviour//, ICharacterDamage
     [SerializeField]
     private float ballSpeed;
     private float damage;
+    private Vector3 direction;
 
     private MonsterShootManager monsterShootManager;
     public void SetDamage(float damageValue)
     {
         damage = damageValue;
     }
+    public void SetTarget(Vector3 target)
+    {
+       
+        direction = (target - transform.position).normalized;
+    }
+
 
     public void SetRangeAttackParent(MonsterShootManager parent)
     {
@@ -66,11 +74,12 @@ public class Fireball : MonoBehaviour//, ICharacterDamage
     }
     private void Start()
     {
-       
+        
     }
     private void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * ballSpeed); //발사
+        transform.Translate(direction * Time.deltaTime * ballSpeed);
+
     }
 
    // public void TakeDamage(float dmg)

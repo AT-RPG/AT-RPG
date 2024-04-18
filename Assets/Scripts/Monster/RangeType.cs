@@ -25,11 +25,19 @@ public class RangeType : MonsterMain
             shootManager = managerObject.GetComponent<MonsterShootManager>();
         }
     }
+    public void lookPlayer()
+    {
+        Vector3 directionToPlayer = (myTarget.transform.position - transform.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 3.0f);
+    }
     public override void AttackPlayer()
     {
         SetAttackOK(false);
         if (battleState != null) StopCoroutine(battleState);
         monAgent.ResetPath();
+
+        lookPlayer();
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
         myAnim.SetTrigger("NormalAttack");
@@ -40,8 +48,10 @@ public class RangeType : MonsterMain
         if (battleState != null) StopCoroutine(battleState);
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
-        myAnim.SetTrigger("NormalAttack");
         myAnim.SetBool("Skill", true);
+        myAnim.SetTrigger("NormalAttack");
+        
+        Debug.Log("스킬사용");
         StartCoroutine(Rage());
     }
     IEnumerator Rage()
@@ -117,16 +127,16 @@ public class RangeType : MonsterMain
             Vector3 battletarget = myTarget.transform.position;
             Vector3 dir = battletarget - transform.position;
             float dist = dir.magnitude;
-            transform.LookAt(myTarget);
             if (dist < mStat.monsterRange && monsterState != State.Dead)
             {
-                transform.LookAt(myTarget);
                 myAnim.SetBool("BackWalk", true);
                 Vector3 moveDirection = -dir.normalized;
+                lookPlayer();
                 monAgent.SetDestination(transform.position + moveDirection);
             }
             else
             {
+                monAgent.ResetPath();
                 myAnim.SetBool("BackWalk", false);
                 break;
             }
@@ -136,7 +146,7 @@ public class RangeType : MonsterMain
     public override void OnAttack()
     {
         if (myTarget == null) return;
-        shootManager.OnShoot(attackPos, baseBattleStat.attackPoint);
+        shootManager.OnShoot(attackPos, baseBattleStat.attackPoint,myTarget.transform.position);
     }
 
     public void ballHit()

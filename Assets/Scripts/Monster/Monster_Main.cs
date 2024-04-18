@@ -382,6 +382,7 @@ public class MonsterMain : CommonBattle
             {
                 if (move != null) StopCoroutine(move);
                 monAgent.ResetPath();
+                transform.LookAt(myTarget);
                 if (mStat.monsterPhase >= 1)
                 {
                     if (skillOK == true)
