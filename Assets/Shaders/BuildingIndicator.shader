@@ -45,6 +45,7 @@ Shader "AT_RPG/Building/Building_Indicator"
             v2f vert(appdata v)
             {
                 v2f o;
+                v.vertex = mul(v.vertex, 1.001);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 return o;

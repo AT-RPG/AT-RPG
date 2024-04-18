@@ -15,4 +15,4 @@ MonoBehaviour:
   MaxHP: 10
   BuildingLayer:
     serializedVersion: 2
-    m_Bits: 33555456
+    m_Bits: 1024

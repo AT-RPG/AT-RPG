@@ -48,7 +48,6 @@ MonoBehaviour:
   detectRange: 7.5
   rotationSpeed: 90
   indication: {fileID: 2100000, guid: 8027609fa4e9ebd49abb0ed1d6a37bf8, type: 2}
-  outliner: {fileID: 2100000, guid: 824c82783c0753d4fa770bc37d5c65f8, type: 2}
   collisionLayer:
     serializedVersion: 2
     m_Bits: 33555456
@@ -75,7 +74,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0

@@ -9,25 +9,23 @@ namespace AT_RPG
     /// </summary>
     public class BuildingIndicatorCollisionHandler : MonoBehaviour
     {
-        public Action<Collider> OnTriggerEnterAction;
-        public Action<Collider> OnTriggerStayAction;
-        public Action<Collider> OnTriggerExitAction;
-
-
+        public Action<Collider> OnCollisionEnterAction;
+        public Action<Collider> OnCollisionStayAction;
+        public Action<Collider> OnCollisionExitAction;
 
         private void OnTriggerEnter(Collider other)
         {
-            OnTriggerEnterAction?.Invoke(other);
+            OnCollisionEnterAction?.Invoke(other);
         }
 
         private void OnTriggerStay(Collider other)
         {
-            OnTriggerStayAction?.Invoke(other);
+            OnCollisionStayAction?.Invoke(other);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            OnTriggerExitAction?.Invoke(other);
+            OnCollisionExitAction?.Invoke(other);
         }
     }
 

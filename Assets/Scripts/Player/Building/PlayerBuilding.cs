@@ -8,7 +8,7 @@ namespace AT_RPG
     /// 1. 건설 인디케이터를 표시합니다.                 <br/>
     /// 2. 지정된 건설 오브젝트를 인스턴싱합니다.        <br/>
     /// </summary>
-    public class PlayerBuilding : MonoBehaviour
+    public partial class PlayerBuilding : MonoBehaviour
     {
         // 건설할 프리팹
         [SerializeField] private AssetReferenceResource<GameObject> buildingPrefab = null;
@@ -20,7 +20,7 @@ namespace AT_RPG
         private BuildingIndicator buildingIndicatorInstance = null;
 
         // 건설모드 활성/비활성
-        private bool isBuildModeEnabled = false;
+        private static bool isBuildModeEnabled = false;
 
 
 
@@ -66,11 +66,13 @@ namespace AT_RPG
 
             if (buildingIndicatorInstance.Status != IndicatorStatus.Approved) { return; }
 
-            GameObject building = Instantiate<GameObject>(buildingPrefab, buildingIndicatorInstance.transform.position, buildingIndicatorInstance.transform.rotation);
-            if (buildingIndicatorInstance.IsSnapEnable)
-            {
-                buildingIndicatorInstance.SetSnapBuildingInstance(building);
-            }
+            Instantiate<GameObject>(buildingPrefab, buildingIndicatorInstance.transform.position, buildingIndicatorInstance.transform.rotation);
         }
+    }
+
+    public partial class PlayerBuilding
+    {
+        // 건설모드 활성/비활성
+        public static bool IsBuildModeEnabled => isBuildModeEnabled;
     }
 }

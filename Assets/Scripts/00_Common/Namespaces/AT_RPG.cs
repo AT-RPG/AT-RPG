@@ -196,6 +196,9 @@ namespace AT_RPG
     /// </summary>
     public enum UpdateOption
     {
+        // 실행되지 않습니다.
+        None,
+
         // Update()
         Default,
 
