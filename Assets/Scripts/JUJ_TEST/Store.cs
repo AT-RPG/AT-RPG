@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Store : MonoBehaviour
 {
+    public GameObject StoreUI;
     public GameObject buyPanel; // 구매 패널
     public GameObject sellPanel; // 판매 패널
 
@@ -31,7 +32,6 @@ public class Store : MonoBehaviour
     }
     public void ExitButton() // 닫기 버튼 함수
     {
-        buyPanel.SetActive(false);
-        sellPanel.SetActive(false);
+        StoreUI.SetActive(false);
     }
 }
