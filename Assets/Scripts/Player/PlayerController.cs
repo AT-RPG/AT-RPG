@@ -10,7 +10,6 @@ using System.Linq;
 /// </summary>
 public class PlayerController : CommonBattle
 {
-    public LayerMask enemyMask;
     [SerializeField] private GameObject[] weapons;
     [SerializeField] private Transform characterBody;
     [SerializeField] private Transform cameraArm;
