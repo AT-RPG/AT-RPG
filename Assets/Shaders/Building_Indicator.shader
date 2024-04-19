@@ -1,6 +1,5 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-Shader "AT_RPG/Building/Building_Indicator"
+Shader "AT_RPG/Building/Indicator"
 {
     Properties
     {

@@ -86,77 +86,37 @@ namespace AT_RPG
         /// <summary>
         /// <paramref name="unitBasis"/> 방향을 기준으로 충돌하지 않기 위해 필요한 <paramref name="direction"/>과 <paramref name="distance"/>를 계산합니다.
         /// </summary>
-        public static bool CalculatePenetration(Vector3 unitBasis, Collider colliderA, Collider colliderB, out Vector3 direction, out float distance)
+        public static bool CalculatePenetration(
+            Vector3 unitBasis, Transform unitTransform, Bounds initColliderABounds, Collider colliderA, Collider colliderB, out Vector3 direction, out float distance)
         {
             direction = Vector3.zero;
             distance = 0f;
 
-            // unitBasis를 colliderB의 로컬 축에 맞게 변환
-            Vector3 localUnitBasis = colliderB.transform.InverseTransformDirection(unitBasis).normalized;
+            Bounds boundsAB = CalculateIntersectionBounds(colliderA.bounds, colliderB.bounds);
+            direction = (boundsAB.center - colliderA.bounds.center).normalized;
 
-            // 두 Bounds를 각 객체의 Transform을 반영하여 계산
-            Bounds boundsA = TransformBounds(colliderA.bounds, colliderA.transform);
-            Bounds boundsB = TransformBounds(colliderB.bounds, colliderB.transform);
-
-            // 두 Bounds의 충돌 중심과 크기 계산
-            Bounds intersection = CalculateIntersectionBounds(boundsA, boundsB);
-            Vector3 intersectionSize = intersection.size;
-            Vector3 centerDifference = (boundsA.center - intersection.center).normalized;
-
-            // 로컬 축을 기준으로 충돌 방향과 거리 설정
-            direction = GetMajorAxis(localUnitBasis);
-            distance = GetPenetrationDepth(intersectionSize, localUnitBasis);
-
-            if (distance > 0)
+            switch (unitBasis)
             {
-                direction = colliderB.transform.TransformDirection(direction); // 월드 공간으로 방향 변환
-                return true;
+                case Vector3 up when up.Equals(unitTransform.up):
+                    break;
+
+                case Vector3 down when down.Equals(-unitTransform.up):
+                    break;
+
+                case Vector3 right when right.Equals(unitTransform.right):
+                    break;
+
+                case Vector3 left when left.Equals(-unitTransform.right):
+                    break;
+
+                case Vector3 forward when forward.Equals(unitTransform.forward):
+                    break;
+
+                case Vector3 back when back.Equals(-unitTransform.forward):
+                    break;
             }
 
-            return false;
-        }
-
-        private static Bounds TransformBounds(Bounds bounds, Transform transform)
-        {
-            // 중심점을 Transform의 위치, 회전, 스케일에 따라 변환
-            Vector3 transformedCenter = transform.TransformPoint(bounds.center);
-
-            // 각 축의 extents를 월드 스케일로 변환하여 새로운 extents 계산
-            Vector3 transformedExtents = Vector3.zero;
-            transformedExtents.x = transform.TransformVector(Vector3.right * bounds.extents.x).magnitude;
-            transformedExtents.y = transform.TransformVector(Vector3.up * bounds.extents.y).magnitude;
-            transformedExtents.z = transform.TransformVector(Vector3.forward * bounds.extents.z).magnitude;
-
-            // 변환된 중심점과 extents로 새로운 Bounds 생성
-            return new Bounds(transformedCenter, transformedExtents * 2);
-        }
-
-        // 주 축을 추출하는 함수
-        private static Vector3 GetMajorAxis(Vector3 vector)
-        {
-            float absX = Mathf.Abs(vector.x);
-            float absY = Mathf.Abs(vector.y);
-            float absZ = Mathf.Abs(vector.z);
-
-            if (absX > absY && absX > absZ)
-                return vector.x > 0 ? Vector3.right : Vector3.left;
-            else if (absY > absZ)
-                return vector.y > 0 ? Vector3.up : Vector3.down;
-            else
-                return vector.z > 0 ? Vector3.forward : Vector3.back;
-        }
-
-        // 충돌 깊이를 계산하는 함수
-        private static float GetPenetrationDepth(Vector3 intersectionSize, Vector3 localUnitBasis)
-        {
-            if (Mathf.Approximately(localUnitBasis.x, 1) || Mathf.Approximately(localUnitBasis.x, -1))
-                return intersectionSize.x;
-            else if (Mathf.Approximately(localUnitBasis.y, 1) || Mathf.Approximately(localUnitBasis.y, -1))
-                return intersectionSize.y;
-            else if (Mathf.Approximately(localUnitBasis.z, 1) || Mathf.Approximately(localUnitBasis.z, -1))
-                return intersectionSize.z;
-            return 0;
+            return distance > 0f ? true : false;
         }
     }
-
 }

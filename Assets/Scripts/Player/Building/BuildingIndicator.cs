@@ -99,9 +99,12 @@ namespace AT_RPG
             // 건설 표시기의 충돌 이벤트 적용
             // 건설 가능/불가능 위치를 판단하는 로직을 추가
             var buildingIndicatorObjectInstance = indicatorBuildingInstance.gameObject.AddComponent<BuildingIndicatorCollisionHandler>();
-            buildingIndicatorObjectInstance.OnCollisionStayAction += other => OnSnap(other);
+            // buildingIndicatorObjectInstance.OnCollisionStayAction += other => OnSnap(other);
+
+            buildingIndicatorObjectInstance.OnCollisionEnterAction += other => OnRejectBuildObject(other);
             buildingIndicatorObjectInstance.OnCollisionStayAction += other => OnApproveBulidObject(other);
             buildingIndicatorObjectInstance.OnCollisionStayAction += other => OnRejectBuildObject(other);
+            buildingIndicatorObjectInstance.OnCollisionExitAction += other => OnApproveBulidObject(other);
         }
 
         /// <summary>
@@ -111,9 +114,59 @@ namespace AT_RPG
         {
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
             isMovable = Physics.Raycast(ray, out hit, detectRange, collisionLayer);
-            if (isMovable) 
+            if (isMovable)
             {
-                transform.position = hit.point;
+                switch (hit.collider.gameObject.layer)
+                {
+                    case int ground when ground.Equals(LayerMask.NameToLayer("Ground")):
+                        transform.position = hit.point + new Vector3(0, indicatorInitBuildingBounds.extents.y, 0);
+                        break;
+
+                    case int building when building.Equals(LayerMask.NameToLayer("Building")):
+                        transform.rotation = hit.transform.rotation;
+
+                        // 거리를 벌려야할 방향과 거리
+                        Vector3 approxLocalUnitDir = MathfEx.CalculateApproxUnitVector(hit.point - hit.collider.bounds.center, hit.collider.transform);
+                        float approxLocalUnitDist = 0f;
+
+                        // hit.collider의 local unit direciton을 저장합니다.
+                        Vector3 localUp = hit.collider.transform.up;
+                        Vector3 localDown = -hit.collider.transform.up;
+                        Vector3 localRight = hit.collider.transform.right;
+                        Vector3 localLeft = -hit.collider.transform.right;
+                        Vector3 localForward = hit.collider.transform.forward;
+                        Vector3 localBack = -hit.collider.transform.forward;
+
+                        // OBB bounds의 x,y,z를 구하기 위해 잠시 회전시킨다.
+                        Quaternion temp = hit.collider.transform.rotation;
+                        hit.collider.transform.rotation = Quaternion.identity;
+                        Physics.SyncTransforms();
+
+                        // OBB bounds의 x,y,z 거리 구하기.
+                        switch (approxLocalUnitDir)
+                        {
+                            case Vector3 x when x.Equals(localRight) || x.Equals(localLeft):
+                                approxLocalUnitDist = hit.collider.bounds.extents.x + indicatorInitBuildingBounds.extents.x;
+                                break;
+
+                            case Vector3 y when y.Equals(localUp) || y.Equals(localDown):
+                                approxLocalUnitDist = hit.collider.bounds.extents.y + indicatorInitBuildingBounds.extents.y;
+                                break;
+
+                            case Vector3 z when z.Equals(localForward) || z.Equals(localBack):
+                                approxLocalUnitDist = hit.collider.bounds.extents.z + indicatorInitBuildingBounds.extents.z;
+                                break;
+                        }
+
+                        // 해당 방향의 중점으로 이동
+                        transform.position = hit.collider.transform.position + approxLocalUnitDir * (approxLocalUnitDist + Physics.defaultContactOffset);
+
+                        // OBB를 구하기 위해 회전했던걸 다시 되돌림
+                        hit.collider.transform.rotation = temp;
+                        Physics.SyncTransforms();
+
+                        break;
+                }
             }
         }
 
@@ -131,98 +184,6 @@ namespace AT_RPG
         private void RotateRight(InputValue inputValue)
         {
             transform.Rotate(Vector3.up, rotationSpeed * Time.fixedDeltaTime, Space.World);
-        }
-
-        /// <summary>
-        /// <paramref name="other"/>를 기준으로 <see cref="indicatorBuildingInstance"/>의 충돌 범위를 스냅합니다.
-        /// </summary>
-        private void OnSnap(Collider other)
-        {
-            if (!isMovable)
-            {
-                return;
-            }
-
-            switch (other.gameObject.layer)
-            {
-                // 단순히 땅의 법선벡터쪽으로 밀어냅니다.
-                case int ground when ground.Equals(LayerMask.NameToLayer("Ground")):
-                    transform.position = hit.point + new Vector3(0, indicatorInitBuildingBounds.extents.y, 0);
-                    break;
-
-                // 충돌한 방향에 맞춰 정렬합니다.
-                case int building when building.Equals(LayerMask.NameToLayer("Building")):
-                    Vector3 approxUnitDir = MathfEx.CalculateApproxUnitVector(indicatorBuildingCollider.bounds.center - other.bounds.center, other.transform);
-                    Vector3 otherCenter = other.bounds.center;
-                    Vector3 direction = Vector3.zero;
-                    float distance = 0f;
-                    switch (approxUnitDir)
-                    {
-                        case Vector3 up when up.Equals(other.transform.up):
-                            transform.rotation = other.transform.rotation;
-                            transform.position = other.transform.position + other.transform.up * Physics.defaultContactOffset;
-                            Physics.SyncTransforms();
-                            if (MathfEx.CalculatePenetration(other.transform.up, indicatorBuildingCollider, other, out direction, out distance))
-                            {
-                                transform.position = otherCenter + direction * distance;
-                            }
-
-                            break;
-
-                        case Vector3 down when down.Equals(-other.transform.up):
-                            transform.rotation = other.transform.rotation;
-                            transform.position = other.transform.position + (-other.transform.up) * Physics.defaultContactOffset;
-                            Physics.SyncTransforms();
-                            if (MathfEx.CalculatePenetration(-other.transform.up, indicatorBuildingCollider, other, out direction, out distance))
-                            {
-                                transform.position = otherCenter + direction * distance;
-                            }
-                            break;
-
-                        case Vector3 right when right.Equals(other.transform.right):
-                            transform.rotation = other.transform.rotation;
-                            transform.position = other.transform.position + other.transform.right * Physics.defaultContactOffset;
-                            Physics.SyncTransforms();
-                            if (MathfEx.CalculatePenetration(other.transform.right, indicatorBuildingCollider, other, out direction, out distance))
-                            {
-                                transform.position = otherCenter + direction * distance;
-                            }
-
-                            break;
-
-                        case Vector3 left when left.Equals(-other.transform.right):
-                            transform.rotation = other.transform.rotation;
-                            transform.position = other.transform.position + (-other.transform.right) * Physics.defaultContactOffset;
-                            Physics.SyncTransforms();
-                            if (MathfEx.CalculatePenetration(-other.transform.right, indicatorBuildingCollider, other, out direction, out distance))
-                            {
-                                transform.position = otherCenter + direction * distance;
-                            }
-                            break;
-
-                        case Vector3 forward when forward.Equals(other.transform.forward):
-                            transform.rotation = other.transform.rotation;
-                            transform.position = other.transform.position + (other.transform.forward) * Physics.defaultContactOffset;
-                            Physics.SyncTransforms();
-                            if (MathfEx.CalculatePenetration(other.transform.forward, indicatorBuildingCollider, other, out direction, out distance))
-                            {
-                                transform.position = otherCenter + direction * distance;
-                            }
-                            break;
-
-                        case Vector3 back when back.Equals(-other.transform.forward):
-                            transform.rotation = other.transform.rotation;
-                            transform.position = other.transform.position + (-other.transform.forward) * Physics.defaultContactOffset;
-                            Physics.SyncTransforms();
-                            if (MathfEx.CalculatePenetration(-other.transform.forward, indicatorBuildingCollider, other, out direction, out distance))
-                            {
-                                transform.position = otherCenter + direction * distance;
-                            }
-                            break;
-                    }
-
-                    break;
-            }
         }
 
         /// <summary>

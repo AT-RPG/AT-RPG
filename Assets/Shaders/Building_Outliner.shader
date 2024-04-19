@@ -1,5 +1,5 @@
 
-Shader "AT_RPG/DotOutliner"
+Shader "AT_RPG/Building/Outliner"
 {
     Properties
     {
