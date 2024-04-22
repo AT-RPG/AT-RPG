@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3e3c4502cd4cecc4b81e75c0a2443c11, type: 2}
+  - {fileID: 2100000, guid: a54dff7de311db7468af9e8a6044c7a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,3 +141,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: d01f663697e351a4897a6e72fcc4e991, type: 2}
+  DissolveThreshold: 0
+  DissolveEdgeWidth: 0
+  dissolvePrefab: {fileID: 2100000, guid: 39fcdf4d38db5b94aaafe1776c943c34, type: 2}
