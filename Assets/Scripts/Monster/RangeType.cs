@@ -1,4 +1,5 @@
 using AT_RPG;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public class RangeType : MonsterMain
     }
     public void lookPlayer()
     {
-        Vector3 directionToPlayer = (myTarget.transform.position - transform.position).normalized;
+        Vector3 directionToPlayer = myTarget.transform.position - transform.position;
         Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 3.0f);
     }
@@ -48,15 +49,23 @@ public class RangeType : MonsterMain
         if (battleState != null) StopCoroutine(battleState);
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
-        myAnim.SetBool("Skill", true);
         myAnim.SetTrigger("NormalAttack");
-        
-        Debug.Log("스킬사용");
+        myAnim.SetBool("Skill", true);
         StartCoroutine(Rage());
+        StartCoroutine(skillCoolTimer());
+        StartCoroutine(SkillmotionEnd());
     }
+
+    IEnumerator SkillmotionEnd()
+    {
+        yield return new WaitForSeconds(5.0f);
+        myAnim.SetBool("Skill", false);
+        battleState = StartCoroutine(BattleState());
+    }
+
+
     IEnumerator Rage()
     {
-        myAnim.SetBool("Skill", false);
         float buffTimer = 0.0f;
         while (true)
         {
@@ -66,11 +75,6 @@ public class RangeType : MonsterMain
             yield return null;
         }
         baseBattleStat.attackPoint -= 10;
-        if (monsterState != State.Dead)
-        {
-            StartCoroutine(skillCoolTimer());
-            battleState = StartCoroutine(BattleState());
-        }
     }
     IEnumerator skillCoolTimer()
     {
