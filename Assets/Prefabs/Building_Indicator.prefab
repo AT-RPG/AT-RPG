@@ -48,6 +48,7 @@ MonoBehaviour:
   detectRange: 7.5
   rotationSpeed: 90
   indication: {fileID: 2100000, guid: 8027609fa4e9ebd49abb0ed1d6a37bf8, type: 2}
+  outline: {fileID: 2100000, guid: 824c82783c0753d4fa770bc37d5c65f8, type: 2}
   collisionLayer:
     serializedVersion: 2
     m_Bits: 33555456

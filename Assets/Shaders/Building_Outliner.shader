@@ -7,14 +7,20 @@ Shader "AT_RPG/Building/Outliner"
         _Width ("Width", Range(1.0, 3.0)) = 0.0
         _Color ("Color", Color) = (0, 0, 0, 0)
     }
+
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
+        Tags 
+        { 
+            "Queue"="Transparent"
+            "RenderType"="Transparent" 
+        }
+
         LOD 100
 
         Pass
         {
-            Cull Back
+            Cull Off
             Blend SrcAlpha OneMinusSrcAlpha
 
             CGPROGRAM

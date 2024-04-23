@@ -16,80 +16,33 @@ namespace AT_RPG
     {
         [SerializeField] private BuildingObjectData data;
 
-        [Tooltip("'Destroy.anim', 'Creation.anim'에서 사용되는 'Building_Dissolve.shader'값, 인스턴스가 생성되면, Dissolve효과를 실행합니다.")]
-        [Range(0.0f, 1.0f)] public float DissolveThreshold;
-
-        [Tooltip("현재 인스턴스에 추가할 BuildingObject의 Dissolve 쉐이더")]
         [SerializeField] private Material dissolvePrefab;
 
-        private Material dissolveInstance = null;
+        private Material dissolveInstance;
 
         private Animator animator = null;
 
         private float hp;
 
 
+
         private void Awake()
         {
             hp = data.MaxHP;
+
+            // Dissolve 쉐이더 부착
+            MeshRenderer renderer = GetComponent<MeshRenderer>();
+            List<Material> materials = renderer.materials.ToList();
+            materials.Add(dissolvePrefab);
+            renderer.SetMaterials(materials);
+            dissolveInstance = renderer.materials.Last();
 
             animator = GetComponent<Animator>();
         }
 
         private void Start()
         {
-            AddDissolve();
             animator.SetTrigger("Create");
-        }
-
-        private void Update()
-        {
-            dissolveInstance.SetFloat("_DissolveThreshold", DissolveThreshold);
-            Debug.Log(dissolveInstance.GetFloat("_DissolveThreshold"));
-        }
-
-        private void OnDestroy()
-        {
-            RemoveDissolve();
-        }
-
-        private void AddDissolve()
-        {
-            // 현재 인스턴스 쉐이더 리스트 가져오기
-            MeshRenderer renderer = animator.gameObject.GetComponent<MeshRenderer>();
-            List<Material> materials = renderer.materials.ToList();
-
-            // Dissolve 쉐이더 부착
-            materials.Add(dissolvePrefab);
-
-            // 업데이트
-            renderer.SetMaterials(materials);
-            dissolveInstance = materials[materials.Count - 1];
-        }
-
-        private void RemoveDissolve()
-        {
-            // 현재 인스턴스 쉐이더 리스트 가져오기
-            MeshRenderer renderer = animator.gameObject.GetComponent<MeshRenderer>();
-            List<Material> materials = renderer.materials.ToList();
-
-            // Dissolve 찾기
-            Material dissolve = null;
-            foreach (var material in materials)
-            {
-                if (this.dissolvePrefab.name.Contains(material.name))
-                {
-                    dissolve = material;
-                    break;
-                }
-            }
-
-            // Dissolve 쉐이더 제거
-            materials.Remove(dissolve);
-
-            // 업데이트
-            renderer.SetMaterials(materials);
-            dissolveInstance = null;
         }
 
         public void TakeDamage(float dmg)
@@ -101,9 +54,9 @@ namespace AT_RPG
             if (hp <= 0f) { animator.SetTrigger("Destroy"); }
         }
 
-
         /// <summary>
-        /// <see cref="Animator.SetTrigger(string)"/>가 'Destroy'될 경우, 애니메이션 이벤트에 의해 트리거됩니다.
+        /// <see cref="Animator.SetTrigger(string)"/>가 'Destroy'될 경우, 애니메이션 이벤트에 의해 트리거됩니다. <br/>
+        /// 인스턴스가 파괴될 때 호출됩니다.
         /// </summary>
         private void OnKill()
         {
@@ -111,11 +64,39 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// <see cref="Animator.SetTrigger(string)"/>가 'Hit'될 경우, 애니메이션 이벤트에 의해 트리거됩니다.
+        /// <see cref="Animator.SetTrigger(string)"/>가 'Hit'될 경우, 애니메이션 이벤트에 의해 트리거됩니다. <br/>
+        /// <see cref="TakeDamage(float)"/>될 때 호출됩니다.
         /// </summary>
         private void OnShake()
         {
-            transform.DOShakePosition(0.75f);
+            transform.DOShakePosition(0.5f, 0.2f, 15);
+        }
+
+        /// <summary>
+        /// <see cref="Animator.SetTrigger(string)"/>가 'Create'될 경우, 애니메이션 이벤트에 의해 트리거됩니다. <br/>
+        /// 인스턴싱될 때 호출됩니다.
+        /// </summary>
+        private void OnCreate(float duration)
+        {
+            StartCoroutine(OnCreateImpl(duration));
+        }
+
+        /// <summary>
+        /// <see cref="OnCreate"/>의 구현부 <br/>
+        /// Dissolve효과를 적용합니다.
+        /// </summary>
+        private IEnumerator OnCreateImpl(float duration)
+        {
+            float time = 0f;
+            while (time <= duration)
+            {
+                time += Time.deltaTime;
+
+                dissolveInstance.SetFloat("_DissolveThreshold", Mathf.Lerp(1f, 0f, time / duration));
+                Debug.Log($"{time}, {Mathf.Lerp(1f, 0f, time / duration)}");
+
+                yield return null;
+            }
         }
     }
 

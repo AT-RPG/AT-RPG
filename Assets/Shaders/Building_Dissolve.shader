@@ -10,9 +10,9 @@ Shader "AT_RPG/Building/Dissolve"
         [Header(Dissolve Option)]
         [Space(10)]
         _DissolveTex ("DissolveTexture", 2D) = "white" {}
-        _DissolveThreshold ("DissolveThreshold ", Range(0.0, 1.0)) = 0.1
-        _DissolveEdgeColor ("DissolveEdgeColor", COLOR) = (0, 0, 0, 0)
-        _DissolveEdgeWidth ("DissolveEdgeWidth", Range(0.0, 0.1)) = 0.1
+        _DissolveThreshold ("DissolveThreshold", Range(0.0, 1.0)) = 0.1
+        [HideInInspector]_DissolveEdgeColor ("DissolveEdgeColor", Color) = (0, 0, 0, 0)
+        [HideInInspector] _DissolveEdgeWidth ("DissolveEdgeWidth", float) = 0.1
     }
     SubShader
     {
@@ -74,18 +74,7 @@ Shader "AT_RPG/Building/Dissolve"
                 float edgeLower = _DissolveThreshold - _DissolveEdgeWidth;
                 float edgeUpper = _DissolveThreshold + _DissolveEdgeWidth;
 
-                if (noise > edgeLower && noise < _DissolveThreshold)
-                {
-                    if (_DissolveThreshold <= 0.0) 
-                    {
-                        discard;
-                    }
-
-                    // Calculate edge color based on proximity to threshold
-                    float edgeFactor = (noise - edgeLower) / (_DissolveEdgeWidth * 0.02);
-                    col = lerp(col, _DissolveEdgeColor, edgeFactor);
-                }
-                else if (noise >= _DissolveThreshold && noise < edgeUpper)
+                if (noise >= _DissolveThreshold && noise < edgeUpper)
                 {
                     if (_DissolveThreshold <= 0.0) 
                     {

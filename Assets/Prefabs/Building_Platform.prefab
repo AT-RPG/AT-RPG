@@ -141,6 +141,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: d01f663697e351a4897a6e72fcc4e991, type: 2}
-  DissolveThreshold: 0
-  DissolveEdgeWidth: 0
   dissolvePrefab: {fileID: 2100000, guid: 39fcdf4d38db5b94aaafe1776c943c34, type: 2}

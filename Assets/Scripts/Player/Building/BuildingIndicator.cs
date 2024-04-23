@@ -29,6 +29,7 @@ namespace AT_RPG
 
         // 건설 가능 여부, 건설될 건물의 모양을 시각적으로 표현합니다.
         [SerializeField] private Material indication = null;
+        [SerializeField] private Material outline = null;
 
         // 이 레이어에만 크로스헤어를 따라서 건설 위치가 업데이트됩니다.
         [SerializeField] private LayerMask collisionLayer = 0;
@@ -37,9 +38,8 @@ namespace AT_RPG
         private IndicatorStatus status = IndicatorStatus.Approved;
 
         // 현재 위치에 건물 청사진을 보여주는 인스턴스
-        private BuildingObject indicatorBuildingInstance = null;
-
         // 건설할 건물의 충돌정보, 스냅을 구현하는데 사용됩니다.
+        private BuildingObject indicatorBuildingInstance = null;
         private Collider indicatorBuildingCollider = null;
         private Bounds indicatorInitBuildingBounds = default;
 
@@ -93,14 +93,12 @@ namespace AT_RPG
 
             // 건설 표시기로 사용하도록 쉐이더 적용
             var meshRenderer = indicatorBuildingInstance.GetComponent<MeshRenderer>();
-            List<Material> newMaterials = new() { indication };
+            List<Material> newMaterials = new() { indication, /*outline*/ };
             meshRenderer.SetMaterials(newMaterials);
 
             // 건설 표시기의 충돌 이벤트 적용
             // 건설 가능/불가능 위치를 판단하는 로직을 추가
             var buildingIndicatorObjectInstance = indicatorBuildingInstance.gameObject.AddComponent<BuildingIndicatorCollisionHandler>();
-            // buildingIndicatorObjectInstance.OnCollisionStayAction += other => OnSnap(other);
-
             buildingIndicatorObjectInstance.OnCollisionEnterAction += other => OnRejectBuildObject(other);
             buildingIndicatorObjectInstance.OnCollisionStayAction += other => OnApproveBulidObject(other);
             buildingIndicatorObjectInstance.OnCollisionStayAction += other => OnRejectBuildObject(other);
@@ -127,7 +125,6 @@ namespace AT_RPG
 
                         // 거리를 벌려야할 방향과 거리
                         Vector3 approxLocalUnitDir = MathfEx.CalculateApproxUnitVector(hit.point - hit.collider.bounds.center, hit.collider.transform);
-                        float approxLocalUnitDist = 0f;
 
                         // hit.collider의 local unit direciton을 저장합니다.
                         Vector3 localUp = hit.collider.transform.up;
@@ -143,6 +140,7 @@ namespace AT_RPG
                         Physics.SyncTransforms();
 
                         // OBB bounds의 x,y,z 거리 구하기.
+                        float approxLocalUnitDist = 0f;
                         switch (approxLocalUnitDir)
                         {
                             case Vector3 x when x.Equals(localRight) || x.Equals(localLeft):
