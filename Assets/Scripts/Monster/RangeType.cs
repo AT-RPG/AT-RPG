@@ -67,11 +67,10 @@ public class RangeType : MonsterMain
     IEnumerator Rage()
     {
         float buffTimer = 0.0f;
-        while (true)
+        baseBattleStat.attackPoint += 10;
+        while (buffTimer < 30.0f)
         {
-            baseBattleStat.attackPoint += 10;
             buffTimer += Time.deltaTime;
-            if (buffTimer > 30.0f) break;
             yield return null;
         }
         baseBattleStat.attackPoint -= 10;
@@ -79,10 +78,10 @@ public class RangeType : MonsterMain
     IEnumerator skillCoolTimer()
     {
         float skillcoll = 0.0f;
-        while (true)
+        while (skillcoll <= baseBattleStat.skillCooltime)
         {
             skillcoll += Time.deltaTime;
-            if (skillcoll >= baseBattleStat.skillCooltime) break;
+            
             yield return null;
         }
         SetSkillOk(true);
@@ -123,29 +122,23 @@ public class RangeType : MonsterMain
     }
     IEnumerator monBackWalk()
     {
-        while (true)
+        Vector3 battletarget = myTarget.transform.position;
+        Vector3 dir = battletarget - transform.position;
+        float dist = dir.magnitude;
+        while (dist > mStat.monsterRange)
         {
-            if (myTarget == null || monsterState == State.Dead)
-                yield break;
-
-            Vector3 battletarget = myTarget.transform.position;
-            Vector3 dir = battletarget - transform.position;
-            float dist = dir.magnitude;
-            if (dist < mStat.monsterRange && monsterState != State.Dead)
-            {
+           battletarget = myTarget.transform.position;
+           dir = battletarget - transform.position;
+           dist = dir.magnitude;
+           
                 myAnim.SetBool("BackWalk", true);
                 Vector3 moveDirection = -dir.normalized;
                 lookPlayer();
-                monAgent.SetDestination(transform.position + moveDirection);
-            }
-            else
-            {
-                monAgent.ResetPath();
-                myAnim.SetBool("BackWalk", false);
-                break;
-            }
+            monAgent.SetDestination(transform.position + moveDirection);
             yield return null;
         }
+        monAgent.ResetPath();
+        myAnim.SetBool("BackWalk", false);
     }
     public override void OnAttack()
     {

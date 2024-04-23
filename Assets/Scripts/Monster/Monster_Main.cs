@@ -1,5 +1,6 @@
 using AT_RPG;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
@@ -192,11 +193,10 @@ public class MonsterMain : CommonBattle
     }
 
 
+    /*
     public IEnumerator TrackPlayerOnDamage() //피해를 입으면 즉시 플레이어를 추적
     {
         float MaxHp = baseBattleStat.maxHP;
-        while (true)
-        {
             yield return new WaitForSeconds(1f);
 
             if (MaxHp > baseBattleStat.maxHP)
@@ -208,11 +208,11 @@ public class MonsterMain : CommonBattle
                     Transform playerTransform = playerObject.transform;
                     StartTracking(playerTransform);
                 }
-                break;
+                
             }
-        }
+        
     }
-
+    */
     //몬스터 생성
     void createMonster()
     {
@@ -292,16 +292,13 @@ public class MonsterMain : CommonBattle
     }
     public IEnumerator MovingCoroutine(Vector3 target)
     {
-        while (true)
+        float dist = Vector3.Distance(transform.position, target);
+        while (dist >= 0.1f)
         {
-            float dist = Vector3.Distance(transform.position, target);
+            dist = Vector3.Distance(transform.position, target);
             IsRunning(dist);
             monAgent.SetDestination(target);
             yield return null;
-            if (dist <= 0.1f)
-            {
-                break;
-            }
         }
         if (isTracking == false)
         {
@@ -326,6 +323,7 @@ public class MonsterMain : CommonBattle
     //몬스터 플레이어 놓침
     public void StopTracking()
     {
+        myAnim.SetBool("Skill", false);
         if (monsterState != State.Dead)
         {
             if (move != null) StopCoroutine(move);
