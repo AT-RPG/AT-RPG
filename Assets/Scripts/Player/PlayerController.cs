@@ -178,7 +178,7 @@ public class PlayerController : CommonBattle
     /// <summary>
     /// 마우스 좌클릭 시 공격트리거 작동
     /// </summary>
-    private void Attack(InputValue value)
+    public void Attack(InputValue value)
     {
         if(!myAnim.GetBool("isAttacking"))
         {

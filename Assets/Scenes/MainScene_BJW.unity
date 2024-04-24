@@ -658,6 +658,11 @@ PrefabInstance:
       propertyPath: buildingIndicatorPrefab.m_AssetGUID
       value: 60f9c01beb778ec4c86a47a96b0ff019
       objectReference: {fileID: 0}
+    - target: {fileID: 6145297211133731036, guid: 398e790ed99120f45a0a8507a6eb8217,
+        type: 3}
+      propertyPath: buildingSystemPopupPrefab.m_AssetGUID
+      value: a68ad62a2eab882409614d9b9ef08399
+      objectReference: {fileID: 0}
     - target: {fileID: 7567102763009886285, guid: 398e790ed99120f45a0a8507a6eb8217,
         type: 3}
       propertyPath: m_Name

@@ -36,6 +36,8 @@ namespace AT_RPG
 
         // 현재 위치에 건설할 건물의 정보
         // 건설 가능 여부, 다른 건물에 스냅을 구현하는데 사용됩니다.
+        private Vector3 buildingPosition = Vector3.zero;
+        private Quaternion buildingRotation = Quaternion.identity;
         private BuildingObjectData buildingData = null;
         private MeshFilter buildingMeshFilter = null;
         private MeshRenderer buildingMeshRenderer = null;
@@ -133,7 +135,7 @@ namespace AT_RPG
         {
             // 건물 크기 복사
             var buildingResource = buildingPrefab.Resource;
-            transform.localScale = buildingResource.transform.localScale;
+            transform.localScale = buildingResource.transform.localScale * 0.99f;
 
             // 건물의 쉐이더와 메쉬를 복사
             buildingData = buildingResource.GetComponent<BuildingObject>().Data;
@@ -166,7 +168,12 @@ namespace AT_RPG
                 switch (hit.collider.gameObject.layer)
                 {
                     case int ground when ground.Equals(LayerMask.NameToLayer("Ground")):
-                        transform.position = hit.point + new Vector3(0, buildingBounds.extents.y, 0);
+                        transform.position = hit.point + new Vector3(0, buildingBounds.extents.y + Physics.defaultContactOffset, 0);
+
+                        // Physics.defaultContactOffset 에 의해 건물이 서로 살짝 띄워지는거 방지
+                        buildingPosition = hit.point + new Vector3(0, buildingBounds.extents.y, 0);
+                        buildingRotation = transform.rotation;
+
                         break;
 
                     case int building when building.Equals(LayerMask.NameToLayer("Building")):
@@ -209,6 +216,10 @@ namespace AT_RPG
                         // 크로스헤어로 충돌된 콜라이더의 위치로 현재 건물을 이동 후, hit.collider의 bound + 현재 선택한 건물의 bound를 더해서 거리를 벌린다.
                         transform.position = hit.collider.transform.position + approxLocalUnitDir * (approxLocalUnitDist + Physics.defaultContactOffset);
 
+                        // Physics.defaultContactOffset 에 의해 건물이 서로 살짝 띄워지는거 방지
+                        buildingPosition = hit.collider.transform.position + approxLocalUnitDir * approxLocalUnitDist;
+                        buildingRotation = transform.rotation;
+
                         // OBB를 구하기 위해 회전했던걸 다시 되돌림
                         hit.collider.transform.rotation = temp;
                         Physics.SyncTransforms();
@@ -239,5 +250,9 @@ namespace AT_RPG
     {
         // 건설가능 여부
         public IndicatorStatus Status => status;
+
+        public Vector3 BuildingPosition => buildingPosition;
+
+        public Quaternion BuildingRotation => buildingRotation;
     }
 }
