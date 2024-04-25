@@ -2,6 +2,7 @@ using AT_RPG;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// <see cref="RangeType"/>
@@ -112,29 +113,35 @@ public class RangeType : MonsterMain
         if (backstep != null) StopCoroutine(backstep);
         backstep = StartCoroutine(monBackWalk()); //뒤로이동
     }
+    //통으로 새로짤것
     IEnumerator monBackWalk()
     {
+
         Vector3 battletarget = myTarget.transform.position;
         Vector3 dir = battletarget - transform.position;
+        Vector3 moveDirection = -dir.normalized;
         float dist = dir.magnitude;
+        
         while (dist < mStat.monsterRange)
         {
-            myAnim.SetBool("BackWalk", true);
-            Vector3 moveDirection = -dir.normalized;
-            monAgent.SetDestination(transform.position + moveDirection);
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 
-            Quaternion lookRotation = Quaternion.LookRotation(dir);
-            float rotationSpeed = 20f;
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+            Debug.Log("백스텝진입");
+           myAnim.SetBool("BackWalk", true);
+           monAgent.SetDestination(transform.position + moveDirection);
+            
 
+            // Update direction and distance
             battletarget = myTarget.transform.position;
             dir = battletarget - transform.position;
             dist = dir.magnitude;
 
-            transform.LookAt(myTarget);
-            yield return null;
+           yield return new WaitForSeconds(1.0f);
+          //yield return null;
         }
-        transform.LookAt(myTarget);
+        
+        Debug.Log("백스텝종료");
         myAnim.SetBool("BackWalk", false);
     }
     public override void OnAttack()

@@ -9,7 +9,7 @@ using static UnityEngine.GraphicsBuffer;
 /// <summary>
 /// 파이어볼-투사체 관리스크립트
 /// </summary>
-public class Fireball : MonoBehaviour//, ICharacterDamage
+public class Fireball : MonoBehaviour, ICharacterDamage
 {
    
     public IObjectPool<Fireball> firePool;
@@ -17,6 +17,7 @@ public class Fireball : MonoBehaviour//, ICharacterDamage
     [SerializeField]
     private float ballSpeed;
     private float damage;
+
     private Vector3 direction;
 
     private MonsterShootManager monsterShootManager;
@@ -24,9 +25,12 @@ public class Fireball : MonoBehaviour//, ICharacterDamage
     {
         damage = damageValue;
     }
+    public void setStartPos(Transform myPos)
+    {
+        transform.position = myPos.transform.position;
+    }
     public void SetTarget(Vector3 target)
     {
-       
         direction = (target - transform.position).normalized;
     }
 
@@ -60,8 +64,11 @@ public class Fireball : MonoBehaviour//, ICharacterDamage
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) // 충돌한 오브젝트의 레이어가 몬스터 레이어인지 확인
         {
-           // ICharacterDamage cd = other.GetComponent<ICharacterDamage>();
-           // cd.TakeDamage(damage);
+            ICharacterDamage character = other.GetComponent<ICharacterDamage>();
+            if (character != null)
+            {
+                character.TakeDamage(damage); // 맞은 대상에게 데미지를 줌
+            }
         }
         StopCoroutine(stop);
         destroyball();//릴리즈  
@@ -82,8 +89,8 @@ public class Fireball : MonoBehaviour//, ICharacterDamage
 
     }
 
-   // public void TakeDamage(float dmg)
-    //{
-   //     throw new System.NotImplementedException();
-   // }
+    public void TakeDamage(float dmg)
+    {
+        Destroy(gameObject);
+    }
 }
