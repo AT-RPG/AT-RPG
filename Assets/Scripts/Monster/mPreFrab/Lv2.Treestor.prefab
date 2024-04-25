@@ -293,13 +293,17 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   monResPos: {fileID: 8682800267634966555}
-  StartspawnPos: {fileID: 0}
   hpViewPos: {fileID: 3128052449726434018}
   monAgent: {fileID: 2084096636041861500}
   monsterAI: {fileID: 2755202526465088838}
   MonsterIndex: 30020
+  deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
+    type: 3}
   monsterState: 0
-  shootManager: {fileID: 0}
+  attackOK: 1
+  skillOK: 1
+  shootManager: {fileID: 427257018236851546, guid: 193eb2c6fb6ca9d419b206633be69e52,
+    type: 3}
   attackPos: {fileID: 1781049398561025550}
 --- !u!1001 &2027868784997292478
 PrefabInstance:

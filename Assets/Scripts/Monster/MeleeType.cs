@@ -8,24 +8,83 @@ public class MeleeType : MonsterMain
     public override void OnAttack()
     {
         if (myTarget == null) return;
-
         Vector3 battletarget = myTarget.transform.position;
         Vector3 dir = battletarget - transform.position;
         float dist = dir.magnitude;
         if (dist > mStat.monsterRange) return;
+        Vector3 monsterForward = transform.forward;
+        Vector3 playerDirection = dir.normalized;
+        // 두 벡터 사이의 각도 계산
+        float angle = Vector3.Angle(monsterForward, playerDirection);
 
-        ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
-        if (cd != null)
+
+        if (angle < 90.0f)//양옆으로 90도씩 정면180도가 범위
         {
-            cd.TakeDamage(baseBattleStat.attackPoint);
+            ICharacterDamage cd = myTarget.GetComponent<ICharacterDamage>();
+            if (cd != null)
+            {
+                cd.TakeDamage(baseBattleStat.attackPoint);
+            }
         }
     }
-    public override void AttackPlayer()
+
+    public override void SkillUse()
     {
-        if(battleState!=null) StopCoroutine(battleState);
+        SetSkillOk(false);
+        if (battleState != null) StopCoroutine(battleState);
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
         myAnim.SetTrigger("NormalAttack");
+        myAnim.SetBool("Skill", true);
+        StartCoroutine(guardSkill());
+    }
+
+    IEnumerator guardSkill()
+    {
+        float skillTimer = 0.0f;
+        while (true)
+        {
+            Vector3 battletarget = myTarget.transform.position;
+            Vector3 dir = battletarget - transform.position;
+            Vector3 monsterForward = transform.forward;
+            Vector3 playerDirection = dir.normalized;
+            float angle = Vector3.Angle(monsterForward, playerDirection);
+            baseBattleStat.defendPoint += 100;
+            skillTimer += Time.deltaTime;
+            if (skillTimer >= 4.0f) break;
+            yield return null;
+        }
+        baseBattleStat.defendPoint = 0;
+        myAnim.SetBool("Skill", false);
+
+        if (monsterState != State.Dead)
+        {
+            StartCoroutine(skillCoolTimer());
+            battleState = StartCoroutine(BattleState());
+        }
+    }
+
+    IEnumerator skillCoolTimer()
+    {
+        float skillcoll = 0.0f;
+        while (true)
+        {
+            skillcoll += Time.deltaTime;
+            if (skillcoll >= baseBattleStat.skillCooltime) break;
+            yield return null;
+        }
+        SetSkillOk(true);
+    }
+
+    public override void AttackPlayer()
+    {
+        SetAttackOK(false);
+        if (battleState != null) StopCoroutine(battleState);
+        myAnim.SetBool("Move", false);
+        myAnim.SetBool("Run", false);
+
+        myAnim.SetTrigger("NormalAttack");
+
     }
     public override void AttackDelay()
     {
@@ -34,8 +93,23 @@ public class MeleeType : MonsterMain
 
     IEnumerator AttackDeleayState()
     {
+        float timer = 0.0f;
+        while (true)
+        {
+            Vector3 battletarget = myTarget.transform.position;
+            Vector3 dir = battletarget - transform.position;
+            float dist = dir.magnitude;
+            // 목표 회전 각도를 계산합니다.
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
 
-        yield return new WaitForSeconds(baseBattleStat.attackDeley);
-        if(monsterState !=State.Dead) battleState = StartCoroutine(BattleState());
+            // 천천히 회전하기 위해 Quaternion.Lerp()를 사용합니다.
+            float rotationSpeed = 20f; // 회전 속도를 조절합니다.
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+            timer += Time.deltaTime;
+            if (timer >= baseBattleStat.attackDeley) break;
+            yield return null;
+        }
+        SetAttackOK(true);
+        if (monsterState != State.Dead) battleState = StartCoroutine(BattleState());
     }
 }

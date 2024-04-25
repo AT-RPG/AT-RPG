@@ -53,6 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 603827242383416157}
+  - component: {fileID: 501495060736511064}
   m_Layer: 0
   m_Name: House_4C
   m_TagString: Untagged
@@ -80,6 +81,27 @@ Transform:
   - {fileID: 603827240446475662}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &501495060736511064
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603827242383416156}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 13, y: 14, z: 12}
+  m_Center: {x: 1, y: 7, z: 0}
 --- !u!1 &7312895707631436715
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +407,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -606,7 +628,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -743,7 +765,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -878,7 +900,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -1144,6 +1166,11 @@ PrefabInstance:
     - target: {fileID: 1846699382911800280, guid: 4d04ab83b7c870f4c9d8dfdfc3ade959,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358429195103231789, guid: 4d04ab83b7c870f4c9d8dfdfc3ade959,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1413,6 +1440,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5358429195103231789, guid: 4d04ab83b7c870f4c9d8dfdfc3ade959,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1432,6 +1464,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 603827240446475662}
     m_Modifications:
+    - target: {fileID: 777530267011030706, guid: a228d0550dd4fa049983d44c56080e71,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5944112415127832829, guid: a228d0550dd4fa049983d44c56080e71,
         type: 3}
       propertyPath: m_Name
@@ -1808,6 +1845,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 603827240446475662}
     m_Modifications:
+    - target: {fileID: 777530267011030706, guid: a228d0550dd4fa049983d44c56080e71,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5944112415127832829, guid: a228d0550dd4fa049983d44c56080e71,
         type: 3}
       propertyPath: m_Name
@@ -2075,6 +2117,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 603827240446475662}
     m_Modifications:
+    - target: {fileID: 777530267011030706, guid: a228d0550dd4fa049983d44c56080e71,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5944112415127832829, guid: a228d0550dd4fa049983d44c56080e71,
         type: 3}
       propertyPath: m_Name
@@ -2169,6 +2216,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7312895708902863326}
     m_Modifications:
+    - target: {fileID: 4083736035804762422, guid: 856a29b3e30b5eb4a88f82767403a8a2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4619560386797630770, guid: 856a29b3e30b5eb4a88f82767403a8a2,
         type: 3}
       propertyPath: m_Layer

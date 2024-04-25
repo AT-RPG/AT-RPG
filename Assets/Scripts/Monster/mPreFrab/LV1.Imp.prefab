@@ -577,6 +577,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6159b0629ab6840a0da25e5cf9bad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseBattleStat:
+    maxHP: 0
+    attackPoint: 0
+    moveSpeed: 0
+    attackDeley: 0
+    skillCooltime: 0
   changeHpAct:
     m_PersistentCalls:
       m_Calls: []
@@ -586,7 +592,7 @@ MonoBehaviour:
   monAgent: {fileID: 5367530893034538486}
   monsterAI: {fileID: 6058489181737877242}
   MonsterIndex: 30000
-  deadEffect: {fileID: 6598082010220072226, guid: b3cc544c0b54df54e8d6edfaffa45a23,
+  deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
     type: 3}
   monsterState: 0
 --- !u!1 &2586962272329368009

@@ -32956,9 +32956,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 512
   weapons:
   - {fileID: 8067858432461539188}
   - {fileID: 2911035717866041819}

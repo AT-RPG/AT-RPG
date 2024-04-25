@@ -10,6 +10,11 @@ public class MonsterAI : MonoBehaviour
     public LayerMask mask;
     public Transform myTarget;
 
+    private void OnEnable()
+    {
+        myTarget = null;
+    }
+
     private void OnTriggerEnter(Collider other) //콜라이더 충돌감지
     {
      

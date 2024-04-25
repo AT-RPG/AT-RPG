@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7322936292352383320
 Transform:
   m_ObjectHideFlags: 0
@@ -108,12 +108,23 @@ MonoBehaviour:
   changeHpAct:
     m_PersistentCalls:
       m_Calls: []
+  Hpbar:
+    m_AssetGUID: 17b4793608188c04d8230f12bf49ce86
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  textasset:
+    m_AssetGUID: dfb704ae2c1531b4c9b423e5942727be
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   monResPos: {fileID: 7322936292352383320}
-  StartspawnPos: {fileID: 0}
   hpViewPos: {fileID: 5713884932960440510}
   monAgent: {fileID: 4993959310669904830}
   monsterAI: {fileID: 6546474076330227832}
   MonsterIndex: 30015
+  deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
+    type: 3}
   monsterState: 0
   shootManager: {fileID: 0}
   attackPos: {fileID: 5620115513225880005}
