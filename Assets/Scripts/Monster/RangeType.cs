@@ -26,19 +26,11 @@ public class RangeType : MonsterMain
             shootManager = managerObject.GetComponent<MonsterShootManager>();
         }
     }
-    public void lookPlayer()
-    {
-        Vector3 directionToPlayer = myTarget.transform.position - transform.position;
-        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 3.0f);
-    }
+
     public override void AttackPlayer()
     {
         SetAttackOK(false);
         if (battleState != null) StopCoroutine(battleState);
-        monAgent.ResetPath();
-
-        lookPlayer();
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
         myAnim.SetTrigger("NormalAttack");
@@ -125,19 +117,24 @@ public class RangeType : MonsterMain
         Vector3 battletarget = myTarget.transform.position;
         Vector3 dir = battletarget - transform.position;
         float dist = dir.magnitude;
-        while (dist > mStat.monsterRange)
+        while (dist < mStat.monsterRange)
         {
-           battletarget = myTarget.transform.position;
-           dir = battletarget - transform.position;
-           dist = dir.magnitude;
-           
-                myAnim.SetBool("BackWalk", true);
-                Vector3 moveDirection = -dir.normalized;
-                lookPlayer();
+            myAnim.SetBool("BackWalk", true);
+            Vector3 moveDirection = -dir.normalized;
             monAgent.SetDestination(transform.position + moveDirection);
+
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            float rotationSpeed = 20f;
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+            battletarget = myTarget.transform.position;
+            dir = battletarget - transform.position;
+            dist = dir.magnitude;
+
+            transform.LookAt(myTarget);
             yield return null;
         }
-        monAgent.ResetPath();
+        transform.LookAt(myTarget);
         myAnim.SetBool("BackWalk", false);
     }
     public override void OnAttack()

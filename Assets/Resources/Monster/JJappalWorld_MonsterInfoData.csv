@@ -12,11 +12,11 @@ index,Name,Type,Level,Hp,AttackPoint,AttackDelay,SkillCoolTime,Range,Speed,RunSp
 30010,middle_Pitboy,meleeMonster,11,200,40,3,15,2,3,5,1,0
 30011,Large_Pitboy,meleeMonster,21,300,50,3,15,2,3,5,2,0
 30012,small_Nosdman,rangeMonster,1,50,30,5,0,7,2,3,0,0
-30013,middle_Nosdman,rangeMonster,11,150,40,5,15,7,2,3,1,0
-30014,large_Nosdman,rangeMonster,21,300,50,5,15,7,2,3,2,0
+30013,middle_Nosdman,rangeMonster,11,150,40,5,60,7,2,3,1,0
+30014,large_Nosdman,rangeMonster,21,300,50,5,60,7,2,3,2,0
 30015,small_Spike,rangeMonster,1,50,30,5,0,7,2,3,0,0
-30016,middle_Spike,rangeMonster,11,150,40,5,15,7,2,3,1,0
-30017,large_Spike,rangeMonster,21,250,50,5,15,7,2,3,2,0
+30016,middle_Spike,rangeMonster,11,150,40,5,60,7,2,3,1,0
+30017,large_Spike,rangeMonster,21,250,50,5,60,7,2,3,2,0
 30018,small_Treestor,rangeMonster,1,50,30,5,0,7,2,3,0,0
-30019,middle_Treestor,rangeMonster,11,150,40,5,15,7,2,3,1,0
-30020,large_Treestor,rangeMonster,21,250,50,5,15,7,2,3,2,0
+30019,middle_Treestor,rangeMonster,11,150,40,5,60,7,2,3,1,0
+30020,large_Treestor,rangeMonster,21,250,50,5,60,7,2,3,2,0
