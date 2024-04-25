@@ -28,6 +28,8 @@ namespace AT_RPG
         // 건설 시, 플레이어의 공격을 잠시 막기위해 사용
         private PlayerController playerController = null;
 
+        private GameObject buildingPopup = null;
+
 
         private void Awake()
         {
@@ -55,7 +57,7 @@ namespace AT_RPG
 
             if (isBuildModeEnabled) 
             {
-                UIManager.InstantiatePopup(buildingSystemPopupPrefab, PopupRenderMode.Default);
+                buildingPopup = UIManager.InstantiatePopup(buildingSystemPopupPrefab, PopupRenderMode.Default);
 
                 buildingIndicatorInstance = Instantiate<GameObject>(buildingIndicatorPrefab, transform).GetComponent<BuildingIndicator>();
                 buildingIndicatorInstance.SetBuilding(buildingPrefab);
@@ -66,6 +68,7 @@ namespace AT_RPG
             else
             {
                 Destroy(buildingIndicatorInstance.gameObject);
+                Destroy(buildingPopup);
 
                 // 플레이어의 공격을 활성화
                 InputManager.AddKeyAction("Attack/Fire", playerController.Attack);

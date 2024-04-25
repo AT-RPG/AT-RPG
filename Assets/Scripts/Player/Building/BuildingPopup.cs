@@ -18,57 +18,14 @@ namespace AT_RPG
         /// </summary>
         [SerializeField] private Volume volume;
 
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
 
         private void Start()
         {
             animator.SetTrigger("Create");
-        }
-
-
-        private void OnFadeInBlur(float duration)
-        {
-            StartCoroutine(OnFadeInBlurImpl(duration));
-        }
-
-        private IEnumerator OnFadeInBlurImpl(float duration)
-        {
-            DepthOfField dof = null;
-            volume.profile.TryGet(out dof);
-            if (!dof)
-            {
-                yield break;
-            }
-
-            float time = 0f;
-            while (time <= duration)
-            {
-                dof.focalLength = new ClampedFloatParameter(Mathf.Lerp(0f, 300f, time /duration), 0f, 300f);
-                time += Time.deltaTime;
-                yield return null;
-            }
-        }
-
-        private void OnFadeOutBlur(float duration)
-        {
-            StartCoroutine(OnFadeOutBlurImpl(duration));
-        }
-
-        private IEnumerator OnFadeOutBlurImpl(float duration)
-        {
-            DepthOfField dof = null;
-            volume.profile.TryGet(out dof);
-            if (!dof)
-            {
-                yield break;
-            }
-
-            float time = 0f;
-            while (time <= duration)
-            {
-                dof.focalLength = new ClampedFloatParameter(Mathf.Lerp(300f, 0f, time / duration), 0f, 300f);
-                time += Time.deltaTime;
-                yield return null;
-            }
         }
     }
 }
