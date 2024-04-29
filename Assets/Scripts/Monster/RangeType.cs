@@ -124,7 +124,7 @@ public class RangeType : MonsterMain
         
         while (dist < mStat.monsterRange)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            Quaternion targetRotation = Quaternion.LookRotation(battletarget);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 
             Debug.Log("백스텝진입");
