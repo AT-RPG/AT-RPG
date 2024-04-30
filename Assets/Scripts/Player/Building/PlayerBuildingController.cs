@@ -1,4 +1,5 @@
 using AT_RPG.Manager;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AT_RPG
@@ -8,19 +9,22 @@ namespace AT_RPG
     /// 1. 건설 인디케이터를 표시합니다.                 <br/>
     /// 2. 지정된 건설 오브젝트를 인스턴싱합니다.        <br/>
     /// </summary>
-    public partial class PlayerBuilding : MonoBehaviour
+    public partial class PlayerBuildingController : MonoBehaviour
     {
-        // 건설할 프리팹
-        [SerializeField] private AssetReferenceResource<GameObject> buildingPrefab = null;
+        // 건설할 건물 프리팹
+        private AssetReferenceResource<GameObject> selectedBuildingPrefab = null;
 
         // 건설 인디케이터 프리팹
         [SerializeField] private AssetReferenceResource<GameObject> buildingIndicatorPrefab = null;
 
         // 건설할 프리팹 선택 UI
-        [SerializeField] private AssetReferenceResource<GameObject> buildingSystemPopupPrefab = null;
+        [SerializeField] private AssetReferenceResource<GameObject> buildingPopupPrefab = null;
 
         // 건설 인디케이터 인스턴스
         private BuildingIndicator buildingIndicatorInstance = null;
+
+        // 건설 UI
+        private BuildingPopup buildingPopupInstance = null;
 
         // 건설모드 활성/비활성
         private static bool isBuildModeEnabled = false;
@@ -28,8 +32,8 @@ namespace AT_RPG
         // 건설 시, 플레이어의 공격을 잠시 막기위해 사용
         private PlayerController playerController = null;
 
-        private GameObject buildingPopup = null;
-
+        // 건설 가능한 건물들은 여기에
+        [SerializeField] private List<AssetReferenceResource<GameObject>> buildingPrefabs = null;
 
         private void Awake()
         {
@@ -57,10 +61,11 @@ namespace AT_RPG
 
             if (isBuildModeEnabled) 
             {
-                buildingPopup = UIManager.InstantiatePopup(buildingSystemPopupPrefab, PopupRenderMode.Default);
+                // 건설 UI 생성
+                buildingPopupInstance = UIManager.InstantiatePopup(buildingPopupPrefab, PopupRenderMode.Default).GetComponent<BuildingPopup>();
 
+                // 건설 인디케이터 생성
                 buildingIndicatorInstance = Instantiate<GameObject>(buildingIndicatorPrefab, transform).GetComponent<BuildingIndicator>();
-                buildingIndicatorInstance.SetBuilding(buildingPrefab);
 
                 // 플레이어의 공격을 잠시 제거
                 InputManager.RemoveKeyAction("Attack/Fire", playerController.Attack);
@@ -68,7 +73,7 @@ namespace AT_RPG
             else
             {
                 Destroy(buildingIndicatorInstance.gameObject);
-                Destroy(buildingPopup);
+                Destroy(buildingPopupInstance.gameObject);
 
                 // 플레이어의 공격을 활성화
                 InputManager.AddKeyAction("Attack/Fire", playerController.Attack);
@@ -76,7 +81,7 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// <see cref="buildingPrefab"/>를 건설 인디케이터에서 표시하는 위치에 건설합니다.
+        /// <see cref="selectedBuildingPrefab"/>를 건설 인디케이터에서 표시하는 위치에 건설합니다.
         /// </summary>
         public void Build(InputValue value)
         {
@@ -84,11 +89,16 @@ namespace AT_RPG
 
             if (buildingIndicatorInstance.Status != IndicatorStatus.Approved) { return; }
 
-            Instantiate<GameObject>(buildingPrefab, buildingIndicatorInstance.BuildingPosition, buildingIndicatorInstance.BuildingRotation);
+            Instantiate<GameObject>(selectedBuildingPrefab, buildingIndicatorInstance.BuildingPosition, buildingIndicatorInstance.BuildingRotation);
+        }
+
+        private void OnSetBuilding(AssetReferenceResource<GameObject> buildingPrefab)
+        {
+            this.selectedBuildingPrefab = buildingPrefab;
         }
     }
 
-    public partial class PlayerBuilding
+    public partial class PlayerBuildingController
     {
         // 건설모드 활성/비활성
         public static bool IsBuildModeEnabled => isBuildModeEnabled;

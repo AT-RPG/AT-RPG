@@ -7,7 +7,7 @@ using UnityEngine;
 namespace AT_RPG
 {
     /// <summary>
-    /// 플레이어의 건설 기능(<see cref="PlayerBuilding"/>)에서 사용되는 건설 오브젝트의 정보를 저장하는 클래스
+    /// 플레이어의 건설 기능(<see cref="PlayerBuildingController"/>)에서 사용되는 건설 오브젝트의 정보를 저장하는 클래스
     /// </summary>
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]

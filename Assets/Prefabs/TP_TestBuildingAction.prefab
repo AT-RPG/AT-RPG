@@ -750,6 +750,7 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 300
     attackPoint: 10
+    defendPoint: 0
     moveSpeed: 1
     attackDeley: 0
     skillCooltime: 0
@@ -768,9 +769,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 512
   weapons:
   - {fileID: 3437257580409211788}
   - {fileID: 3942577527037330837}
@@ -821,7 +819,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7567102763009886285}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -875,6 +873,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c820ed85d49934b9a6b036c9bf7d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingIndicatorPrefab:
+    m_AssetGUID: 60f9c01beb778ec4c86a47a96b0ff019
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  buildingPopupPrefab:
+    m_AssetGUID: a68ad62a2eab882409614d9b9ef08399
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!1001 &949700198817999102
 PrefabInstance:
   m_ObjectHideFlags: 0
