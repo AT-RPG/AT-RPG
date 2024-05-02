@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4331263144890722545
 Transform:
   m_ObjectHideFlags: 0
@@ -102,6 +102,7 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 50
     attackPoint: 30
+    defendPoint: 0
     moveSpeed: 3
     attackDeley: 5
     skillCooltime: 0
@@ -109,7 +110,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   monResPos: {fileID: 4331263144890722545}
-  StartspawnPos: {fileID: 0}
   hpViewPos: {fileID: 1636343240021236764}
   monAgent: {fileID: 1411074906333276653}
   monsterAI: {fileID: 6437586279566940113}
@@ -117,7 +117,11 @@ MonoBehaviour:
   deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
     type: 3}
   monsterState: 0
-  shootManager: {fileID: 0}
+  attackOK: 1
+  skillOK: 1
+  shootManager: {fileID: 427257018236851546, guid: 193eb2c6fb6ca9d419b206633be69e52,
+    type: 3}
+  rageVFX: {fileID: 7155335147208632822, guid: b07f65a58020c0340b8f3b68d7296d5e, type: 3}
   attackPos: {fileID: 8497155199093584959}
 --- !u!195 &1411074906333276653
 NavMeshAgent:

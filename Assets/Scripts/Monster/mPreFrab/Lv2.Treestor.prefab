@@ -286,6 +286,7 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 300
     attackPoint: 50
+    defendPoint: 0
     moveSpeed: 2
     attackDeley: 5
     skillCooltime: 0
@@ -304,6 +305,7 @@ MonoBehaviour:
   skillOK: 1
   shootManager: {fileID: 427257018236851546, guid: 193eb2c6fb6ca9d419b206633be69e52,
     type: 3}
+  rageVFX: {fileID: 7155335147208632822, guid: b07f65a58020c0340b8f3b68d7296d5e, type: 3}
   attackPos: {fileID: 1781049398561025550}
 --- !u!1001 &2027868784997292478
 PrefabInstance:

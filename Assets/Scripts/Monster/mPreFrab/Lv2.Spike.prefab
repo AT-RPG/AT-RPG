@@ -203,7 +203,9 @@ MonoBehaviour:
   monsterState: 0
   attackOK: 1
   skillOK: 1
-  shootManager: {fileID: 0}
+  shootManager: {fileID: 427257018236851546, guid: 193eb2c6fb6ca9d419b206633be69e52,
+    type: 3}
+  rageVFX: {fileID: 7155335147208632822, guid: b07f65a58020c0340b8f3b68d7296d5e, type: 3}
   attackPos: {fileID: 303149809680737208}
 --- !u!1 &5639893977371991496
 GameObject:

@@ -124,6 +124,7 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 500
     attackPoint: 100
+    defendPoint: 0
     moveSpeed: 3
     attackDeley: 3
     skillCooltime: 0
@@ -131,7 +132,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   monResPos: {fileID: 1091830248651851281}
-  StartspawnPos: {fileID: 0}
   hpViewPos: {fileID: 8336160903983950806}
   monAgent: {fileID: 1424722188931743890}
   monsterAI: {fileID: 2951969044878993625}
@@ -139,6 +139,10 @@ MonoBehaviour:
   deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
     type: 3}
   monsterState: 0
+  attackOK: 1
+  skillOK: 1
+  gaurdVFX: {fileID: 7073389042055285376, guid: 0722c0deb3ec9534a9c511b6251b7ffa,
+    type: 3}
 --- !u!1 &556932465520270890
 GameObject:
   m_ObjectHideFlags: 0

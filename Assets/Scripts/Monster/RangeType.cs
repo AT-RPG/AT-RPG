@@ -15,7 +15,7 @@ public class RangeType : MonsterMain
     public Coroutine attackdelay = null;
     public MonsterShootManager shootManager;
 
-
+    public GameObject rageVFX;
     public Transform attackPos;
 
     public override void OnEnable()
@@ -59,13 +59,17 @@ public class RangeType : MonsterMain
 
     IEnumerator Rage()
     {
+        GameObject RageVfx = Instantiate(rageVFX);  
         float buffTimer = 0.0f;
         baseBattleStat.attackPoint += 10;
         while (buffTimer < 30.0f)
-        {
+        {   
+            RageVfx.transform.position = this.gameObject.transform.position;  // 이펙트 포지션
+            RageVfx.transform.rotation = Quaternion.identity;  // 이펙트 로테이션
             buffTimer += Time.deltaTime;
             yield return null;
         }
+        Destroy(RageVfx);
         baseBattleStat.attackPoint -= 10;
     }
     IEnumerator skillCoolTimer()

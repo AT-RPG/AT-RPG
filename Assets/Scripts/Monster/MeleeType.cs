@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MeleeType : MonsterMain
 {
+    public GameObject gaurdVFX;
     public override void OnAttack()
     {
         if (myTarget == null) return;
@@ -41,10 +42,13 @@ public class MeleeType : MonsterMain
 
     IEnumerator guardSkill()
     {
+        GameObject GaurdVfx = Instantiate(gaurdVFX);
         float skillTimer = 0.0f;
         baseBattleStat.defendPoint += 100;
         while (skillTimer <= 4.0f)
         {
+            GaurdVfx.transform.position = this.gameObject.transform.position;  // 이펙트 포지션
+            GaurdVfx.transform.rotation = Quaternion.identity;  // 이펙트 로테이션
             Vector3 battletarget = myTarget.transform.position;
             Vector3 dir = battletarget - transform.position;
             Vector3 monsterForward = transform.forward;
@@ -53,6 +57,7 @@ public class MeleeType : MonsterMain
             skillTimer += Time.deltaTime;
             yield return null;
         }
+        Destroy(GaurdVfx);
         baseBattleStat.defendPoint = 0;
         myAnim.SetBool("Skill", false);
 

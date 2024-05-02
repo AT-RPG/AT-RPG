@@ -1,0 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using static UnityEngine.GraphicsBuffer;
+
+public class SpwanerAI : MonoBehaviour
+{
+    public UnityEvent<Transform> findPlayer;
+    public UnityEvent lostPlayer;
+    public LayerMask mask;
+    public Transform myTarget;
+    // Start is called before the first frame update
+    private void OnTriggerEnter(Collider other) //콜라이더 충돌감지
+    {
+
+        if ((mask & 1 << other.gameObject.layer) != 0)
+        {
+            if (myTarget == null)
+            {
+
+                myTarget = other.transform;
+                findPlayer?.Invoke(myTarget);
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other) //콜라이더 충돌해제
+    {
+        if (myTarget == other.transform)
+        {
+            myTarget = null;
+            lostPlayer?.Invoke();
+        }
+    }
+}
