@@ -88,8 +88,6 @@ namespace AT_RPG
             }
         }
 
-
-
         /// <summary>
         /// 버튼의 동작 대상에 대한 포커스를 선택한 월드에 둡니다.
         /// </summary>
@@ -108,8 +106,6 @@ namespace AT_RPG
             deleteWorldButtonInstance.SetActive(true);
         }
 
-
-
         /// <summary>
         /// 월드를 설정 팝업을 생성합니다.
         /// </summary>
@@ -117,8 +113,6 @@ namespace AT_RPG
         {
             UIManager.InstantiatePopup(worldSettingPopupPrefab.Resource, PopupRenderMode.Default);
         }
-
-
 
         /// <summary>
         /// 선택한 월드를 플레이합니다. 
@@ -139,42 +133,73 @@ namespace AT_RPG
         /// </summary>
         private void InternalOnPlayWorld()
         {
-            SerializedGameObjectDataList gameObjectDatas = new SerializedGameObjectDataList();
-
-            string fromScene = SceneManager.CurrentSceneName;
-            string toScene = SceneManager.Setting.MainScene;
-            string loadingScene = SceneManager.Setting.LoadingScene;
-            SceneManager.LoadSceneCoroutine(loadingScene, null, () =>
+            SceneManager.LoadSceneCoroutine(SceneManager.Setting.LoadingScene, null, () =>
             {
-                // 리소스 로딩/언로딩 + 세이브 파일 로딩
+                // 리소스 로딩
                 foreach (var label in SceneManager.Setting.MainSceneAddressableLabelMap)
                 {
                     ResourceManager.LoadAssetsAsync(label.labelString, null, true);
                 }
+
+                // 리소스 언로딩
                 foreach (var label in SceneManager.Setting.TitleSceneAddressableLabelMap)
                 {
                     ResourceManager.UnloadAssetsAsync(label.labelString);
                 }
 
-                // 로딩이 끝나면 씬을 변경합니다.
-                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading, () =>
-                {
-                    // 로드한 맵 설정에서 멀티플레이가 활성화 되어있다면 세션을 만듭니다.
-                    SaveLoadManager.LoadWorldSettingDataCoroutine(
-                        SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
-                        () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
-                        loadedWorldSettingData => SaveLoadManager.WorldSettingData = loadedWorldSettingData);
-
-                    // 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.
-                    SaveLoadManager.LoadGameObjectDatasCoroutine(
-                        SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
-                        () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
-                        loadedGameObjectDatas => SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas));
-                });
+                // 로딩 순서 
+                // 1. 맵 설정 불러오기
+                // 2. 호스트 모드 (활성화가 되어있는 경우)
+                // 3. 맵 오브젝트 불러오기
+                // 4. 씬 이동
+                InternalLoadWorldSetting();
             });
         }
 
+        /// <summary>
+        /// 로드한 맵 설정에서 멀티플레이가 활성화 되어있다면 세션을 만듭니다.
+        /// </summary>
+        private void InternalLoadWorldSetting()
+        {
+            SaveLoadManager.LoadWorldSettingDataCoroutine(
+                SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
+                () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
+                loadedWorldSettingData =>
+                {
+                    SaveLoadManager.WorldSettingData = loadedWorldSettingData;
+                    if (loadedWorldSettingData.isMultiplayEnabled)
+                    {
+                        InternalConnectMultiplay();
+                    }
+                    else
+                    {
+                        InternalLoadWorldGameObject();
+                    }
+                });
+        }
 
+        /// <summary>
+        /// 멀티플레이가 활성화된 경우, Host모드로 연결합니다.
+        /// </summary>
+        private void InternalConnectMultiplay()
+        {
+            MultiplayManager.Connect(() => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading, InternalLoadWorldGameObject);
+        }
+
+        /// <summary>
+        /// 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.
+        /// </summary>
+        private void InternalLoadWorldGameObject()
+        {
+            SaveLoadManager.LoadGameObjectDatasCoroutine(
+                SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
+                () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
+                loadedGameObjectDatas => 
+                {
+                    SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
+                    SceneManager.LoadSceneCoroutine(SceneManager.Setting.MainScene, () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading && !MultiplayManager.IsConnecting);
+                });
+        }
 
         /// <summary>
         /// 선택된 월드를 삭제합니다.
@@ -195,8 +220,6 @@ namespace AT_RPG
             deleteWorldButtonInstance.SetActive(false);
         }
 
-
-
         /// <summary>
         /// 종료 애니메이션과 함께, 현재 팝업을 삭제합니다.
         /// </summary>
@@ -209,8 +232,6 @@ namespace AT_RPG
             });
             blurAnimation.EndFade();
         }
-
-
 
         public void DestroyPopup()
         {

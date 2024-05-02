@@ -18,9 +18,16 @@ namespace AT_RPG
         [Header("초대코드 입력 필드")]
         [SerializeField] private TMP_InputField inviteCodeField;
 
+        [Header("연결 버튼 부분")]
+        [SerializeField] private GameObject connectButton;
+        [SerializeField] private GameObject loadingUI;
+
 
         private void Start()
         {
+            connectButton.SetActive(true);
+            loadingUI.SetActive(false);
+
             AnimateStartSequence();
         }
 
@@ -40,7 +47,9 @@ namespace AT_RPG
         /// </summary>
         public void OnConnectSession()
         {
-            MultiplayManager.ConnectToPlayer(inviteCodeField.text, OnConnectSuccess, OnConnectFail);
+            connectButton.SetActive(false);
+            loadingUI.SetActive(true);
+            MultiplayManager.Connect(inviteCodeField.text, null, OnConnectSuccess, OnConnectFail);
         }
 
         /// <summary>
@@ -53,9 +62,17 @@ namespace AT_RPG
             string loadingScene = SceneManager.Setting.LoadingScene;
             SceneManager.LoadScene(loadingScene, () =>
             {
-                // 리소스 로딩/언로딩 + 세이브 파일 로딩
-                // ResourceManager.LoadAllResourcesCoroutine(toScene);
-                // ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                // 리소스 로딩
+                foreach (var label in SceneManager.Setting.MainSceneAddressableLabelMap)
+                {
+                    ResourceManager.LoadAssetsAsync(label.labelString, null, true);
+                }
+
+                // 리소스 언로딩
+                foreach (var label in SceneManager.Setting.TitleSceneAddressableLabelMap)
+                {
+                    ResourceManager.UnloadAssetsAsync(label.labelString);
+                }
 
                 // 로딩이 끝나면 씬을 변경합니다.
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
@@ -67,10 +84,13 @@ namespace AT_RPG
         /// </summary>
         private void OnConnectFail()
         {
+            connectButton.SetActive(true);
+            loadingUI.SetActive(false);
+
             GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
-            logPopup.Log = $"Join failed. Invite code mismatch.";
+            logPopup.Log = $"초대코드가 일치하지 않습니다.";
             logPopup.Duration = 4.5f;
         }
 

@@ -93,7 +93,6 @@ namespace AT_RPG
                 time += Time.deltaTime;
 
                 dissolveInstance.SetFloat("_DissolveThreshold", Mathf.Lerp(1f, 0f, time / duration));
-                Debug.Log($"{time}, {Mathf.Lerp(1f, 0f, time / duration)}");
 
                 yield return null;
             }

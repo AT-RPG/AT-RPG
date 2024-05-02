@@ -365,6 +365,7 @@ MonoBehaviour:
           m_StringArgument: ButtonPickingIndicatorDisable
           m_BoolArgument: 0
         m_CallState: 2
+  pickingUIPrefab: {fileID: 6431313419784712599}
 --- !u!1 &4434774386645304114
 GameObject:
   m_ObjectHideFlags: 0

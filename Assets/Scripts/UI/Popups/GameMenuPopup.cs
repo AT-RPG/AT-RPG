@@ -1,4 +1,5 @@
 using AT_RPG.Manager;
+using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -39,7 +40,7 @@ namespace AT_RPG
                 inviteButtonInstance.SetActive(false);
             }         
 
-            if (MultiplayManager.PlayMode == PlayMode.Client)
+            if (MultiplayManager.GameMode == GameMode.Client)
             {
                 saveButtonInstance.SetActive(false);
                 inviteButtonInstance.SetActive(false);
@@ -90,8 +91,8 @@ namespace AT_RPG
         /// </summary>
         public void OnSaveMap()
         {
-            PlayMode currentPlayMode = MultiplayManager.PlayMode;
-            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
+            GameMode currentPlayMode = MultiplayManager.GameMode;
+            if (currentPlayMode == GameMode.Single || currentPlayMode == GameMode.Host) { SaveWorld(); }
 
             GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
@@ -147,8 +148,8 @@ namespace AT_RPG
         /// </summary>
         public void OnLoadTitleScene()
         {
-            PlayMode currentPlayMode = MultiplayManager.PlayMode;
-            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
+            GameMode currentPlayMode = MultiplayManager.GameMode;
+            if (currentPlayMode == GameMode.Single || currentPlayMode == GameMode.Host) { SaveWorld(); }
 
             SaveLoadManager.WorldSettingData = null;
 
@@ -165,7 +166,7 @@ namespace AT_RPG
                 SceneManager.LoadSceneCoroutine(
                     toScene, 
                     () => !ResourceManager.IsLoading && !SaveLoadManager.IsSaving, 
-                    () => MultiplayManager.Disconnect());
+                    () => MultiplayManager.DisconnectAsync());
             });
         }
 
@@ -176,10 +177,7 @@ namespace AT_RPG
         /// </summary>
         public void OnQuitGame()
         {
-            PlayMode currentPlayMode = MultiplayManager.PlayMode;
-            if (currentPlayMode == PlayMode.Single || currentPlayMode == PlayMode.Host) { SaveWorld(); }
-
-            MultiplayManager.Disconnect();
+            MultiplayManager.DisconnectAsync();
             Application.Quit();
         }
 

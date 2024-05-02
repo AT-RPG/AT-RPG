@@ -293,6 +293,9 @@ namespace AT_RPG
 
     #region MultiplayManager
 
+    // 포톤 클라우드 애플리케이션 서버 연결을 시작하는 조건
+    public delegate bool ConditionCallback();
+
     // 포톤 클라우드 애플리케이션 서버에 연결이 성공한 경우
     public delegate void ConnectedCallback();
 

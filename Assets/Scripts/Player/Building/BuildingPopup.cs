@@ -93,7 +93,7 @@ namespace AT_RPG
         /// <summary>
         /// UI의 Left_Button에서 트리거됩니다.
         /// </summary>
-        public void OnLeftButtonClik()
+        public void OnLeftButtonClick()
         {
             LeftButtonAction?.Invoke(leftButtonBuildingPrefab);
         }

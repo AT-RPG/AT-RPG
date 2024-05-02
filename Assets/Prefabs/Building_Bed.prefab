@@ -13,8 +13,10 @@ GameObject:
   - component: {fileID: 609993793986749096}
   - component: {fileID: 7163565668537241465}
   - component: {fileID: 560546251779724127}
+  - component: {fileID: -435063214950143973}
+  - component: {fileID: 1509021299066510391}
   m_Layer: 9
-  m_Name: Bed_1
+  m_Name: Building_Bed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 1174300490710111860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00015446}
+  m_LocalScale: {x: 1.25, y: 1, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6029986164759057699}
@@ -131,6 +133,41 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4947806959331108178, guid: f95a5bc914b5ff64ca29e440a1f28257, type: 3}
+--- !u!95 &-435063214950143973
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174300490710111860}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1509021299066510391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174300490710111860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6359ea784968a9f49a32d134ed1057ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 17b855a816e50604b8cac15696150a47, type: 2}
+  dissolvePrefab: {fileID: 2100000, guid: 39fcdf4d38db5b94aaafe1776c943c34, type: 2}
 --- !u!1 &6357949517000856400
 GameObject:
   m_ObjectHideFlags: 0

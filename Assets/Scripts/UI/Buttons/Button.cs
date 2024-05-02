@@ -19,11 +19,19 @@ namespace AT_RPG
         [Space(5)]
         [SerializeField] private UnityEvent onButtonPointerExit;
 
+        [Header("피킹 UI")]
+        [SerializeField] private GameObject pickingUIPrefab;
+        
         private Animator animator;
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
+        }
+
+        private void OnEnable()
+        {
+            onButtonPointerExit?.Invoke();
         }
 
         public void OnPointerClick(PointerEventData eventData) => onButtonClick?.Invoke();

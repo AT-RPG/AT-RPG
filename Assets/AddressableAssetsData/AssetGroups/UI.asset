@@ -95,6 +95,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - UI
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a68ad62a2eab882409614d9b9ef08399
+    m_Address: Assets/Prefabs/Building_Popup.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - UI
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ed024d09688269c478274daa967f05e0, type: 2}
   m_SchemaSet:
