@@ -20,9 +20,9 @@ namespace AT_RPG.Manager
         // 현재 씬의 팝업UI를 관리
         private static PopupCanvas popupCanvas;
 
-        private static GameObject gameMenuPopupInstance;
+        private static GameMenuPopup gameMenuPopupInstance;
 
-
+        private static LoadingPopup loadingPopupInstance;
 
         protected override void Awake()
         {
@@ -52,7 +52,7 @@ namespace AT_RPG.Manager
 
             if (!gameMenuPopupInstance)
             {
-                gameMenuPopupInstance = InstantiatePopup(setting.gameMenuPopupPrefab, PopupRenderMode.Hide, false);
+                gameMenuPopupInstance = InstantiatePopup(setting.gameMenuPopupPrefab, PopupRenderMode.Hide, false).GetComponent<GameMenuPopup>();
             }
         }
 
@@ -91,7 +91,7 @@ namespace AT_RPG.Manager
         /// </summary>
         private static void OnCreatePopupCanvas()
         {
-            GameObject popupCanvasInstance = Instantiate(setting.popupCanvasPrefab);
+            GameObject popupCanvasInstance = Instantiate<GameObject>(setting.popupCanvasPrefab);
             PopupCanvas = popupCanvasInstance.GetComponent<PopupCanvas>();
             sceneCanvases.Add(popupCanvasInstance.GetComponent<Canvas>());
         }
@@ -157,6 +157,18 @@ namespace AT_RPG.Manager
         {
             get => popupCanvas;
             set => popupCanvas = value;
+        }
+
+        public static LoadingPopup LoadingPopupInstance
+        {
+            get => loadingPopupInstance;
+            set => loadingPopupInstance = value;
+        }
+
+        public static GameMenuPopup GameMenuPopupInstance
+        {
+            get => gameMenuPopupInstance;
+            set => gameMenuPopupInstance = value;
         }
     }
 }

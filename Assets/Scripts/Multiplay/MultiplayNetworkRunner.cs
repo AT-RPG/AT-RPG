@@ -13,12 +13,20 @@ namespace AT_RPG
     /// <see cref="MultiplayManager"/>의 네트워크 요청을 Photon Fusion 1으로 구현하는 일회용 클래스입니다.  <br/>
     /// 세션에 연결이 해제 또는 실패하면, 객체가 <see cref="UnityEngine.Object.Destroy(UnityEngine.Object)"/>됩니다.
     /// </summary>
-    public class MultiplayNetworkRunner : MonoBehaviour, INetworkRunnerCallbacks
+    public partial class MultiplayNetworkRunner : MonoBehaviour, INetworkRunnerCallbacks
     {
         private NetworkRunner runner;
 
+        /// <summary>
+        /// 스폰될 플레이어의 캐릭터
+        /// </summary>
         [SerializeField] private NetworkPrefabRef playerPrefab;
-        private Dictionary<PlayerRef, NetworkObject> spawnedGameObject = new Dictionary<PlayerRef, NetworkObject>();
+
+        /// <summary>
+        /// 현재 스폰되어있는 오브젝트
+        /// </summary>
+        private Dictionary<PlayerRef, NetworkObject> spawnedGameObjects = new Dictionary<PlayerRef, NetworkObject>();
+
 
 
         private void Awake()
@@ -31,7 +39,6 @@ namespace AT_RPG
         {
             runner.Shutdown();
         }
-
 
 
         /// <summary>
@@ -90,23 +97,25 @@ namespace AT_RPG
         }
 
 
-
         void INetworkRunnerCallbacks.OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
         {
+            /// 현재 씬에 로드되면 멀티플레이어용 캐릭터를 스폰하도록 이벤트를 등록합니다.
             if (runner.IsServer)
             {
-                Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1, 0);
-                NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
-                spawnedGameObject.Add(player, networkPlayerObject);
+                // Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1, 0);
+
+                NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, MultiplayManager.PlayerSpawnPoint, Quaternion.identity, player);
+                spawnedGameObjects.Add(player, networkPlayerObject);
             }
         }
 
         void INetworkRunnerCallbacks.OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
-            if (spawnedGameObject.TryGetValue(player, out NetworkObject networkObject))
+            /// 현재 씬에 멀티플레이어용 캐릭터를 제거합니다.
+            if (spawnedGameObjects.TryGetValue(player, out NetworkObject networkObject))
             {
                 runner.Despawn(networkObject);
-                spawnedGameObject.Remove(player);
+                spawnedGameObjects.Remove(player);
             }
         }
 
@@ -145,5 +154,10 @@ namespace AT_RPG
         void INetworkRunnerCallbacks.OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
         void INetworkRunnerCallbacks.OnSceneLoadDone(NetworkRunner runner) { }
         void INetworkRunnerCallbacks.OnSceneLoadStart(NetworkRunner runner) { }
+    }
+
+    public partial class MultiplayNetworkRunner
+    {
+        public Dictionary<PlayerRef, NetworkObject> SpawnedGameObjects => spawnedGameObjects;
     }
 }

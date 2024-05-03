@@ -24,6 +24,9 @@ namespace AT_RPG.Manager
         // 네트워크에 연결중인지?
         private static bool isConnecting = false;
 
+        // 플레이어의 시작지점
+        private static Vector3 playerSpawnPoint = Vector3.zero;
+
         // 시작 조건 콜백 true->로딩 시작, false->로딩 대기
         public delegate bool StartConditionCallback();
 
@@ -140,7 +143,6 @@ namespace AT_RPG.Manager
             return inviteCode;
         }
 
-
         /// <summary>
         /// 현재 클라이언트의 플레이 방식을 변경합니다.
         /// </summary>
@@ -159,5 +161,11 @@ namespace AT_RPG.Manager
         public static GameMode GameMode => gameMode;
 
         public static bool IsConnecting => isConnecting;
+
+        public static Vector3 PlayerSpawnPoint
+        {
+            get => playerSpawnPoint;
+            set => playerSpawnPoint = value;
+        }
     }
 }

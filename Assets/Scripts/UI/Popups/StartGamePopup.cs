@@ -35,7 +35,6 @@ namespace AT_RPG
         // 피킹된 맵
         private WorldButton currPickedWorldButton;
 
-
         private void Start()
         {
             AnimateStartSequence();
@@ -133,8 +132,13 @@ namespace AT_RPG
         /// </summary>
         private void InternalOnPlayWorld()
         {
-            SceneManager.LoadSceneCoroutine(SceneManager.Setting.LoadingScene, null, () =>
+            UIManager.LoadingPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.loadingPopupPrefab, PopupRenderMode.Default, false)
+                                        .GetComponent<LoadingPopup>();
+
+            UIManager.LoadingPopupInstance.AnimateStartSequence(() =>
             {
+                UIManager.LoadingPopupInstance.StateMsg.text = $"리소스 불러오는중";
+
                 // 리소스 로딩
                 foreach (var label in SceneManager.Setting.MainSceneAddressableLabelMap)
                 {
@@ -149,56 +153,98 @@ namespace AT_RPG
 
                 // 로딩 순서 
                 // 1. 맵 설정 불러오기
-                // 2. 호스트 모드 (활성화가 되어있는 경우)
-                // 3. 맵 오브젝트 불러오기
-                // 4. 씬 이동
-                InternalLoadWorldSetting();
+                // 2. 맵 오브젝트 불러오기
+                // 3. 씬 이동
+                // 4. 호스트 모드 (활성화가 되어있는 경우)
+                InternalLoadWorldSettingDatas();
             });
         }
 
         /// <summary>
         /// 로드한 맵 설정에서 멀티플레이가 활성화 되어있다면 세션을 만듭니다.
         /// </summary>
-        private void InternalLoadWorldSetting()
+        private void InternalLoadWorldSettingDatas()
         {
+            UIManager.LoadingPopupInstance.StateMsg.text = $"월드 설정 불러오는중";
+
             SaveLoadManager.LoadWorldSettingDataCoroutine(
                 SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
                 () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
                 loadedWorldSettingData =>
                 {
                     SaveLoadManager.WorldSettingData = loadedWorldSettingData;
-                    if (loadedWorldSettingData.isMultiplayEnabled)
-                    {
-                        InternalConnectMultiplay();
-                    }
-                    else
-                    {
-                        InternalLoadWorldGameObject();
-                    }
+                    InternalLoadWorldGameObjectDatas();
                 });
-        }
-
-        /// <summary>
-        /// 멀티플레이가 활성화된 경우, Host모드로 연결합니다.
-        /// </summary>
-        private void InternalConnectMultiplay()
-        {
-            MultiplayManager.Connect(() => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading, InternalLoadWorldGameObject);
         }
 
         /// <summary>
         /// 세이브 파일에 저장된 게임 오브젝트들을 불러와서 인스턴싱합니다.
         /// </summary>
-        private void InternalLoadWorldGameObject()
+        private void InternalLoadWorldGameObjectDatas()
         {
+            UIManager.LoadingPopupInstance.StateMsg.text = $"이전 데이터 불러오는중";
+
             SaveLoadManager.LoadGameObjectDatasCoroutine(
                 SaveLoadManager.Setting.defaultSaveFolderPath, currPickedWorldButton.MapName,
                 () => !SaveLoadManager.IsLoading && !ResourceManager.IsLoading,
                 loadedGameObjectDatas => 
                 {
-                    SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
-                    SceneManager.LoadSceneCoroutine(SceneManager.Setting.MainScene, () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading && !MultiplayManager.IsConnecting);
+                    InternalLoadMainScene(loadedGameObjectDatas);
                 });
+        }
+
+        ///
+        ///
+        ///
+        ///
+        /// <summary>
+        /// 메인씬으로 이동합니다.
+        /// </summary>
+        private void InternalLoadMainScene(SerializedGameObjectDataList loadedGameObjectDatas)
+        {
+            UIManager.LoadingPopupInstance.StateMsg.text = $"월드 불러오는중";
+
+            SceneManager.LoadSceneCoroutine(
+                SceneManager.Setting.MainScene_BJW, // TODO : 구현이 끝나면 수정
+                () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading && !MultiplayManager.IsConnecting, 
+                () => { InternalConnectMultiplay(loadedGameObjectDatas); });
+        }
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+
+
+
+
+
+        /// <summary>
+        /// 멀티플레이가 활성화된 경우, Host모드로 연결합니다.
+        /// </summary>
+        private void InternalConnectMultiplay(SerializedGameObjectDataList loadedGameObjectDatas)
+        {
+            /// <see cref="InternalLoadWorldSettingDatas(LoadingPopup)"/>가 선행 되어야합니다.
+            if (SaveLoadManager.WorldSettingData.isMultiplayEnabled)
+            {
+                UIManager.LoadingPopupInstance.StateMsg.text = $"멀티플레이 연결 확인중";
+
+                MultiplayManager.Connect(() => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading, () =>
+                {
+                    // 연결 후에 저장파일에서 오브젝트를 불러옵니다.
+                    SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
+                    UIManager.LoadingPopupInstance.AnimateEscapeSequence();
+                });
+            }
+            else
+            {
+                UIManager.LoadingPopupInstance.StateMsg.text = $"";
+
+                // 연결 후에 저장파일에서 오브젝트를 불러옵니다.
+                SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
+                UIManager.LoadingPopupInstance.AnimateEscapeSequence();
+            }
         }
 
         /// <summary>

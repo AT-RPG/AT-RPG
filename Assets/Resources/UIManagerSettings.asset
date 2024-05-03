@@ -14,9 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasScalerSetting: {fileID: 6770727359822687992, guid: d5521c5a9b68f1b4ea98c2431918531a,
     type: 3}
-  gameMenuPopupPrefab: {fileID: 4696516987986217221, guid: 84cc06c53e7c4954f8688da7785dbaa6,
-    type: 3}
-  popupCanvasPrefab: {fileID: 6052988213859640479, guid: b6ef8d6169b10b44cbdd53c5819729b3,
-    type: 3}
-  logPopupPrefab: {fileID: 4604045765672551863, guid: 7fec57ba84b8d2844ab1a26125fbeba9,
-    type: 3}
+  gameMenuPopupPrefab:
+    m_AssetGUID: 84cc06c53e7c4954f8688da7785dbaa6
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  popupCanvasPrefab:
+    m_AssetGUID: b6ef8d6169b10b44cbdd53c5819729b3
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  logPopupPrefab:
+    m_AssetGUID: 7fec57ba84b8d2844ab1a26125fbeba9
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  loadingPopupPrefab:
+    m_AssetGUID: 984d947f18454b84393d24375e4abf53
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

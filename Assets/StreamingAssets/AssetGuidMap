@@ -14,6 +14,7 @@
         "Assets/Prefabs/PlayWorldButton.prefab": "55b6d14c70a796e4997cc647f14422a6",
         "Assets/Prefabs/WorldButton.prefab": "180c1adda0e607441b40e1438da282b8",
         "Assets/Prefabs/Building_Popup.prefab": "a68ad62a2eab882409614d9b9ef08399",
+        "Assets/Prefabs/UI/LoadingPopup.prefab": "984d947f18454b84393d24375e4abf53",
         "Assets/Prefabs/Building_Platform.prefab": "3bce29658b90a1a408fa4a1849a3d6d8",
         "Assets/Prefabs/Building_Indicator.prefab": "60f9c01beb778ec4c86a47a96b0ff019",
         "Assets/Prefabs/Building_Bed.prefab": "128379614d42a8d419c7f5939510d757",

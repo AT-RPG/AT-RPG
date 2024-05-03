@@ -36,7 +36,10 @@ namespace AT_RPG
         private void Awake()
         {
             playerController = GetComponent<PlayerController>();
+        }
 
+        private void Start()
+        {
             InputManager.AddKeyAction("BuildMode", SetBuildingMode);
             InputManager.AddKeyAction("Attack/Fire", Build);
         }

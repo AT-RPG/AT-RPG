@@ -111,8 +111,6 @@ namespace AT_RPG.Manager
                     yield return null;
                 }
 
-                yield return LoadFakeDuration();
-
                 // 로딩된 씬으로 변경 가능 Flag 설정.
                 loadSceneRequest.allowSceneActivation = true;
                 yield return null;
@@ -122,6 +120,7 @@ namespace AT_RPG.Manager
             yield return null;
             completed?.Invoke();
             afterSceneLoadAction?.Invoke();
+            afterSceneLoadAction = null;
         }
 
         /// <summary>
