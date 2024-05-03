@@ -77,6 +77,8 @@ namespace AT_RPG
                 // 로딩이 끝나면 씬을 변경합니다.
                 SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
             });
+
+            DestroyPopup();
         }
 
         /// <summary>

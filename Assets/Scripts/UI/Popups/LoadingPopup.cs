@@ -1,5 +1,4 @@
 using AT_RPG.Manager;
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -13,10 +12,6 @@ namespace AT_RPG
         [Header("UI 애니메이션")]
         [SerializeField] private FadeCanvasAnimation fadeAnimation;
 
-        private void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
 
         /// <summary>
         /// 시작 애니메이션을 실행합니다.

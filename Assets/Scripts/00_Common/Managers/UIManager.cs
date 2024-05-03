@@ -31,18 +31,17 @@ namespace AT_RPG.Manager
             setting = Resources.Load<UIManagerSettings>("UIManagerSettings");
 
             InputManager.AddKeyAction("Setting/Undo", OnInstantiateGameMenuPopup);
+        }
 
-            GameManager.AfterFirstSceneLoadAction += OnUnLoadAllCanvases;
-            GameManager.AfterFirstSceneLoadAction += OnLoadAllCanvases;
-            GameManager.AfterFirstSceneLoadAction += OnCreatePopupCanvas;
-            GameManager.AfterFirstSceneLoadAction += OnSortCanvases;
-            GameManager.AfterFirstSceneLoadAction += OnSetupAllCanvasScalarsAsSetting;
+        private void Start()
+        {
+            OnUnLoadAllCanvases();
+            OnLoadAllCanvases();
+            OnCreatePopupCanvas();
+            OnSortCanvases();
+            OnSetupAllCanvasScalarsAsSetting();
 
-            SceneManager.AfterSceneLoadAction += OnUnLoadAllCanvases;
-            SceneManager.AfterSceneLoadAction += OnLoadAllCanvases;
-            SceneManager.AfterSceneLoadAction += OnCreatePopupCanvas;
-            SceneManager.AfterSceneLoadAction += OnSortCanvases;
-            SceneManager.AfterSceneLoadAction += OnSetupAllCanvasScalarsAsSetting;
+            DontDestroyOnLoad(popupCanvas.gameObject);
         }
 
         private static void OnInstantiateGameMenuPopup(InputValue inputValue)

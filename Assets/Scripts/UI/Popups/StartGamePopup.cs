@@ -125,6 +125,7 @@ namespace AT_RPG
             }
 
             InternalOnPlayWorld();
+            DestroyPopup();
         }
 
         /// <summary>
@@ -135,10 +136,10 @@ namespace AT_RPG
             UIManager.LoadingPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.loadingPopupPrefab, PopupRenderMode.Default, false)
                                         .GetComponent<LoadingPopup>();
 
+            UIManager.LoadingPopupInstance.StateMsg.text = $"리소스 불러오는중";
+
             UIManager.LoadingPopupInstance.AnimateStartSequence(() =>
             {
-                UIManager.LoadingPopupInstance.StateMsg.text = $"리소스 불러오는중";
-
                 // 리소스 로딩
                 foreach (var label in SceneManager.Setting.MainSceneAddressableLabelMap)
                 {
@@ -193,32 +194,18 @@ namespace AT_RPG
                 });
         }
 
-        ///
-        ///
-        ///
-        ///
         /// <summary>
         /// 메인씬으로 이동합니다.
         /// </summary>
         private void InternalLoadMainScene(SerializedGameObjectDataList loadedGameObjectDatas)
         {
-            UIManager.LoadingPopupInstance.StateMsg.text = $"월드 불러오는중";
+            UIManager.LoadingPopupInstance.StateMsg.text = $"월드에 오브젝트 배치중";
 
             SceneManager.LoadSceneCoroutine(
                 SceneManager.Setting.MainScene_BJW, // TODO : 구현이 끝나면 수정
                 () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading && !MultiplayManager.IsConnecting, 
                 () => { InternalConnectMultiplay(loadedGameObjectDatas); });
         }
-        ///
-        ///
-        ///
-        ///
-        ///
-        ///
-
-
-
-
 
         /// <summary>
         /// 멀티플레이가 활성화된 경우, Host모드로 연결합니다.
