@@ -223,10 +223,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: test
+  m_text: "\uC5F0\uACB0\uB428\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 76ad16a80c7ca64469677396cb496eba, type: 2}
-  m_sharedMaterial: {fileID: 5493834397770338636, guid: 76ad16a80c7ca64469677396cb496eba,
+  m_fontAsset: {fileID: 11400000, guid: ffcb8457c39ed2849aee55eab6426d99, type: 2}
+  m_sharedMaterial: {fileID: 3382087850580830273, guid: ffcb8457c39ed2849aee55eab6426d99,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

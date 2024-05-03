@@ -41,7 +41,6 @@ namespace AT_RPG
             blurAnimation.StartFade();
         }
 
-
         /// <summary>
         /// 초대코드를 이용해서 다른 HOST의 세션에 입장합니다.
         /// </summary>
@@ -60,7 +59,13 @@ namespace AT_RPG
             string fromScene = SceneManager.CurrentSceneName;
             string toScene = SceneManager.Setting.MainScene;
             string loadingScene = SceneManager.Setting.LoadingScene;
-            SceneManager.LoadScene(loadingScene, () =>
+
+            UIManager.LoadingPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.loadingPopupPrefab, PopupRenderMode.Default, false)
+                            .GetComponent<LoadingPopup>();
+
+            UIManager.LoadingPopupInstance.StateMsg.text = $"리소스 불러오는중";
+
+            UIManager.LoadingPopupInstance.AnimateStartSequence(() =>
             {
                 // 리소스 로딩
                 foreach (var label in SceneManager.Setting.MainSceneAddressableLabelMap)
@@ -75,7 +80,10 @@ namespace AT_RPG
                 }
 
                 // 로딩이 끝나면 씬을 변경합니다.
-                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading);
+                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading, () =>
+                {
+                    UIManager.LoadingPopupInstance.AnimateEscapeSequence();
+                });
             });
 
             DestroyPopup();
@@ -95,7 +103,6 @@ namespace AT_RPG
             logPopup.Log = $"초대코드가 일치하지 않습니다.";
             logPopup.Duration = 4.5f;
         }
-
 
         public void DestroyPopup()
         {

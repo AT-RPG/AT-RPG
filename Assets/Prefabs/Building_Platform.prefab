@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5426407938185399829}
   - component: {fileID: -4616377665272847185}
   - component: {fileID: -4561149284289453930}
+  - component: {fileID: 5133379758385888935}
   m_Layer: 25
   m_Name: Building_Platform
   m_TagString: Untagged
@@ -142,3 +143,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: d01f663697e351a4897a6e72fcc4e991, type: 2}
   dissolvePrefab: {fileID: 2100000, guid: 39fcdf4d38db5b94aaafe1776c943c34, type: 2}
+--- !u!114 &5133379758385888935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6269892692167171113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91735022c7b4be84094c6257c5741bb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  self:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  gameObjectData:
+    ComponentTypeName: 
+    Instance:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    InstanceName: 
+    InstanceLayer: 0
+    InstanceTag: 
+    InstanceIsActive: 0
+    InstanceHideFlags: 0
+    InstanceIsStatic: 0
+    LocalPosition: {x: 0, y: 0, z: 0}
+    LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 0, y: 0, z: 0}

@@ -96,7 +96,7 @@ namespace AT_RPG
             GameObject logPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.logPopupPrefab, PopupRenderMode.Default, false);
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
-            logPopup.Log = $"Save LoadCompleted!";
+            logPopup.Log = $"저장 완료";
             logPopup.Duration = 3.0f;
         }
 
@@ -113,10 +113,8 @@ namespace AT_RPG
             LogPopup logPopup = logPopupInstance.GetComponent<LogPopup>();
 
             logPopup.Log = IsMultiplayEnabled() ?
-                           $"Invite code : {MultiplayManager.InviteCode} was generated! \n" +
-                           $"Share this code to other player!" :
-                           $"Multiplay is disabled. \n" +
-                           $"Check multiplay enabled at map setting option";
+                           $"초대코드 : {MultiplayManager.InviteCode} \n" :
+                           $"멀티플레이가 비활성화 되어있습니다.\n";
 
             logPopup.Duration = IsMultiplayEnabled() ? 8.0f : 4.0f;
         }
@@ -147,29 +145,42 @@ namespace AT_RPG
         /// </summary>
         public void OnLoadTitleScene()
         {
-            GameMode currentPlayMode = MultiplayManager.GameMode;
-            if (currentPlayMode == GameMode.Single || currentPlayMode == GameMode.Host) { SaveWorld(); }
-
             SaveLoadManager.WorldSettingData = null;
 
             // 타이틀 씬으로 이동
             string fromScene = SceneManager.CurrentSceneName;
             string toScene = SceneManager.Setting.TitleScene;
             string loadingScene = SceneManager.Setting.LoadingScene;
-            SceneManager.LoadSceneCoroutine(loadingScene, () => !SaveLoadManager.IsSaving, () =>
+
+            UIManager.LoadingPopupInstance = UIManager.InstantiatePopup(UIManager.Setting.loadingPopupPrefab, PopupRenderMode.Default, false)
+                .GetComponent<LoadingPopup>();
+
+            UIManager.LoadingPopupInstance.StateMsg.text = $"타이틀로 이동중";
+
+            UIManager.LoadingPopupInstance.AnimateStartSequence(() =>
             {
-                // ResourceManager.LoadAllResourcesCoroutine(toScene);
+                // 리소스 로딩
+                foreach (var label in SceneManager.Setting.MainSceneAddressableLabelMap)
+                {
+                    ResourceManager.LoadAssetsAsync(label.labelString, null, true);
+                }
 
-                // ResourceManager.UnloadAllResourcesCoroutine(fromScene);
+                // 리소스 언로딩
+                foreach (var label in SceneManager.Setting.TitleSceneAddressableLabelMap)
+                {
+                    ResourceManager.UnloadAssetsAsync(label.labelString);
+                }
 
-                SceneManager.LoadSceneCoroutine(
-                    toScene, 
-                    () => !ResourceManager.IsLoading && !SaveLoadManager.IsSaving, 
-                    () => MultiplayManager.DisconnectAsync());
+                // 타이틀 씬으로 이동
+                SceneManager.LoadSceneCoroutine(toScene, () => !ResourceManager.IsLoading && !SaveLoadManager.IsSaving, () =>
+                {
+                    MultiplayManager.DisconnectAsync();
+                    UIManager.LoadingPopupInstance.AnimateEscapeSequence();
+                });
+
+                DestroyPopup();
             });
         }
-
-
 
         /// <summary>
         /// 컴퓨터 바탕화면으로 돌아갑니다. (게임을 종료합니다.)
@@ -179,8 +190,6 @@ namespace AT_RPG
             MultiplayManager.DisconnectAsync();
             Application.Quit();
         }
-
-
 
         public void DestroyPopup()
         {

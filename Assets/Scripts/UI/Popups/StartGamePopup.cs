@@ -199,10 +199,10 @@ namespace AT_RPG
         /// </summary>
         private void InternalLoadMainScene(SerializedGameObjectDataList loadedGameObjectDatas)
         {
-            UIManager.LoadingPopupInstance.StateMsg.text = $"월드에 오브젝트 배치중";
+            UIManager.LoadingPopupInstance.StateMsg.text = $"월드에 인스턴스 배치중";
 
             SceneManager.LoadSceneCoroutine(
-                SceneManager.Setting.MainScene_BJW, // TODO : 구현이 끝나면 수정
+                SceneManager.Setting.MainScene,
                 () => !ResourceManager.IsLoading && !SaveLoadManager.IsLoading && !MultiplayManager.IsConnecting, 
                 () => { InternalConnectMultiplay(loadedGameObjectDatas); });
         }
@@ -222,6 +222,7 @@ namespace AT_RPG
                     // 연결 후에 저장파일에서 오브젝트를 불러옵니다.
                     SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
                     UIManager.LoadingPopupInstance.AnimateEscapeSequence();
+                    UIManager.LoadingPopupInstance.StateMsg.text = MultiplayManager.IsConnecting ? "연결O" : "연결X";
                 });
             }
             else
