@@ -1,21 +1,40 @@
+using AT_RPG;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
+using static Fusion.NetworkCharacterController;
+using static UnityEngine.GraphicsBuffer;
 
 /// <summary>
 /// 파이어볼-투사체 관리스크립트
 /// </summary>
-public class Fireball : MonoBehaviour
+public class Fireball : MonoBehaviour, ICharacterDamage
 {
-   
+    public GameObject orgEffect;
     public IObjectPool<Fireball> firePool;
     Coroutine stop = null;
     [SerializeField]
     private float ballSpeed;
+    private float damage;
+
+    private Vector3 direction;
 
     private MonsterShootManager monsterShootManager;
-    private RangeType rangeType;
+    public void SetDamage(float damageValue)
+    {
+        damage = damageValue;
+    }
+    public void setStartPos(Transform myPos)
+    {
+        transform.position = myPos.transform.position;
+    }
+    public void SetTarget(Vector3 target)
+    {
+        direction = (target - transform.position).normalized;
+    }
+
 
     public void SetRangeAttackParent(MonsterShootManager parent)
     {
@@ -42,13 +61,30 @@ public class Fireball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) //적에게 히트
     {
+      
+        if (other.gameObject.layer == LayerMask.NameToLayer("Monster")) return;
+        GameObject FireballHitEffect = Instantiate(orgEffect);
+        FireballHitEffect.transform.position = this.gameObject.transform.position;  // 이펙트 포지션
+        FireballHitEffect.transform.rotation = Quaternion.identity;  // 이펙트 로테이션
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) // 충돌한 오브젝트의 레이어가 몬스터 레이어인지 확인
         {
-           rangeType.ballHit();
+            ICharacterDamage character = other.GetComponent<ICharacterDamage>();
+            if (character != null)
+            {
+                character.TakeDamage(damage); // 맞은 대상에게 데미지를 줌
+            }
         }
         StopCoroutine(stop);
+        StartCoroutine(DestroyEffectAfterDelay(FireballHitEffect));
+    }
+    private IEnumerator DestroyEffectAfterDelay(GameObject effect)
+    {
+        yield return new WaitForSeconds(0.5f); // 이펙트를 파괴할 대기 시간 (예: 2초)
+        Destroy(effect); // 이펙트 파괴
+        yield return new WaitForSeconds(0.5f);
         destroyball();//릴리즈  
     }
+
 
     IEnumerator ShootLost()
     {
@@ -57,13 +93,16 @@ public class Fireball : MonoBehaviour
     }
     private void Start()
     {
-       
+        
     }
     private void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * ballSpeed); //발사
+        transform.Translate(direction * Time.deltaTime * ballSpeed);
+
     }
 
-
-
+    public void TakeDamage(float dmg)
+    {
+        Destroy(gameObject);
+    }
 }

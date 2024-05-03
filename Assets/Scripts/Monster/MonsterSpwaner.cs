@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using static MonsterMain;
+using static UnityEngine.GraphicsBuffer;
 
 public class MonsterSpwaner : MonoBehaviour
 {
@@ -55,15 +57,42 @@ public class MonsterSpwaner : MonoBehaviour
     //몬스터를 풀에 반환할때 호출
     private void OnReleaseMonster(MonsterMain monsterMain)
     {
+        monsterCount--;
         monsterMain.gameObject.SetActive(false);
     }
     //몬스터가 파괴(스택초과)될때 호출
     private void OnDestroyMonster(MonsterMain monsterMain)
     {
+        monsterCount--;
         Destroy(monsterMain.gameObject);
     }
+    private Coroutine MonSpawn;
+    private int monsterCount = 0;
+    public void StartTracking()
+    {
+       MonSpawn= StartCoroutine(MonsterSpawn());
+          
+    }
 
-   
+    IEnumerator MonsterSpawn()
+    {
+        while (monsterCount < 5)
+        {
+            monnum = Random.Range(0, 7);
+            _Pool.Get();
+            monsterCount++;
+            yield return new WaitForSeconds(2.0f);
+        }
+        yield return null;
+    }
+
+    //몬스터 플레이어 놓침
+    public void StopTracking()
+    {
+        StopCoroutine(MonSpawn);
+    }
+
+
     // Update is called once per frame
     void Update()
     {

@@ -13,6 +13,7 @@ public class MonsterShootManager : MonoBehaviour
     private GameObject FireballPrefab;
     public Transform attackPos;
     private IObjectPool<Fireball> rangePool;
+    
 
     private void Awake()
     {
@@ -45,12 +46,13 @@ public class MonsterShootManager : MonoBehaviour
     }
 
     //발사
-    public void OnShoot(Transform startPos)
+    public void OnShoot(Transform startPos,float damage,Vector3 targetPos)
     {
-        attackPos= startPos;
-        Fireball fireball = rangePool.Get();
-        fireball.transform.position = attackPos.position;
-        fireball.transform.rotation = attackPos.rotation;
+        Fireball fireball=rangePool.Get();
+        fireball.SetDamage(damage);
+        fireball.setStartPos(startPos);
+        fireball.SetTarget(targetPos);
         fireball.gameObject.SetActive(true);
     }
+ 
 }

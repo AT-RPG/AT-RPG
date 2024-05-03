@@ -8,6 +8,7 @@ namespace AT_RPG
     {
         public int maxHP;
         public int attackPoint;
+        public int defendPoint;
         public float moveSpeed;
         public float attackDeley;
         public float skillCooltime;
