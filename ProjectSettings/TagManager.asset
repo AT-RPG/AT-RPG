@@ -9,6 +9,8 @@ TagManager:
   - Item
   - Door
   - NPC
+  - PriceText
+  - ImageNameText
   layers:
   - Default
   - TransparentFX

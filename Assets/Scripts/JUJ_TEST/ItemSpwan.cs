@@ -1,84 +1,123 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemSpwan : MonoBehaviour
+namespace AT_RPG
 {
-    public Animator itemAnimator;
-    public GameObject itemBox;
-    public float needTime=3.0f;
-    public LayerMask layer;
-    public float inTime;
-    public GameObject[] dropItemPrefabs; // 드롭될 아이템 프리팹 배열
-    public float[] dropItemProbabilities; // 각 아이템의 드롭 확률 배열
-    public int minDropCount = 1; // 최소 드롭 개수
-    public int maxDropCount = 10; // 최대 드롭 개수
-    // Start is called before the first frame update
-    void Start()
+    public class ItemSpwan : MonoBehaviour, ICharacterDamage
     {
-        itemAnimator.speed = 0f;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public void OnTriggerStay(Collider other)
-    {
-        if (((1 << other.gameObject.layer) & layer) != 0)
-        {
-            itemAnimator.speed = 1f;
-            inTime += Time.deltaTime;
-            if(inTime>=needTime)
-            {
-                itemAnimator.SetBool("Bang", true);
-                Destroy(itemBox);
-                BreakBox();
-            }
-        }
-        else
+        public Animator itemAnimator;
+        public GameObject itemBoxPrefab;
+        public GameObject itemBox;
+        public float needTime = 3.0f;
+        public LayerMask layer;
+        public float inTime;
+        public GameObject box;
+        public GameObject[] dropItemPrefabs;
+        public float[] dropItemProbabilities;
+        public int minDropCount = 1;
+        public int maxDropCount = 10;
+        public Bounds bounds;
+
+        void Start()
         {
             itemAnimator.speed = 0f;
+            bounds = GetComponent<Collider>().bounds;
         }
-    }
-    public void BreakBox()
-    {
-        // 드롭될 아이템 개수를 랜덤으로 설정합니다.
-        int dropCount = Random.Range(minDropCount, maxDropCount + 1);
 
-        for (int i = 0; i < dropCount; i++)
+        public void TakeDamage(float dmg)
         {
-            // 랜덤으로 아이템을 선택하기 위해 확률 합을 구합니다.
-            float totalProbability = 0f;
-            foreach (float probability in dropItemProbabilities)
+            // 일정 데미지 이상을 받았을 때 아이템 스폰
+            if (dmg >= 10f) // 이 값은 적절히 조정해야 합니다.
             {
-                totalProbability += probability;
+                StartCoroutine(SpawnItemBox(5.0f));
             }
+        }
 
-            // 랜덤으로 아이템을 선택합니다.
-            float randomValue = Random.value * totalProbability;
-            float cumulativeProbability = 0f;
-            GameObject chosenItemPrefab = null;
-            for (int j = 0; j < dropItemProbabilities.Length; j++)
+        public void OnTriggerStay(Collider other)
+        {
+            if (((1 << other.gameObject.layer) & layer) != 0)
             {
-                cumulativeProbability += dropItemProbabilities[j];
-                if (randomValue <= cumulativeProbability)
+                Debug.Log("들어왔ㅇㅇ");
+                itemAnimator.speed = 1f;
+                inTime += Time.deltaTime;
+                StartCoroutine(DisableBoxAfterDelay(2.0f));
+                if (inTime >= needTime)
                 {
-                    chosenItemPrefab = dropItemPrefabs[j];
-                    break;
+                    itemAnimator.SetBool("Bang", true);
+                    if (itemBox != null)
+                    {
+                        Destroy(itemBox);
+                    }
+                    BreakBox();
                 }
             }
-
-            // 선택된 아이템이 없다면 continue하여 다음 아이템을 선택합니다.
-            if (chosenItemPrefab == null)
+            else
             {
-                Debug.LogWarning("No item selected.");
-                continue;
+                itemAnimator.speed = 0f;
             }
+        }
 
-            // 선택된 아이템을 생성하고 활성화시킵니다.
-            GameObject dropItem = Instantiate(chosenItemPrefab, transform.position, Quaternion.identity);
-            dropItem.SetActive(true);
+        public void OnTriggerExit(Collider other)
+        {
+            if (((1 << other.gameObject.layer) & layer) != 0)
+            {
+                StartCoroutine(SpawnItemBox(5.0f));
+                Debug.Log("재생성중");
+            }
+        }
+
+        IEnumerator DisableBoxAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            box.SetActive(false);
+        }
+
+        IEnumerator SpawnItemBox(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            itemBox = Instantiate(itemBoxPrefab, transform.position, Quaternion.identity);
+        }
+
+        public void BreakBox()
+        {
+            int dropCount = Random.Range(minDropCount, maxDropCount + 1);
+
+            for (int i = 0; i < dropCount; i++)
+            {
+                float totalProbability = 0f;
+                foreach (float probability in dropItemProbabilities)
+                {
+                    totalProbability += probability;
+                }
+
+                float randomValue = Random.value * totalProbability;
+                float cumulativeProbability = 0f;
+                GameObject chosenItemPrefab = null;
+                for (int j = 0; j < dropItemProbabilities.Length; j++)
+                {
+                    cumulativeProbability += dropItemProbabilities[j];
+                    if (randomValue <= cumulativeProbability)
+                    {
+                        chosenItemPrefab = dropItemPrefabs[j];
+                        break;
+                    }
+                }
+
+                if (chosenItemPrefab == null)
+                {
+                    Debug.LogWarning("No item selected.");
+                    continue;
+                }
+
+                Vector3 randomPosition = new Vector3(
+                    Random.Range(bounds.min.x, bounds.max.x),
+                    Random.Range(bounds.min.y, bounds.max.y),
+                    Random.Range(bounds.min.z, bounds.max.z)
+                );
+
+                GameObject dropItem = Instantiate(chosenItemPrefab, randomPosition, Quaternion.identity);
+                dropItem.SetActive(true);
+            }
         }
     }
 }

@@ -32,6 +32,6 @@ public class Store : MonoBehaviour
     }
     public void ExitButton() // 닫기 버튼 함수
     {
-        StoreUI.SetActive(false);
+        StoreUI.SetActive(false);  
     }
 }

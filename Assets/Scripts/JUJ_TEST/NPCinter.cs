@@ -17,7 +17,8 @@ public class NPCinter : MonoBehaviour
     {
         if (((1 << other.gameObject.layer) & layer) != 0)
         {
-            if (!choicePanel.activeSelf)
+            //if (!choicePanel.activeSelf)
+            if(canInter==false)
             {
                 npcInter.SetActive(true); // 대화하기 UI 활성화
             }
@@ -56,7 +57,7 @@ public class NPCinter : MonoBehaviour
     public void EndInteraction()
     {
         canInter = false;
-        //npcInter.SetActive(true);
+        npcInter.SetActive(true);
         choicePanel.SetActive(false);
         Debug.Log("NPC와 상호작용 종료");
         // 여기에 상호작용 UI 숨기기 등의 코드 추가
@@ -76,7 +77,17 @@ public class NPCinter : MonoBehaviour
     public void ClickEndButton()
     {
         EndInteraction();
-        ReturnCam();
+        ReturnCam();                    
+    }
+    public void ChatReturnButton()
+    {
+        choicePanel.SetActive(true);
+        chatPanel.SetActive(false);
+    }
+    public void StoreReturnButton()
+    {
+        storePanel.SetActive(false);
+        choicePanel.SetActive(true);
     }
 
     public void ZoomCam()
