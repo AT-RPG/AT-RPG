@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 3722684884018171626}
   - component: {fileID: 4854563070513593306}
   - component: {fileID: 2555584480433697233}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: MonsterAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8946694259297155856}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: StopTracking
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

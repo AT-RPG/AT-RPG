@@ -20,8 +20,10 @@ public class MonsterSpwaner : MonoBehaviour
 
 
 
+    [SerializeField]
+    public float spawnTimer = 3.0f;
 
-    [SerializeField] public int monnum = 0;
+    private int monnum = 0;
 
     
     private IObjectPool<MonsterMain> _Pool;
@@ -81,7 +83,7 @@ public class MonsterSpwaner : MonoBehaviour
             monnum = Random.Range(0, 7);
             _Pool.Get();
             monsterCount++;
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(spawnTimer);
         }
         yield return null;
     }

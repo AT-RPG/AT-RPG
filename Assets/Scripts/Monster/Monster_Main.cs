@@ -193,26 +193,7 @@ public class MonsterMain : CommonBattle
     }
 
 
-    /*
-    public IEnumerator TrackPlayerOnDamage() //피해를 입으면 즉시 플레이어를 추적
-    {
-        float MaxHp = baseBattleStat.maxHP;
-            yield return new WaitForSeconds(1f);
-
-            if (MaxHp > baseBattleStat.maxHP)
-            {
-                string playerTag = "Player";
-                GameObject playerObject = GameObject.FindGameObjectWithTag(playerTag);
-                if (playerObject != null)
-                {
-                    Transform playerTransform = playerObject.transform;
-                    StartTracking(playerTransform);
-                }
-                
-            }
-        
-    }
-    */
+    
     //몬스터 생성
     void createMonster()
     {
@@ -233,6 +214,7 @@ public class MonsterMain : CommonBattle
         monAgent.ResetPath();
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
+        myAnim.SetBool("Skill", false);
         monsterIdleTime = Random.Range(2, 4);
         deleyMove = StartCoroutine(DelayChangeState(State.Move, monsterIdleTime));
     }
@@ -256,8 +238,11 @@ public class MonsterMain : CommonBattle
     {
         Vector3 GetRndPos()
         {
-            dir = Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0) * dir;
-            dir *= Random.Range(10.0f, 50.0f);
+
+                dir = Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0) * dir;
+                dir *= Random.Range(10.0f, 50.0f);
+         
+            
             return monResPos.position + dir;
         }
         MoveToPos(GetRndPos());
@@ -358,7 +343,7 @@ public class MonsterMain : CommonBattle
 
     public IEnumerator BattleState()
     {
-        // StopCoroutine(trackPlayerOnDamage);//피해감지 코룬틴 정지
+        
 
         while (myTarget != null)
         {
@@ -462,7 +447,7 @@ public class MonsterMain : CommonBattle
         monAgent.ResetPath();
         ChangeState(State.Dead);
         StartCoroutine(deadAnimation());
-        // Invoke("destroyMosnter", 3f); //풀 릴리스 호출
+      
     }
 
 

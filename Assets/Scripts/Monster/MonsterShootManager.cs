@@ -54,5 +54,11 @@ public class MonsterShootManager : MonoBehaviour
         fireball.SetTarget(targetPos);
         fireball.gameObject.SetActive(true);
     }
- 
+
+    /*
+    GameObject FireballHitEffect = Instantiate(orgEffect, transform);
+    FireballHitEffect.transform.position = this.gameObject.transform.position;  // 이펙트 포지션
+        FireballHitEffect.transform.rotation = Quaternion.identity;  // 이펙트 로테이션
+    */
+
 }

@@ -59,13 +59,13 @@ public class RangeType : MonsterMain
 
     IEnumerator Rage()
     {
-        GameObject RageVfx = Instantiate(rageVFX);  
+        GameObject RageVfx = Instantiate(rageVFX, this.transform);
         float buffTimer = 0.0f;
         baseBattleStat.attackPoint += 10;
         while (buffTimer < 30.0f)
-        {   
-            RageVfx.transform.position = this.gameObject.transform.position;  // 이펙트 포지션
-            RageVfx.transform.rotation = Quaternion.identity;  // 이펙트 로테이션
+        {
+            RageVfx.transform.localPosition = Vector3.zero; // 몬스터의 로컬 좌표계 상에서 원점에 배치
+            RageVfx.transform.localRotation = Quaternion.identity; // 몬스터와 동일한 회전 설정
             buffTimer += Time.deltaTime;
             yield return null;
         }

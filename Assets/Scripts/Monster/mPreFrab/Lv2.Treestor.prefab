@@ -24,12 +24,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033399024451424902}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.09069191, y: -0.72366923, z: -0.2354376, w: -0.6423762}
+  m_LocalPosition: {x: -2.1157072, y: -1.3790051, z: 1.9583112}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2771379458864133923}
+  m_Father: {fileID: 408939950158634995}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1296371700346216101
 GameObject:
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 513320087008630462}
   - component: {fileID: 4476597699964470516}
   - component: {fileID: 2755202526465088838}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: MonsterAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8223456849599109434}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: StopTracking
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -538,7 +538,7 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3128052449726434018}
-    - targetCorrespondingSourceObject: {fileID: -5021085851884130659, guid: fb5c1f69b3013f345bb1ab33930a4cf7,
+    - targetCorrespondingSourceObject: {fileID: -7383449975869012403, guid: fb5c1f69b3013f345bb1ab33930a4cf7,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1781049398561025550}
@@ -552,6 +552,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3306293134186580975}
   m_SourcePrefab: {fileID: 100100000, guid: fb5c1f69b3013f345bb1ab33930a4cf7, type: 3}
+--- !u!4 &408939950158634995 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7383449975869012403, guid: fb5c1f69b3013f345bb1ab33930a4cf7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2027868784997292478}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1217386127176033519 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fb5c1f69b3013f345bb1ab33930a4cf7,
@@ -630,12 +636,6 @@ MonoBehaviour:
 --- !u!4 &1994767629174226517 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fb5c1f69b3013f345bb1ab33930a4cf7,
-    type: 3}
-  m_PrefabInstance: {fileID: 2027868784997292478}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2771379458864133923 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -5021085851884130659, guid: fb5c1f69b3013f345bb1ab33930a4cf7,
     type: 3}
   m_PrefabInstance: {fileID: 2027868784997292478}
   m_PrefabAsset: {fileID: 0}
