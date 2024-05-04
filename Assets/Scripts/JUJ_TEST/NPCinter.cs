@@ -27,7 +27,7 @@ public class NPCinter : MonoBehaviour
     {
         if (((1 << other.gameObject.layer) & layer) != 0)
         {
-            //if (!choicePanel.activeSelf)
+            
             if(canInter==false)
             {
                 npcInter.SetActive(true); // 대화하기 UI 활성화
@@ -36,7 +36,7 @@ public class NPCinter : MonoBehaviour
             {
                 npcInter.SetActive(false);
             }
-            if (canInter == false && Input.GetKeyDown(KeyCode.F))
+            if (canInter == false && Input.GetKeyDown(KeyCode.L))
             {
                 ZoomCam();
                 if (zoomCamera != null)

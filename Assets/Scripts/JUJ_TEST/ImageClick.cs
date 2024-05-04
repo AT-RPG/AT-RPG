@@ -7,7 +7,6 @@ public class ImageClick : MonoBehaviour, IPointerClickHandler
 {
     public Image emptyImage; // 빈 이미지에 대한 참조
     public GameObject PopupPnael;
-
     public void SetEmptyImage(Image emptyImage)
     {
         this.emptyImage = emptyImage;
@@ -21,5 +20,6 @@ public class ImageClick : MonoBehaviour, IPointerClickHandler
         {
             emptyImage.sprite = clickedImage.sprite;
         }
+
     }
 }
