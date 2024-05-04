@@ -128,23 +128,23 @@ public class RangeType : MonsterMain
         
         while (dist < mStat.monsterRange)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(battletarget);
+
+            Vector3 playerDirection = myTarget.transform.position - transform.position;
+            Vector3 moveDir = -playerDirection.normalized;
+
+            // Calculate rotation to face the player
+            Quaternion targetRotation = Quaternion.LookRotation(playerDirection.normalized, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 
-            Debug.Log("백스텝진입");
-           myAnim.SetBool("BackWalk", true);
-           monAgent.SetDestination(transform.position + moveDirection);
-            
+            Debug.Log("플레이어를 바라보면서 물러나는 중");
+            myAnim.SetBool("BackWalk", true);
 
-            // Update direction and distance
-            battletarget = myTarget.transform.position;
-            dir = battletarget - transform.position;
-            dist = dir.magnitude;
+            // Move away from the player
+            monAgent.SetDestination(transform.position + moveDir * mStat.monsterRange);
 
-           yield return new WaitForSeconds(1.0f);
-          //yield return null;
+            yield return null;
         }
-        
+
         Debug.Log("백스텝종료");
         myAnim.SetBool("BackWalk", false);
     }

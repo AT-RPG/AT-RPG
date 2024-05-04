@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
-using static Fusion.NetworkCharacterController;
+
 using static UnityEngine.GraphicsBuffer;
 
 /// <summary>
@@ -13,7 +13,7 @@ using static UnityEngine.GraphicsBuffer;
 public class Fireball : MonoBehaviour, ICharacterDamage
 {
     public GameObject orgEffect;
-
+    
     public IObjectPool<Fireball> firePool;
     Coroutine stop = null;
     [SerializeField]
@@ -21,6 +21,8 @@ public class Fireball : MonoBehaviour, ICharacterDamage
     private float damage;
 
     private Vector3 direction;
+
+    private bool hasCollided = false;//첫 충돌만 처리
 
     private MonsterShootManager monsterShootManager;
     public void SetDamage(float damageValue)
@@ -50,23 +52,33 @@ public class Fireball : MonoBehaviour, ICharacterDamage
     {
         firePool = pool;
     }
+
+    public void destroyballDelayed(float delay) // 지연 후 풀 반환
+    {
+        Invoke("destroyball", delay);
+    }
     public void destroyball() //풀반환
     {
+      
         firePool.Release(this);
     }
 
     private void OnEnable()
     {
+        hasCollided = false;
         stop = StartCoroutine(ShootLost());
     }
 
     private void OnTriggerEnter(Collider other) //적에게 히트
     {
-
+        if (hasCollided) return;
         if (other.gameObject.layer == LayerMask.NameToLayer("Monster")) return;
+        if (other.gameObject.layer == LayerMask.NameToLayer("MonsterAI")) return;
 
-        Instantiate(orgEffect, transform.position, Quaternion.identity);
-       
+        hasCollided = true;
+         GameObject effectInstance = Instantiate(orgEffect, transform.position, Quaternion.identity);
+         effectInstance.transform.parent = transform;
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) // 충돌한 오브젝트의 레이어가 몬스터 레이어인지 확인
         {
             ICharacterDamage character = other.GetComponent<ICharacterDamage>();
@@ -76,8 +88,9 @@ public class Fireball : MonoBehaviour, ICharacterDamage
             }
         }
         StopCoroutine(stop);
-        destroyball();//릴리즈  
-
+        Destroy(effectInstance, 1f);
+        destroyballDelayed(1f);
+       
     }
        
 

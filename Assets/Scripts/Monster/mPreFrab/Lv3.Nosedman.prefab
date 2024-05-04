@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 1355380083597593910}
   - component: {fileID: 1313566190988921240}
   - component: {fileID: 5963934197241135390}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: 'MonsterAI '
   m_TagString: Untagged
   m_Icon: {fileID: 0}

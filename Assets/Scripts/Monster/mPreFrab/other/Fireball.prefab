@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orgEffect: {fileID: 1534839509665955542, guid: 18cc062d07c42da48b6e8d0e23abb206,
     type: 3}
-  ballSpeed: 10
+  ballSpeed: 3
 --- !u!135 &3122826696626329845
 SphereCollider:
   m_ObjectHideFlags: 0
