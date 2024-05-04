@@ -16054,8 +16054,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4000010043812026}
   - component: {fileID: 95000011159147032}
-  - component: {fileID: 4161510524663879979}
   - component: {fileID: 7755831408227560025}
+  - component: {fileID: 6709464722258163537}
   m_Layer: 0
   m_Name: BoxOfPandora
   m_TagString: Untagged
@@ -16103,40 +16103,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4161510524663879979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000014038691284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf53cc4407cdf14ab9bd220a598f22c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemAnimator: {fileID: 95000011159147032}
-  itemBoxPrefab: {fileID: 1000014038691284}
-  itemBox: {fileID: 1000014038691284}
-  needTime: 3
-  layer:
-    serializedVersion: 2
-    m_Bits: 256
-  inTime: 0
-  box: {fileID: 1000014204504060}
-  dropItemPrefabs:
-  - {fileID: 1000012970591572, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
-  - {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
-  - {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
-  dropItemProbabilities:
-  - 33
-  - 33
-  - 34
-  minDropCount: 1
-  maxDropCount: 10
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!65 &7755831408227560025
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16158,6 +16124,34 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5, y: 1, z: 5}
   m_Center: {x: 0, y: 0.3, z: 0}
+--- !u!114 &6709464722258163537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000014038691284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a748f91e94ddc419d2f105e5b7a0c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemAnimator: {fileID: 0}
+  itemBoxPrefab: {fileID: 0}
+  itemBox: {fileID: 0}
+  needTime: 3
+  layer:
+    serializedVersion: 2
+    m_Bits: 0
+  inTime: 0
+  box: {fileID: 0}
+  dropItemPrefabs: []
+  dropItemProbabilities: []
+  minDropCount: 1
+  maxDropCount: 10
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!1 &1000014199803242
 GameObject:
   m_ObjectHideFlags: 0
