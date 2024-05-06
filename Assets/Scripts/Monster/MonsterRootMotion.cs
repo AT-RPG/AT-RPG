@@ -12,6 +12,8 @@ public class MonsterRootMotion : MonoBehaviour
     void Start()
     {
         myAnim= GetComponent<Animator>();
+        deltaPos = Vector3.zero;
+        deltaRot = Quaternion.identity;
     }
 
     // Update is called once per frame
@@ -43,6 +45,15 @@ public class MonsterRootMotion : MonoBehaviour
     /// </summary>
     private void OnAnimatorMove()
     {
+        if (myAnim == null)
+        {
+            myAnim = GetComponent<Animator>();
+            if (myAnim == null)
+            {
+                Debug.LogError("Animator component not found!");
+                return;
+            }
+        }
         deltaPos += myAnim.deltaPosition;
         deltaRot *= myAnim.deltaRotation;
     }

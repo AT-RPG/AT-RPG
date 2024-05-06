@@ -48,6 +48,7 @@ public class MonsterMain : CommonBattle
 
         base.Initialize();
         GameObject hpbar = Resources.Load<GameObject>("Monster/HpBar");
+
         GameObject obj = Instantiate(hpbar, SceneData.Instance.hpBarsTransform);
         myHpBar = obj.GetComponent<MonsterHpBar>();
         myHpBar.myTarget = hpViewPos;
