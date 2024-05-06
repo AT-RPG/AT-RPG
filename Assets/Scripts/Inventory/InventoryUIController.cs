@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using AT_RPG.Manager;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class InventoryUIController : MonoBehaviour
+namespace AT_RPG
 {
-    // Start is called before the first frame update
-    void Start()
+    public class InventoryUIController : MonoBehaviour
     {
-        
-    }
+        [SerializeField] TextMeshProUGUI goldText;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void OnEnable() 
+        {
+            goldText.text = GameManager.Player.Gold.ToString();
+        }
     }
 }
+

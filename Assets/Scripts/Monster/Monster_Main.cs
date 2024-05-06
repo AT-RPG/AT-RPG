@@ -48,6 +48,7 @@ public class MonsterMain : CommonBattle
 
         base.Initialize();
         GameObject hpbar = Resources.Load<GameObject>("Monster/HpBar");
+
         GameObject obj = Instantiate(hpbar, SceneData.Instance.hpBarsTransform);
         myHpBar = obj.GetComponent<MonsterHpBar>();
         myHpBar.myTarget = hpViewPos;
@@ -214,7 +215,7 @@ public class MonsterMain : CommonBattle
         monAgent.ResetPath();
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
-        myAnim.SetBool("Skill", false);
+        if (mStat.monsterPhase >= 1) myAnim.SetBool("Skill", false);
         monsterIdleTime = Random.Range(2, 4);
         deleyMove = StartCoroutine(DelayChangeState(State.Move, monsterIdleTime));
     }
@@ -308,7 +309,8 @@ public class MonsterMain : CommonBattle
     //몬스터 플레이어 놓침
     public void StopTracking()
     {
-        myAnim.SetBool("Skill", false);
+        if (mStat.monsterPhase >= 1)
+            myAnim.SetBool("Skill", false);
         if (monsterState != State.Dead)
         {
             if (move != null) StopCoroutine(move);

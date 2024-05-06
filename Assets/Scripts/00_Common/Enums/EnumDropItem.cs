@@ -9,20 +9,8 @@ namespace AT_RPG
         HealPotion,
         MonsterPiece,
         Rock,
-        Wood
-    }
-
-    /// <summary>
-    /// CSV파일에 DropItem이 가지고 있는 Column을 보기쉽게 Enum으로 정리
-    /// </summary>
-    public enum DropItemColumn
-    {
-        Index,
-        Name,
-        PriceBuy,
-        PriceSell,
-        MaxAmount,
-        DropRate
+        Wood,
+        Eqiupment
     }
 
     /// <summary>

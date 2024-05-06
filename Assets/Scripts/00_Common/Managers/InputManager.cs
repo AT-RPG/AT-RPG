@@ -36,6 +36,7 @@ namespace AT_RPG.Manager
             {"BuildOption_Snap", new InputMappingContext(KeyCode.Y, InputOption.GetKeyDown)},
             {"RotateBuildingPositionL", new InputMappingContext(KeyCode.Q, InputOption.GetKey, UpdateOption.Fixed)},
             {"RotateBuildingPositionR", new InputMappingContext(KeyCode.E, InputOption.GetKey, UpdateOption.Fixed)},
+            {"UseSkill", new InputMappingContext(KeyCode.E, InputOption.GetKeyDown)},
         };
 
 

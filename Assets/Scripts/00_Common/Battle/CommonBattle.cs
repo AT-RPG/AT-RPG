@@ -47,11 +47,6 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
     protected void Initialize()
     {
         curHP = baseBattleStat.maxHP / 2.0f;
-        Debug.Log($"Common / baseBattleStat.maxHP {baseBattleStat.maxHP}");
-        Debug.Log($"Common / baseBattleStat.attackPoint {baseBattleStat.attackPoint}");
-        Debug.Log($"Common / baseBattleStat.attackDeley {baseBattleStat.attackDeley}");
-        Debug.Log($"Common / baseBattleStat.moveSpeed {baseBattleStat.moveSpeed}");
-        Debug.Log($"Common / baseBattleStat.skillCooltime {baseBattleStat.skillCooltime}");
     }
     
 

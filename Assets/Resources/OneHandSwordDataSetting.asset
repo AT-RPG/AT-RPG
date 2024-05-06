@@ -18,3 +18,4 @@ MonoBehaviour:
   weaponPrefab: {fileID: 4631211083255846821, guid: 4c07af3276162ae429d61290aba86f9c,
     type: 3}
   animatorOverride: {fileID: 22100000, guid: 17da9182c7a4fa64ca705b96316c41d3, type: 2}
+  skillIconSprite: {fileID: 21300000, guid: beb4181ef568e0f4fa18f06a2b4210d2, type: 3}

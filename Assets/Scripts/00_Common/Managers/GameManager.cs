@@ -25,21 +25,23 @@ namespace AT_RPG.Manager
         private static InputManager inputManager            = null;
         private static MultiplayManager multiplayManager    = null;
 
-        // 매니저 안에서 사용되는 eventManager변수
+        // 매니저 안에서 사용되는 eventManager 변수
         private EventManager eventManager                   = null;
         // 매니저 안에서 사용되는 playerData 변수
         private PlayerData player                           = null;
-        // 매니저 안에서 사용되는 loadCSVDataManager변수
+        // 매니저 안에서 사용되는 loadCSVDataManager 변수
         private LoadCSVDataManager loadCSVDataManager       = null;
+        // 매니저 안에서 사용되는 Inventory 변수
+        // private Inventory inventory                         = null;
 
         // 매니저를 통해 PlayerData로 접근할 프로퍼티 변수
         public static PlayerData Player { get => Instance.player; }
+        // 매니저를 통해 Inventoroy로 접근할 프로퍼티 변수
+        // public static Inventory Inventory { get => Instance.inventory; }
         // Action변수들을 관리하는 EventManager로 접근할 수 있는 변수
         public static EventManager Event { get => Instance.eventManager; }
         // CSV 초기 데이터를 불러와 저장해두고 사용할 수 있게 만든 클래스로 접근할 수 있는 변수
         public static LoadCSVDataManager LoadCSVData { get => Instance.loadCSVDataManager; }
-        
-
 
         protected override void Awake()
         {
@@ -48,6 +50,7 @@ namespace AT_RPG.Manager
             loadCSVDataManager = new();
             eventManager = new();
             player = new();
+            // inventory = new();
         }
 
 
@@ -108,6 +111,19 @@ namespace AT_RPG.Manager
             uiManager = UIManager.GetInstance();
 
             dataManager = SaveLoadManager.GetInstance();
+        }
+
+        public static T Bind<T>(string _targetObjectName, Transform _rootTransfrom = null) where T : Component
+        {
+            if (_rootTransfrom == null)
+                _rootTransfrom = GameObject.FindWithTag("DynamicCanvas").transform;
+            T[] results = _rootTransfrom.GetComponentsInChildren<T>(true);
+
+            foreach (var item in results)
+                if (item.gameObject.name.Equals(_targetObjectName))
+                    return item;
+
+            return null;
         }
     }
 

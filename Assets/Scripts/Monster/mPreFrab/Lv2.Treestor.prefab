@@ -117,7 +117,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8223456849599109434}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: StopTracking
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -297,7 +297,7 @@ MonoBehaviour:
   hpViewPos: {fileID: 3128052449726434018}
   monAgent: {fileID: 2084096636041861500}
   monsterAI: {fileID: 2755202526465088838}
-  MonsterIndex: 30020
+  MonsterIndex: 30019
   deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
     type: 3}
   monsterState: 0

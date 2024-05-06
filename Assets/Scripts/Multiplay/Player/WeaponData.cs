@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AT_RPG
 {
@@ -9,17 +10,25 @@ namespace AT_RPG
         [SerializeField]
         private string weaponName;
         public string WeaponName { get { return weaponName; } }
+        
         [SerializeField]
         private int damage;
         public int Damage { get { return damage; } }
+
         [SerializeField]
         private WeaponState myState;
         public WeaponState MyState { get { return myState; } }
+
         [SerializeField]
         private GameObject weaponPrefab;
         public GameObject WeaponPrefab { get { return weaponPrefab; } }
+
         [SerializeField]
         private RuntimeAnimatorController animatorOverride;
         public RuntimeAnimatorController AnimatorOverride { get { return animatorOverride; } }
+
+        [SerializeField]
+        private Sprite skillIconSprite;
+        public Sprite SkillIconSprite { get { return skillIconSprite; } }
     }
 }

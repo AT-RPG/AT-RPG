@@ -97,9 +97,12 @@ public class MeleeType : MonsterMain
 
     IEnumerator AttackDeleayState()
     {
+        if (myTarget == null) yield return null;
+
         float timer = 0.0f;
         while (timer <= baseBattleStat.attackDeley)
         {
+            if (myTarget == null) break;
             Vector3 battletarget = myTarget.transform.position;
             Vector3 dir = battletarget - transform.position;
             float dist = dir.magnitude;

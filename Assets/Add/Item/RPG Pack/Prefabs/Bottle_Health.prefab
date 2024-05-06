@@ -9818,6 +9818,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5660a3914bed0ee47a8e766d4ebc75cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemCount: 0
-  itemType: 1
-  dropItemData: {fileID: 11400000, guid: f9117292ae8266e459342aa22acc96a4, type: 2}
+  item: {fileID: 11400000, guid: 25ae4074242905a46b714c08c6ed9dc8, type: 2}

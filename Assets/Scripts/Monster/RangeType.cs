@@ -121,6 +121,8 @@ public class RangeType : MonsterMain
     IEnumerator monBackWalk()
     {
 
+        if (myTarget == null) yield return null;
+
         Vector3 battletarget = myTarget.transform.position;
         Vector3 dir = battletarget - transform.position;
         Vector3 moveDirection = -dir.normalized;
@@ -128,7 +130,7 @@ public class RangeType : MonsterMain
         
         while (dist < mStat.monsterRange)
         {
-
+            if (myTarget == null) break;
             Vector3 playerDirection = myTarget.transform.position - transform.position;
             Vector3 moveDir = -playerDirection.normalized;
 
@@ -136,7 +138,6 @@ public class RangeType : MonsterMain
             Quaternion targetRotation = Quaternion.LookRotation(playerDirection.normalized, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 
-            Debug.Log("플레이어를 바라보면서 물러나는 중");
             myAnim.SetBool("BackWalk", true);
 
             // Move away from the player

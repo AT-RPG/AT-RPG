@@ -216,7 +216,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6073111375070932318}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: StopTracking
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -411,8 +411,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3060534995071410719}
   - component: {fileID: 8978234305987737701}
-  - component: {fileID: 7531089628543098597}
   - component: {fileID: 184866857918566736}
+  - component: {fileID: 8194132706516319645}
   m_Layer: 9
   m_Name: 01_Knight_S
   m_TagString: Untagged
@@ -458,18 +458,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7531089628543098597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2392226072760580261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f3e9c092675e58449f2856175b0a8ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &184866857918566736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,6 +515,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8194132706516319645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2392226072760580261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f3e9c092675e58449f2856175b0a8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2693536543614886055
 GameObject:
   m_ObjectHideFlags: 0

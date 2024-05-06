@@ -258,9 +258,9 @@ MonoBehaviour:
   lostPlayer:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5260789259610901401}
+      - m_Target: {fileID: 877727933122073208}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: StopTracking
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

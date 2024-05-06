@@ -3,11 +3,10 @@ using AT_RPG;
 
 public class CSVtest : MonoBehaviour
 {
-    public DropItemData[] dropItems;
     public string[] dropItemDatas;
     public string[] goldData;
     public string[] potionData;
-
+    
     private void LoadAllResourcesData()
     {
         // 테이블 데이터 읽기

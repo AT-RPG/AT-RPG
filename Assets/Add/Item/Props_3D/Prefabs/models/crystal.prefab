@@ -48,9 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5660a3914bed0ee47a8e766d4ebc75cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemCount: 0
-  itemType: 2
-  dropItemData: {fileID: 11400000, guid: f9117292ae8266e459342aa22acc96a4, type: 2}
+  item: {fileID: 11400000, guid: 41fd0da9aca54e44b8f999bcb8ebf397, type: 2}
 --- !u!135 &-681504509574567438
 SphereCollider:
   m_ObjectHideFlags: 0

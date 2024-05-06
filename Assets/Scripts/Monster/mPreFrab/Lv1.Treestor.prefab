@@ -113,7 +113,7 @@ MonoBehaviour:
   hpViewPos: {fileID: 1636343240021236764}
   monAgent: {fileID: 1411074906333276653}
   monsterAI: {fileID: 6437586279566940113}
-  MonsterIndex: 30019
+  MonsterIndex: 30018
   deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
     type: 3}
   monsterState: 0
@@ -231,7 +231,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5538105643607614043}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: StopTracking
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -551,11 +551,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4f4f2a65179a897458b54d1269d5dea2,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4442398554878497742}
+      addedObject: {fileID: 1690114967050591487}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4f4f2a65179a897458b54d1269d5dea2,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1690114967050591487}
+      addedObject: {fileID: 7026624804394094556}
   m_SourcePrefab: {fileID: 100100000, guid: 4f4f2a65179a897458b54d1269d5dea2, type: 3}
 --- !u!4 &3476226527287999875 stripped
 Transform:
@@ -569,18 +569,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4014027672659630696}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4442398554878497742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4284569452092729145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f3e9c092675e58449f2856175b0a8ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1690114967050591487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,6 +626,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7026624804394094556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4284569452092729145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f3e9c092675e58449f2856175b0a8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5756011855321791236 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8671055114843414892, guid: 4f4f2a65179a897458b54d1269d5dea2,

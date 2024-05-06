@@ -119,8 +119,7 @@ MonoBehaviour:
   monsterState: 0
   attackOK: 1
   skillOK: 1
-  shootManager: {fileID: 427257018236851546, guid: 193eb2c6fb6ca9d419b206633be69e52,
-    type: 3}
+  shootManager: {fileID: 0}
   rageVFX: {fileID: 7155335147208632822, guid: b07f65a58020c0340b8f3b68d7296d5e, type: 3}
   attackPos: {fileID: 5620115513225880005}
 --- !u!195 &4993959310669904830
@@ -231,7 +230,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3348987995906302637}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: StopTracking
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -988,7 +987,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0b5ad11d3524d894082bef2c42c21118,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3464605970529568443}
+      addedObject: {fileID: 8620865720503894523}
   m_SourcePrefab: {fileID: 100100000, guid: 0b5ad11d3524d894082bef2c42c21118, type: 3}
 --- !u!4 &4531981490235134812 stripped
 Transform:
@@ -1086,7 +1085,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3464605970529568443
+--- !u!114 &8620865720503894523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

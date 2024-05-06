@@ -2,32 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HS_FrontMover : MonoBehaviour 
+namespace AT_RPG
 {
-    public Transform pivot;
-    public ParticleSystem effect;
-    public float speed = 15f;
-    public float drug = 1f;
-    public float repeatingTime = 1f;
-
-    private float startSpeed = 0f;
-
-    void Start()
+    public class HS_FrontMover : MonoBehaviour 
     {
-        InvokeRepeating("StartAgain", 0f, repeatingTime);
-        effect.Play();
-        startSpeed = speed;
-    }
+        public Transform pivot;
+        public ParticleSystem effect;
+        public float speed = 15f;
+        public float drug = 1f;
+        private float startSpeed = 0f;
 
-    void StartAgain()
-    {
-        startSpeed = speed;
-        transform.position = pivot.position;
-    }
+        void OnEnable()
+        {
+            StartAgain();
+            effect.Play();
+            startSpeed = speed;
+        }
 
-    void Update()
-    {
-        startSpeed = startSpeed * drug;
-        transform.position += transform.forward * (startSpeed * Time.deltaTime);
+        void StartAgain()
+        {
+            startSpeed = speed;
+            transform.position = pivot.position;
+        }
+
+        private void OnTriggerEnter(Collider other) 
+        {
+            if(other.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                ICharacterDamage cd = other.gameObject.GetComponent<ICharacterDamage>();
+            }
+        }
+
+        void Update()
+        {
+            startSpeed = startSpeed * drug;
+            transform.position += transform.forward * (startSpeed * Time.deltaTime);
+        }
     }
 }

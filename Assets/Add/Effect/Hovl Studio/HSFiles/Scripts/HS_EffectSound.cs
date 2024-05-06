@@ -4,29 +4,23 @@ using UnityEngine;
 
 public class HS_EffectSound : MonoBehaviour
 {
-    public bool Repeating = true;
-    public float RepeatTime = 2.0f;
-    public float StartTime = 0.0f;
-    public bool RandomVolume;
-    public float minVolume = .4f;
-    public float maxVolume = 1f;
     private AudioClip clip;
-
     private AudioSource soundComponent;
 
-    void Start ()
+    // void Start ()
+    // {
+    //     soundComponent = GetComponentInChildren<AudioSource>(true);
+    //     clip = soundComponent.clip;
+    // }
+
+    private void OnEnable() 
     {
-        soundComponent = GetComponent<AudioSource>();
-        clip = soundComponent.clip;
-        if (RandomVolume == true)
+        if(soundComponent == null)
         {
-            soundComponent.volume = Random.Range(minVolume, maxVolume);
-            RepeatSound();
+            soundComponent = GetComponentInChildren<AudioSource>(true);
+            clip = soundComponent.clip;
         }
-        if (Repeating == true)
-        {
-            InvokeRepeating("RepeatSound", StartTime, RepeatTime);
-        }
+        RepeatSound();
     }
 
     void RepeatSound()
