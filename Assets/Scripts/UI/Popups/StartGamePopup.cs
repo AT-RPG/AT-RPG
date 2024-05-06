@@ -222,6 +222,13 @@ namespace AT_RPG
                     SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
                     UIManager.LoadingPopupInstance.AnimateEscapeSequence();
                     UIManager.LoadingPopupInstance.StateMsg.text = MultiplayManager.IsConnecting ? "연결O" : "연결X";
+
+                    // 게임을 처음 시작하는 경우
+                    if (loadedGameObjectDatas.Count <= 0)
+                    {
+                        var playerSpawner = GameObject.Find(nameof(PlayerSpawner)).GetComponent<PlayerSpawner>();
+                        playerSpawner.Spawn();
+                    }
                 });
             }
             else
@@ -231,13 +238,13 @@ namespace AT_RPG
                 // 연결 후에 저장파일에서 오브젝트를 불러옵니다.
                 SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
                 UIManager.LoadingPopupInstance.AnimateEscapeSequence();
-            }
 
-            // 게임을 처음 시작하는 경우
-            if (loadedGameObjectDatas.Count <= 0)
-            {
-                var playerSpawner = GameObject.Find(nameof(PlayerSpawner)).GetComponent<PlayerSpawner>();
-                playerSpawner.Spawn();
+                // 게임을 처음 시작하는 경우
+                if (loadedGameObjectDatas.Count <= 0)
+                {
+                    var playerSpawner = GameObject.Find(nameof(PlayerSpawner)).GetComponent<PlayerSpawner>();
+                    playerSpawner.Spawn();
+                }
             }
 
             DestroyPopup();
