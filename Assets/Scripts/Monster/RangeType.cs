@@ -136,7 +136,6 @@ public class RangeType : MonsterMain
             Quaternion targetRotation = Quaternion.LookRotation(playerDirection.normalized, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
 
-            Debug.Log("플레이어를 바라보면서 물러나는 중");
             myAnim.SetBool("BackWalk", true);
 
             // Move away from the player

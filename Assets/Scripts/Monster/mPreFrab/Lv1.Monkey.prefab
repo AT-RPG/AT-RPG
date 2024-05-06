@@ -1287,7 +1287,7 @@ GameObject:
   - component: {fileID: 8205555811720190686}
   - component: {fileID: 2828209291247517860}
   - component: {fileID: 4432379598004075223}
-  - component: {fileID: 1338310415870540134}
+  - component: {fileID: 8344164380206867841}
   m_Layer: 9
   m_Name: 01_Monkeydong_S
   m_TagString: Untagged
@@ -1390,7 +1390,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1338310415870540134
+--- !u!114 &8344164380206867841
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
