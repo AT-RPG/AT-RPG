@@ -9,20 +9,18 @@ namespace AT_RPG
     public class DropItemPoolManager : MonoBehaviour
     {
         public static DropItemPoolManager Instance;
-        [SerializeField] private DropItemData dropItemData;
 
         [Header("Pool되어질 프리팹")]
-        public GameObject[] prefabs;
-        
+        public Item[] items;
+
         private System.Random random = new();
         private List<GameObject>[] pools;
-
 
         void Awake() 
         {
             Instance = this;
 
-            pools = new List<GameObject>[prefabs.Length];
+            pools = new List<GameObject>[items.Length];
 
             for(int i = 0; i < pools.Length; i++)
             {
@@ -42,7 +40,7 @@ namespace AT_RPG
                 case DropType.Monster:
                 for(int i = 0; i < (int)DropType.Monster; i++)
                 {
-                    if(RandomItemSetActive(dropItemData.dropItemStat[i].dropRate))
+                    if(RandomItemSetActive(items[i].dropRate))
                     {
                         Pool(i, tr);
                     }
@@ -51,7 +49,7 @@ namespace AT_RPG
                 case DropType.Destructible:
                 for(int i = 3; i < (int)DropType.Destructible + i; i++)
                 {
-                    if(RandomItemSetActive(dropItemData.dropItemStat[i].dropRate))
+                    if(RandomItemSetActive(items[i].dropRate))
                     {
                         Pool(i, tr);
                     }
@@ -84,7 +82,7 @@ namespace AT_RPG
             {
                 Vector3 randomPosition = Random.insideUnitSphere * 2f;
                 randomPosition.y = 0f;
-                obj = Instantiate(prefabs[_index], tr.position + randomPosition, Quaternion.identity, transform);
+                obj = Instantiate(items[_index].itemPrefab, tr.position + randomPosition, Quaternion.identity, transform);
                 pools[_index].Add(obj);
             }
             return obj;

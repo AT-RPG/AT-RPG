@@ -4,11 +4,6 @@ using AT_RPG.Manager;
 
 namespace AT_RPG
 {
-    public enum WeaponState
-    {
-        None, OneHand, TwoHand
-    }
-
     public class PlayerWeapon : MonoBehaviour
     {
         public UnityEvent<WeaponData> weaponChangeAct;

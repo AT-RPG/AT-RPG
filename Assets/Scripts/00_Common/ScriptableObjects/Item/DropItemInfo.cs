@@ -1,5 +1,6 @@
 using AT_RPG.Manager;
 using UnityEngine;
+using System.Collections;
 
 namespace AT_RPG
 {
@@ -8,68 +9,21 @@ namespace AT_RPG
     /// </summary>
     public class DropItemInfo : MonoBehaviour
     {
-        [SerializeField] private int itemCount = 0;
-        [SerializeField] private DropItem itemType;
-        [SerializeField] private DropItemData dropItemData;
-        private int itemIndex;
-        private string itemName;
-        private int itemPriceBuy;
-        private int itemPriceSell;
-
+        [SerializeField] private Item item;
+        [SerializeField] private int dropAmount;
         private void OnEnable() 
         {
-            RandomItemCount();
-            SetItemInfo();
+            dropAmount = RandomItemCount();
+            // StartCoroutine(ItemDestroy());
         }
 
         // 랜덤으로 아이템의 개수를 정하여 정해둠
         // 몬스터 CSV테이블에서 정해둔 정보로 결정해야할것 같음
-        private void RandomItemCount()
+        private int RandomItemCount()
         {
             System.Random random = new();
             int rnd = random.Next(1, 4);
-            itemCount = rnd;
-        }
-
-        /// <summary>
-        /// 아이템의 Index, 이름, 구매판매가격을 결정해줌
-        /// 추후 아이템의 UI에 사용될 내용들을 변수에 넣어두었음
-        /// </summary>
-        private void SetItemInfo()
-        {
-            switch (itemType)
-            {
-                case DropItem.Gold:
-                itemIndex = dropItemData.dropItemStat[(int)DropItem.Gold].index;
-                itemName = dropItemData.dropItemStat[(int)DropItem.Gold].itemName;
-                itemPriceBuy = dropItemData.dropItemStat[(int)DropItem.Gold].priceBuy;
-                itemPriceSell = dropItemData.dropItemStat[(int)DropItem.Gold].priceSell;
-                break;
-                case DropItem.HealPotion:
-                itemIndex = dropItemData.dropItemStat[(int)DropItem.HealPotion].index;
-                itemName = dropItemData.dropItemStat[(int)DropItem.HealPotion].itemName;
-                itemPriceBuy = dropItemData.dropItemStat[(int)DropItem.HealPotion].priceBuy;
-                itemPriceSell = dropItemData.dropItemStat[(int)DropItem.HealPotion].priceSell;
-                break;
-                case DropItem.MonsterPiece:
-                itemIndex = dropItemData.dropItemStat[(int)DropItem.MonsterPiece].index;
-                itemName = dropItemData.dropItemStat[(int)DropItem.MonsterPiece].itemName;
-                itemPriceBuy = dropItemData.dropItemStat[(int)DropItem.MonsterPiece].priceBuy;
-                itemPriceSell = dropItemData.dropItemStat[(int)DropItem.MonsterPiece].priceSell;
-                break;
-                case DropItem.Rock:
-                itemIndex = dropItemData.dropItemStat[(int)DropItem.Rock].index;
-                itemName = dropItemData.dropItemStat[(int)DropItem.Rock].itemName;
-                itemPriceBuy = dropItemData.dropItemStat[(int)DropItem.Rock].priceBuy;
-                itemPriceSell = dropItemData.dropItemStat[(int)DropItem.Rock].priceSell;
-                break;
-                case DropItem.Wood:
-                itemIndex = dropItemData.dropItemStat[(int)DropItem.Wood].index;
-                itemName = dropItemData.dropItemStat[(int)DropItem.Wood].itemName;
-                itemPriceBuy = dropItemData.dropItemStat[(int)DropItem.Wood].priceBuy;
-                itemPriceSell = dropItemData.dropItemStat[(int)DropItem.Wood].priceSell;
-                break;
-            }
+            return rnd;
         }
 
         /// <summary>
@@ -82,19 +36,50 @@ namespace AT_RPG
             {
                 gameObject.SetActive(false);
                 // playerData에 item정보 및 count 전달
-                switch(itemType)
+                switch(item.myType)
                 {
                     case DropItem.Gold:
-                    GameManager.Player.AddPlayerCoin(itemCount);
+                    GameManager.Player.AddGold(dropAmount);
+                    // 인벤토리에서 gold 추가, 동시에 PlayerData에도 추가, UI변경
                     break;
                     case DropItem.HealPotion:
-                    GameManager.Player.AddPlayerHealPotion(itemCount);
+                    Inventory.Instance.AddInventory(item, dropAmount);
+                    // GameManager.Player.AddHealPotion(dropAmount);
                     break;
                     case DropItem.MonsterPiece:
-                    GameManager.Player.AddPlayerMonsterPiece(itemCount);
+                    Inventory.Instance.AddInventory(item, dropAmount);
+                    // GameManager.Player.AddMonsterPiece(dropAmount);
                     break;
+                    // 골드와 장비를 제외한 모든 아이템은 인벤토리에 동일한 아이템이 있는지 확인 후 있으면 개수 추가, 
+                    // 없으면 PlayerInventorySlot 8개 중 null이 있는지 확인하고 null이 있으면 ItemSlot에 해당 아이템 정보를 담아서 프리펩 Instanciate해서 위치 잡아주고,
+                    // null이 없으면 인벤토리에 자리가 없으므로 아이템은 못먹고 알람을 띄워주어야 한다.
+
+                    // 장비 아이템일경우 PlayerInventorySlot 8개중 null이 있는지 확인하고 
+                    // null이 있으면 ItemSlot에 해당 아이템 정보를 담아서 프리펩 Instanciate해서 위치 잡아주고,
+                    // null이 없으면 인벤토리에 자리가 없으므로 아이템은 못먹고 알람을 띄워주어야 한다.
                 }
+
+                // bool check = GameManager.Event.CheckInventoryEvent?.Invoke(this);
+                // if(GameManager.Event.CheckInventoryEvent.Invoke(this))
+                // {
+                //     gameObject.SetActive(false);
+                // }
+                // else
+                // {
+                //     Debug.Log("인벤토리가 가득 찼습니다.");
+                // }
             }
+        }
+
+        IEnumerator ItemDestroy()
+        {
+            float timer = 5.0f;
+            while(timer > 0.0f)
+            {
+                timer -= Time.deltaTime;
+                yield return null;
+            }
+            gameObject.SetActive(false);
         }
     }
 }

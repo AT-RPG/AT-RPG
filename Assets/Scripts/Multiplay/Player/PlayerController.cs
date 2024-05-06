@@ -15,9 +15,12 @@ public class PlayerController : CommonBattle
     [SerializeField] private Transform cameraArm;
     [SerializeField] private Rigidbody playerRigid;
     [SerializeField] private int curWeaponDamage = 0;
-    private bool isComboCheck = false;
     [SerializeField] private Transform[] weaponAttackPoints;
     [SerializeField] private Transform myAttackPoint;
+    [SerializeField] private Skill curSkill;
+    [SerializeField] private InventoryUIController inventoryUIController;
+    private bool isComboCheck = false;
+    bool isInventoryOn = false;
     // [SerializeField] Transform myCam;
 
     // public LayerMask crashMask;
@@ -37,28 +40,26 @@ public class PlayerController : CommonBattle
         InputManager.AddKeyAction("Aim", LookAround);
         InputManager.AddKeyAction("Attack/Fire", Attack);
         InputManager.AddKeyAction("UsePotion", UseHealPotion);
+        InputManager.AddKeyAction("UseSkill", UseSkill);
+        InputManager.AddKeyAction("Inventory", OnOffInventory);
     }
     // Start is called before the first frame update
     void Start()
     {
         base.Initialize();
-        Debug.Log(curHP);
+        GameManager.Event.ChangeSkillSpriteEvent?.Invoke(null);
         // camDist = targetDist = Mathf.Abs(myCam.localPosition.z);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(curSkill != null)
+        {
+            curSkill.UpdateCooltime(Time.deltaTime);
+            GameManager.Event.CheckSkillCooldownEvent?.Invoke((curSkill.skillCooltime - curSkill.skillCurCooltime) / curSkill.skillCooltime);
+        }
     }
-
-    // protected override void InitStat()
-    // {
-        // Debug.Log($"baseBattleStat.maxHP {baseBattleStat.maxHP}");
-        // Debug.Log($"baseBattleStat.attackPoint {baseBattleStat.attackPoint}");
-        // Debug.Log($"baseBattleStat.attackDeley {baseBattleStat.attackDeley}");
-        // Debug.Log($"baseBattleStat.moveSpeed {baseBattleStat.moveSpeed}");
-        // Debug.Log($"baseBattleStat.skillCooltime {baseBattleStat.skillCooltime}");
-    // }
 
     /// <summary>
     /// 플레이어의 이동
@@ -68,6 +69,13 @@ public class PlayerController : CommonBattle
         if(myAnim.GetBool("isRolling") || myAnim.GetBool("isAttacking") || myAnim.GetBool("isUsingPotion")) return;
 
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        if (isInventoryOn) // 인벤토리 켜져있을때는 정지
+        {
+            myAnim.SetBool("isMove", false);
+            return;
+        }
+
         bool isMove = moveInput.magnitude != 0;
         myAnim.SetBool("isMove", isMove);
         if(isMove)
@@ -79,7 +87,7 @@ public class PlayerController : CommonBattle
             characterBody.forward = moveDir;
             transform.position += moveDir * Time.deltaTime * baseBattleStat.moveSpeed;
         }
-        Debug.DrawRay(cameraArm.position, new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized, Color.red);
+        // Debug.DrawRay(cameraArm.position, new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized, Color.red);
     }
 
     /// <summary>
@@ -87,6 +95,8 @@ public class PlayerController : CommonBattle
     /// </summary>
     private void LookAround(InputValue value)
     {
+        if(isInventoryOn) return;
+
         Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         Vector3 camAngle = cameraArm.rotation.eulerAngles;
 
@@ -181,7 +191,7 @@ public class PlayerController : CommonBattle
     {
         if(!myAnim.GetBool("isAttacking"))
         {
-            // if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             {
                 myAnim.SetTrigger("NormalAttack");
             }
@@ -219,16 +229,22 @@ public class PlayerController : CommonBattle
             weapons[0].SetActive(false);
             weapons[1].SetActive(false);
             myAttackPoint = weaponAttackPoints[(int)WeaponState.None];
+            curSkill = null;
+            GameManager.Event.ChangeSkillSpriteEvent?.Invoke(null);
             break;
             case WeaponState.OneHand:
             weapons[0].SetActive(true);
             weapons[1].SetActive(false);
             myAttackPoint = weaponAttackPoints[(int)WeaponState.OneHand];
+            curSkill = GetComponentInChildren<AxeJump>(true);
+            GameManager.Event.ChangeSkillSpriteEvent?.Invoke(curWeapon.SkillIconSprite);
             break;
             case WeaponState.TwoHand:
             weapons[0].SetActive(false);
             weapons[1].SetActive(true);
             myAttackPoint = weaponAttackPoints[(int)WeaponState.TwoHand];
+            curSkill = GetComponentInChildren<Smash>(true);
+            GameManager.Event.ChangeSkillSpriteEvent?.Invoke(curWeapon.SkillIconSprite);
             break;
         }
     }
@@ -282,7 +298,7 @@ public class PlayerController : CommonBattle
         if(!myAnim.GetBool("isGround") || myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping") 
         || myAnim.GetBool("isAttacking") || myAnim.GetBool("isUsingPotion")) return;
 
-        if(GameManager.Player.PlayerHealPotion <= 0)
+        if(GameManager.Player.HealPotion <= 0)
         {
             Debug.Log("물약이 없습니다");
         }
@@ -290,7 +306,37 @@ public class PlayerController : CommonBattle
         {
             myAnim.SetBool("isUsingPotion",true);
             curHP += 40.0f;
-            GameManager.Player.AddPlayerHealPotion(-1);
+            GameManager.Player.AddHealPotion(-1);
+        }
+    }
+
+    /// <summary>
+    /// 무기에 따라 변경된 스킬을 사용하게 해줌
+    /// </summary>
+    public void UseSkill(InputValue value)
+    {
+        if(curSkill == null) return;
+
+        if(!myAnim.GetBool("isGround") || myAnim.GetBool("isRolling") || myAnim.GetBool("isJumping") 
+        || myAnim.GetBool("isAttacking") || myAnim.GetBool("isUsingPotion")) return;
+
+        if(curSkill.CanUse()) myAnim.SetTrigger("Skill");
+        curSkill?.UseSkill(baseBattleStat.attackPoint + curWeaponDamage);
+    }
+
+    /// <summary>
+    /// 인벤토리를 열고 닫아줌
+    /// </summary>
+    public void OnOffInventory(InputValue value)
+    {
+        inventoryUIController.gameObject.SetActive(!inventoryUIController.gameObject.activeSelf);
+        if(inventoryUIController.gameObject.activeSelf)
+        {
+            isInventoryOn = true;
+        }
+        else
+        {
+            isInventoryOn = false;
         }
     }
 
@@ -305,7 +351,9 @@ public class PlayerController : CommonBattle
         InputManager.RemoveKeyAction("Move Left/Move Right", Move);
         InputManager.RemoveKeyAction("Aim", LookAround);
         InputManager.RemoveKeyAction("Attack/Fire", Attack);
-        InputManager.AddKeyAction("UsePotion", UseHealPotion);
+        InputManager.RemoveKeyAction("UsePotion", UseHealPotion);
+        InputManager.RemoveKeyAction("UseSkill", UseSkill);
+        InputManager.RemoveKeyAction("Inventory", OnOffInventory);
     }
 }
 

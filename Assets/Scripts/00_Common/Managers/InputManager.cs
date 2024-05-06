@@ -28,7 +28,8 @@ namespace AT_RPG.Manager
             {"Interaction", new InputMappingContext(KeyCode.F, InputOption.GetKeyDown)},
             {"Dodge", new InputMappingContext(KeyCode.LeftControl, InputOption.GetKeyDown)},
             {"ChangeNoneWeapon", new InputMappingContext(KeyCode.V, InputOption.GetKeyDown)},
-            {"UsePotion", new InputMappingContext(KeyCode.R, InputOption.GetKeyDown)}
+            {"UsePotion", new InputMappingContext(KeyCode.R, InputOption.GetKeyDown)},
+            {"UseSkill", new InputMappingContext(KeyCode.E, InputOption.GetKeyDown)},
         };
 
 

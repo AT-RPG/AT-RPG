@@ -11,41 +11,68 @@ namespace AT_RPG
     /// </summary>
     public class PlayerData
     {
-        private int playerLevel;
-        public int PlayerLevel { get => playerLevel; }
-        private int playerCoin;
-        public int PlayerCoin { get => playerCoin; }
-        private int playerHealPotion;
-        public int PlayerHealPotion { get => playerHealPotion; }
-        private int playerMonsterPiece;
-        public int PlayerMonsterPiece { get => playerMonsterPiece; }
+        private int level;
+        public int Level { get => level; }
+        private int gold;
+        public int Gold { get => gold; }
+        private int healPotion;
+        public int HealPotion { get => healPotion; }
+        private int monsterPiece;
+        public int MonsterPiece { get => monsterPiece; }
+        private int rock;
+        public int Rock { get => rock; }
+        private int wood;
+        public int Wood { get => wood; }
 
         /// <summary>
         /// 플레이어가 가지고 있는 골드를 더하거나 빼주는 함수
         /// </summary>
         /// <param name="_coin">계산해줄 코인의 개수</param>
-        public void AddPlayerCoin(int _coin)
+        public void AddGold(int _gold)
         {
-            playerCoin += _coin;
+            gold += _gold;
+            Debug.Log("gold  ######" + gold);
         }
 
         /// <summary>
         /// 플레이어가 가지고 있는 포션을 더하거나 빼주는 함수
         /// </summary>
         /// <param name="_potion">계산해줄 포션의 개수</param>
-        public void AddPlayerHealPotion(int _potion)
+        public void AddHealPotion(int _potion)
         {
-            playerHealPotion += _potion;
+            healPotion += _potion;
             GameManager.Event.ChangePotionEvent?.Invoke();
+            Debug.Log("healPotion  %%%%%" + healPotion);
         }
 
         /// <summary>
         /// 플레이어가 가지고 있는 몬스터 조각을 더하거나 빼주는 함수
         /// </summary>
         /// <param name="_piece">계산해줄 몬스터 조각의 개수</param>
-        public void AddPlayerMonsterPiece(int _piece)
+        public void AddMonsterPiece(int _piece)
         {
-            playerMonsterPiece += _piece;
+            monsterPiece += _piece;
+            Debug.Log("monsterPiece  $$$$$$" + monsterPiece);
+        }
+
+        /// <summary>
+        /// 플레이어가 가지고 있는 돌을 더하거나 빼주는 함수
+        /// </summary>
+        /// <param name="_piece">계산해줄 몬스터 조각의 개수</param>
+        public void AddRock(int _rock)
+        {
+            rock += _rock;
+            Debug.Log("rock  $$$$$$" + rock);
+        }
+
+        /// <summary>
+        /// 플레이어가 가지고 있는 나무를 더하거나 빼주는 함수
+        /// </summary>
+        /// <param name="_piece">계산해줄 몬스터 조각의 개수</param>
+        public void AddWood(int _wood)
+        {
+            wood += _wood;
+            Debug.Log("wood  $$$$$$" + wood);
         }
     }
 }
