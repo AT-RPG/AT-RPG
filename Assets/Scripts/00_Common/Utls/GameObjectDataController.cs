@@ -26,6 +26,8 @@ namespace AT_RPG
         /// </summary>
         public GameObjectData SaveData()
         {
+            gameObjectData.ComponentTypeName = nameof(GameObjectDataController);
+
             // GameObject 기본 정보 저장
             gameObjectData.Instance = self;
             gameObjectData.InstanceName = gameObject.name;

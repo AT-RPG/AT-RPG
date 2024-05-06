@@ -112,6 +112,9 @@ namespace AT_RPG
             // 플레이어의 공격을 잠시 제거
             InputManager.RemoveKeyAction("Attack/Fire", playerController.Attack);
 
+            // 플레이어의 건설기능을 비활성화
+            InputManager.RemoveKeyAction("Attack/Fire", Build);
+
             isBuildModeEnabled = true;
         }
 
@@ -144,7 +147,7 @@ namespace AT_RPG
             Destroy(buildingPopupInstance.gameObject);
 
             // 건물 선택시 바로 설치되는걸 막기위해 액션 키 등록에 딜레이 부여
-            DelayAddBuildAction();
+            StartCoroutine(DelayAddBuildAction());
         }
 
         private IEnumerator DelayAddBuildAction(float duration = 0.5f)

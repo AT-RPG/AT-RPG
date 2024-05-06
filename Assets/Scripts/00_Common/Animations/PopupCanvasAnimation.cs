@@ -26,9 +26,11 @@ namespace AT_RPG
         {
             TweenCallback tweenCompleteCallback = () => completeCallback?.Invoke();
 
-            TargetTransform.anchoredPosition = StartPosition;
-            TargetTransform.DOAnchorPos(EndPosition, Duration).SetEase(Ease.OutBack).onComplete
-                += tweenCompleteCallback; ;
+            if (TargetTransform.anchoredPosition != null)
+            {
+                TargetTransform.anchoredPosition = StartPosition;
+                TargetTransform.DOAnchorPos(EndPosition, Duration).SetEase(Ease.OutBack).onComplete += tweenCompleteCallback;
+            }
         }
 
         /// <summary>
@@ -38,9 +40,11 @@ namespace AT_RPG
         {
             TweenCallback tweenCompleteCallback = () => completeCallback?.Invoke();
 
-            TargetTransform.anchoredPosition = EndPosition;
-            TargetTransform.DOAnchorPos(StartPosition, Duration).SetEase(Ease.InBack).onComplete
-                += tweenCompleteCallback;
+            if (TargetTransform.anchoredPosition != null)
+            {
+                TargetTransform.anchoredPosition = EndPosition;
+                TargetTransform.DOAnchorPos(StartPosition, Duration).SetEase(Ease.InBack).onComplete += tweenCompleteCallback;
+            }
         }
     }
 }

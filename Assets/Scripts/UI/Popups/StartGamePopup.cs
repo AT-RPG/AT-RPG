@@ -125,7 +125,6 @@ namespace AT_RPG
             }
 
             InternalOnPlayWorld();
-            DestroyPopup();
         }
 
         /// <summary>
@@ -158,6 +157,7 @@ namespace AT_RPG
                 // 3. 씬 이동
                 // 4. 호스트 모드 (활성화가 되어있는 경우)
                 InternalLoadWorldSettingDatas();
+                DestroyPopup();
             });
         }
 
@@ -233,6 +233,8 @@ namespace AT_RPG
                 SaveLoadManager.InstantiateGameObjectFromData(loadedGameObjectDatas);
                 UIManager.LoadingPopupInstance.AnimateEscapeSequence();
             }
+
+            DestroyPopup();
         }
 
         /// <summary>
@@ -259,12 +261,12 @@ namespace AT_RPG
         /// </summary>
         private void AnimateEscapeSequence()
         {
-            popupAnimation.EndPopup();
-            fadeAnimation.EndFade(() =>
+            popupAnimation?.EndPopup();
+            fadeAnimation?.EndFade(() =>
             {
                 Destroy(gameObject);
             });
-            blurAnimation.EndFade();
+            blurAnimation?.EndFade();
         }
 
         public void DestroyPopup()

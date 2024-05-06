@@ -39,7 +39,7 @@ namespace AT_RPG
                 inviteButtonInstance.SetActive(false);
             }         
 
-            if (MultiplayManager.GameMode == GameMode.Client)
+            if (MultiplayManager.GameMode == GameMode.Single || MultiplayManager.GameMode == GameMode.Client)
             {
                 saveButtonInstance.SetActive(false);
                 inviteButtonInstance.SetActive(false);

@@ -259,6 +259,7 @@ namespace AT_RPG.Manager
 
                 // ILoadData 인터페이스로 인스턴스를 복원
                 GameObject instanceFromSaveData = Instantiate(gameObjectData.Instance.Resource);
+
                 foreach (var data in serializableDatas)
                 {
                     ILoadData saveLoad = instanceFromSaveData.GetComponent(data.ComponentTypeName) as ILoadData;

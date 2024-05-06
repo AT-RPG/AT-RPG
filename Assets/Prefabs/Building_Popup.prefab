@@ -231,7 +231,7 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   leftButtonBuildingPrefab:
-    m_AssetGUID: c86c35f3a65442b4e95cf23518eeaf45
+    m_AssetGUID: 2833e3612aef723489aebb645ae3671c
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
@@ -250,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6338775839407322913
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1145,7 +1145,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1944752994869734616
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1889,6 +1889,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lower_Button
       objectReference: {fileID: 0}
+    - target: {fileID: 5316990106345981474, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371850320244176734, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5371850320244176734, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
         type: 3}
       propertyPath: onButtonClick.m_PersistentCalls.m_Calls.Array.size
@@ -2294,6 +2304,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Left_Button
       objectReference: {fileID: 0}
+    - target: {fileID: 2851796178540817210, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5316990106345981474, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371850320244176734, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5371850320244176734, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
         type: 3}
       propertyPath: onButtonClick.m_PersistentCalls.m_Calls.Array.size
@@ -2698,6 +2723,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Upper_Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 5316990106345981474, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371850320244176734, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5371850320244176734, guid: 04ad7c560b7e2dc498d62c05a0e69d8b,
         type: 3}

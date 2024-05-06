@@ -20,18 +20,18 @@ namespace AT_RPG
 
         private void Awake()
         {
-            InputManager.AddKeyAction("Setting/Undo", RemovePopupInstance);
+            InputManager.AddKeyAction("Setting/Undo", Remove);
         }
 
         private void OnDestroy()
         {
-            InputManager.RemoveKeyAction("Setting/Undo", RemovePopupInstance);
+            InputManager.RemoveKeyAction("Setting/Undo", Remove);
         }
 
         /// <summary>
         /// 가장 최근 팝업 인스턴스를 삭제합니다.
         /// </summary>
-        public void RemovePopupInstance(InputValue inputValue)
+        public void Remove(InputValue inputValue)
         {
             Popup popup = null;
 
@@ -54,7 +54,7 @@ namespace AT_RPG
 
 
         
-        public void RemoveAllPopupInstance()
+        public void RemoveAll()
         {
             while (popups.Count >= 1)
             {
@@ -94,17 +94,28 @@ namespace AT_RPG
                 return;
             }
 
-            var peek = popups.Peek();
-            switch (peek.PopupRenderMode)
+            Popup popup = null;
+            popup = popups.Peek();
+            while (popup == null && popups.Count > 0)
+            {
+                popup = popups.Pop();
+            }
+
+            if (popup == null)
+            {
+                return;
+            }
+
+            switch (popup.PopupRenderMode)
             {
                 case PopupRenderMode.Hide:
-                    if (peek.gameObject.activeSelf)
+                    if (popup.gameObject.activeSelf)
                     {
-                        peek.gameObject.SetActive(false);
+                        popup.gameObject.SetActive(false);
                     }
                     else
                     {
-                        peek.gameObject.SetActive(true);
+                        popup.gameObject.SetActive(true);
                     }
                     break;
 

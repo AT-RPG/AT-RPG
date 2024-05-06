@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   self:
-    m_AssetGUID: 
+    m_AssetGUID: 3bce29658b90a1a408fa4a1849a3d6d8
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

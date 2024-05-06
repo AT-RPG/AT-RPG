@@ -13,7 +13,10 @@ namespace AT_RPG
         // 리소스 매니저에서 캐시된 리소스를 가져옵니다.
         public T Resource => ResourceManager.Get<T>(m_AssetGUID);
 
+        public AssetReferenceResource() : base() { }
+
         public AssetReferenceResource(string guid) : base(guid) { }
+
         public AssetReferenceResource(AssetReference assetReference) : base(assetReference.AssetGUID) { }
 
         // UnityEngine.Object.Instantiate에서 prefab 대신에 사용

@@ -35,12 +35,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Building
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c86c35f3a65442b4e95cf23518eeaf45
-    m_Address: Assets/Prefabs/Building_WallDoor.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Building
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0e9b5e5862fa0494394873da4c814e30
     m_Address: Assets/Prefabs/Building_Wall.prefab
     m_ReadOnly: 0

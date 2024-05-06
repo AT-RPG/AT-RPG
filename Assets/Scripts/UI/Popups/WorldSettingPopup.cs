@@ -72,7 +72,7 @@ namespace AT_RPG
             // 저장이 완료되면 맵 설정 팝업창을 닫고, 맵 선택 팝업창을 인스턴싱
             SaveLoadManager.SaveWorldSettingData(SaveLoadManager.Setting.defaultSaveFolderPath, worldSettingData, null, () =>
             {
-                popupCanvas?.RemoveAllPopupInstance();
+                popupCanvas?.RemoveAll();
                 UIManager.InstantiatePopup(startGamePopupPrefab.Resource, PopupRenderMode.Hide);
             });
         }
@@ -129,7 +129,7 @@ namespace AT_RPG
         /// </summary>
         public void OnInstantiateStartGamePopup()
         {
-            popupCanvas?.RemovePopupInstance(new InputValue());
+            popupCanvas?.Remove(new InputValue());
         }
 
         public void DestroyPopup()

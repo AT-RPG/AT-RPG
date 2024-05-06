@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 560546251779724127}
   - component: {fileID: -435063214950143973}
   - component: {fileID: 1509021299066510391}
+  - component: {fileID: 8283723067589936323}
   m_Layer: 9
   m_Name: Building_Bed
   m_TagString: Untagged
@@ -143,7 +144,7 @@ Animator:
   m_GameObject: {fileID: 1174300490710111860}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: db13fc15df67dd14ea4dcf39994d9f16, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -168,6 +169,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 17b855a816e50604b8cac15696150a47, type: 2}
   dissolvePrefab: {fileID: 2100000, guid: 39fcdf4d38db5b94aaafe1776c943c34, type: 2}
+--- !u!114 &8283723067589936323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174300490710111860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91735022c7b4be84094c6257c5741bb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  self:
+    m_AssetGUID: 128379614d42a8d419c7f5939510d757
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  gameObjectData:
+    ComponentTypeName: 
+    Instance:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    InstanceName: 
+    InstanceLayer: 0
+    InstanceTag: 
+    InstanceIsActive: 0
+    InstanceHideFlags: 0
+    InstanceIsStatic: 0
+    LocalPosition: {x: 0, y: 0, z: 0}
+    LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 0, y: 0, z: 0}
 --- !u!1 &6357949517000856400
 GameObject:
   m_ObjectHideFlags: 0
