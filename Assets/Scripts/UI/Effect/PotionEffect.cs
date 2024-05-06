@@ -9,7 +9,7 @@ namespace AT_RPG
         private void OnEnable() 
         {
             float durantion = GetComponent<ParticleSystem>().main.duration;
-            Invoke("ActiveOff", durantion);
+            Invoke(nameof(ActiveOff), durantion);
         }
 
         private void ActiveOff()

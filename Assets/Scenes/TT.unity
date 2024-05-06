@@ -38170,7 +38170,7 @@ GameObject:
   - component: {fileID: 2776848223948381989}
   - component: {fileID: 2263971268993391030}
   m_Layer: 8
-  m_Name: TP
+  m_Name: TP_N
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
