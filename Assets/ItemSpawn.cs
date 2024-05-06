@@ -80,51 +80,51 @@ namespace AT_RPG
             {
                 Destroy(itemBox);
             }
-            BreakBox();
+            Destroy(gameObject);
             
             yield return new WaitForSeconds(delay);
         }
-        public void BreakBox()
-        {
-            int dropCount = Random.Range(minDropCount, maxDropCount + 1);
+        // public void BreakBox()
+        // {
+        //     int dropCount = Random.Range(minDropCount, maxDropCount + 1);
 
-            for (int i = 0; i < dropCount; i++)
-            {
-                float totalProbability = 0f;
-                foreach (float probability in dropItemProbabilities)
-                {
-                    totalProbability += probability;
-                }
+        //     for (int i = 0; i < dropCount; i++)
+        //     {
+        //         float totalProbability = 0f;
+        //         foreach (float probability in dropItemProbabilities)
+        //         {
+        //             totalProbability += probability;
+        //         }
 
-                float randomValue = Random.value * totalProbability;
-                float cumulativeProbability = 0f;
-                GameObject chosenItemPrefab = null;
-                for (int j = 0; j < dropItemProbabilities.Length; j++)
-                {
-                    cumulativeProbability += dropItemProbabilities[j];
-                    if (randomValue <= cumulativeProbability)
-                    {
-                        chosenItemPrefab = dropItemPrefabs[j];
-                        break;
-                    }
-                }
+        //         float randomValue = Random.value * totalProbability;
+        //         float cumulativeProbability = 0f;
+        //         GameObject chosenItemPrefab = null;
+        //         for (int j = 0; j < dropItemProbabilities.Length; j++)
+        //         {
+        //             cumulativeProbability += dropItemProbabilities[j];
+        //             if (randomValue <= cumulativeProbability)
+        //             {
+        //                 chosenItemPrefab = dropItemPrefabs[j];
+        //                 break;
+        //             }
+        //         }
 
-                if (chosenItemPrefab == null)
-                {
-                    Debug.LogWarning("No item selected.");
-                    continue;
-                }
+        //         if (chosenItemPrefab == null)
+        //         {
+        //             Debug.LogWarning("No item selected.");
+        //             continue;
+        //         }
 
-                Vector3 randomPosition = new Vector3(
-                    Random.Range(bounds.min.x, bounds.max.x),
-                    Random.Range(bounds.min.y, bounds.max.y),
-                    Random.Range(bounds.min.z, bounds.max.z)
-                );
+        //         Vector3 randomPosition = new Vector3(
+        //             Random.Range(bounds.min.x, bounds.max.x),
+        //             Random.Range(bounds.min.y, bounds.max.y),
+        //             Random.Range(bounds.min.z, bounds.max.z)
+        //         );
 
-                GameObject dropItem = Instantiate(chosenItemPrefab, randomPosition, Quaternion.identity);
-                dropItem.SetActive(true);
-            }
-        }
+        //         GameObject dropItem = Instantiate(chosenItemPrefab, randomPosition, Quaternion.identity);
+        //         dropItem.SetActive(true);
+        //     }
+        // }
     }
 }
 

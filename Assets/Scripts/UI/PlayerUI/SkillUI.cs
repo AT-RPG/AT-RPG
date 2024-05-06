@@ -9,7 +9,7 @@ public class SkillUI : MonoBehaviour
     [SerializeField] private Image skillBGImage;
     [SerializeField] private Image skillCooldownImage;
 
-    private void Start() 
+    private void Awake()
     {
         GameManager.Event.ChangeSkillSpriteEvent += ChangeSkillSprite;
         GameManager.Event.CheckSkillCooldownEvent += CheckSkillCooldown;

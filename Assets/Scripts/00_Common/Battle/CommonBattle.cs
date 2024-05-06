@@ -46,7 +46,7 @@ public class CommonBattle : CharacterProperty, ICharacterDamage
 
     protected void Initialize()
     {
-        curHP = baseBattleStat.maxHP / 2.0f;
+        curHP = baseBattleStat.maxHP;
     }
     
 
