@@ -1,6 +1,5 @@
 using AT_RPG.Manager;
 using UnityEngine;
-using static UnityEditor.UIElements.CurveField;
 
 namespace AT_RPG
 {
