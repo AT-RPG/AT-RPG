@@ -309,7 +309,8 @@ public class MonsterMain : CommonBattle
     //몬스터 플레이어 놓침
     public void StopTracking()
     {
-        myAnim.SetBool("Skill", false);
+        if (mStat.monsterPhase >= 1)
+            myAnim.SetBool("Skill", false);
         if (monsterState != State.Dead)
         {
             if (move != null) StopCoroutine(move);
