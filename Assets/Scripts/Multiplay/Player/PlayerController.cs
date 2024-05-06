@@ -19,6 +19,7 @@ public class PlayerController : CommonBattle
     [SerializeField] private Transform myAttackPoint;
     [SerializeField] private Skill curSkill;
     [SerializeField] private InventoryUIController inventoryUIController;
+    [SerializeField] private GameObject heal;
     private bool isComboCheck = false;
     bool isInventoryOn = false;
     // [SerializeField] Transform myCam;
@@ -307,6 +308,7 @@ public class PlayerController : CommonBattle
             myAnim.SetBool("isUsingPotion",true);
             curHP += 40.0f;
             GameManager.Player.AddHealPotion(-1);
+            heal.SetActive(true);
         }
     }
 

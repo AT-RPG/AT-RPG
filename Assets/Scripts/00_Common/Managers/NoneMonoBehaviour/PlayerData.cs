@@ -31,7 +31,6 @@ namespace AT_RPG
         public void AddGold(int _gold)
         {
             gold += _gold;
-            Debug.Log("gold  ######" + gold);
         }
 
         /// <summary>
@@ -42,7 +41,6 @@ namespace AT_RPG
         {
             healPotion += _potion;
             GameManager.Event.ChangePotionEvent?.Invoke();
-            Debug.Log("healPotion  %%%%%" + healPotion);
         }
 
         /// <summary>
@@ -52,7 +50,6 @@ namespace AT_RPG
         public void AddMonsterPiece(int _piece)
         {
             monsterPiece += _piece;
-            Debug.Log("monsterPiece  $$$$$$" + monsterPiece);
         }
 
         /// <summary>
@@ -62,7 +59,6 @@ namespace AT_RPG
         public void AddRock(int _rock)
         {
             rock += _rock;
-            Debug.Log("rock  $$$$$$" + rock);
         }
 
         /// <summary>
