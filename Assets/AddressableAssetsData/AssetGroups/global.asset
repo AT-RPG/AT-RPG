@@ -16,7 +16,13 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 1a25546282d9e594dac7445360ba1f45
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 1e3c57bbf3e1781479327b9527c61cc6
+    m_Address: Assets/TT__MainMove/TP_N.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Global
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ed024d09688269c478274daa967f05e0, type: 2}
   m_SchemaSet:

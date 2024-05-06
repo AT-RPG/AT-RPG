@@ -126,8 +126,6 @@ namespace AT_RPG
             indication.SetColor("_BuildingStatusColor", Color.green);
         }
 
-
-
         /// <summary>
         /// 건설 표시기의 건물을 재설정합니다.
         /// </summary>
@@ -138,7 +136,11 @@ namespace AT_RPG
         {
             // 건물 크기 복사
             buildingResource = buildingPrefab.Resource;
-            transform.localScale = buildingResource.transform.localScale * 0.99f;
+            Vector3 scale = buildingResource.transform.localScale * 0.99f;
+            scale.x /= transform.parent.localScale.x;
+            scale.y /= transform.parent.localScale.y;
+            scale.z /= transform.parent.localScale.z;
+            transform.localScale = scale;
 
             // 건물의 쉐이더와 메쉬를 복사
             buildingData = buildingResource.GetComponent<BuildingObject>().Data;
@@ -159,8 +161,6 @@ namespace AT_RPG
             // 충돌 범위의 중점과 건물 프리팹의 중점 차이를 복사
             buildingPositionPivot = buildingResource.transform.position - buildingBounds.center;
         }
-
-
 
         /// <summary>
         /// 건설위치를 조준점(<see cref="Camera.ScreenPointToRay(Vector3)"/>)이 가리키는 위치로 업데이트합니다.

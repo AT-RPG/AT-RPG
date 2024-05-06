@@ -708,6 +708,7 @@ GameObject:
   - component: {fileID: 1344431458620003223}
   - component: {fileID: 2776848223720096894}
   - component: {fileID: 2263971269086429933}
+  - component: {fileID: 707821600046249847}
   m_Layer: 8
   m_Name: TP
   m_TagString: Player
@@ -749,6 +750,7 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 300
     attackPoint: 10
+    defendPoint: 0
     moveSpeed: 1
     attackDeley: 0
     skillCooltime: 0
@@ -767,9 +769,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 512
   weapons:
   - {fileID: 3437257580409211788}
   - {fileID: 3942577527037330837}
@@ -782,6 +781,9 @@ MonoBehaviour:
   - {fileID: 1445455169021542872}
   - {fileID: 3376425884691876898}
   myAttackPoint: {fileID: 3784715377642372923}
+  curSkill: {fileID: 0}
+  inventoryUIController: {fileID: 0}
+  heal: {fileID: 0}
 --- !u!114 &1344431458620003223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -862,6 +864,28 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.76, z: 0}
+--- !u!114 &707821600046249847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7567102763009886285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c820ed85d49934b9a6b036c9bf7d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingIndicatorPrefab:
+    m_AssetGUID: 60f9c01beb778ec4c86a47a96b0ff019
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  buildingPopupPrefab:
+    m_AssetGUID: a68ad62a2eab882409614d9b9ef08399
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!1001 &949700198817999102
 PrefabInstance:
   m_ObjectHideFlags: 0
