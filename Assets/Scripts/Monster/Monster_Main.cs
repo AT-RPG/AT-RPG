@@ -215,7 +215,7 @@ public class MonsterMain : CommonBattle
         monAgent.ResetPath();
         myAnim.SetBool("Run", false);
         myAnim.SetBool("Move", false);
-        myAnim.SetBool("Skill", false);
+        if (mStat.monsterPhase >= 1) myAnim.SetBool("Skill", false);
         monsterIdleTime = Random.Range(2, 4);
         deleyMove = StartCoroutine(DelayChangeState(State.Move, monsterIdleTime));
     }
