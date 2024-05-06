@@ -4,29 +4,37 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
+
 using static UnityEngine.GraphicsBuffer;
 
 /// <summary>
 /// 파이어볼-투사체 관리스크립트
 /// </summary>
-public class Fireball : MonoBehaviour//, ICharacterDamage
+public class Fireball : MonoBehaviour, ICharacterDamage
 {
-   
+    public GameObject orgEffect;
+    
     public IObjectPool<Fireball> firePool;
     Coroutine stop = null;
     [SerializeField]
     private float ballSpeed;
     private float damage;
+
     private Vector3 direction;
+
+    private bool hasCollided = false;//첫 충돌만 처리
 
     private MonsterShootManager monsterShootManager;
     public void SetDamage(float damageValue)
     {
         damage = damageValue;
     }
+    public void setStartPos(Transform myPos)
+    {
+        transform.position = myPos.transform.position;
+    }
     public void SetTarget(Vector3 target)
     {
-       
         direction = (target - transform.position).normalized;
     }
 
@@ -44,28 +52,48 @@ public class Fireball : MonoBehaviour//, ICharacterDamage
     {
         firePool = pool;
     }
+
+    public void destroyballDelayed(float delay) // 지연 후 풀 반환
+    {
+        Invoke("destroyball", delay);
+    }
     public void destroyball() //풀반환
     {
+      
         firePool.Release(this);
     }
 
     private void OnEnable()
     {
+        hasCollided = false;
         stop = StartCoroutine(ShootLost());
     }
 
     private void OnTriggerEnter(Collider other) //적에게 히트
     {
+        if (hasCollided) return;
         if (other.gameObject.layer == LayerMask.NameToLayer("Monster")) return;
+        if (other.gameObject.layer == LayerMask.NameToLayer("MonsterAI")) return;
+
+        hasCollided = true;
+         GameObject effectInstance = Instantiate(orgEffect, transform.position, Quaternion.identity);
+         effectInstance.transform.parent = transform;
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) // 충돌한 오브젝트의 레이어가 몬스터 레이어인지 확인
         {
-           // ICharacterDamage cd = other.GetComponent<ICharacterDamage>();
-           // cd.TakeDamage(damage);
+            ICharacterDamage character = other.GetComponent<ICharacterDamage>();
+            if (character != null)
+            {
+                character.TakeDamage(damage); // 맞은 대상에게 데미지를 줌
+            }
         }
         StopCoroutine(stop);
-        destroyball();//릴리즈  
+        Destroy(effectInstance, 1f);
+        destroyballDelayed(1f);
+       
     }
+       
+
 
     IEnumerator ShootLost()
     {
@@ -82,8 +110,8 @@ public class Fireball : MonoBehaviour//, ICharacterDamage
 
     }
 
-   // public void TakeDamage(float dmg)
-    //{
-   //     throw new System.NotImplementedException();
-   // }
+    public void TakeDamage(float dmg)
+    {
+        Destroy(gameObject);
+    }
 }

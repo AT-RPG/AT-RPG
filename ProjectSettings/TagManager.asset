@@ -9,6 +9,8 @@ TagManager:
   - Item
   - Door
   - NPC
+  - PriceText
+  - ImageNameText
   layers:
   - Default
   - TransparentFX
@@ -40,7 +42,7 @@ TagManager:
   - Nature
   - 
   - 
-  - 
+  - MonsterAI
   - 
   m_SortingLayers:
   - name: Default

@@ -1,6 +1,8 @@
 using AT_RPG;
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// <see cref="RangeType"/>
@@ -13,7 +15,7 @@ public class RangeType : MonsterMain
     public Coroutine attackdelay = null;
     public MonsterShootManager shootManager;
 
-
+    public GameObject rageVFX;
     public Transform attackPos;
 
     public override void OnEnable()
@@ -25,19 +27,11 @@ public class RangeType : MonsterMain
             shootManager = managerObject.GetComponent<MonsterShootManager>();
         }
     }
-    public void lookPlayer()
-    {
-        Vector3 directionToPlayer = (myTarget.transform.position - transform.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 3.0f);
-    }
+
     public override void AttackPlayer()
     {
         SetAttackOK(false);
         if (battleState != null) StopCoroutine(battleState);
-        monAgent.ResetPath();
-
-        lookPlayer();
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
         myAnim.SetTrigger("NormalAttack");
@@ -48,37 +42,43 @@ public class RangeType : MonsterMain
         if (battleState != null) StopCoroutine(battleState);
         myAnim.SetBool("Move", false);
         myAnim.SetBool("Run", false);
-        myAnim.SetBool("Skill", true);
         myAnim.SetTrigger("NormalAttack");
-        
-        Debug.Log("스킬사용");
+        myAnim.SetBool("Skill", true);
         StartCoroutine(Rage());
+        StartCoroutine(skillCoolTimer());
+        StartCoroutine(SkillmotionEnd());
     }
+
+    IEnumerator SkillmotionEnd()
+    {
+        yield return new WaitForSeconds(5.0f);
+        myAnim.SetBool("Skill", false);
+        battleState = StartCoroutine(BattleState());
+    }
+
+
     IEnumerator Rage()
     {
-        myAnim.SetBool("Skill", false);
+        GameObject RageVfx = Instantiate(rageVFX, this.transform);
         float buffTimer = 0.0f;
-        while (true)
+        baseBattleStat.attackPoint += 10;
+        while (buffTimer < 30.0f)
         {
-            baseBattleStat.attackPoint += 10;
+            RageVfx.transform.localPosition = Vector3.zero; // 몬스터의 로컬 좌표계 상에서 원점에 배치
+            RageVfx.transform.localRotation = Quaternion.identity; // 몬스터와 동일한 회전 설정
             buffTimer += Time.deltaTime;
-            if (buffTimer > 30.0f) break;
             yield return null;
         }
+        Destroy(RageVfx);
         baseBattleStat.attackPoint -= 10;
-        if (monsterState != State.Dead)
-        {
-            StartCoroutine(skillCoolTimer());
-            battleState = StartCoroutine(BattleState());
-        }
     }
     IEnumerator skillCoolTimer()
     {
         float skillcoll = 0.0f;
-        while (true)
+        while (skillcoll <= baseBattleStat.skillCooltime)
         {
             skillcoll += Time.deltaTime;
-            if (skillcoll >= baseBattleStat.skillCooltime) break;
+            
             yield return null;
         }
         SetSkillOk(true);
@@ -117,31 +117,36 @@ public class RangeType : MonsterMain
         if (backstep != null) StopCoroutine(backstep);
         backstep = StartCoroutine(monBackWalk()); //뒤로이동
     }
+    //통으로 새로짤것
     IEnumerator monBackWalk()
     {
-        while (true)
-        {
-            if (myTarget == null || monsterState == State.Dead)
-                yield break;
 
-            Vector3 battletarget = myTarget.transform.position;
-            Vector3 dir = battletarget - transform.position;
-            float dist = dir.magnitude;
-            if (dist < mStat.monsterRange && monsterState != State.Dead)
-            {
-                myAnim.SetBool("BackWalk", true);
-                Vector3 moveDirection = -dir.normalized;
-                lookPlayer();
-                monAgent.SetDestination(transform.position + moveDirection);
-            }
-            else
-            {
-                monAgent.ResetPath();
-                myAnim.SetBool("BackWalk", false);
-                break;
-            }
+        Vector3 battletarget = myTarget.transform.position;
+        Vector3 dir = battletarget - transform.position;
+        Vector3 moveDirection = -dir.normalized;
+        float dist = dir.magnitude;
+        
+        while (dist < mStat.monsterRange)
+        {
+
+            Vector3 playerDirection = myTarget.transform.position - transform.position;
+            Vector3 moveDir = -playerDirection.normalized;
+
+            // Calculate rotation to face the player
+            Quaternion targetRotation = Quaternion.LookRotation(playerDirection.normalized, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);
+
+            Debug.Log("플레이어를 바라보면서 물러나는 중");
+            myAnim.SetBool("BackWalk", true);
+
+            // Move away from the player
+            monAgent.SetDestination(transform.position + moveDir * mStat.monsterRange);
+
             yield return null;
         }
+
+        Debug.Log("백스텝종료");
+        myAnim.SetBool("BackWalk", false);
     }
     public override void OnAttack()
     {

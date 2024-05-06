@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7322936292352383320
 Transform:
   m_ObjectHideFlags: 0
@@ -102,22 +102,13 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 100
     attackPoint: 30
+    defendPoint: 0
     moveSpeed: 3
     attackDeley: 6
     skillCooltime: 0
   changeHpAct:
     m_PersistentCalls:
       m_Calls: []
-  Hpbar:
-    m_AssetGUID: 17b4793608188c04d8230f12bf49ce86
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  textasset:
-    m_AssetGUID: dfb704ae2c1531b4c9b423e5942727be
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
   monResPos: {fileID: 7322936292352383320}
   hpViewPos: {fileID: 5713884932960440510}
   monAgent: {fileID: 4993959310669904830}
@@ -126,7 +117,11 @@ MonoBehaviour:
   deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
     type: 3}
   monsterState: 0
-  shootManager: {fileID: 0}
+  attackOK: 1
+  skillOK: 1
+  shootManager: {fileID: 427257018236851546, guid: 193eb2c6fb6ca9d419b206633be69e52,
+    type: 3}
+  rageVFX: {fileID: 7155335147208632822, guid: b07f65a58020c0340b8f3b68d7296d5e, type: 3}
   attackPos: {fileID: 5620115513225880005}
 --- !u!195 &4993959310669904830
 NavMeshAgent:
@@ -161,7 +156,7 @@ GameObject:
   - component: {fileID: 8537459443883805245}
   - component: {fileID: 8910746181856708052}
   - component: {fileID: 6546474076330227832}
-  m_Layer: 9
+  m_Layer: 30
   m_Name: 'MonsterAI '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +231,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3348987995906302637}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: StopTracking
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

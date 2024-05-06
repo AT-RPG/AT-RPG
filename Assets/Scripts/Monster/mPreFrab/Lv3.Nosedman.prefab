@@ -124,6 +124,7 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 500
     attackPoint: 100
+    defendPoint: 0
     moveSpeed: 3
     attackDeley: 4
     skillCooltime: 0
@@ -142,6 +143,7 @@ MonoBehaviour:
   skillOK: 1
   shootManager: {fileID: 427257018236851546, guid: 193eb2c6fb6ca9d419b206633be69e52,
     type: 3}
+  rageVFX: {fileID: 7155335147208632822, guid: b07f65a58020c0340b8f3b68d7296d5e, type: 3}
   attackPos: {fileID: 4013289164779224592}
 --- !u!1 &1236299033464775497
 GameObject:
@@ -154,7 +156,7 @@ GameObject:
   - component: {fileID: 1355380083597593910}
   - component: {fileID: 1313566190988921240}
   - component: {fileID: 5963934197241135390}
-  m_Layer: 9
+  m_Layer: 30
   m_Name: 'MonsterAI '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +231,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3522051082014459886}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: StopTracking
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

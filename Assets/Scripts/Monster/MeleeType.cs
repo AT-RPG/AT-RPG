@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MeleeType : MonsterMain
 {
+    public GameObject gaurdVFX;
     public override void OnAttack()
     {
         if (myTarget == null) return;
@@ -41,19 +42,22 @@ public class MeleeType : MonsterMain
 
     IEnumerator guardSkill()
     {
+        GameObject GaurdVfx = Instantiate(gaurdVFX,this.transform);
         float skillTimer = 0.0f;
-        while (true)
+        baseBattleStat.defendPoint += 100;
+        while (skillTimer <= 4.0f)
         {
+            GaurdVfx.transform.localPosition = Vector3.zero; // 몬스터의 로컬 좌표계 상에서 원점에 배치
+            GaurdVfx.transform.localRotation = Quaternion.identity; // 몬스터와 동일한 회전 설정
             Vector3 battletarget = myTarget.transform.position;
             Vector3 dir = battletarget - transform.position;
             Vector3 monsterForward = transform.forward;
             Vector3 playerDirection = dir.normalized;
             float angle = Vector3.Angle(monsterForward, playerDirection);
-            baseBattleStat.defendPoint += 100;
             skillTimer += Time.deltaTime;
-            if (skillTimer >= 4.0f) break;
             yield return null;
         }
+        Destroy(GaurdVfx);
         baseBattleStat.defendPoint = 0;
         myAnim.SetBool("Skill", false);
 
@@ -67,10 +71,10 @@ public class MeleeType : MonsterMain
     IEnumerator skillCoolTimer()
     {
         float skillcoll = 0.0f;
-        while (true)
+        while (skillcoll <= baseBattleStat.skillCooltime)
         {
             skillcoll += Time.deltaTime;
-            if (skillcoll >= baseBattleStat.skillCooltime) break;
+           
             yield return null;
         }
         SetSkillOk(true);
@@ -94,7 +98,7 @@ public class MeleeType : MonsterMain
     IEnumerator AttackDeleayState()
     {
         float timer = 0.0f;
-        while (true)
+        while (timer <= baseBattleStat.attackDeley)
         {
             Vector3 battletarget = myTarget.transform.position;
             Vector3 dir = battletarget - transform.position;
@@ -106,7 +110,6 @@ public class MeleeType : MonsterMain
             float rotationSpeed = 20f; // 회전 속도를 조절합니다.
             transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
             timer += Time.deltaTime;
-            if (timer >= baseBattleStat.attackDeley) break;
             yield return null;
         }
         SetAttackOK(true);

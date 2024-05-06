@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 846930465839769945}
   - component: {fileID: 5432390871312277786}
   - component: {fileID: 2980993339573348086}
-  m_Layer: 9
+  m_Layer: 30
   m_Name: MonsterAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +216,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6073111375070932318}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: StopTracking
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -738,7 +738,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1368705608415263453
 Transform:
   m_ObjectHideFlags: 0
@@ -843,6 +843,7 @@ MonoBehaviour:
   baseBattleStat:
     maxHP: 200
     attackPoint: 30
+    defendPoint: 0
     moveSpeed: 3
     attackDeley: 4
     skillCooltime: 0
@@ -850,7 +851,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   monResPos: {fileID: 1368705608415263453}
-  StartspawnPos: {fileID: 0}
   hpViewPos: {fileID: 1046073179024064609}
   monAgent: {fileID: 7084421915046875086}
   monsterAI: {fileID: 2980993339573348086}
@@ -858,6 +858,10 @@ MonoBehaviour:
   deathVFX: {fileID: 1986256313062764135, guid: b3cc544c0b54df54e8d6edfaffa45a23,
     type: 3}
   monsterState: 0
+  attackOK: 1
+  skillOK: 1
+  gaurdVFX: {fileID: 7073389042055285376, guid: 0722c0deb3ec9534a9c511b6251b7ffa,
+    type: 3}
 --- !u!1 &4194148772779361617
 GameObject:
   m_ObjectHideFlags: 0
