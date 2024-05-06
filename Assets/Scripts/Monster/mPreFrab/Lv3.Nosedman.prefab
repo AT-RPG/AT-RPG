@@ -231,7 +231,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3522051082014459886}
         m_TargetAssemblyTypeName: MonsterMain, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: StopTracking
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
