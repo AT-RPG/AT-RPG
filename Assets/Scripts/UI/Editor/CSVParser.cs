@@ -80,7 +80,7 @@ namespace AT_RPG
             hyperlinkStyle.wordWrap = true;
 
             // 버튼 대신 라벨로 하이퍼링크 텍스트처럼 만들기
-            string URL = "https://docs.unity3d.com/Manual/index.html";
+            string URL = "https://github.com/AT-RPG/AT-RPG/pull/51";
             if (GUILayout.Button(URL, hyperlinkStyle))
             {
                 // 버튼 클릭 시 URL 열기
