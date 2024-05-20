@@ -56,13 +56,11 @@ namespace AT_RPG
                 var treeField = rootVisualElement.Q<ObjectField>("BehaviourTree");
                 treeField.RegisterValueChangedCallback(evt =>
                 {
-                    treeView.DeleteView();
-
                     tree = evt.newValue as BehaviourTree;
                     if (tree)
                     {
-                        treeView.Tree = tree;
-                        treeView.CreateView();
+                        treeView.CreateView(tree);
+                        treeView.focusable = true;
                     }
                 });
 

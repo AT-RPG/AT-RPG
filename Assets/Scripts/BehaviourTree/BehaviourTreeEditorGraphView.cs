@@ -17,7 +17,6 @@ namespace AT_RPG
         public BehaviourTree Tree
         {
             get => tree;
-            set => tree = value;
         }
         private BehaviourTree tree;
 
@@ -71,17 +70,36 @@ namespace AT_RPG
         /// <summary>
         /// <see cref="BehaviourTree"/>를 UI로 생성.
         /// </summary>
-        public void CreateView()
+        public void CreateView(BehaviourTree tree)
         {
+            /// 이전 정보 삭제.
+            graphViewChanged -= OnGraphViewChange;
+            DeleteElements(graphElements);
+
+            /// 새로운 tree UI 불러오기.
+            this.tree = tree;
+            graphViewChanged += OnGraphViewChange;
             tree.Nodes.ForEach(n => CreateNodeView(n));
         }
 
         /// <summary>
-        /// 이전 <see cref="BehaviourTree"/> UI를 삭제.
+        /// NodeView에 대한 'Delete' 기능을 구현.
         /// </summary>
-        public void DeleteView()
+        private GraphViewChange OnGraphViewChange(GraphViewChange graphViewChange)
         {
-            DeleteElements(graphElements);
+            if (graphViewChange.elementsToRemove != null)
+            {
+                graphViewChange.elementsToRemove.ForEach(element =>
+                {
+                    BehaviourTreeEditorNodeView nodeView = element as BehaviourTreeEditorNodeView;
+                    if (nodeView != null)
+                    {
+                        tree.DeleteNode(nodeView.Node);
+                    }
+                });
+            }
+
+            return graphViewChange;
         }
 
         /// <summary>
