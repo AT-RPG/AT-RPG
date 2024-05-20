@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ab252011e209e4c8ef3ff62c946659, type: 3}
+  m_Name: TestBehaviourTree
+  m_EditorClassIdentifier: 
+  root: {fileID: 4850328208923964468}
+  current: {fileID: 4850328208923964468}
+  nodes:
+  - {fileID: 4850328208923964468}
+--- !u!114 &4850328208923964468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81df52defcc207143bad4d1318effad3, type: 3}
+  m_Name: TestNode
+  m_EditorClassIdentifier: 

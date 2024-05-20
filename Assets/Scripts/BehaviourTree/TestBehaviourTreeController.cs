@@ -42,7 +42,7 @@ namespace AT_RPG
 
                 repeat.Child = seq1;
             }
-            tree.Add(repeat);
+            tree.AddNode(repeat);
 
         }
 

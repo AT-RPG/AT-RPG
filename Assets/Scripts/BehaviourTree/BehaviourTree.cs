@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace AT_RPG
@@ -47,7 +49,7 @@ namespace AT_RPG
             }
         }
 
-        public void Add(BehaviourNode node)
+        public void AddNode(BehaviourNode node)
         {
             if (nodes.Count == 0)
             {
@@ -58,7 +60,7 @@ namespace AT_RPG
             nodes.Add(node);
         }
 
-        public void Remove(BehaviourNode node)
+        public void RemoveNode(BehaviourNode node)
         {
             nodes.Remove(node);
 
@@ -68,5 +70,34 @@ namespace AT_RPG
                 current = null;
             }
         }
+
+#if UNITY_EDITOR
+        public BehaviourNode CreateNode(Type type)
+        {
+            if (type.IsAssignableFrom(typeof(BehaviourNode)))
+            {
+                throw new ArgumentException($"The type must be drived from {typeof(BehaviourNode)}");
+            }
+
+            BehaviourNode node = ScriptableObject.CreateInstance(type) as BehaviourNode;
+            node.name = type.Name;
+            node.Guid = Guid.NewGuid();
+
+            AddNode(node);
+
+            AssetDatabase.AddObjectToAsset(node, this);
+            AssetDatabase.SaveAssets();
+
+            return node;
+        }
+
+        public void DeleteNode(BehaviourNode node)
+        {
+            RemoveNode(node);
+
+            AssetDatabase.RemoveObjectFromAsset(node);
+            AssetDatabase.SaveAssets();
+        }
+#endif
     }
 }

@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,6 +18,12 @@ namespace AT_RPG
 
     public partial class BehaviourTreeEditor : EditorWindow
     {
+        private BehaviourTreeEditorGraphView treeView;
+
+        private BehaviourTreeEditorInspectorView inspectorView;
+
+        private BehaviourTree tree;
+
         [MenuItem("AT_RPG/BehaviourTreeEditor")]
         public static void ShowExample()
         {
@@ -26,15 +33,40 @@ namespace AT_RPG
 
         public void CreateGUI()
         {
-            VisualElement root = rootVisualElement;
+            ConnectUIBuilderFiles();
+        }
 
-            /// 글로벌 UXML 임포트
+        /// <summary>
+        /// UI Builder파일(.uxml, .uss)를 코드와 연결.
+        /// </summary>
+        private void ConnectUIBuilderFiles()
+        {
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(UxmlPath);
-            uxml.CloneTree(root);
+            uxml.CloneTree(rootVisualElement);
 
-            /// 글로벌 uss 임포트
             var uss = AssetDatabase.LoadAssetAtPath<StyleSheet>(UssPath);
-            root.styleSheets.Add(uss);
+            rootVisualElement.styleSheets.Add(uss);
+
+            rootVisualElement.schedule.Execute(() =>
+            {
+                treeView = rootVisualElement.Q<BehaviourTreeEditorGraphView>();
+
+                inspectorView = rootVisualElement.Q<BehaviourTreeEditorInspectorView>();
+
+                var treeField = rootVisualElement.Q<ObjectField>("BehaviourTree");
+                treeField.RegisterValueChangedCallback(evt =>
+                {
+                    treeView.DeleteView();
+
+                    tree = evt.newValue as BehaviourTree;
+                    if (tree)
+                    {
+                        treeView.Tree = tree;
+                        treeView.CreateView();
+                    }
+                });
+
+            }).StartingIn(1000);
         }
     }
 }

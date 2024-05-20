@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace AT_RPG
@@ -16,6 +17,13 @@ namespace AT_RPG
             get => isStarted;
         }
         private bool isStarted = false;
+
+        public Guid Guid
+        {
+            get => Guid;
+            set => guid = value;
+        }
+        private Guid guid = Guid.Empty;
 
 
 
