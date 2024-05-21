@@ -24,6 +24,8 @@ namespace AT_RPG
 
         private BehaviourTree tree;
 
+
+
         [MenuItem("AT_RPG/BehaviourTreeEditor")]
         public static void ShowExample()
         {
@@ -35,6 +37,8 @@ namespace AT_RPG
         {
             ConnectUIBuilderFiles();
         }
+
+
 
         /// <summary>
         /// UI Builder파일(.uxml, .uss)를 코드와 연결.
@@ -54,17 +58,24 @@ namespace AT_RPG
                 inspectorView = rootVisualElement.Q<BehaviourTreeEditorInspectorView>();
 
                 var treeField = rootVisualElement.Q<ObjectField>("BehaviourTree");
-                treeField.RegisterValueChangedCallback(evt =>
-                {
-                    tree = evt.newValue as BehaviourTree;
-                    if (tree)
-                    {
-                        treeView.CreateView(tree);
-                        treeView.focusable = true;
-                    }
-                });
+                treeField.RegisterValueChangedCallback(CreateTreeView);
 
             }).StartingIn(1000);
+        }
+
+        /// <summary>
+        /// BehaviourTree UI를 생성.
+        /// </summary>
+        private void CreateTreeView(ChangeEvent<Object> evt)
+        {
+            treeView.DeleteView();
+
+            tree = evt.newValue as BehaviourTree;
+            if (tree)
+            {
+                treeView.CreateView(tree);
+                treeView.focusable = true;
+            }
         }
     }
 }

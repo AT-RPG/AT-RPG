@@ -20,12 +20,22 @@ namespace AT_RPG
 
         public Guid Guid
         {
-            get => Guid;
+            get => guid;
             set => guid = value;
         }
         private Guid guid = Guid.Empty;
 
-
+#if UNITY_EDITOR
+        /// <summary>
+        /// 에디터에서 노드UI의 위치
+        /// </summary>
+        public Vector2 Position
+        {
+            get => position;
+            set => position = value;
+        }
+        private Vector2 position = Vector2.zero;
+#endif
 
         public NodeState Update()
         {

@@ -1,8 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using Unity.VisualScripting;
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace AT_RPG
 {
@@ -60,6 +65,21 @@ namespace AT_RPG
             nodes.Add(node);
         }
 
+        public void AddChild(BehaviourNode parent, BehaviourNode child)
+        {
+            DecoratorNode decorator = parent as DecoratorNode;
+            if (decorator != null)
+            {
+                decorator.Child = child;
+            }
+
+            CompositeNode composite = parent as CompositeNode;
+            if (composite != null)
+            {
+                composite.Children.Add(child);
+            }
+        }
+
         public void RemoveNode(BehaviourNode node)
         {
             nodes.Remove(node);
@@ -69,6 +89,40 @@ namespace AT_RPG
                 root = null;
                 current = null;
             }
+        }
+
+        public void RemoveChild(BehaviourNode parent, BehaviourNode child)
+        {
+            DecoratorNode decorator = parent as DecoratorNode;
+            if (decorator != null)
+            {
+                decorator.Child = null;
+            }
+
+            CompositeNode composite = parent as CompositeNode;
+            if (composite != null)
+            {
+                composite.Children.Remove(child);
+            }
+        }
+
+        public List<BehaviourNode> GetChildren(BehaviourNode parent)
+        {
+            List<BehaviourNode> children = new();
+
+            DecoratorNode decorator = parent as DecoratorNode;
+            if (decorator != null && decorator.Child != null)
+            {
+                children.Add(decorator.Child);
+            }
+
+            CompositeNode composite = parent as CompositeNode;
+            if (composite != null && composite.Children != null)
+            {
+                children.AddRange(composite.Children);
+            }
+
+            return children;
         }
 
 #if UNITY_EDITOR

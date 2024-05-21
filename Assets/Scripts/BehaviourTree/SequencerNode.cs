@@ -7,17 +7,8 @@ namespace AT_RPG
     /// <summary>
     /// 여러개의 <see cref="ActionNode"/>만 가지는 클래스
     /// </summary>
-    public class SequencerNode : BehaviourNode
+    public class SequencerNode : CompositeNode
     {
-        public List<BehaviourNode> Children
-        {
-            get => children;
-            set => children = value;
-        }
-        [SerializeField] protected List<BehaviourNode> children = new();
-
-
-
         private int current = 0;
 
 
