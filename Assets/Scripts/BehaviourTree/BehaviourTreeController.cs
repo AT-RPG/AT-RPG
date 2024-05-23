@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AT_RPG
@@ -12,6 +10,12 @@ namespace AT_RPG
         [SerializeField] private BehaviourTree tree;
 
 
+
+        private void Start()
+        {
+            tree = tree.Clone();
+            tree.Start();
+        }
 
         private void Update()
         {

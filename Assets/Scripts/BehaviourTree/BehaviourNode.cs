@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AT_RPG
 {
+    [Serializable]
     public abstract class BehaviourNode : ScriptableObject
     {
         public NodeState State
@@ -18,14 +20,14 @@ namespace AT_RPG
         }
         private bool isStarted = false;
 
-        public Guid Guid
+#if UNITY_EDITOR
+        public string Guid
         {
             get => guid;
             set => guid = value;
         }
-        private Guid guid = Guid.Empty;
+        [SerializeField, HideInInspector] private string guid;
 
-#if UNITY_EDITOR
         /// <summary>
         /// 에디터에서 노드UI의 위치
         /// </summary>
@@ -34,8 +36,13 @@ namespace AT_RPG
             get => position;
             set => position = value;
         }
-        private Vector2 position = Vector2.zero;
+        [SerializeField, HideInInspector] private Vector2 position = Vector2.zero;
 #endif
+
+        public virtual BehaviourNode Clone()
+        {
+            return Instantiate(this);
+        }
 
         public NodeState Update()
         {
@@ -55,6 +62,12 @@ namespace AT_RPG
 
             return state;
         }
+
+        public abstract void AddChild(BehaviourNode child);
+
+        public abstract void RemoveChild(BehaviourNode child);
+
+        public abstract List<BehaviourNode> GetChildren();
 
         protected abstract void OnStart();
 

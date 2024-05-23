@@ -2,9 +2,7 @@
 
 using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
@@ -15,6 +13,12 @@ namespace AT_RPG
     {
         public new class UxmlFactory : UxmlFactory<BehaviourTreeEditorGraphView, GraphView.UxmlTraits> { }
 
+        public Action<BehaviourTreeEditorNodeView> OnNodeSelected;
+
+        public Action<BehaviourTreeEditorNodeView> OnNodeUnselected;
+
+        public Action<BehaviourNode> OnSetAsRoot;
+
         public BehaviourTree Tree
         {
             get => tree;
@@ -22,37 +26,38 @@ namespace AT_RPG
         private BehaviourTree tree;
 
 
-        /// <summary>
-        /// BT의 Graph부분을 만들고 uss에 저장.
-        /// </summary>
+
         public BehaviourTreeEditorGraphView()
         {
+            /// 행동 트리 툴에 그리드 추가.
             var grid = new GridBackground();
             grid.name = nameof(GridBackground);
             Insert(0, grid);
 
+            /// 행동 트리 툴에 유틸리티 기능(ex. 확대, 스크롤) 추가.
             this.AddManipulator(new ContentZoomer());
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 
+            /// 행동 트리 툴에 USS적용.
             var uss = AssetDatabase.LoadAssetAtPath<StyleSheet>(BehaviourTreeEditor.UssPath);
             styleSheets.Add(uss);
         }
 
         /// <summary>
-        /// 현재 Graph View를 초기화.
+        /// 현재 행동 트리 UI를 삭제.
         /// </summary>
-        public void DeleteView()
+        public void DeleteTreeView()
         {
             graphViewChanged -= OnGraphViewChange;
             DeleteElements(graphElements);
         }
 
         /// <summary>
-        /// <see cref="BehaviourTree"/>를 UI로 생성.
+        /// 행동 트리 UI를 생성.
         /// </summary>
-        public void CreateView(BehaviourTree tree)
+        public void CreateTreeView(BehaviourTree tree)
         {
             this.tree = tree;
             graphViewChanged += OnGraphViewChange;
@@ -64,17 +69,24 @@ namespace AT_RPG
 
 
         /// <summary>
-        /// '<see cref="BehaviourTreeEditorGraphView"/>' 우클릭 시, 나타나는 메뉴.
+        /// 마우스 우클릭 시, 나타나는 메뉴.
         /// </summary>
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
-            AppendNodeCreationActions<ActionNode>(evt);
-            AppendNodeCreationActions<DecoratorNode>(evt);
-            AppendNodeCreationActions<CompositeNode>(evt);
+            if (tree != null && tree.Root == null)
+            {
+                AppendRootNodeCreationAction(evt);
+            }
+            else
+            {
+                AppendDerivedNodeCreationActions<ActionNode>(evt);
+                AppendDerivedNodeCreationActions<DecoratorNode>(evt);
+                AppendDerivedNodeCreationActions<CompositeNode>(evt);
+            }
         }
 
         /// <summary>
-        /// 노드끼리 연결 시, 예외를 처리.
+        /// 노드끼리 연결 시, 연결이 불가능한 조건을 처리.
         /// </summary>
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
@@ -104,7 +116,7 @@ namespace AT_RPG
                     {
                         var parentView = edge.output.node as BehaviourTreeEditorNodeView;
                         var childView = edge.input.node as BehaviourTreeEditorNodeView;
-                        tree.RemoveChild(parentView.Node, childView.Node);
+                        parentView.Node.RemoveChild(childView.Node);
                     }
                 });
             }
@@ -116,7 +128,7 @@ namespace AT_RPG
                 {
                     var parentView = edge.output.node as BehaviourTreeEditorNodeView;
                     var childView = edge.input.node as BehaviourTreeEditorNodeView;
-                    tree.AddChild(parentView.Node, childView.Node);
+                    parentView.Node.AddChild(childView.Node);
                 });
             }
 
@@ -126,28 +138,34 @@ namespace AT_RPG
 
 
         /// <summary>
-        /// <see cref="BehaviourNode"/>가 UI로 보일 수 있도록 생성.
+        /// 행동 트리의 모든 노드에 대한 UI를 생성.
         /// </summary>
         private void CreateNodeViews()
         {
             foreach (BehaviourNode node in tree.Nodes)
             {
                 BehaviourTreeEditorNodeView nodeView = new BehaviourTreeEditorNodeView(node);
+                nodeView.OnNodeSelected = OnNodeSelected;
+                nodeView.OnNodeUnselected = OnNodeUnselected;
+                nodeView.OnSetAsRoot = OnSetAsRoot;
                 AddElement(nodeView);
             }
         }
 
         /// <summary>
-        /// <see cref="BehaviourNode"/>가 UI로 보일 수 있도록 생성.
+        /// "<paramref name="node"/>"에 대한 UI를 생성.
         /// </summary>
         private void CreateNodeView(BehaviourNode node)
         {
             BehaviourTreeEditorNodeView nodeView = new BehaviourTreeEditorNodeView(node);
+            nodeView.OnNodeSelected = OnNodeSelected;
+            nodeView.OnNodeUnselected = OnNodeUnselected;
+            nodeView.OnSetAsRoot = OnSetAsRoot;
             AddElement(nodeView);
         }
 
         /// <summary>
-        /// <see cref="BehaviourNode"/>끼리 연결된 라인이 보일 수 있도록 생성.
+        /// 노드끼리 부모-자식 관계에 따라 연결선을 생성.
         /// </summary>
         private void CreateEdgeViews()
         {
@@ -158,11 +176,11 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// <see cref="tree"/>가 가지고 있는 노드의 자식까지 재귀적으로 연결선을 생성.
+        /// 노드의 자식 in 자식, 재귀적으로 연결선을 생성.
         /// </summary>
         private void CreateEdgeViewsInternal(BehaviourNode parent)
         {
-            foreach (BehaviourNode child in tree.GetChildren(parent))
+            foreach (BehaviourNode child in parent.GetChildren())
             {
                 BehaviourTreeEditorNodeView parentView = FindNodeView(parent);
                 BehaviourTreeEditorNodeView childView = FindNodeView(child);
@@ -175,22 +193,22 @@ namespace AT_RPG
         }
 
         /// <summary>
-        /// GUID를 통해 <paramref name="node"/>에 바인딩된 UI를 검색.
+        /// GUID를 통해 "<paramref name="node"/>"에 UI를 검색.
         /// </summary>
         private BehaviourTreeEditorNodeView FindNodeView(BehaviourNode node)
         {
-            return GetNodeByGuid(node.Guid.ToString()) as BehaviourTreeEditorNodeView;
+            return GetNodeByGuid(node.Guid) as BehaviourTreeEditorNodeView;
         }
 
         /// <summary>
-        /// 마우스 우클릭 시 나타나는 Node 생성 목록을 추가.
+        /// 마우스 우클릭 시 <typeparamref name="BehaviourNode"/>에 파생된 노드를 생성하는 목록 추가.
         /// </summary>
-        private void AppendNodeCreationActions<T>(ContextualMenuPopulateEvent evt) where T : BehaviourNode
+        private void AppendDerivedNodeCreationActions<BehaviourNode>(ContextualMenuPopulateEvent evt) where BehaviourNode : AT_RPG.BehaviourNode
         {
-            var types = TypeCache.GetTypesDerivedFrom<T>();
+            var types = TypeCache.GetTypesDerivedFrom<BehaviourNode>();
             foreach (var type in types)
             {
-                evt.menu.AppendAction($"[{typeof(T).Name}] {type.Name}", action =>
+                evt.menu.AppendAction($"[{typeof(BehaviourNode).Name}] {type.Name}", action =>
                 {
                     if (tree == null)
                     {
@@ -201,6 +219,24 @@ namespace AT_RPG
                     CreateNodeView(node);
                 });
             }
+        }
+
+        /// <summary>
+        /// 마우스 우클릭 시 루트 노드를 생성하는 목록 추가.
+        /// </summary>
+        private void AppendRootNodeCreationAction(ContextualMenuPopulateEvent evt)
+        {
+            evt.menu.AppendAction($"[{typeof(RootNode).Name}] {typeof(RootNode).Name}", action =>
+            {
+                if (tree == null)
+                {
+                    throw new NullReferenceException($"{nameof(BehaviourTree)} must be binded.");
+                }
+
+                var node = tree.CreateNode(typeof(RootNode));
+                tree.SetRoot(node);
+                CreateNodeView(node);
+            });
         }
     }
 }

@@ -3,28 +3,35 @@ using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
-#endif 
+#endif
 
 namespace AT_RPG
 {
     /// <summary>
-    /// 하나의 <see cref="ActionNode"/>만 가지는 클래스
+    /// BT의 시작 노드
     /// </summary>
-    public abstract class DecoratorNode : BehaviourNode
+    public class RootNode : BehaviourNode
     {
         public BehaviourNode Child
         {
             get => child;
             set => child = value;
         }
-        [SerializeField] protected BehaviourNode child;
+        [SerializeField] private BehaviourNode child;
 
-        public override BehaviourNode Clone()
+        protected override void OnStart()
         {
-            DecoratorNode clone = Instantiate(this);
-            clone.child = child.Clone();
 
-            return clone;
+        }
+
+        protected override NodeState OnUpdate()
+        {
+            return child.Update();
+        }
+
+        protected override void OnEnd()
+        {
+
         }
 
         public override void AddChild(BehaviourNode child)

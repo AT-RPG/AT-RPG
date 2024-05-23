@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -23,17 +19,9 @@ namespace AT_RPG
         public BehaviourNode Root
         {
             get => root;
+            set => root = value;
         }
-        [SerializeField] private BehaviourNode root = null;
-        
-        /// <summary>
-        /// 현재 BT에서 동작중인 행동
-        /// </summary>
-        public BehaviourNode Current
-        {
-            get => current;
-        }
-        [SerializeField] private BehaviourNode current = null;
+        [SerializeField] private BehaviourNode root = null;   
 
         /// <summary>
         /// BT가 가지고 있는 모든 행동
@@ -44,7 +32,20 @@ namespace AT_RPG
         }
         [SerializeField] private List<BehaviourNode> nodes = new();
 
-        
+        /// <summary>
+        /// 현재 BT에서 동작중인 행동
+        /// </summary>
+        public BehaviourNode Current
+        {
+            get => current;
+        }
+        private BehaviourNode current = null;
+
+
+        public void Start()
+        {
+            current = root;
+        }
 
         public void Update()
         {
@@ -54,75 +55,31 @@ namespace AT_RPG
             }
         }
 
-        public void AddNode(BehaviourNode node)
+        public BehaviourTree Clone()
         {
-            if (nodes.Count == 0)
-            {
-                root = node;
-                current = node;
-            }
-
-            nodes.Add(node);
+            BehaviourTree clone = Instantiate(this);
+            clone.nodes.ConvertAll(node => node.Clone());
+            return clone;
         }
 
-        public void AddChild(BehaviourNode parent, BehaviourNode child)
+        public void SetRoot(BehaviourNode node)
         {
-            DecoratorNode decorator = parent as DecoratorNode;
-            if (decorator != null)
-            {
-                decorator.Child = child;
-            }
+            root = node;
+        }
 
-            CompositeNode composite = parent as CompositeNode;
-            if (composite != null)
-            {
-                composite.Children.Add(child);
-            }
+        public void AddNode(BehaviourNode node)
+        {
+            nodes.Add(node);
         }
 
         public void RemoveNode(BehaviourNode node)
         {
-            nodes.Remove(node);
-
-            if (nodes.Count == 0)
+            if (node == root)
             {
                 root = null;
-                current = null;
-            }
-        }
-
-        public void RemoveChild(BehaviourNode parent, BehaviourNode child)
-        {
-            DecoratorNode decorator = parent as DecoratorNode;
-            if (decorator != null)
-            {
-                decorator.Child = null;
             }
 
-            CompositeNode composite = parent as CompositeNode;
-            if (composite != null)
-            {
-                composite.Children.Remove(child);
-            }
-        }
-
-        public List<BehaviourNode> GetChildren(BehaviourNode parent)
-        {
-            List<BehaviourNode> children = new();
-
-            DecoratorNode decorator = parent as DecoratorNode;
-            if (decorator != null && decorator.Child != null)
-            {
-                children.Add(decorator.Child);
-            }
-
-            CompositeNode composite = parent as CompositeNode;
-            if (composite != null && composite.Children != null)
-            {
-                children.AddRange(composite.Children);
-            }
-
-            return children;
+            nodes.Remove(node);
         }
 
 #if UNITY_EDITOR
@@ -135,11 +92,13 @@ namespace AT_RPG
 
             BehaviourNode node = ScriptableObject.CreateInstance(type) as BehaviourNode;
             node.name = type.Name;
-            node.Guid = Guid.NewGuid();
+            node.Guid = GUID.Generate().ToString();
 
             AddNode(node);
 
             AssetDatabase.AddObjectToAsset(node, this);
+            EditorUtility.SetDirty(this);
+            EditorUtility.SetDirty(node);
             AssetDatabase.SaveAssets();
 
             return node;
@@ -150,6 +109,8 @@ namespace AT_RPG
             RemoveNode(node);
 
             AssetDatabase.RemoveObjectFromAsset(node);
+            EditorUtility.SetDirty(this);
+            EditorUtility.SetDirty(node);
             AssetDatabase.SaveAssets();
         }
 #endif

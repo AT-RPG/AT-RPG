@@ -1,24 +1,50 @@
 #if UNITY_EDITOR
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using System;
-using System.Drawing;
+using UnityEngine.UIElements;
 
 namespace AT_RPG
 {
-    public class BehaviourTreeEditorNodeView : Node
+    public partial class BehaviourTreeEditorNodeView
     {
+        public static readonly string UxmlPath = "Assets/Scripts/BehaviourTree/BehaviourTreeEditorNodeView.uxml";
+    }
+
+
+    public partial class BehaviourTreeEditorNodeView : Node
+    {
+        /// <summary>
+        /// NodeView가 선택될 때 호출.
+        /// </summary>
+        public Action<BehaviourTreeEditorNodeView> OnNodeSelected;
+
+        /// <summary>
+        /// NodeView가 선택해제될 때 호출.
+        /// </summary>
+        public Action<BehaviourTreeEditorNodeView> OnNodeUnselected;
+
+        public Action<BehaviourNode> OnSetAsRoot;
+
+        /// <summary>
+        /// NodeView의 실제 인스턴스.
+        /// </summary>
         public BehaviourNode Node;
+
+        /// <summary>
+        /// 부모관계 노드 연결부.
+        /// </summary>
         public Port Input;
+
+        /// <summary>
+        /// 자식관계 노드 연결부.
+        /// </summary>
         public Port Output;
 
 
 
-        public BehaviourTreeEditorNodeView(BehaviourNode node)
+        public BehaviourTreeEditorNodeView(BehaviourNode node) : base(UxmlPath)
         {
             Node = node;
             title = node.name;
@@ -33,6 +59,16 @@ namespace AT_RPG
 
 
 
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            base.BuildContextualMenu(evt);
+
+            evt.menu.AppendAction($"Set as root", action =>
+            {
+                OnSetAsRoot?.Invoke(Node);
+            });
+        }
+
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
@@ -41,52 +77,74 @@ namespace AT_RPG
             Node.Position = nextPosition;
         }
 
+        public override void OnSelected()
+        {
+            base.OnSelected();
+
+            OnNodeSelected?.Invoke(this);
+        }
+
+        public override void OnUnselected()
+        {
+            base.OnUnselected();
+
+            OnNodeUnselected?.Invoke(this);
+        }
+
 
 
         private void CreateInputPorts()
         {
-            if (Node is ActionNode)
+            switch (Node)
             {
-                Input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
-            }
-            else
-            if (Node is CompositeNode)
-            {
-                Input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
-            }
-            else
-            if (Node is DecoratorNode)
-            {
-                Input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+                case RootNode:
+                    break;
+
+                case ActionNode:
+                    Input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(BehaviourNode));
+                    break;
+
+                case CompositeNode:
+                    Input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(BehaviourNode));
+                    break;
+
+                case DecoratorNode:
+                    Input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(BehaviourNode));
+                    break;
             }
 
             if (Input != null)
             {
                 Input.portName = "";
+                Input.style.flexDirection = FlexDirection.Column;
                 inputContainer.Add(Input);
             }
         }
 
         private void CreateOutputPorts()
         {
-            if (Node is ActionNode)
+            switch (Node)
             {
+                case RootNode:
+                    Output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(BehaviourNode));
+                    break;
 
-            }
-            else
-            if (Node is CompositeNode)
-            {
-                Output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
-            }
-            else
-            if (Node is DecoratorNode)
-            {
-                Output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+                case ActionNode:
+                    break;
+
+                case CompositeNode:
+                    Output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Multi, typeof(BehaviourNode));
+                    break;
+
+                case DecoratorNode:
+                    Output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(BehaviourNode));
+                    break;
             }
 
             if (Output != null)
             {
                 Output.portName = "";
+                Output.style.flexDirection = FlexDirection.ColumnReverse;
                 outputContainer.Add(Output);
             }
         }
