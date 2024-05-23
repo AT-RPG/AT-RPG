@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7642915320261552375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81df52defcc207143bad4d1318effad3, type: 3}
+  m_Name: TestNode
+  m_EditorClassIdentifier: 
+  guid: 4c39308678e1f2d4c8c581557548daa5
+  position: {x: 252, y: 247.41333}
+--- !u!114 &-6907476451393689160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b21f0c32f421104a85f25fdd7d75374, type: 3}
+  m_Name: RepeaterNode
+  m_EditorClassIdentifier: 
+  guid: c2ac9c9703fe16b4a9adfde87739ccf2
+  position: {x: 275.33337, y: 51}
+  child: {fileID: 7844335177312597756}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ab252011e209e4c8ef3ff62c946659, type: 3}
+  m_Name: TestBehaviourTree
+  m_EditorClassIdentifier: 
+  root: {fileID: 1952307845297495066}
+  nodes:
+  - {fileID: 1952307845297495066}
+  - {fileID: 7844335177312597756}
+  - {fileID: -6907476451393689160}
+  - {fileID: -7642915320261552375}
+--- !u!114 &1952307845297495066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb55b5dcdc6b5d429cca51a74550e46, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  guid: 744b1f0791fa1244d9b640942321f501
+  position: {x: 298.6667, y: -89.11997}
+  child: {fileID: -6907476451393689160}
+--- !u!114 &7844335177312597756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0030101910d2d541bb50c3236a28ad3, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  guid: c58a97fcdb34b27478d3420b08c577a4
+  position: {x: 282.6667, y: 152.66667}
+  children:
+  - {fileID: -7642915320261552375}

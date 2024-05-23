@@ -19,8 +19,8 @@ public class SpringArm : MonoBehaviour
 
     [Header("Mouse Look")] 
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private float mouseSensivity = 2.0f;
-    [SerializeField] private float mouseVerticalClamp = 90.0f;
+    //[SerializeField] private float mouseSensivity = 2.0f;
+    //[SerializeField] private float mouseVerticalClamp = 90.0f;
 
     private float _verticalRotation;
     // Start is called before the first frame update

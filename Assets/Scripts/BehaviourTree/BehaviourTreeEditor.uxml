@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Scripts/BehaviourTree/BehaviourTreeEditor.uss?fileID=7433441132597879392&amp;guid=073f5b8de3d21ea48bbdf965a8264955&amp;type=3#BehaviourTreeEditor" />
+    <uie:ObjectField label="BehaviourTree" allow-scene-objects="true" type="AT_RPG.BehaviourTree, Assembly-CSharp" name="BehaviourTree" />
+    <AT_RPG.BehaviourTreeEditorSplitView fixed-pane-initial-dimension="300">
+        <ui:VisualElement name="left-panel" style="flex-grow: 1;">
+            <ui:Label tabindex="-1" text="Inspector" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Inspector" style="background-color: rgb(32, 32, 32);" />
+            <AT_RPG.BehaviourTreeEditorInspectorView name="BehaviourTreeEditorInspectorView" style="flex-grow: 1;">
+                <ui:VisualElement style="flex-grow: 1;" />
+            </AT_RPG.BehaviourTreeEditorInspectorView>
+        </ui:VisualElement>
+        <ui:VisualElement name="right-panel" style="flex-grow: 1;">
+            <ui:Label tabindex="-1" text="GraphView" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GraphView" style="background-color: rgb(32, 32, 32);" />
+            <AT_RPG.BehaviourTreeEditorGraphView style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </AT_RPG.BehaviourTreeEditorSplitView>
+</ui:UXML>
